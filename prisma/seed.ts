@@ -18,6 +18,7 @@ interface Collection {
 interface Product {
   name: string
   slug: string
+  shopifySlug: string | null
   description: string
   price: number
   salePrice: number | null
@@ -29,6 +30,7 @@ interface Product {
   howToUse: string | null
   inStock: boolean
   featured: boolean
+  active: boolean
 }
 
 interface SeedData {
@@ -69,11 +71,14 @@ async function main() {
   console.log(`Created ${seedData.collections.length} collections`)
 
   // Create products
+  let activeCount = 0
+  let inactiveCount = 0
   for (const product of seedData.products) {
     await prisma.product.create({
       data: {
         name: product.name,
         slug: product.slug,
+        shopifySlug: product.shopifySlug,
         description: product.description,
         price: product.price,
         salePrice: product.salePrice,
@@ -85,10 +90,13 @@ async function main() {
         howToUse: product.howToUse,
         inStock: product.inStock,
         featured: product.featured,
+        active: product.active ?? true,
       },
     })
+    if (product.active) activeCount++
+    else inactiveCount++
   }
-  console.log(`Created ${seedData.products.length} products`)
+  console.log(`Created ${seedData.products.length} products (${activeCount} active, ${inactiveCount} inactive)`)
 
   // Create admin user
   const hashedPassword = await bcrypt.hash('admin123', 10)

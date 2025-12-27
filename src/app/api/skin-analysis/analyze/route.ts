@@ -309,6 +309,7 @@ export async function POST(request: NextRequest) {
           productId: r.product.id,
           productName: r.product.name,
           productSlug: r.product.slug,
+          productShopifySlug: r.product.shopifySlug || null,
           productImage: r.product.images[0] || null,
           productPrice: r.product.price,
           productSalePrice: r.product.salePrice,

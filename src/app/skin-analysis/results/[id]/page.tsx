@@ -141,6 +141,7 @@ export default async function ResultsPage({ params }: PageProps) {
     productId: string
     productName: string
     productSlug: string
+    productShopifySlug?: string | null
     productImage: string | null
     productPrice: number
     productSalePrice: number | null

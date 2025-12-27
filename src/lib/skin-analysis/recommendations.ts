@@ -124,9 +124,12 @@ export async function getProductRecommendations(
   limit: number = 6
 ): Promise<ProductRecommendation[]> {
   try {
-    // Fetch all in-stock products
+    // Fetch all active, in-stock products (only those that exist on Shopify)
     const products = await prisma.product.findMany({
-      where: { inStock: true },
+      where: {
+        inStock: true,
+        active: true,  // Only products that exist on Shopify
+      },
       orderBy: [
         { featured: 'desc' },
         { createdAt: 'desc' },
@@ -176,6 +179,7 @@ export async function getFallbackRecommendations(limit: number = 6): Promise<Pro
     const products = await prisma.product.findMany({
       where: {
         inStock: true,
+        active: true,  // Only products that exist on Shopify
         featured: true,
       },
       take: limit,

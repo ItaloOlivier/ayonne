@@ -58,7 +58,9 @@
       "howToUse": "Apply to cleansed face and neck morning and evening.",
       "inStock": true,
       "featured": true,
-      "id": "prod_001"
+      "id": "prod_001",
+      "shopifySlug": "vitamin-c-lotion-1",
+      "active": true
     },
     {
       "name": "Collagen and Retinol Serum",
@@ -76,7 +78,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
       "inStock": true,
       "featured": true,
-      "id": "prod_002"
+      "id": "prod_002",
+      "shopifySlug": "collagen-and-retinol-serum-1",
+      "active": true
     },
     {
       "name": "Ayonne Vitamin C Brightening Toner",
@@ -94,7 +98,9 @@
       "howToUse": "Apply to cleansed face with cotton pad. Follow with serum and moisturizer.",
       "inStock": true,
       "featured": true,
-      "id": "prod_003"
+      "id": "prod_003",
+      "shopifySlug": "vitamin-c-toner-1",
+      "active": true
     },
     {
       "name": "Hyaluronic Acid Serum",
@@ -112,7 +118,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
       "inStock": true,
       "featured": true,
-      "id": "prod_004"
+      "id": "prod_004",
+      "shopifySlug": "hyaluronic-acid-serum-1",
+      "active": true
     },
     {
       "name": "Vitamin C Cleanser",
@@ -130,7 +138,9 @@
       "howToUse": "Gently massage onto wet skin using circular motions. Rinse off the gel cleanser thoroughly with warm water. Can be used morning and evening.",
       "inStock": true,
       "featured": false,
-      "id": "prod_005"
+      "id": "prod_005",
+      "shopifySlug": "vitamin-c-cleanser-1",
+      "active": true
     },
     {
       "name": "Glycolic Acid Serum",
@@ -148,7 +158,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
       "inStock": true,
       "featured": false,
-      "id": "prod_006"
+      "id": "prod_006",
+      "shopifySlug": "glycolic-acid-serum",
+      "active": true
     },
     {
       "name": "Niacinamide Vitamin Boost Serum",
@@ -166,7 +178,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
       "inStock": true,
       "featured": false,
-      "id": "prod_007"
+      "id": "prod_007",
+      "shopifySlug": "niacinamide-vitamin-boost-serum-1",
+      "active": true
     },
     {
       "name": "Hydration Serum",
@@ -184,7 +198,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF during the day.",
       "inStock": true,
       "featured": false,
-      "id": "prod_008"
+      "id": "prod_008",
+      "shopifySlug": "hydration-serum-1",
+      "active": true
     },
     {
       "name": "Firming Serum",
@@ -202,7 +218,9 @@
       "howToUse": "Apply on clean skin morning and night before moisturizing. Massage into skin for full absorption.",
       "inStock": true,
       "featured": false,
-      "id": "prod_009"
+      "id": "prod_009",
+      "shopifySlug": "firm-serum-1",
+      "active": true
     },
     {
       "name": "Active Eye Cream",
@@ -220,7 +238,9 @@
       "howToUse": "Apply daily, before daytime moisturizers and sunscreen or evening after cleansing.",
       "inStock": true,
       "featured": true,
-      "id": "prod_010"
+      "id": "prod_010",
+      "shopifySlug": "active-eye-cream",
+      "active": true
     },
     {
       "name": "Embrace Collagen Moisturizer",
@@ -238,7 +258,9 @@
       "howToUse": "Apply to cleansed skin, morning and night.",
       "inStock": true,
       "featured": true,
-      "id": "prod_011"
+      "id": "prod_011",
+      "shopifySlug": "embrace-collagen-moisturizer",
+      "active": true
     },
     {
       "name": "Hyaluronic Moisturizer",
@@ -256,7 +278,9 @@
       "howToUse": "Apply to cleansed skin, morning and night. For very dry skin, use our Firm Serum first.",
       "inStock": true,
       "featured": true,
-      "id": "prod_012"
+      "id": "prod_012",
+      "shopifySlug": "hyaluronic-moisturizer",
+      "active": true
     },
     {
       "name": "Soothing Moisturizer",
@@ -274,7 +298,9 @@
       "howToUse": "Apply product on your face with clean fingertips following a face wash and toner. Massage onto your face and neck in upward strokes.",
       "inStock": true,
       "featured": false,
-      "id": "prod_013"
+      "id": "prod_013",
+      "shopifySlug": "soothing-moisturizer",
+      "active": true
     },
     {
       "name": "Daily Repair Conditioner",
@@ -292,7 +318,9 @@
       "howToUse": "After cleansing with shampoo, gently wring out excess water from hair. Apply a quarter-size amount to hair, focusing on mid-lengths and ends. Rinse with cold water to close the hair cuticle and add shine.",
       "inStock": true,
       "featured": false,
-      "id": "prod_014"
+      "id": "prod_014",
+      "shopifySlug": "daily-repair-conditioner",
+      "active": true
     },
     {
       "name": "Natural Soap - Lavender & Rosemary",
@@ -310,7 +338,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_015"
+      "id": "prod_015",
+      "shopifySlug": "natural-soap-lavender-rosemary",
+      "active": true
     },
     {
       "name": "Natural Soap - Apricot",
@@ -328,7 +358,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_016"
+      "id": "prod_016",
+      "shopifySlug": "natural-soap-apricot",
+      "active": true
     },
     {
       "name": "Natural Soap - Fresh Turmeric",
@@ -346,7 +378,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_017"
+      "id": "prod_017",
+      "shopifySlug": "natural-soap-fresh-tumeric",
+      "active": true
     },
     {
       "name": "Natural Soap - Organic Coconutty",
@@ -364,7 +398,9 @@
       "howToUse": "Lather soap on body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_018"
+      "id": "prod_018",
+      "shopifySlug": "natural-soap-organic-coconutty",
+      "active": true
     },
     {
       "name": "Natural Soap - Eucalyptus Pepperminty",
@@ -382,7 +418,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_019"
+      "id": "prod_019",
+      "shopifySlug": "natural-soap-eucalyptus-pepperminty",
+      "active": true
     },
     {
       "name": "Natural Soap - Green Tea & Lemongrass",
@@ -400,7 +438,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_020"
+      "id": "prod_020",
+      "shopifySlug": "natural-soap-green-tea-lemongrass",
+      "active": true
     },
     {
       "name": "Natural Soap - Citron",
@@ -418,7 +458,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_021"
+      "id": "prod_021",
+      "shopifySlug": "natural-soap-citron",
+      "active": true
     },
     {
       "name": "Natural Soap - Basil Blast",
@@ -436,7 +478,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_022"
+      "id": "prod_022",
+      "shopifySlug": "natural-soap-basil-blast",
+      "active": true
     },
     {
       "name": "Our Makeup Remover Solution",
@@ -454,7 +498,9 @@
       "howToUse": "Using a cotton pad, sweep over any area of your face that has makeup. Follow with your favorite cleanser and moisturizer.",
       "inStock": true,
       "featured": false,
-      "id": "prod_023"
+      "id": "prod_023",
+      "shopifySlug": "makeup-remover-solution",
+      "active": true
     },
     {
       "name": "The Lip and Eye Makeup Remover",
@@ -472,7 +518,9 @@
       "howToUse": "Soak a cotton pad and place on closed eyelids, lashes, and lips for a couple of seconds. Gently wipe away after soaking.",
       "inStock": true,
       "featured": false,
-      "id": "prod_024"
+      "id": "prod_024",
+      "shopifySlug": "lip-and-eye-makeup-remover",
+      "active": true
     },
     {
       "name": "Rose Quartz Roller",
@@ -490,7 +538,9 @@
       "howToUse": "Start in the middle of the face and roll outward towards the cheeks. Start from the eyebrows and roll upward across the forehead. Roll from under the lower lip down to the chin.",
       "inStock": true,
       "featured": true,
-      "id": "prod_025"
+      "id": "prod_025",
+      "shopifySlug": "rose-quartz-roller",
+      "active": true
     },
     {
       "name": "Sculpting Gua Sha - Glossy",
@@ -508,7 +558,9 @@
       "howToUse": "Start with a clean face. Apply your favorite serum or facial oil to ensure smooth movement. Hold the Gua Sha tool at a 15-degree angle and gently glide it across your skin, using upward and outward strokes.",
       "inStock": true,
       "featured": false,
-      "id": "prod_026"
+      "id": "prod_026",
+      "shopifySlug": "sculpting-gua-sha-glossy",
+      "active": true
     },
     {
       "name": "Everywhere Makeup Bag",
@@ -526,7 +578,9 @@
       "howToUse": "Organize your essentials, including cosmetics, toiletries, brushes, and makeup tools. Wipe clean with damp cloth when necessary.",
       "inStock": true,
       "featured": false,
-      "id": "prod_027"
+      "id": "prod_027",
+      "shopifySlug": "everywhere-makeup-bag",
+      "active": true
     },
     {
       "name": "Hair Clay",
@@ -544,7 +598,9 @@
       "howToUse": "Add a quarter-sized amount of clay to freshly shampooed or day-old hair to bring texture and volume to all styles.",
       "inStock": true,
       "featured": false,
-      "id": "prod_028"
+      "id": "prod_028",
+      "shopifySlug": "hair-clay",
+      "active": true
     },
     {
       "name": "Glow Mask",
@@ -562,7 +618,9 @@
       "howToUse": "Apply a generous amount to a dry, clean face, avoid the immediate eye area. Leave for 5 minutes, then wet hands and massage into skin to activate. Remove with moistened cotton pads and rinse well with warm water. Follow with moisturizer or night cream.",
       "inStock": true,
       "featured": true,
-      "id": "prod_029"
+      "id": "prod_029",
+      "shopifySlug": "glow-mask",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Hottie",
@@ -580,7 +638,9 @@
       "howToUse": "Gently use a small amount and apply with your finger or a small brush. Layer the Liquid Shimmer on top of eyeshadows, highlighters, and lipsticks or use on its own.",
       "inStock": true,
       "featured": false,
-      "id": "prod_030"
+      "id": "prod_030",
+      "shopifySlug": "liquid-shimmer-hottie",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Gatsby",
@@ -598,7 +658,9 @@
       "howToUse": "Gently use a small amount and apply with your finger or a small brush. Layer the Liquid Shimmer on top of eyeshadows, highlighters, and lipsticks or use on its own.",
       "inStock": true,
       "featured": false,
-      "id": "prod_031"
+      "id": "prod_031",
+      "shopifySlug": "liquid-shimmer-gatsby",
+      "active": true
     },
     {
       "name": "Pearl Eye Primer",
@@ -616,7 +678,9 @@
       "howToUse": "Using clean fingertips, blend the formula on your eyelids before applying eyeshadows.",
       "inStock": true,
       "featured": false,
-      "id": "prod_032"
+      "id": "prod_032",
+      "shopifySlug": "pearl-eye-primer",
+      "active": true
     },
     {
       "name": "Oil Control Setting Spray",
@@ -634,7 +698,9 @@
       "howToUse": "With eyes closed, hold the bottle at arm's length and spray lightly over your face.",
       "inStock": true,
       "featured": false,
-      "id": "prod_033"
+      "id": "prod_033",
+      "shopifySlug": "oil-control-setting-spray",
+      "active": true
     },
     {
       "name": "Tanning Drops",
@@ -652,7 +718,9 @@
       "howToUse": "Apply to a clean face as the final step of your skin care routine. Add 2-4 drops into your hand with your favorite moisturizer, serum, or body lotion. Wash hands thoroughly after application. Gradual tan will develop for up to 24 hours.",
       "inStock": true,
       "featured": false,
-      "id": "prod_034"
+      "id": "prod_034",
+      "shopifySlug": "tanning-drops",
+      "active": true
     },
     {
       "name": "Lip Kit - Mauve Wife",
@@ -670,7 +738,9 @@
       "howToUse": "Line and contour your lips with Lip Liner. Saturate your lips with color using the Luxury Cream Lipstick. Finish with a top coat of Lip Gloss to add volume.",
       "inStock": true,
       "featured": false,
-      "id": "prod_035"
+      "id": "prod_035",
+      "shopifySlug": "lip-kit-mauve-wife",
+      "active": true
     },
     {
       "name": "Smoothing Lip Balm",
@@ -688,7 +758,9 @@
       "howToUse": "Apply directly onto lips as needed throughout the day. Can be used alone or before lip color to prime.",
       "inStock": true,
       "featured": false,
-      "id": "prod_036"
+      "id": "prod_036",
+      "shopifySlug": "smoothing-lip-balm",
+      "active": true
     },
     {
       "name": "Smooth & Sculpt Curl Enhancer",
@@ -706,7 +778,9 @@
       "howToUse": "Emulsify in palms and work from base to ends of hair. Blow-dry or diffuse to curl.",
       "inStock": true,
       "featured": false,
-      "id": "prod_037"
+      "id": "prod_037",
+      "shopifySlug": "smooth-sculpt-curl-enhancer",
+      "active": true
     },
     {
       "name": "Beard Butter",
@@ -724,7 +798,9 @@
       "howToUse": "After you shower and dry your beard, apply a dime-sized amount in your hand. Massage the butter into the hair and roots, while shaping your beard. Apply on a daily basis to promote a softer beard.",
       "inStock": true,
       "featured": false,
-      "id": "prod_038"
+      "id": "prod_038",
+      "shopifySlug": "beard-butter",
+      "active": true
     },
     {
       "name": "Beard Oil - Speakeasy",
@@ -742,7 +818,9 @@
       "howToUse": "After showering, dry your beard and apply a few drops to your beard. Use fingers to massage the product into the hair and roots. Apply on a daily basis to help your beard feel soft and healthy.",
       "inStock": true,
       "featured": false,
-      "id": "prod_039"
+      "id": "prod_039",
+      "shopifySlug": "beard-oil-speakeasy",
+      "active": true
     },
     {
       "name": "Beard Oil - Classic",
@@ -760,7 +838,9 @@
       "howToUse": "After showering, dry your beard and apply a few drops to your beard. Use fingers to massage the product into the hair and roots. Apply on a daily basis to help your beard feel soft and healthy.",
       "inStock": true,
       "featured": false,
-      "id": "prod_040"
+      "id": "prod_040",
+      "shopifySlug": "beard-oil-classic",
+      "active": true
     },
     {
       "name": "Men's Under Eye Cream",
@@ -778,7 +858,9 @@
       "howToUse": "Use a fingertip and apply a small amount along the under eye area. Pat gently to apply. Best used at night after cleanser and moisturizer.",
       "inStock": true,
       "featured": true,
-      "id": "prod_041"
+      "id": "prod_041",
+      "shopifySlug": "mens-under-eye-cream",
+      "active": true
     },
     {
       "name": "Anti-Aging Rose Gold Oil",
@@ -796,7 +878,9 @@
       "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
       "inStock": true,
       "featured": false,
-      "id": "prod_042"
+      "id": "prod_042",
+      "shopifySlug": "anti-aging-rose-gold-oil-1",
+      "active": true
     },
     {
       "name": "Kale Face Cleanser",
@@ -814,7 +898,9 @@
       "howToUse": "Massage onto damp skin in circular motions. Rinse thoroughly with warm water. Use morning and evening.",
       "inStock": true,
       "featured": false,
-      "id": "prod_043"
+      "id": "prod_043",
+      "shopifySlug": "kale-face-cleanser",
+      "active": true
     },
     {
       "name": "Hemp Infused Beard Growth Oil",
@@ -832,7 +918,9 @@
       "howToUse": "Apply a few drops to palm, rub hands together, and massage into beard and skin beneath. Use daily for best results.",
       "inStock": true,
       "featured": false,
-      "id": "prod_044"
+      "id": "prod_044",
+      "shopifySlug": "hemp-infused-beard-growth-oil-unscented",
+      "active": true
     },
     {
       "name": "Men's Face Moisturizer",
@@ -850,7 +938,9 @@
       "howToUse": "Apply to clean face and neck morning and night. Massage in upward strokes until fully absorbed.",
       "inStock": true,
       "featured": true,
-      "id": "prod_045"
+      "id": "prod_045",
+      "shopifySlug": "mens-face-moisturizer",
+      "active": true
     },
     {
       "name": "Men's Shampoo",
@@ -868,7 +958,9 @@
       "howToUse": "Apply to wet hair, massage into scalp, and work through to ends. Rinse thoroughly. Follow with conditioner if desired.",
       "inStock": true,
       "featured": false,
-      "id": "prod_046"
+      "id": "prod_046",
+      "shopifySlug": "mens-shampoo",
+      "active": true
     },
     {
       "name": "Natural Soap - Sunflower Goddess",
@@ -886,7 +978,9 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_047"
+      "id": "prod_047",
+      "shopifySlug": "natural-soap-sunflower-goddess",
+      "active": true
     },
     {
       "name": "Highlighter Stick - Gold Rush",
@@ -904,7 +998,9 @@
       "howToUse": "Apply to high points of the face - cheekbones, brow bones, bridge of nose, and cupid's bow. Blend with fingers or a brush.",
       "inStock": true,
       "featured": false,
-      "id": "prod_048"
+      "id": "prod_048",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Highlighter Stick - Rose Glow",
@@ -922,7 +1018,9 @@
       "howToUse": "Apply to high points of the face - cheekbones, brow bones, bridge of nose, and cupid's bow. Blend with fingers or a brush.",
       "inStock": true,
       "featured": false,
-      "id": "prod_049"
+      "id": "prod_049",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Winter Glow Essentials Set",
@@ -940,7 +1038,9 @@
       "howToUse": "Follow the included routine guide for optimal results during winter months.",
       "inStock": true,
       "featured": true,
-      "id": "prod_050"
+      "id": "prod_050",
+      "shopifySlug": "winter-glow-essentials-set",
+      "active": true
     },
     {
       "name": "Rise & Glow Bundle",
@@ -958,7 +1058,9 @@
       "howToUse": "Follow the included routine guide for optimal results.",
       "inStock": true,
       "featured": true,
-      "id": "prod_051"
+      "id": "prod_051",
+      "shopifySlug": "rise-glow-bundle",
+      "active": true
     },
     {
       "name": "Men's Grooming Essentials Bundle",
@@ -976,7 +1078,9 @@
       "howToUse": "Use beard products after showering, moisturizer daily, and eye cream at night.",
       "inStock": true,
       "featured": true,
-      "id": "prod_052"
+      "id": "prod_052",
+      "shopifySlug": "men-s-grooming-essentials-bundle",
+      "active": true
     },
     {
       "name": "Biohacker's Skin Longevity Bundle",
@@ -994,7 +1098,9 @@
       "howToUse": "Follow the included step-by-step routine guide for optimal anti-aging results.",
       "inStock": true,
       "featured": true,
-      "id": "prod_053"
+      "id": "prod_053",
+      "shopifySlug": "biohackers-skin-longevity-bundle",
+      "active": true
     },
     {
       "name": "100 Beauty Tips: Free Download",
@@ -1012,7 +1118,9 @@
       "howToUse": "Download and read at your leisure. Implement tips gradually for best results.",
       "inStock": true,
       "featured": false,
-      "id": "prod_054"
+      "id": "prod_054",
+      "shopifySlug": "100-beauty-tips-how-to-look-fabulous",
+      "active": true
     },
     {
       "name": "100 Fashion Tips",
@@ -1030,7 +1138,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_055"
+      "id": "prod_055",
+      "shopifySlug": "100-fashion-tips-how-to-look-and-feel-amazing",
+      "active": true
     },
     {
       "name": "99 Make Up Tips",
@@ -1048,7 +1158,9 @@
       "howToUse": "Digital download - practice techniques with your own products",
       "inStock": true,
       "featured": false,
-      "id": "prod_056"
+      "id": "prod_056",
+      "shopifySlug": "100-make-up-tips-how-the-professionals-use-make-up",
+      "active": true
     },
     {
       "name": "Ayonne Gift Card",
@@ -1066,7 +1178,9 @@
       "howToUse": "Enter gift card code at checkout to redeem.",
       "inStock": true,
       "featured": false,
-      "id": "prod_057"
+      "id": "prod_057",
+      "shopifySlug": "ecosmetics-gift-cards",
+      "active": true
     },
     {
       "name": "Bamboo Beard Comb",
@@ -1084,7 +1198,9 @@
       "howToUse": "Gently comb through beard to detangle and style. Use after applying beard oil for best distribution.",
       "inStock": true,
       "featured": false,
-      "id": "prod_058"
+      "id": "prod_058",
+      "shopifySlug": "bamboo-beard-comb",
+      "active": true
     },
     {
       "name": "Beard Nylon Brush",
@@ -1102,7 +1218,9 @@
       "howToUse": "Brush through beard daily, starting from the neck and working upward, then downward to shape.",
       "inStock": true,
       "featured": false,
-      "id": "prod_059"
+      "id": "prod_059",
+      "shopifySlug": "beard-nylon-brush",
+      "active": true
     },
     {
       "name": "All-in-One Body Wash",
@@ -1120,7 +1238,9 @@
       "howToUse": "Apply to wet skin, lather, and rinse thoroughly.",
       "inStock": true,
       "featured": false,
-      "id": "prod_060"
+      "id": "prod_060",
+      "shopifySlug": "all-in-one-body-wash",
+      "active": true
     },
     {
       "name": "Retinol Night Cream",
@@ -1138,7 +1258,9 @@
       "howToUse": "Apply to cleansed skin at night as the last step in your routine. Always use SPF during the day when using retinol products.",
       "inStock": true,
       "featured": false,
-      "id": "prod_061"
+      "id": "prod_061",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Hydrating Face Mist",
@@ -1156,7 +1278,9 @@
       "howToUse": "Spritz onto face from 8-10 inches away. Use anytime skin needs a refresh.",
       "inStock": true,
       "featured": false,
-      "id": "prod_062"
+      "id": "prod_062",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Daily Repair Shampoo",
@@ -1174,7 +1298,9 @@
       "howToUse": "Apply to wet hair, massage into scalp, and work through to ends. Rinse thoroughly. Follow with Daily Repair Conditioner.",
       "inStock": true,
       "featured": false,
-      "id": "prod_063"
+      "id": "prod_063",
+      "shopifySlug": "daily-repair-shampoo",
+      "active": true
     },
     {
       "name": "Foaming Beard Wash",
@@ -1192,7 +1318,9 @@
       "howToUse": "Apply to wet beard, massage into a lather, and rinse thoroughly. Use daily or as needed.",
       "inStock": true,
       "featured": false,
-      "id": "prod_064"
+      "id": "prod_064",
+      "shopifySlug": "foaming-beard-wash",
+      "active": true
     },
     {
       "name": "Beard Oil - Unscented",
@@ -1210,7 +1338,9 @@
       "howToUse": "Apply a few drops to palm and massage into beard and skin beneath. Use daily for best results.",
       "inStock": true,
       "featured": false,
-      "id": "prod_065"
+      "id": "prod_065",
+      "shopifySlug": "beard-oil-unscented",
+      "active": true
     },
     {
       "name": "Grooming Kit",
@@ -1228,7 +1358,9 @@
       "howToUse": "Use comb and brush for daily styling. Scissors for trimming stray hairs. Store in case for travel.",
       "inStock": true,
       "featured": false,
-      "id": "prod_066"
+      "id": "prod_066",
+      "shopifySlug": "grooming-kit",
+      "active": true
     },
     {
       "name": "Shaving Gel",
@@ -1246,13 +1378,15 @@
       "howToUse": "Apply to wet skin, work into a lather, and shave with the grain. Rinse thoroughly.",
       "inStock": true,
       "featured": false,
-      "id": "prod_067"
+      "id": "prod_067",
+      "shopifySlug": "shaving-gel",
+      "active": true
     },
     {
       "name": "Natural Soap - Charcoal",
       "slug": "natural-soap-charcoal",
       "description": "Deep cleanse with our activated charcoal soap. This powerful detoxifying soap draws out impurities and excess oils while the blend of natural oils keeps skin moisturized. Perfect for oily and acne-prone skin.",
-      "price": 18.00,
+      "price": 18,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Charcoal_png.png?v=1727593300"
@@ -1264,13 +1398,15 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_068"
+      "id": "prod_068",
+      "shopifySlug": "natural-soap-charcoal",
+      "active": true
     },
     {
       "name": "Natural Soap - Rose Honey",
       "slug": "natural-soap-rose-honey",
       "description": "Indulge in the luxurious blend of rose and honey. This romantic soap combines the moisturizing properties of honey with the soothing essence of rose. Perfect for dry and sensitive skin types.",
-      "price": 18.00,
+      "price": 18,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Rose_Honey_png.png?v=1727593400"
@@ -1282,13 +1418,15 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_069"
+      "id": "prod_069",
+      "shopifySlug": "natural-soap-rose-honey",
+      "active": true
     },
     {
       "name": "Natural Soap - Tea Tree",
       "slug": "natural-soap-tea-tree",
       "description": "Harness the natural antibacterial power of tea tree oil. This invigorating soap helps fight acne and blemishes while providing a refreshing, clean feeling. Great for problem skin.",
-      "price": 18.00,
+      "price": 18,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Tea_Tree_png.png?v=1727593500"
@@ -1300,13 +1438,15 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_070"
+      "id": "prod_070",
+      "shopifySlug": "natural-soap-tea-tree",
+      "active": true
     },
     {
       "name": "Natural Soap - Aloe",
       "slug": "natural-soothing-soap-aloe",
       "description": "Experience the healing power of aloe vera with our soothing aloe soap. This gentle formula calms irritated skin while providing deep hydration. Perfect for sunburned or sensitive skin.",
-      "price": 18.00,
+      "price": 18,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Aloe_png.png?v=1727593200"
@@ -1318,13 +1458,15 @@
       "howToUse": "Lather soap for body, face, or hands.",
       "inStock": true,
       "featured": false,
-      "id": "prod_071"
+      "id": "prod_071",
+      "shopifySlug": "natural-soothing-soap-aloe",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Champagne",
       "slug": "liquid-shimmer-champagne",
       "description": "A sophisticated champagne shimmer that adds elegant sparkle to any look. This versatile formula can be used on eyes, lips, or cheekbones for a luminous, celebratory glow.",
-      "price": 25.00,
+      "price": 25,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Champagne_png.png?v=1727592700"
@@ -1336,13 +1478,15 @@
       "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
       "inStock": true,
       "featured": false,
-      "id": "prod_072"
+      "id": "prod_072",
+      "shopifySlug": "liquid-shimmer-champagne",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Goldie",
       "slug": "liquid-shimmer-goldie",
       "description": "A rich gold shimmer that delivers stunning brilliance. Perfect for creating bold, glamorous looks or adding a touch of luxury to your everyday makeup.",
-      "price": 25.00,
+      "price": 25,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Goldie_png.png?v=1727592750"
@@ -1354,13 +1498,15 @@
       "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
       "inStock": true,
       "featured": false,
-      "id": "prod_073"
+      "id": "prod_073",
+      "shopifySlug": "liquid-shimmer-goldie",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Metal",
       "slug": "liquid-shimmer-metal",
       "description": "An edgy metallic shimmer for bold, modern looks. This multidimensional formula catches the light beautifully, perfect for evening events and special occasions.",
-      "price": 25.00,
+      "price": 25,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Metal_png.png?v=1727592800"
@@ -1372,13 +1518,15 @@
       "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
       "inStock": true,
       "featured": false,
-      "id": "prod_074"
+      "id": "prod_074",
+      "shopifySlug": "liquid-shimmer-metal",
+      "active": true
     },
     {
       "name": "Liquid Shimmer - Rosy",
       "slug": "liquid-shimmer-rosy",
       "description": "A romantic rosy pink shimmer that adds a soft, feminine glow. Perfect for creating fresh, youthful looks or adding a subtle pop of color.",
-      "price": 25.00,
+      "price": 25,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Rosy_png.png?v=1727592850"
@@ -1390,7 +1538,9 @@
       "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
       "inStock": true,
       "featured": false,
-      "id": "prod_075"
+      "id": "prod_075",
+      "shopifySlug": "liquid-shimmer-rosy",
+      "active": true
     },
     {
       "name": "Lip Kit - Life's a Peach",
@@ -1408,7 +1558,9 @@
       "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
       "inStock": true,
       "featured": false,
-      "id": "prod_076"
+      "id": "prod_076",
+      "shopifySlug": "lip-kit-life-s-a-peach",
+      "active": true
     },
     {
       "name": "Lip Kit - Pretty in Pink",
@@ -1426,7 +1578,9 @@
       "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
       "inStock": true,
       "featured": false,
-      "id": "prod_077"
+      "id": "prod_077",
+      "shopifySlug": "lip-kit-pretty-in-pink",
+      "active": true
     },
     {
       "name": "Lip Kit - Red Apple",
@@ -1444,7 +1598,9 @@
       "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
       "inStock": true,
       "featured": false,
-      "id": "prod_078"
+      "id": "prod_078",
+      "shopifySlug": "lip-kit-red-apple",
+      "active": true
     },
     {
       "name": "Lip Gloss - Clear",
@@ -1462,7 +1618,9 @@
       "howToUse": "Apply directly to lips or layer over lipstick for added shine.",
       "inStock": true,
       "featured": false,
-      "id": "prod_079"
+      "id": "prod_079",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Lip Plumping Oil",
@@ -1480,7 +1638,9 @@
       "howToUse": "Apply to clean lips as needed throughout the day. Can be worn alone or under lipstick.",
       "inStock": true,
       "featured": false,
-      "id": "prod_080"
+      "id": "prod_080",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Lip Scrub",
@@ -1498,7 +1658,9 @@
       "howToUse": "Apply small amount to lips, massage in circular motions, wipe or lick off. Follow with lip balm.",
       "inStock": true,
       "featured": false,
-      "id": "prod_081"
+      "id": "prod_081",
+      "shopifySlug": "lip-scrub",
+      "active": true
     },
     {
       "name": "Plumping Lip Gloss",
@@ -1516,7 +1678,9 @@
       "howToUse": "Apply directly to lips. Reapply as desired for extra plump and shine.",
       "inStock": true,
       "featured": false,
-      "id": "prod_082"
+      "id": "prod_082",
+      "shopifySlug": "plumping-lip-gloss",
+      "active": true
     },
     {
       "name": "Vegan Lip Balm",
@@ -1534,7 +1698,9 @@
       "howToUse": "Apply to lips as needed throughout the day.",
       "inStock": true,
       "featured": false,
-      "id": "prod_083"
+      "id": "prod_083",
+      "shopifySlug": "vegan-lip-balm",
+      "active": true
     },
     {
       "name": "Light Touch Blender",
@@ -1552,7 +1718,9 @@
       "howToUse": "Dampen sponge, squeeze out excess water, and bounce product onto skin for seamless blending.",
       "inStock": true,
       "featured": false,
-      "id": "prod_084"
+      "id": "prod_084",
+      "shopifySlug": "light-touch-blender",
+      "active": true
     },
     {
       "name": "Natural Konjac Sponge",
@@ -1570,7 +1738,9 @@
       "howToUse": "Soak in warm water until soft. Use with or without cleanser to gently massage face. Rinse and air dry after use.",
       "inStock": true,
       "featured": false,
-      "id": "prod_085"
+      "id": "prod_085",
+      "shopifySlug": "natural-konjac-sponge",
+      "active": true
     },
     {
       "name": "Setting Spray",
@@ -1588,7 +1758,9 @@
       "howToUse": "Hold 8-10 inches from face, close eyes, and mist in an X and T pattern. Allow to dry.",
       "inStock": true,
       "featured": false,
-      "id": "prod_086"
+      "id": "prod_086",
+      "shopifySlug": "setting-spray",
+      "active": true
     },
     {
       "name": "Sea Spray",
@@ -1606,7 +1778,9 @@
       "howToUse": "Spray onto damp or dry hair. Scrunch and tousle with fingers for natural waves.",
       "inStock": true,
       "featured": false,
-      "id": "prod_087"
+      "id": "prod_087",
+      "shopifySlug": "sea-spray",
+      "active": true
     },
     {
       "name": "Volumizing Hair Spray",
@@ -1624,7 +1798,9 @@
       "howToUse": "Spray at roots and throughout hair. Style as desired. Can be brushed through.",
       "inStock": true,
       "featured": false,
-      "id": "prod_088"
+      "id": "prod_088",
+      "shopifySlug": "volumizing-hair-spray",
+      "active": true
     },
     {
       "name": "Styling Wax",
@@ -1642,7 +1818,9 @@
       "howToUse": "Warm a small amount in palms and work through damp or dry hair. Style as desired.",
       "inStock": true,
       "featured": false,
-      "id": "prod_089"
+      "id": "prod_089",
+      "shopifySlug": "styling-wax",
+      "active": true
     },
     {
       "name": "Hydra-Silk Leave-In Conditioner",
@@ -1660,7 +1838,9 @@
       "howToUse": "Apply to damp hair from mid-lengths to ends. Comb through and style as desired. Do not rinse.",
       "inStock": true,
       "featured": false,
-      "id": "prod_090"
+      "id": "prod_090",
+      "shopifySlug": "hydra-silk-leave-in-conditioner",
+      "active": true
     },
     {
       "name": "Luxe Leave-In Conditioner",
@@ -1678,7 +1858,9 @@
       "howToUse": "Apply to damp hair from mid-lengths to ends. Style as desired.",
       "inStock": true,
       "featured": false,
-      "id": "prod_091"
+      "id": "prod_091",
+      "shopifySlug": "luxe-leave-in-conditioner",
+      "active": true
     },
     {
       "name": "Nourish Scalp and Hair Oil",
@@ -1696,7 +1878,9 @@
       "howToUse": "Apply a few drops to scalp and massage. Work through ends for shine. Use before washing or as a finishing oil.",
       "inStock": true,
       "featured": false,
-      "id": "prod_092"
+      "id": "prod_092",
+      "shopifySlug": "nourish-scalp-and-hair-oil",
+      "active": true
     },
     {
       "name": "Nourish Hand Cream",
@@ -1714,7 +1898,9 @@
       "howToUse": "Apply to hands as needed. Massage until absorbed.",
       "inStock": true,
       "featured": false,
-      "id": "prod_093"
+      "id": "prod_093",
+      "shopifySlug": "nourish-hand-cream",
+      "active": true
     },
     {
       "name": "Shea Body Butter",
@@ -1732,7 +1918,9 @@
       "howToUse": "Apply generously to body after showering. Massage into skin until absorbed.",
       "inStock": true,
       "featured": false,
-      "id": "prod_094"
+      "id": "prod_094",
+      "shopifySlug": "shea-body-butter",
+      "active": true
     },
     {
       "name": "Oil Control Hydrator",
@@ -1750,7 +1938,9 @@
       "howToUse": "Apply to clean face morning and night. Follow with SPF during the day.",
       "inStock": true,
       "featured": false,
-      "id": "prod_095"
+      "id": "prod_095",
+      "shopifySlug": "oil-control-hydrator",
+      "active": true
     },
     {
       "name": "Antioxidant Toner",
@@ -1768,7 +1958,9 @@
       "howToUse": "Apply to cleansed face with cotton pad or pat directly onto skin. Follow with serum.",
       "inStock": true,
       "featured": false,
-      "id": "prod_096"
+      "id": "prod_096",
+      "shopifySlug": "antioxidant-toner",
+      "active": true
     },
     {
       "name": "Mint Exfoliating Facial Polish",
@@ -1786,13 +1978,15 @@
       "howToUse": "Apply to damp skin, massage in circular motions, rinse thoroughly. Use 2-3 times per week.",
       "inStock": true,
       "featured": false,
-      "id": "prod_097"
+      "id": "prod_097",
+      "shopifySlug": "mint-exfoliating-facial-polish",
+      "active": true
     },
     {
       "name": "Solid Fragrance - Cedar & Tobacco",
       "slug": "solid-fragrance-cedar-tobacco",
       "description": "A sophisticated solid fragrance with notes of cedar and tobacco. This travel-friendly format allows for subtle, personal scenting throughout the day.",
-      "price": 28.00,
+      "price": 28,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Solid_Fragrance_Cedar_png.png?v=1727594200"
@@ -1804,13 +1998,15 @@
       "howToUse": "Warm product with fingertip and apply to pulse points: wrists, neck, behind ears.",
       "inStock": true,
       "featured": false,
-      "id": "prod_098"
+      "id": "prod_098",
+      "shopifySlug": "solid-fragrance-cedar-tobacco",
+      "active": true
     },
     {
       "name": "Solid Fragrance - Speakeasy",
       "slug": "solid-fragrance-speakeasy",
       "description": "An intriguing solid fragrance inspired by the roaring twenties. Notes of bourbon, leather, and spice create a sophisticated, masculine scent.",
-      "price": 28.00,
+      "price": 28,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Solid_Fragrance_Speakeasy_png.png?v=1727594250"
@@ -1822,7 +2018,9 @@
       "howToUse": "Warm product with fingertip and apply to pulse points: wrists, neck, behind ears.",
       "inStock": true,
       "featured": false,
-      "id": "prod_099"
+      "id": "prod_099",
+      "shopifySlug": "solid-fragrance-speakeasy",
+      "active": true
     },
     {
       "name": "22 In-Depth Health and Beauty Tips",
@@ -1840,7 +2038,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_100"
+      "id": "prod_100",
+      "shopifySlug": "22-in-depth-health-and-beauty-tips",
+      "active": true
     },
     {
       "name": "Dr. Morgan Levine Biohacking Bundle",
@@ -1858,13 +2058,15 @@
       "howToUse": "Follow individual product instructions. Use AM and PM for best results.",
       "inStock": true,
       "featured": true,
-      "id": "prod_101"
+      "id": "prod_101",
+      "shopifySlug": "dr-morgan-levine-biohacking-for-the-future-inspired-bundle",
+      "active": true
     },
     {
       "name": "Highlighter Stick - Beige Lights",
       "slug": "highlighter-stick-beige-lights",
       "description": "A subtle, champagne-toned highlighter stick perfect for fair to light skin tones. Creates a natural, lit-from-within glow on cheekbones, brow bones, and cupid's bow.",
-      "price": 27.00,
+      "price": 27,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Beige_png.png?v=1727594250"
@@ -1876,13 +2078,15 @@
       "howToUse": "Apply directly to high points of face - cheekbones, bridge of nose, cupid's bow. Blend with fingers or sponge.",
       "inStock": true,
       "featured": false,
-      "id": "prod_102"
+      "id": "prod_102",
+      "shopifySlug": "highlighter-stick-beige-lights",
+      "active": true
     },
     {
       "name": "Highlighter Stick - Bronze Lights",
       "slug": "highlighter-stick-bronze-lights",
       "description": "A warm, bronze-toned highlighter stick ideal for medium to deep skin tones. Delivers a sun-kissed, radiant finish on cheekbones and body.",
-      "price": 27.00,
+      "price": 27,
       "salePrice": null,
       "images": [
         "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Bronze_png.png?v=1727594250"
@@ -1894,7 +2098,9 @@
       "howToUse": "Apply directly to high points of face and body. Blend with fingers or sponge for a natural finish.",
       "inStock": true,
       "featured": false,
-      "id": "prod_103"
+      "id": "prod_103",
+      "shopifySlug": "highlighter-stick-bronze-lights",
+      "active": true
     },
     {
       "name": "Anti-Aging Cream",
@@ -1912,7 +2118,9 @@
       "howToUse": "Apply to clean face and neck at night. Can be layered over serum. Use sunscreen during the day.",
       "inStock": true,
       "featured": true,
-      "id": "prod_104"
+      "id": "prod_104",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Natural Daily Moisturizer",
@@ -1930,7 +2138,9 @@
       "howToUse": "Apply to clean face and neck morning and evening. Layer under sunscreen during the day.",
       "inStock": true,
       "featured": false,
-      "id": "prod_105"
+      "id": "prod_105",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Natural Super Hydration Face Moisturizer",
@@ -1948,7 +2158,9 @@
       "howToUse": "Apply generously to clean face and neck. Use morning and evening for best results.",
       "inStock": true,
       "featured": false,
-      "id": "prod_106"
+      "id": "prod_106",
+      "shopifySlug": null,
+      "active": false
     },
     {
       "name": "Best Skin Ever: A Comprehensive Guide",
@@ -1966,7 +2178,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_107"
+      "id": "prod_107",
+      "shopifySlug": "your-best-skin-ever-a-comprehensive-guide",
+      "active": true
     },
     {
       "name": "Wrinkle Reverse: How To Reverse Time On Your Complexion",
@@ -1984,7 +2198,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_108"
+      "id": "prod_108",
+      "shopifySlug": "wrinkle-reverse-how-to-reverse-time-on-your-complexion",
+      "active": true
     },
     {
       "name": "The Natural Acne Remedy",
@@ -2002,7 +2218,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_109"
+      "id": "prod_109",
+      "shopifySlug": "the-natural-acne-remedy",
+      "active": true
     },
     {
       "name": "Sultry Skin: How To Get Beautiful Glowing Skin",
@@ -2020,7 +2238,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_110"
+      "id": "prod_110",
+      "shopifySlug": "sultry-skin-how-to-get-beautiful-glowing-skin",
+      "active": true
     },
     {
       "name": "Dress for Your Body Type",
@@ -2038,7 +2258,9 @@
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_111"
+      "id": "prod_111",
+      "shopifySlug": "dress-for-your-body-type-how-to-look-good-with-your-body-type",
+      "active": true
     }
   ]
 }

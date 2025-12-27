@@ -11,6 +11,7 @@ model Product {
   id          String      @id @default(cuid())
   name        String
   slug        String      @unique
+  shopifySlug String?     // Actual Shopify product handle for linking
   description String      @db.Text
   price       Decimal     @db.Decimal(10, 2)
   salePrice   Decimal?    @db.Decimal(10, 2)
@@ -22,6 +23,7 @@ model Product {
   howToUse    String?     @db.Text
   inStock     Boolean     @default(true)
   featured    Boolean     @default(false)
+  active      Boolean     @default(true) // Whether product exists on Shopify
   createdAt   DateTime    @default(now())
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]

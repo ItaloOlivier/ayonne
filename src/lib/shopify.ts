@@ -26,8 +26,9 @@ export const collectionMapping: Record<string, string> = {
   'bundles': 'bundles',
 }
 
-export function getShopifyProductUrl(slug: string): string {
-  return shopifyUrls.products(slug)
+// Get Shopify product URL - uses shopifySlug if provided, otherwise falls back to local slug
+export function getShopifyProductUrl(slug: string, shopifySlug?: string | null): string {
+  return shopifyUrls.products(shopifySlug || slug)
 }
 
 export function getShopifyCollectionUrl(slug: string): string {
@@ -37,6 +38,6 @@ export function getShopifyCollectionUrl(slug: string): string {
 
 // Get the "Add to Cart" URL - redirects to product page where user can add to cart
 // Shopify doesn't support direct add-to-cart via URL without variant ID, so we link to product page
-export function getShopifyAddToCartUrl(slug: string): string {
-  return `${SHOPIFY_STORE_URL}/products/${slug}#add-to-cart`
+export function getShopifyAddToCartUrl(slug: string, shopifySlug?: string | null): string {
+  return `${SHOPIFY_STORE_URL}/products/${shopifySlug || slug}#add-to-cart`
 }

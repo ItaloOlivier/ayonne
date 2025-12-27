@@ -2,6 +2,7 @@ export interface Product {
   id: string
   name: string
   slug: string
+  shopifySlug?: string | null  // Actual Shopify product handle for linking
   description: string
   price: number
   salePrice?: number | null
@@ -13,6 +14,7 @@ export interface Product {
   howToUse?: string | null
   inStock: boolean
   featured: boolean
+  active: boolean  // Whether product exists on Shopify
 }
 
 export interface Collection {
@@ -113,6 +115,7 @@ export interface ProductRecommendation {
   productId: string
   productName: string
   productSlug: string
+  productShopifySlug: string | null  // Actual Shopify product handle
   productImage: string | null
   productPrice: number
   productSalePrice: number | null

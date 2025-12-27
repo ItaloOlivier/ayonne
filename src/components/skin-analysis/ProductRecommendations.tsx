@@ -9,6 +9,7 @@ interface RecommendedProduct {
   productId: string
   productName: string
   productSlug: string
+  productShopifySlug?: string | null  // Actual Shopify product handle
   productImage: string | null
   productPrice: number
   productSalePrice: number | null
@@ -30,8 +31,11 @@ interface ProductCardProps {
 function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps) {
   const [imageError, setImageError] = useState(false)
 
+  // Get the Shopify slug (use productShopifySlug if available, fallback to productSlug)
+  const shopifySlug = rec.productShopifySlug || rec.productSlug
+
   // Get image from Shopify CDN mapping, fallback to provided image
-  const shopifyImage = getShopifyImageUrl(rec.productSlug)
+  const shopifyImage = getShopifyImageUrl(shopifySlug)
   const imageUrl = shopifyImage || rec.productImage || ''
 
   const showPlaceholder = imageError || !imageUrl
@@ -61,7 +65,7 @@ function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps)
 
         {/* Product Image */}
         <a
-          href={getShopifyProductUrl(rec.productSlug)}
+          href={getShopifyProductUrl(rec.productSlug, shopifySlug)}
           target="_blank"
           rel="noopener noreferrer"
           className="block relative aspect-square bg-[#F4EBE7]"
@@ -100,7 +104,7 @@ function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps)
       {/* Product Info */}
       <div className="p-4">
         <a
-          href={getShopifyProductUrl(rec.productSlug)}
+          href={getShopifyProductUrl(rec.productSlug, shopifySlug)}
           target="_blank"
           rel="noopener noreferrer"
         >
