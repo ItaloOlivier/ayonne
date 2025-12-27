@@ -5,4 +5,4 @@ nixPkgs = ["nodejs_22", "npm-10_x", "openssl"]
 cmds = ["npm run build", "npx prisma generate"]
 
 [start]
-cmd = "npx prisma db push && npm start"
+cmd = "npx prisma db push && node .next/standalone/server.js"
