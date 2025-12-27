@@ -5,8 +5,36 @@ import { prisma } from './prisma'
 const CUSTOMER_COOKIE_NAME = 'ayonne_session'
 const COOKIE_MAX_AGE = 30 * 24 * 60 * 60 // 30 days in seconds
 
-// Use a secret for signing tokens - falls back to a default for dev only
-const SESSION_SECRET = process.env.SESSION_SECRET || process.env.NEXTAUTH_SECRET || 'dev-secret-change-in-production'
+// Session secret - REQUIRED in production, allows dev fallback only in development
+// Uses lazy initialization to avoid build-time errors
+let _sessionSecret: string | null = null
+
+function getSessionSecret(): string {
+  // Return cached value if already validated
+  if (_sessionSecret) {
+    return _sessionSecret
+  }
+
+  const secret = process.env.SESSION_SECRET || process.env.NEXTAUTH_SECRET
+
+  if (secret) {
+    _sessionSecret = secret
+    return secret
+  }
+
+  // Only allow fallback in development mode
+  if (process.env.NODE_ENV === 'development') {
+    console.warn('⚠️  WARNING: Using insecure dev session secret. Set SESSION_SECRET in production!')
+    _sessionSecret = 'dev-only-insecure-secret-do-not-use-in-prod'
+    return _sessionSecret
+  }
+
+  // In production, throw error if no secret is configured
+  throw new Error(
+    'CRITICAL: SESSION_SECRET environment variable is required in production. ' +
+    'Generate a secure random string (min 32 characters) and set it in your environment.'
+  )
+}
 
 export interface CustomerSession {
   id: string
