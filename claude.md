@@ -94,12 +94,20 @@ src/
 │   ├── shopify.ts            # Shopify URL helpers
 │   ├── shopify-products.ts   # Product image/variant ID mapping
 │   ├── utils.ts              # Utility functions
+│   ├── features.ts          # Feature flags for API capabilities
 │   └── skin-analysis/
+│       ├── analyzer.ts       # Core analysis utilities with prompt caching
+│       ├── cached-prompts.ts # Cached system prompts for cost optimization
 │       ├── conditions.ts     # Skin condition definitions
 │       ├── recommendations.ts # Product matching logic
 │       ├── advice.ts         # Personalized skincare tips
 │       ├── health-score.ts   # Legacy score calculation
-│       └── scoring.ts        # Dual scoring system (skin age + quality)
+│       ├── scoring.ts        # Dual scoring system (skin age + quality)
+│       ├── tools.ts          # Tool definitions for dynamic features
+│       ├── tool-handlers.ts  # Tool execution handlers
+│       ├── tool-use-analyzer.ts    # Analysis with tool use
+│       ├── extended-thinking.ts    # Deep reasoning for complex cases
+│       └── unified-analyzer.ts     # Intelligent method selection
 └── types/
     └── index.ts
 ```
@@ -116,6 +124,35 @@ src/
 - Claude AI analyzes all three angles for comprehensive assessment
 - Detects: fine lines, wrinkles, dark spots, acne, dryness, oiliness, redness, dullness, large pores, uneven texture, dark circles, dehydration
 - Smart fallback with varied results if AI unavailable
+- All 3 images (front, left, right) stored compressed in database
+
+### Anthropic API Capabilities
+The skin analysis uses advanced Anthropic Claude API features:
+
+- **Prompt Caching** (enabled by default): Caches system prompts for ~90% token cost reduction
+  - System prompts marked with `cache_control: { type: 'ephemeral' }`
+  - Cache metrics logged for monitoring
+  - Feature flag: `FEATURE_PROMPT_CACHING`
+
+- **Streaming** (opt-in): Real-time analysis feedback via SSE
+  - Endpoint: `/api/skin-analysis/analyze-stream`
+  - Hook: `useStreamingAnalysis()`
+  - Component: `StreamingAnalysisView`
+  - Feature flag: `FEATURE_STREAMING=true`
+
+- **Tool Use** (opt-in): Dynamic product lookup during analysis
+  - Tools: `lookup_products`, `check_ingredient_compatibility`, `build_routine`, `get_ingredient_benefits`
+  - Enables Claude to query database and build personalized routines
+  - Feature flag: `FEATURE_TOOL_USE=true`
+
+- **Extended Thinking** (opt-in): Deep reasoning for complex cases
+  - Triggered for users with 3+ previous analyses or 4+ conditions
+  - Uses thinking budget of 10k tokens for step-by-step reasoning
+  - Feature flag: `FEATURE_EXTENDED_THINKING=true`
+
+- **Unified Analyzer**: Intelligently selects best method based on context
+  - Import: `import { analyzeSkin } from '@/lib/skin-analysis/unified-analyzer'`
+  - Auto-selects: standard, tool-use, or extended-thinking
 
 ### Dual Scoring System
 - **Skin Age**: Estimated biological skin age based on aging indicators

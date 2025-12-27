@@ -5,7 +5,7 @@ import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
 import {
   generateSessionId,
   compressImage,
-  callAnthropicAPI,
+  callAnthropicAPIWithCaching,
   parseAIJsonResponse,
   uploadImage,
   validateImageFile,
@@ -114,6 +114,7 @@ interface MultiAngleAnalysisResult {
 }
 
 // Analyze skin using Claude/Anthropic API with multiple images
+// Uses prompt caching for ~90% cost reduction on system prompts
 async function analyzeSkinWithAIMultiAngle(
   frontImageBase64: string,
   leftImageBase64: string,
@@ -124,32 +125,42 @@ async function analyzeSkinWithAIMultiAngle(
   asymmetryNotes?: string
   analysisQuality?: string
 }> {
-  const content = await callAnthropicAPI(
-    [
-      {
-        role: 'user',
-        content: [
-          { type: 'text', text: 'Image 1 - FRONT VIEW:' },
-          {
-            type: 'image',
-            source: { type: 'base64', media_type: 'image/jpeg', data: frontImageBase64 },
-          },
-          { type: 'text', text: 'Image 2 - LEFT PROFILE:' },
-          {
-            type: 'image',
-            source: { type: 'base64', media_type: 'image/jpeg', data: leftImageBase64 },
-          },
-          { type: 'text', text: 'Image 3 - RIGHT PROFILE:' },
-          {
-            type: 'image',
-            source: { type: 'base64', media_type: 'image/jpeg', data: rightImageBase64 },
-          },
-          { type: 'text', text: MULTI_ANGLE_ANALYSIS_PROMPT },
-        ],
-      },
-    ],
-    1500
+  // Build user content with images and additional analysis prompt
+  const userContent = [
+    { type: 'text', text: 'Image 1 - FRONT VIEW:' },
+    {
+      type: 'image',
+      source: { type: 'base64', media_type: 'image/jpeg', data: frontImageBase64 },
+    },
+    { type: 'text', text: 'Image 2 - LEFT PROFILE:' },
+    {
+      type: 'image',
+      source: { type: 'base64', media_type: 'image/jpeg', data: leftImageBase64 },
+    },
+    { type: 'text', text: 'Image 3 - RIGHT PROFILE:' },
+    {
+      type: 'image',
+      source: { type: 'base64', media_type: 'image/jpeg', data: rightImageBase64 },
+    },
+    { type: 'text', text: MULTI_ANGLE_ANALYSIS_PROMPT },
+  ]
+
+  // Use cached API call for cost optimization
+  const { text: content, cacheMetrics } = await callAnthropicAPIWithCaching(
+    userContent,
+    {
+      isMultiAngle: true,
+      maxTokens: 1500,
+    }
   )
+
+  // Log if we got cache metrics
+  if (cacheMetrics) {
+    console.log('[MULTI-ANGLE] Cache metrics:', {
+      hitRate: `${Math.round(cacheMetrics.cacheHitRate * 100)}%`,
+      savedTokens: Math.round(cacheMetrics.estimatedSavings),
+    })
+  }
 
   if (!content) {
     const fallback = getSmartFallbackAnalysis()

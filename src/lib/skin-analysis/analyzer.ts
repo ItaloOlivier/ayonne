@@ -2,6 +2,7 @@
  * Shared skin analysis utilities
  *
  * Extracted from analyze and analyze-multi routes to reduce code duplication.
+ * Includes prompt caching support for cost optimization.
  */
 
 import sharp from 'sharp'
@@ -10,6 +11,8 @@ import { prisma } from '@/lib/prisma'
 import { SkinType, DetectedCondition } from './conditions'
 import { getProductRecommendations } from './recommendations'
 import { getPersonalizedAdvice } from './advice'
+import { FEATURES } from '@/lib/features'
+import { buildCachedSystemMessage, estimateCacheSavings } from './cached-prompts'
 
 // Constants
 export const RATE_LIMIT_ANALYSES_PER_HOUR = 5
@@ -75,7 +78,7 @@ export function parseAIJsonResponse<T>(content: string): T | null {
 }
 
 /**
- * Call Anthropic API for skin analysis
+ * Call Anthropic API for skin analysis (legacy without caching)
  */
 export async function callAnthropicAPI(
   messages: Array<{ role: string; content: unknown }>,
@@ -113,6 +116,160 @@ export async function callAnthropicAPI(
   } catch (error) {
     console.error('Error calling Anthropic:', error)
     return null
+  }
+}
+
+/**
+ * Call Anthropic API with prompt caching enabled
+ *
+ * Uses cached system prompts to reduce token costs by ~90%.
+ * Cache is automatically managed by Anthropic (5-minute TTL with auto-refresh).
+ */
+export async function callAnthropicAPIWithCaching(
+  userContent: Array<{ type: string; source?: unknown; text?: string }>,
+  options: {
+    isMultiAngle?: boolean
+    maxTokens?: number
+  } = {}
+): Promise<{ text: string | null; cacheMetrics?: CacheMetrics }> {
+  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
+  const { isMultiAngle = false, maxTokens = 1024 } = options
+
+  if (!ANTHROPIC_API_KEY) {
+    console.error('ANTHROPIC_API_KEY not configured')
+    throw new Error('AI analysis unavailable: ANTHROPIC_API_KEY not configured')
+  }
+
+  // Build system message with cache control
+  const systemMessage = FEATURES.PROMPT_CACHING
+    ? buildCachedSystemMessage(isMultiAngle)
+    : undefined
+
+  // Log expected savings
+  if (FEATURES.PROMPT_CACHING) {
+    const savings = estimateCacheSavings(isMultiAngle)
+    console.log('[CACHE] Expected savings:', savings.potentialSavings)
+  }
+
+  try {
+    const requestBody: Record<string, unknown> = {
+      model: 'claude-sonnet-4-20250514',
+      max_tokens: maxTokens,
+      messages: [
+        {
+          role: 'user',
+          content: userContent,
+        },
+      ],
+    }
+
+    // Add system message with caching if enabled
+    if (systemMessage) {
+      requestBody.system = systemMessage
+    }
+
+    const response = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'x-api-key': ANTHROPIC_API_KEY,
+        'anthropic-version': '2023-06-01',
+      },
+      body: JSON.stringify(requestBody),
+    })
+
+    if (!response.ok) {
+      const errorText = await response.text()
+      console.error('Anthropic API error:', errorText)
+      return { text: null }
+    }
+
+    const data = await response.json()
+
+    // Log cache performance metrics
+    const cacheMetrics = extractCacheMetrics(data.usage)
+    if (cacheMetrics) {
+      logCachePerformance(cacheMetrics)
+    }
+
+    return {
+      text: data.content[0]?.text || null,
+      cacheMetrics,
+    }
+  } catch (error) {
+    console.error('Error calling Anthropic:', error)
+    return { text: null }
+  }
+}
+
+/**
+ * Cache performance metrics from Anthropic API response
+ */
+export interface CacheMetrics {
+  inputTokens: number
+  outputTokens: number
+  cacheCreationTokens: number
+  cacheReadTokens: number
+  cacheHitRate: number
+  estimatedSavings: number
+}
+
+/**
+ * Extract cache metrics from API usage data
+ */
+function extractCacheMetrics(usage: {
+  input_tokens?: number
+  output_tokens?: number
+  cache_creation_input_tokens?: number
+  cache_read_input_tokens?: number
+} | undefined): CacheMetrics | undefined {
+  if (!usage) return undefined
+
+  const inputTokens = usage.input_tokens || 0
+  const outputTokens = usage.output_tokens || 0
+  const cacheCreationTokens = usage.cache_creation_input_tokens || 0
+  const cacheReadTokens = usage.cache_read_input_tokens || 0
+
+  // Calculate cache hit rate
+  const totalCacheableTokens = cacheCreationTokens + cacheReadTokens
+  const cacheHitRate = totalCacheableTokens > 0
+    ? cacheReadTokens / totalCacheableTokens
+    : 0
+
+  // Estimate savings (cache reads cost 10% of normal)
+  // Savings = cacheReadTokens * 0.9 (90% reduction on cached tokens)
+  const estimatedSavings = cacheReadTokens * 0.9
+
+  return {
+    inputTokens,
+    outputTokens,
+    cacheCreationTokens,
+    cacheReadTokens,
+    cacheHitRate,
+    estimatedSavings,
+  }
+}
+
+/**
+ * Log cache performance for monitoring
+ */
+function logCachePerformance(metrics: CacheMetrics): void {
+  const hitRatePercent = Math.round(metrics.cacheHitRate * 100)
+
+  console.log('[CACHE] Performance:', {
+    inputTokens: metrics.inputTokens,
+    outputTokens: metrics.outputTokens,
+    cacheCreation: metrics.cacheCreationTokens,
+    cacheRead: metrics.cacheReadTokens,
+    hitRate: `${hitRatePercent}%`,
+    estimatedSavings: `~${Math.round(metrics.estimatedSavings)} tokens`,
+  })
+
+  // Log warning if cache miss on subsequent request
+  if (metrics.cacheCreationTokens > 0 && metrics.cacheReadTokens === 0) {
+    console.log('[CACHE] Cache miss - new cache created')
+  } else if (metrics.cacheReadTokens > 0) {
+    console.log('[CACHE] Cache hit! Saved ~90% on system prompt tokens')
   }
 }
 
