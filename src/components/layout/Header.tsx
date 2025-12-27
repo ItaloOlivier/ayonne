@@ -3,44 +3,44 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState, useEffect } from 'react'
+import { useRouter } from 'next/navigation'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 
-const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
-const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
-
-interface CustomerData {
-  firstName: string
-}
-
 export default function Header() {
+  const router = useRouter()
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [customerName, setCustomerName] = useState<string | null>(null)
-
   useEffect(() => {
-    const customerId = localStorage.getItem(CUSTOMER_STORAGE_KEY)
-    const customerData = localStorage.getItem(CUSTOMER_DATA_KEY)
-
-    if (customerId) {
-      setIsLoggedIn(true)
-      if (customerData) {
-        try {
-          const data: CustomerData = JSON.parse(customerData)
-          setCustomerName(data.firstName)
-        } catch {
-          // Ignore parse errors
+    // Check auth status via API (uses HTTP-only cookie)
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.authenticated && data.customer) {
+          setIsLoggedIn(true)
+          setCustomerName(data.customer.firstName)
+        } else {
+          setIsLoggedIn(false)
+          setCustomerName(null)
         }
-      }
-    }
+      })
+      .catch(() => {
+        setIsLoggedIn(false)
+        setCustomerName(null)
+      })
   }, [])
 
-  const handleLogout = () => {
-    localStorage.removeItem(CUSTOMER_STORAGE_KEY)
-    localStorage.removeItem(CUSTOMER_DATA_KEY)
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/auth/logout', { method: 'POST' })
+    } catch {
+      // Ignore errors
+    }
     setIsLoggedIn(false)
     setCustomerName(null)
     setIsMobileMenuOpen(false)
+    router.refresh()
   }
 
   return (
@@ -183,6 +183,32 @@ export default function Header() {
                     AI Skin Analysis
                   </Link>
                 </li>
+                {isLoggedIn && (
+                  <>
+                    <li>
+                      <Link
+                        href="/skin-analysis/history"
+                        className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1.5"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        My Progress
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/my-recommendations"
+                        className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1.5"
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        My Recommendations
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li>
                   <a
                     href={SHOPIFY_STORE_URL}
@@ -232,6 +258,34 @@ export default function Header() {
                     AI Skin Analysis
                   </Link>
                 </li>
+                {isLoggedIn && (
+                  <>
+                    <li>
+                      <Link
+                        href="/skin-analysis/history"
+                        className="flex items-center gap-2 py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                        </svg>
+                        My Progress
+                      </Link>
+                    </li>
+                    <li>
+                      <Link
+                        href="/my-recommendations"
+                        className="flex items-center gap-2 py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
+                        </svg>
+                        My Recommendations
+                      </Link>
+                    </li>
+                  </>
+                )}
                 <li>
                   <a
                     href={SHOPIFY_STORE_URL}
