@@ -4,6 +4,7 @@ import { prisma } from '@/lib/prisma'
 import AnalysisResults from '@/components/skin-analysis/AnalysisResults'
 import ProductRecommendations from '@/components/skin-analysis/ProductRecommendations'
 import SkincareAdvice from '@/components/skin-analysis/SkincareAdvice'
+import ResultsClientWrapper from '@/components/skin-analysis/ResultsClientWrapper'
 import { SkinType } from '@/lib/skin-analysis/conditions'
 
 interface PageProps {
@@ -160,26 +161,29 @@ export default async function ResultsPage({ params }: PageProps) {
             {/* Skincare Advice */}
             <SkincareAdvice advice={advice} />
 
-            {/* Share / Save Section */}
+            {/* Come back tomorrow CTA */}
             <div className="bg-white rounded-xl p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
-                  <h3 className="text-lg font-medium text-[#1C4444]">Save Your Results</h3>
+                  <h3 className="text-lg font-medium text-[#1C4444]">Track Your Progress</h3>
                   <p className="text-[#1C4444]/60 text-sm">
-                    Create an account to track your skin&apos;s progress over time
+                    Come back tomorrow to analyze your skin again and track improvements over time.
                   </p>
                 </div>
                 <Link
-                  href="/account/register"
+                  href="/"
                   className="btn-secondary whitespace-nowrap"
                 >
-                  Create Account
+                  Browse Products
                 </Link>
               </div>
             </div>
 
             {/* Try Again CTA */}
             <div className="text-center py-8">
+              <p className="text-[#1C4444]/50 text-sm mb-2">
+                You can perform one skin analysis per day
+              </p>
               <Link
                 href="/skin-analysis"
                 className="inline-flex items-center gap-2 text-[#1C4444] hover:text-[#1C4444]/70 transition-colors"
@@ -187,12 +191,15 @@ export default async function ResultsPage({ params }: PageProps) {
                 <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
                 </svg>
-                Analyze Another Photo
+                Back to Skin Analysis
               </Link>
             </div>
           </div>
         </div>
       </section>
+
+      {/* Install App Prompt */}
+      <ResultsClientWrapper />
     </div>
   )
 }

@@ -209,11 +209,51 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const imageFile = formData.get('image') as File | null
+    const customerId = formData.get('customerId') as string | null
 
     if (!imageFile) {
       return NextResponse.json(
         { error: 'No image provided' },
         { status: 400 }
+      )
+    }
+
+    // Customer ID is now required
+    if (!customerId) {
+      return NextResponse.json(
+        { error: 'Please create an account to use the skin analyzer' },
+        { status: 401 }
+      )
+    }
+
+    // Verify customer exists
+    const customer = await prisma.customer.findUnique({
+      where: { id: customerId },
+    })
+
+    if (!customer) {
+      return NextResponse.json(
+        { error: 'Invalid account. Please sign up again.' },
+        { status: 401 }
+      )
+    }
+
+    // Check for daily limit - one analysis per day per customer
+    const today = new Date()
+    today.setHours(0, 0, 0, 0)
+
+    const existingTodayAnalysis = await prisma.skinAnalysis.findFirst({
+      where: {
+        customerId: customerId,
+        createdAt: { gte: today },
+        status: { in: ['PROCESSING', 'COMPLETED'] },
+      },
+    })
+
+    if (existingTodayAnalysis) {
+      return NextResponse.json(
+        { error: 'You have already used the skin analyzer today. Please try again tomorrow.' },
+        { status: 429 }
       )
     }
 
@@ -234,7 +274,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Generate session ID for anonymous users
+    // Generate session ID for tracking
     const sessionId = generateSessionId()
 
     // Convert to buffer and base64
@@ -246,7 +286,7 @@ export async function POST(request: NextRequest) {
     let originalImageUrl: string
 
     try {
-      const blob = await put(`skin-analysis/${sessionId}-original.${imageFile.type.split('/')[1]}`, imageFile, {
+      const blob = await put(`skin-analysis/${customerId}-${sessionId}-original.${imageFile.type.split('/')[1]}`, imageFile, {
         access: 'public',
         addRandomSuffix: true,
       })
@@ -256,10 +296,11 @@ export async function POST(request: NextRequest) {
       originalImageUrl = `data:${imageFile.type};base64,${imageBase64}`
     }
 
-    // Create initial analysis record
+    // Create initial analysis record linked to customer
     const analysis = await prisma.skinAnalysis.create({
       data: {
         sessionId,
+        customerId,
         originalImage: originalImageUrl,
         conditions: [],
         status: 'PROCESSING',

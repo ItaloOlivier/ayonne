@@ -253,6 +253,39 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
             style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
           />
 
+          {/* Face outline overlay */}
+          <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+            <svg
+              viewBox="0 0 200 260"
+              className="w-[65%] h-[75%] opacity-60"
+              fill="none"
+              stroke="white"
+              strokeWidth="2"
+            >
+              {/* Face oval outline */}
+              <ellipse
+                cx="100"
+                cy="130"
+                rx="70"
+                ry="95"
+                strokeDasharray="8 4"
+              />
+              {/* Chin line guide */}
+              <path
+                d="M30 130 Q100 250 170 130"
+                strokeDasharray="8 4"
+                opacity="0.5"
+              />
+            </svg>
+          </div>
+
+          {/* Position guide text */}
+          <div className="absolute top-4 left-0 right-0 text-center">
+            <span className="bg-black/50 text-white text-xs px-3 py-1 rounded-full">
+              Align your face within the outline
+            </span>
+          </div>
+
           {/* Camera controls overlay */}
           <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/60 to-transparent">
             <div className="flex items-center justify-center gap-4">
@@ -294,7 +327,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
         <canvas ref={canvasRef} className="hidden" />
 
         <p className="text-center text-[#1C4444]/60 text-sm mt-4">
-          Position your face in the frame and tap the button to capture
+          Position your face in the outline and tap the button to capture
         </p>
       </div>
     )

@@ -1,31 +1,96 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import ImageUpload from '@/components/skin-analysis/ImageUpload'
+import SignupForm from '@/components/skin-analysis/SignupForm'
+
+type Step = 'upload' | 'signup' | 'analyzing'
+
+// Helper to get/set customer ID from localStorage
+const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
+
+function getStoredCustomerId(): string | null {
+  if (typeof window === 'undefined') return null
+  return localStorage.getItem(CUSTOMER_STORAGE_KEY)
+}
+
+function setStoredCustomerId(customerId: string) {
+  if (typeof window === 'undefined') return
+  localStorage.setItem(CUSTOMER_STORAGE_KEY, customerId)
+}
 
 export default function SkinAnalysisPage() {
   const router = useRouter()
-  const [isAnalyzing, setIsAnalyzing] = useState(false)
+  const [step, setStep] = useState<Step>('upload')
   const [error, setError] = useState<string | null>(null)
   const [selectedFile, setSelectedFile] = useState<File | null>(null)
+  const [imagePreview, setImagePreview] = useState<string | null>(null)
+  const [storedCustomerId, setStoredCustomerIdState] = useState<string | null>(null)
+  const [isCheckingUser, setIsCheckingUser] = useState(true)
+
+  // Check for existing user on mount
+  useEffect(() => {
+    const customerId = getStoredCustomerId()
+    if (customerId) {
+      // Verify the customer still exists
+      fetch(`/api/skin-analysis/verify-customer?id=${customerId}`)
+        .then(res => res.json())
+        .then(data => {
+          if (data.valid) {
+            setStoredCustomerIdState(customerId)
+          } else {
+            // Clear invalid customer ID
+            localStorage.removeItem(CUSTOMER_STORAGE_KEY)
+          }
+        })
+        .catch(() => {
+          // On error, keep the ID but let the analysis endpoint validate it
+          setStoredCustomerIdState(customerId)
+        })
+        .finally(() => {
+          setIsCheckingUser(false)
+        })
+    } else {
+      setIsCheckingUser(false)
+    }
+  }, [])
 
   const handleImageSelect = (file: File) => {
     setSelectedFile(file)
     setError(null)
+
+    // Create preview
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      setImagePreview(e.target?.result as string)
+    }
+    reader.readAsDataURL(file)
   }
 
-  const handleAnalyze = async () => {
+  const handleProceedToSignup = () => {
     if (!selectedFile) return
 
-    setIsAnalyzing(true)
+    // If user already has an account, go straight to analyzing
+    if (storedCustomerId) {
+      runAnalysis(storedCustomerId)
+    } else {
+      setStep('signup')
+    }
+  }
+
+  const runAnalysis = async (customerId: string) => {
+    if (!selectedFile) return
+
+    setStep('analyzing')
     setError(null)
 
     try {
       // Upload image and start analysis
       const formData = new FormData()
       formData.append('image', selectedFile)
+      formData.append('customerId', customerId)
 
       const response = await fetch('/api/skin-analysis/analyze', {
         method: 'POST',
@@ -35,6 +100,10 @@ export default function SkinAnalysisPage() {
       const data = await response.json()
 
       if (!response.ok) {
+        // If daily limit reached, show specific error
+        if (response.status === 429) {
+          throw new Error(data.error || 'You have already used the skin analyzer today. Please try again tomorrow.')
+        }
         throw new Error(data.error || 'Analysis failed')
       }
 
@@ -42,8 +111,28 @@ export default function SkinAnalysisPage() {
       router.push(`/skin-analysis/results/${data.analysisId}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
-      setIsAnalyzing(false)
+      setStep('upload')
     }
+  }
+
+  const handleSignupSuccess = async (customerId: string) => {
+    // Store the customer ID for future visits
+    setStoredCustomerId(customerId)
+    setStoredCustomerIdState(customerId)
+
+    // Run the analysis
+    runAnalysis(customerId)
+  }
+
+  const handleCancelSignup = () => {
+    setStep('upload')
+  }
+
+  const handleStartOver = () => {
+    setSelectedFile(null)
+    setImagePreview(null)
+    setError(null)
+    setStep('upload')
   }
 
   return (
@@ -68,120 +157,224 @@ export default function SkinAnalysisPage() {
             <p className="text-lg text-[#1C4444]/70 mb-2">
               Discover your skin&apos;s unique needs with our AI-powered analysis
             </p>
-            <p className="text-[#1C4444]/50">
-              Upload a clear, well-lit selfie and we&apos;ll analyze your skin type,
-              detect concerns, and show you what your skin could look like in 20 years.
-            </p>
+            {step === 'upload' && (
+              <p className="text-[#1C4444]/50">
+                Take a clear, well-lit selfie and we&apos;ll analyze your skin type,
+                detect concerns, and recommend personalized products.
+              </p>
+            )}
+            {step === 'signup' && (
+              <p className="text-[#1C4444]/50">
+                Create an account to view your results and track your skin health over time.
+              </p>
+            )}
+            {step === 'analyzing' && (
+              <p className="text-[#1C4444]/50">
+                Please wait while we analyze your skin...
+              </p>
+            )}
           </div>
         </div>
       </section>
 
-      {/* Upload Section */}
+      {/* Main Content Section */}
       <section className="pb-16 md:pb-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-lg mx-auto">
-            <ImageUpload
-              onImageSelect={handleImageSelect}
-              isLoading={isAnalyzing}
-            />
 
-            {error && (
-              <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-700 text-sm">{error}</p>
+            {/* Step 1: Upload */}
+            {step === 'upload' && (
+              <>
+                <ImageUpload
+                  onImageSelect={handleImageSelect}
+                  isLoading={false}
+                />
+
+                {error && (
+                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm">{error}</p>
+                  </div>
+                )}
+
+                {selectedFile && (
+                  <button
+                    onClick={handleProceedToSignup}
+                    className="w-full mt-6 btn-primary text-center"
+                  >
+                    Continue to Get Results
+                  </button>
+                )}
+
+                {/* Tips */}
+                <div className="mt-8 p-6 bg-white rounded-xl">
+                  <h3 className="font-medium text-[#1C4444] mb-4">
+                    For best results:
+                  </h3>
+                  <ul className="space-y-2 text-[#1C4444]/70 text-sm">
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Use natural, even lighting (face a window or go outside)
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Remove glasses and pull back hair
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Keep a neutral expression and look straight at the camera
+                    </li>
+                    <li className="flex items-start gap-2">
+                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                      Avoid heavy makeup for accurate skin analysis
+                    </li>
+                  </ul>
+                </div>
+
+                {/* Privacy Note */}
+                <div className="mt-6 text-center">
+                  <p className="text-xs text-[#1C4444]/50">
+                    Your photos are analyzed securely.
+                    <br />
+                    We respect your privacy.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* Step 2: Signup */}
+            {step === 'signup' && (
+              <>
+                {/* Show selected image thumbnail */}
+                {imagePreview && (
+                  <div className="mb-6">
+                    <div className="relative aspect-video max-w-xs mx-auto rounded-lg overflow-hidden border-2 border-[#1C4444]/20">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={imagePreview}
+                        alt="Your photo"
+                        className="w-full h-full object-cover"
+                      />
+                      <div className="absolute inset-0 bg-black/10" />
+                      <div className="absolute bottom-2 left-2 bg-white/90 text-[#1C4444] text-xs px-2 py-1 rounded">
+                        Photo ready for analysis
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                {error && (
+                  <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                    <p className="text-red-700 text-sm">{error}</p>
+                  </div>
+                )}
+
+                <SignupForm
+                  onSuccess={handleSignupSuccess}
+                  onCancel={handleCancelSignup}
+                />
+
+                {/* Daily limit info */}
+                <div className="mt-6 text-center">
+                  <p className="text-xs text-[#1C4444]/50">
+                    Note: Each user can perform one skin analysis per day.
+                  </p>
+                </div>
+              </>
+            )}
+
+            {/* Step 3: Analyzing */}
+            {step === 'analyzing' && (
+              <div className="bg-white rounded-xl p-8 text-center">
+                {imagePreview && (
+                  <div className="relative aspect-square max-w-xs mx-auto rounded-lg overflow-hidden border-2 border-[#1C4444]/20 mb-6">
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={imagePreview}
+                      alt="Analyzing"
+                      className="w-full h-full object-cover"
+                    />
+                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
+                      <div className="text-center">
+                        <div className="w-12 h-12 border-4 border-[#1C4444] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
+                        <p className="text-[#1C4444] font-medium">Analyzing your skin...</p>
+                        <p className="text-[#1C4444]/60 text-sm mt-1">This may take 15-30 seconds</p>
+                      </div>
+                    </div>
+                  </div>
+                )}
+
+                <p className="text-[#1C4444]/60 text-sm">
+                  Our AI is examining your skin type, detecting conditions, and preparing personalized recommendations.
+                </p>
+
+                <button
+                  onClick={handleStartOver}
+                  className="mt-6 text-[#1C4444]/50 hover:text-[#1C4444] text-sm transition-colors"
+                >
+                  Cancel and start over
+                </button>
               </div>
             )}
-
-            {selectedFile && !isAnalyzing && (
-              <button
-                onClick={handleAnalyze}
-                className="w-full mt-6 btn-primary text-center"
-              >
-                Analyze My Skin
-              </button>
-            )}
-
-            {/* Tips */}
-            <div className="mt-8 p-6 bg-white rounded-xl">
-              <h3 className="font-medium text-[#1C4444] mb-4">
-                For best results:
-              </h3>
-              <ul className="space-y-2 text-[#1C4444]/70 text-sm">
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Use natural, even lighting (face a window or go outside)
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Remove glasses and pull back hair
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Keep a neutral expression and look straight at the camera
-                </li>
-                <li className="flex items-start gap-2">
-                  <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                  </svg>
-                  Avoid heavy makeup for accurate skin analysis
-                </li>
-              </ul>
-            </div>
-
-            {/* Privacy Note */}
-            <div className="mt-6 text-center">
-              <p className="text-xs text-[#1C4444]/50">
-                Your photos are analyzed securely and not stored permanently.
-                <br />
-                We respect your privacy.
-              </p>
-            </div>
           </div>
         </div>
       </section>
 
-      {/* How It Works */}
-      <section className="py-16 md:py-20 bg-white">
-        <div className="container mx-auto px-4 lg:px-8">
-          <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] text-center mb-12">
-            How It Works
-          </h2>
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto">
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
-                1
+      {/* How It Works - only show on upload step */}
+      {step === 'upload' && (
+        <section className="py-16 md:py-20 bg-white">
+          <div className="container mx-auto px-4 lg:px-8">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] text-center mb-12">
+              How It Works
+            </h2>
+            <div className="grid md:grid-cols-4 gap-8 max-w-5xl mx-auto">
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
+                  1
+                </div>
+                <h3 className="font-medium text-[#1C4444] mb-2">Take Your Selfie</h3>
+                <p className="text-[#1C4444]/60 text-sm">
+                  Take a clear photo in good lighting for the most accurate analysis
+                </p>
               </div>
-              <h3 className="font-medium text-[#1C4444] mb-2">Upload Your Selfie</h3>
-              <p className="text-[#1C4444]/60 text-sm">
-                Take a clear photo in good lighting for the most accurate analysis
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
-                2
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
+                  2
+                </div>
+                <h3 className="font-medium text-[#1C4444] mb-2">Create Account</h3>
+                <p className="text-[#1C4444]/60 text-sm">
+                  Sign up to save your results and track progress over time
+                </p>
               </div>
-              <h3 className="font-medium text-[#1C4444] mb-2">AI Analyzes Your Skin</h3>
-              <p className="text-[#1C4444]/60 text-sm">
-                Our AI detects skin type, conditions, and simulates aging
-              </p>
-            </div>
-            <div className="text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
-                3
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
+                  3
+                </div>
+                <h3 className="font-medium text-[#1C4444] mb-2">AI Analysis</h3>
+                <p className="text-[#1C4444]/60 text-sm">
+                  Our AI detects skin type and conditions
+                </p>
               </div>
-              <h3 className="font-medium text-[#1C4444] mb-2">Get Personalized Advice</h3>
-              <p className="text-[#1C4444]/60 text-sm">
-                Receive product recommendations tailored to your unique skin needs
-              </p>
+              <div className="text-center">
+                <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
+                  4
+                </div>
+                <h3 className="font-medium text-[#1C4444] mb-2">Get Recommendations</h3>
+                <p className="text-[#1C4444]/60 text-sm">
+                  Receive personalized product recommendations
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      )}
     </div>
   )
 }
