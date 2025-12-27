@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 import { useCartStore } from '@/store/cart'
 import Navigation from './Navigation'
@@ -10,23 +11,20 @@ import SearchModal from './SearchModal'
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
+  const [logoError, setLogoError] = useState(false)
   const { items, openCart } = useCartStore()
   const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <>
       <header className="sticky top-0 z-50 bg-[#F4EBE7]">
-        {/* Announcement Bar */}
-        <div className="bg-[#1C4444] text-white text-center py-2 text-sm">
-          <p>Free shipping on orders over $50 | Cruelty-free & Vegan</p>
-        </div>
-
-        {/* Main Header */}
+        {/* Main Header - Logo Centered */}
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between py-4">
-            {/* Mobile Menu Button */}
+          {/* Top Row - Logo Centered */}
+          <div className="flex items-center justify-center py-6 relative">
+            {/* Mobile Menu Button - Left */}
             <button
-              className="lg:hidden p-2 text-[#1C4444]"
+              className="lg:hidden absolute left-4 p-2 text-[#1C4444]"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               aria-label="Toggle menu"
             >
@@ -46,20 +44,27 @@ export default function Header() {
               </svg>
             </button>
 
-            {/* Logo */}
-            <Link href="/" className="flex-shrink-0">
-              <h1 className="text-2xl md:text-3xl font-normal tracking-wider text-[#1C4444]">
-                Ayonne
-              </h1>
+            {/* Centered Logo */}
+            <Link href="/" className="block">
+              {!logoError ? (
+                <Image
+                  src="/images/ayonne-logo.png"
+                  alt="Ayonne"
+                  width={600}
+                  height={100}
+                  className="h-12 md:h-16 lg:h-20 w-auto"
+                  priority
+                  onError={() => setLogoError(true)}
+                />
+              ) : (
+                <span className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-wider text-[#1C4444]">
+                  Ayonne
+                </span>
+              )}
             </Link>
 
-            {/* Desktop Navigation */}
-            <div className="hidden lg:block flex-grow mx-8">
-              <Navigation />
-            </div>
-
             {/* Right Icons */}
-            <div className="flex items-center gap-4">
+            <div className="absolute right-4 flex items-center gap-4">
               {/* Search */}
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -131,6 +136,11 @@ export default function Header() {
                 )}
               </button>
             </div>
+          </div>
+
+          {/* Desktop Navigation - Below Logo */}
+          <div className="hidden lg:block border-t border-[#1C4444]/10 py-3">
+            <Navigation />
           </div>
         </div>
 

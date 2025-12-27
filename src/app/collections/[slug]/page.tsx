@@ -2,6 +2,7 @@ import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ProductCard from '@/components/product/ProductCard'
 import { Product } from '@/types'
+import CollectionSort from '@/components/collection/CollectionSort'
 
 interface PageProps {
   params: Promise<{ slug: string }>
@@ -104,46 +105,19 @@ export default async function CollectionPage({ params, searchParams }: PageProps
     <div className="py-8 md:py-12">
       <div className="container mx-auto px-4 lg:px-8">
         {/* Header */}
-        <div className="text-center mb-12">
-          <h1 className="text-3xl md:text-4xl font-normal text-[#1C4444] mb-4">
+        <div className="text-center mb-8">
+          <h1 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-2">
             {collection.name}
           </h1>
-          {collection.description && (
-            <p className="text-[#1C4444]/70 max-w-2xl mx-auto">
-              {collection.description}
-            </p>
-          )}
         </div>
 
         {/* Toolbar */}
-        <div className="flex flex-col sm:flex-row items-center justify-between gap-4 mb-8">
+        <div className="flex items-center justify-between mb-8 pb-4 border-b border-[#1C4444]/10">
           <p className="text-[#1C4444]/70 text-sm">
             {total} {total === 1 ? 'product' : 'products'}
           </p>
 
-          <div className="flex items-center gap-4">
-            <label htmlFor="sort" className="text-sm text-[#1C4444]/70">
-              Sort by:
-            </label>
-            <select
-              id="sort"
-              defaultValue={sort}
-              className="bg-transparent border border-[#1C4444]/20 px-3 py-2 text-sm text-[#1C4444]"
-              onChange={(e) => {
-                const url = new URL(window.location.href)
-                url.searchParams.set('sort', e.target.value)
-                url.searchParams.delete('page')
-                window.location.href = url.toString()
-              }}
-            >
-              <option value="featured">Featured</option>
-              <option value="price-asc">Price, low to high</option>
-              <option value="price-desc">Price, high to low</option>
-              <option value="name-asc">Alphabetically, A-Z</option>
-              <option value="name-desc">Alphabetically, Z-A</option>
-              <option value="newest">Date, new to old</option>
-            </select>
-          </div>
+          <CollectionSort currentSort={sort} />
         </div>
 
         {/* Products Grid */}
@@ -161,7 +135,7 @@ export default async function CollectionPage({ params, searchParams }: PageProps
                 {currentPage > 1 && (
                   <a
                     href={`?sort=${sort}&page=${currentPage - 1}`}
-                    className="px-4 py-2 border border-[#1C4444]/20 text-[#1C4444] hover:bg-[#1C4444] hover:text-white transition-colors"
+                    className="px-4 py-2 border border-[#1C4444]/20 text-[#1C4444] hover:bg-[#1C4444] hover:text-white transition-colors text-sm"
                   >
                     Previous
                   </a>
@@ -178,7 +152,7 @@ export default async function CollectionPage({ params, searchParams }: PageProps
                       <a
                         key={pageNum}
                         href={`?sort=${sort}&page=${pageNum}`}
-                        className={`px-4 py-2 border transition-colors ${
+                        className={`px-4 py-2 border transition-colors text-sm ${
                           pageNum === currentPage
                             ? 'bg-[#1C4444] text-white border-[#1C4444]'
                             : 'border-[#1C4444]/20 text-[#1C4444] hover:bg-[#1C4444] hover:text-white'
@@ -197,7 +171,7 @@ export default async function CollectionPage({ params, searchParams }: PageProps
                 {currentPage < totalPages && (
                   <a
                     href={`?sort=${sort}&page=${currentPage + 1}`}
-                    className="px-4 py-2 border border-[#1C4444]/20 text-[#1C4444] hover:bg-[#1C4444] hover:text-white transition-colors"
+                    className="px-4 py-2 border border-[#1C4444]/20 text-[#1C4444] hover:bg-[#1C4444] hover:text-white transition-colors text-sm"
                   >
                     Next
                   </a>

@@ -1,11 +1,47 @@
 import { PrismaClient } from '@prisma/client'
 import * as bcrypt from 'bcryptjs'
-import seedData from './seed-data.json'
+import * as fs from 'fs'
+import { fileURLToPath } from 'url'
+import { dirname, join } from 'path'
+
+const __filename = fileURLToPath(import.meta.url)
+const __dirname = dirname(__filename)
 
 const prisma = new PrismaClient()
 
+interface Collection {
+  name: string
+  slug: string
+  category: string
+}
+
+interface Product {
+  name: string
+  slug: string
+  description: string
+  price: number
+  salePrice: number | null
+  images: string[]
+  category: string
+  collection: string
+  ingredients: string | null
+  benefits: string | null
+  howToUse: string | null
+  inStock: boolean
+  featured: boolean
+}
+
+interface SeedData {
+  collections: Collection[]
+  products: Product[]
+}
+
 async function main() {
   console.log('Starting seed...')
+
+  // Load seed data
+  const seedDataPath = join(__dirname, 'seed-data.json')
+  const seedData: SeedData = JSON.parse(fs.readFileSync(seedDataPath, 'utf-8'))
 
   // Clear existing data
   await prisma.orderItem.deleteMany()

@@ -1,9 +1,9 @@
 {
   "collections": [
     {
-      "name": "BioHack: Anti-Aging Serums",
+      "name": "Fountain of Youth: Anti-Aging Serums",
       "slug": "anti-aging-serums",
-      "category": "Serums"
+      "category": "Anti Aging serums"
     },
     {
       "name": "Hydration Station: Moisturizers",
@@ -13,7 +13,7 @@
     {
       "name": "Squeaky Clean: Soaps & Cleansers",
       "slug": "cleansers",
-      "category": "Cleansers"
+      "category": "Soaps"
     },
     {
       "name": "Sunday Self-Care Rituals",
@@ -23,7 +23,7 @@
     {
       "name": "Rise & Glow",
       "slug": "rise-and-glow",
-      "category": "Bundles"
+      "category": "Cosmetics"
     },
     {
       "name": "Knowledge Is Beauty: eBooks",
@@ -31,7 +31,7 @@
       "category": "eBooks"
     },
     {
-      "name": "Man up!",
+      "name": "Mens Collection",
       "slug": "mens",
       "category": "Mens"
     },
@@ -43,544 +43,2002 @@
   ],
   "products": [
     {
+      "name": "Ayonne Vitamin C Antioxidant Lotion",
+      "slug": "vitamin-c-lotion",
+      "description": "Restore your skin's glow with Ayonne's Vitamin C Antioxidant Lotion. This lightweight lotion deeply hydrates while brightening your complexion and reducing dark spots, thanks to its powerful blend of Vitamin C and natural antioxidants.",
+      "price": 49,
+      "salePrice": null,
+      "images": [
+        "/images/products/vitamin-c-lotion.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": null,
+      "benefits": "Brightening, hydrating, reduces dark spots, antioxidant protection",
+      "howToUse": "Apply to cleansed face and neck morning and evening.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_001"
+    },
+    {
+      "name": "Collagen and Retinol Serum",
+      "slug": "collagen-and-retinol-serum",
+      "description": "The ultimate anti-aging solution. Try this collagen and retinol serum to achieve radiant, youthful skin. This multi-purpose serum uses a blend of collagen, retinol and hyaluronic acid, to help fortify your skin. It can enhance firmness, and lock in moisture to provide deep hydration for a supple and smooth complexion. Soybean oil is packed with antioxidants to replenish your skin. Perfect for all skin types.",
+      "price": 33.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/collagen-and-retinol-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Water (Aqua), Polysorbate-20, Glycine Soja (Soybean) Oil, Hydrolyzed Collagen, Retinol, Sodium Hyaluronate, Cocos Nucifera (Coconut) Fruit Juice, Astaxanthin, Fucoxanthin, Chlorella Emersonii Extract, Phenoxyethanol, Sodium Pca, Bisabol, Tocopheryl Acetate, Peg 25 Hydrogenated Castor Oil, Fragrance",
+      "benefits": "Collagen improves skin elasticity, retinol increases cell production, hyaluronic acid deeply moisturizes, soybean oil replenishes with antioxidants",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_002"
+    },
+    {
+      "name": "Ayonne Vitamin C Brightening Toner",
+      "slug": "vitamin-c-toner",
+      "description": "Revitalize and refresh your skin with Ayonne's Vitamin C Toner, designed to tighten pores and balance skin tone. Packed with potent antioxidants, this toner helps fight free radicals, reduces hyperpigmentation, and restores your skin's natural glow.",
+      "price": 36.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/vitamin-c-toner.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": null,
+      "benefits": "Brightening, pore tightening, fights free radicals, reduces hyperpigmentation",
+      "howToUse": "Apply to cleansed face with cotton pad. Follow with serum and moisturizer.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_003"
+    },
+    {
+      "name": "Hyaluronic Acid Serum",
+      "slug": "hyaluronic-acid-serum",
+      "description": "The ultimate solution to achieve hydration and elasticity for your skin. This potent serum is crafted with hyaluronic acid, which deeply moisturizes and nourishes your skin. Not only that, hyaluronic acid has been proven to help heal scarring, regenerate elasticity throughout the skin, and be an effective hydrator. Glycerin is a powerhouse ingredient in itself as well, working to bring bounce back to your skin and strengthen its barrier. Suitable for all skin types.",
+      "price": 26.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/hyaluronic-acid-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Water (Aqua), Glycerin, Butylene Glycol, Phenoxyethanol, Sodium Hyaluronate, Carbomer, Xanthan Gum",
+      "benefits": "Hyaluronic acid deeply moisturizes, heals scarring, regenerates skin elasticity, glycerin brings glow and bounce",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_004"
+    },
+    {
+      "name": "Vitamin C Cleanser",
+      "slug": "vitamin-c-cleanser",
+      "description": "Introducing our radiant Vitamin C Cleanser. With a gentle gel texture, the Vitamin C Cleanser effortlessly sweeps away makeup and impurities, ensuring your skin remains free from any unwanted elements. Experience the gentle exfoliating prowess of the cleanser, working to dissolve lackluster and compromised skin. This vitamin C packed cleanser will not only brighten your skin, but also enhance collagen production, reducing hyperpigmentation for a more even skin tone.",
+      "price": 38.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/vitamin-c-cleanser.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "cleansers",
+      "ingredients": "Water (Aqua), Jojoba Esters, Disodium Laureth Sulfosuccinate, Butylene Glycol, Acrylates/C10-30 Alkyl Acrylate Crosspolymer, Sodium Lauryl Sulfoacetate, Disodium Cocoamphodiacetate, Retinyl Palmitate, Ascorbyl Palmitate, Tocopheryl Acetate, Xanthan Gum, Caprylic/Capric Triglyceride, Mixed Terpenes, Citrus Aurantium Dulcis (Orange) Peel Oil, Citrus Tangerina (Tangerine) Peel Oil, Camellia Sinensis Leaf Extract, Ginkgo Biloba Leaf Extract",
+      "benefits": "Vitamin C brightens your skin and enhances collagen production, Vitamin A and E softens skin, Ginkgo biloba leaf extract enhances blood flow, Natural scent of tangerine and orange",
+      "howToUse": "Gently massage onto wet skin using circular motions. Rinse off the gel cleanser thoroughly with warm water. Can be used morning and evening.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_005"
+    },
+    {
+      "name": "Glycolic Acid Serum",
+      "slug": "glycolic-acid-serum",
+      "description": "A gentle yet fast-acting exfoliant that improves your skin complexion. This potent serum expertly evens hyperpigmentation, smoothes your skin tone, and refines skin texture. The use of glycerin provides a layer of nourishing hydration for an all-day supple feel to your skin. An addition of vitamin E provides antioxidant properties while squalane locks in extreme moisture and hydration.",
+      "price": 27,
+      "salePrice": null,
+      "images": [
+        "/images/products/glycolic-acid-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Water (Aqua), Polysorbate-20, Glycerin, Glycolic Acid, Aloe Barbadensis Leaf Juice, Sodium Hyaluronate, Citrus Limon (Lemon) Fruit Extract, Pyrus Malus (Apple) Fruit Extract, Saccharum Officinarum Extract, Phospholipids, Acetyl Hexapeptide-8, Glycine Soja (Soybean) Oil, Potassium Sorbate, Lecithin, Benzyl Alcohol, Tocopheryl Acetate, Coenzyme Q10, Isopropyl Palmitate, Squalane, Phenoxyethanol, Salicylic Acid, Fragrance",
+      "benefits": "Glycolic acid evens out hyperpigmentation and smoothes skin tone, Vitamin E antioxidant properties support healing, Squalane locks in extreme moisture",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_006"
+    },
+    {
+      "name": "Niacinamide Vitamin Boost Serum",
+      "slug": "niacinamide-vitamin-boost-serum",
+      "description": "This concentrated niacinamide vitamin boost serum is carefully crafted with a targeted blend of Vitamin C, B3, and B5 to plump, smooth, and replenish moisture for your skin. Revive dehydrated, dull skin and improve appearances of fine lines, allowing these active ingredients to do what they do best! Improve signs of aging with the superstar ingredient Vitamin C and add a luminous, supple glow to your skin after a single use.",
+      "price": 32.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/niacinamide-vitamin-boost-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Water (Aqua), Glycerin, 3-O-Ethyl Ascorbic Acid (Vitamin C), Niacinamide (Vitamin B3), Panthenol (Vitamin B5), 1,2-Hexanediol, Xanthan Gum, Sodium Citrate, Sodium Phytate, Polysorbate-20, Citric Acid",
+      "benefits": "Vitamin C adds supple glow and improves signs of aging, Niacinamide strengthens skin barrier and evens out skin tone",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_007"
+    },
+    {
+      "name": "Hydration Serum",
+      "slug": "hydration-serum",
+      "description": "This Hydration Boosting Serum will not disappoint! Glycerin is the active ingredient that holds extreme moisture in the skin throughout the day, fortifying your skin's moisture barrier to tackle environmental stressors. Using glycerin also helps improve your skin's youthful look as time passes and retains its natural resiliency and bounce. Cassia obtusifolia seed extract is a rich source of antioxidants that your skin will love.",
+      "price": 32,
+      "salePrice": null,
+      "images": [
+        "/images/products/hydration-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Water (Aqua), Cassia Obtusifolia Seed Extract, Glycerin, Pentylene Glycol",
+      "benefits": "Glycerin mimics your skin's natural hydration process and holds extreme moisture, Cassia obtusifolia seed extract defends skin from environmental stress",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF during the day.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_008"
+    },
+    {
+      "name": "Firming Serum",
+      "slug": "firm-serum",
+      "description": "Discover the power of our firm serum for your eyes and fine lines. An anti-aging, oil-free formula to improve the skin's appearance and to reduce dark circles under the eyes. Reduce the puffiness and rejuvenate your skin with our firm serum and bring balance to your skin. Cucumber extract and firming peptides will leave your skin glowing and plump.",
+      "price": 43,
+      "salePrice": null,
+      "images": [
+        "/images/products/firm-serum.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Aqua, Glycerin, Propanediol, Cucumis Sativus (Cucumber) Fruit Extract, Polysorbate 20, Aqua, Steareth-20, N-Hydroxysuccinimide, Chrysin, Palmitoyl Tripeptide-1, Palmitoyl Tetrapeptide-7, Xanthan Gum, Palmitoyl Tripeptide-1, Sodium Gluconate",
+      "benefits": "Fragrance free, Aloe vera gel invigorates skin, Cucumber extract detoxifies skin cells, Firming peptides tightens fine lines",
+      "howToUse": "Apply on clean skin morning and night before moisturizing. Massage into skin for full absorption.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_009"
+    },
+    {
+      "name": "Active Eye Cream",
+      "slug": "active-eye-cream",
+      "description": "Our active eye cream tightens those fine, sensitive lines around your eyes. Our formula is enriched with Persian silk tree bark extract which revitalizes cell energy and tired skin. Spilanthes acmella flower extract is another natural ingredient that's found in our active eye cream that firms the skin and reduces wrinkling. Our active eye cream applies like silk and absorbs into the skin, quickly smoothing out the skin around your eyes.",
+      "price": 38,
+      "salePrice": null,
+      "images": [
+        "/images/products/active-eye-cream.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Aqua, Dimethicone, C12-15 Alkyl Benzoate, Glycerin, Cetearyl Alcohol, Caprylic/Capric Triglyceride, Cetyl Alcohol, Dimethicone/Vinyl Dimethicone Crosspolymer, Glyceryl Stearate, PEG-100 STEARATE, Cetearyl Glucoside, Phenoxyethanol, Sodium Hyaluronate, Cucumber Fruit Extract, Panthenol, Carthamus Tinctorius (Safflower) Seed Oil, Polysorbate 80, Aloe Barbadensis Leaf Extract, Palmitoyl Oligopeptide, Palmitoyl Tetrapeptide-3",
+      "benefits": "Infused with Persian silk tree bark to revitalize skin, Even out complexion and wrinkles overnight, Cruelty-free and talc-free, Paraben-free",
+      "howToUse": "Apply daily, before daytime moisturizers and sunscreen or evening after cleansing.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_010"
+    },
+    {
+      "name": "Embrace Collagen Moisturizer",
+      "slug": "embrace-collagen-moisturizer",
+      "description": "Our anti-aging collagen moisturizer is the perfect, soothing blend of colloidal oatmeal, collagen, and vitamin E. Colloidal oatmeal locks in moisture, helping your skin rehydrate at the end of the night. Its anti-inflammatory properties soothes itching and softens your skin to the fullest. Our anti-aging collagen moisturizer is rich with collagen to improve skin elasticity and increase blood flow to your skin.",
+      "price": 55,
+      "salePrice": null,
+      "images": [
+        "/images/products/embrace-collagen-moisturizer.png"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Aloe Barbadensis Leaf Juice, Caprylic/Capric Triglyceride, Ethylhexyl Palmitate, Glycerin, Coco-Caprylate, Distearoylethyl Dimonium Chloride, Glyceryl Stearate, Cetyl Alcohol, Avena Sativa (Oat) Kernel Flour, Collagen, Mixed Tocopherols, Phenoxyethanol, Caprylyl Glycol",
+      "benefits": "Colloidal oatmeal locks in moisture, Collagen improves skin elasticity, Aloe and vitamin E for an extra glow, Cruelty-free, Paraben-free",
+      "howToUse": "Apply to cleansed skin, morning and night.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_011"
+    },
+    {
+      "name": "Hyaluronic Moisturizer",
+      "slug": "hyaluronic-moisturizer",
+      "description": "Discover our hyaluronic moisturizer for extra intensity during your beauty sleep. Our hyaluronic moisturizer is a rich cream that combines hyaluronic acid with a boost of a plant-based alternative tamarindus indica seed gum. Hyaluronic acid not only provides skin moisture but also gives a plumping effect. The added tamarindus indica seed gum provides optimal skin hydration.",
+      "price": 54.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/hyaluronic-moisturizer.png"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Helianthus Annuus (Sunflower) Seed Oil, Glycerin, Butyrospermum Parkii (Shea) Butter, Caprylic/Capric Triglyceride, Cetearyl Alcohol, Stearic Acid, Dimethicone, Squalane, Glyceryl Stearate, Sodium Hyaluronate, Green Tea Infused Fragrant Oil, Tocopheryl Acetate, Tamarindus Indica Seed Gum, Xanthan Gum, Sodium Gluconate",
+      "benefits": "Hyaluronic acid plumps and tightens skin, Tamarindus indica seed gum locks in moisture, 4% shea butter and vitamin E boosts an extra glow, Vegan, Cruelty-free, Paraben-free",
+      "howToUse": "Apply to cleansed skin, morning and night. For very dry skin, use our Firm Serum first.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_012"
+    },
+    {
+      "name": "Soothing Moisturizer",
+      "slug": "soothing-moisturizer",
+      "description": "This Soothing Moisturizer is ready to give you the glow and softness your skin needs! Packed with a blend of aloe and hyaluronic acid, it's the daily facial moisturizer that's fast-absorbing for your skin to feel silky smooth. Perfect for normal, combination, and dry skin, this is the all-in-one moisturizer for everyone.",
+      "price": 22.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/soothing-moisturizer.png"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Glycerin, Cyclopentasiloxane, Betaine, Dipropylene Glycol, Isononyl Isononanoate, Dimethicone, Aloe Barbadensis Extract, Sodium Hyaluronate, Hyaluronic Acid, Sodium Pca, Allantoin, Phenoxyethanol, Ethylhexylglycerin",
+      "benefits": "Suitable for normal, combination, and dry skin, Enriched with soothing agents like aloe and hyaluronic acid, No artificial fragrances, Vegan and paraben-free",
+      "howToUse": "Apply product on your face with clean fingertips following a face wash and toner. Massage onto your face and neck in upward strokes.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_013"
+    },
+    {
+      "name": "Daily Repair Conditioner",
+      "slug": "daily-repair-conditioner",
+      "description": "Our new Daily Repair Conditioner is the perfect conditioner to repair damaged hair. This premium blend comes from a luxurious mix of botanical butters and oils that feed much-needed nutrients into your hair and scalp. This conditioner is sure to leave your hair looking shiny, bouncy, and healthy. Suitable for all hair types.",
+      "price": 40.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/daily-repair-conditioner.png"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua (Distilled Water), Cetyl Alcohol, Cetrimonium Bromide, Stearyl Alcohol, Aloe Barbadensis (Aloe Vera) Juice, Vegetable Glycerin, Hydrolyzed Wheat Protein, Argania Spinosa (Argan) Oil, Persea Americana (Avocado) Oil, Rosa Rubiginosa (Rosehip Seed) Oil, Santalum Spicatum (Sandalwood) Oil, Citrus Paradisi (Grapefruit) Oil, Rosemarinus Officinalis (Rosemary) Oil, Phenoxyethanol, Ethylhexylglycerin",
+      "benefits": "Intense hydration and enhanced shine, Aloe Vera soothes the scalp and promotes hair growth, Argan oil nourishes and hydrates the hair, Rosehip Seed Oil improves strength and elasticity, Vegan, Cruelty-Free, Recyclable Packaging",
+      "howToUse": "After cleansing with shampoo, gently wring out excess water from hair. Apply a quarter-size amount to hair, focusing on mid-lengths and ends. Rinse with cold water to close the hair cuticle and add shine.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_014"
+    },
+    {
+      "name": "Natural Soap - Lavender & Rosemary",
+      "slug": "natural-soap-lavender-rosemary",
+      "description": "There's no secret to the magic goodness from natural lavender and rosemary! This lavender & rosemary sleepy soap provides a healing cleanse while providing a sleepy aroma to promote relaxation. A beautiful blend of oils provides a soothing and hydrating experience for your face, body, and hands. Rosemary essential oil soothes inflammation and acne while providing mental relaxation.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-lavender-rosemary.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Lavandula Officinalis Flower Oil, Rosmarinus Officinalis Leaf Oil, Persea Gratissima (Avocado) Oil, Ricinus Communis (Castor) Seed Oil, Goat milk",
+      "benefits": "Lavender and natural coconut oil soothes irritated skin, Gentle rosemary aroma provides mental relaxation, Avocado oil nourishes dry skin, Versatile for body, face, shaving or hand soap, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_015"
+    },
+    {
+      "name": "Natural Soap - Apricot",
+      "slug": "natural-soap-apricot",
+      "description": "Make way for the gentlest exfoliator from the superstar ingredient, apricots. Utilizing the simple, natural ingredient of apricot seeds, this soap gently exfoliates and brightens the skin. Sweet almond oil infusion removes dark spots and dark circles for a refreshing cleanse. Lemongrass oil controls acne and blemishes, perfect for revitalizing your skin.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-apricot.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Prunus Armeniaca (Apricot) Seed Powder, Ricinus Communis (Castor) Seed Oil, Cymbopogon Flexuosus Leaf Oil, Prunus Amygdalus Dulcis (Sweet Almond) Oil, Goat milk",
+      "benefits": "Apricot seed gently exfoliates and brightens skin, Sweet almond oil removes dark spots, Lemongrass oil controls acne and blemishes, Goat's milk moisturizes and heals damaged skin",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_016"
+    },
+    {
+      "name": "Natural Soap - Fresh Turmeric",
+      "slug": "natural-soap-fresh-tumeric",
+      "description": "Try this natural fresh turmeric soap to tackle dull skin, dark circles, and acne scarring. Turmeric has properties such as vitamin E to revitalize skin cells and a multitude of cosmetic benefits. The bioactive component of curcumin in turmeric has antioxidant and anti-inflammatory properties. These helpful properties provide a healthy glow to the skin after just one use.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-fresh-tumeric.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water (Aqua/Eau), Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Ricinus Communis (Castor) Seed Oil, Goat Milk, Lavandula Angustifolia (Lavender) Flower Oil, Cymbopogon Flexuosus Leaf Oil, Santalum Album (Sandalwood) Oil, Aniba Rosaeodora (Rosewood) Oil, Curcuma Longa (Turmeric) Root Powder",
+      "benefits": "Neem oil controls excessive oiliness and stimulates collagen production, Basil's antioxidant properties nourish, repair, and brighten skin, Perfect for acne-prone skin, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_017"
+    },
+    {
+      "name": "Natural Soap - Organic Coconutty",
+      "slug": "natural-soap-organic-coconutty",
+      "description": "The classic soap bar for the timeless you - this natural organic coconutty soap bar is an essential to your daily routine. From the organic coconut oil, your skin will feel soft and healed to recover from dry, damaged skin. With the right mix of shea butter and goat milk, this soap bar is rich in proteins, vitamins, and minerals to naturally exfoliate and lather your skin in luxury.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-organic-coconutty.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Lavandula Angustifolia (Lavender) Flower Oil, Ricinus Communis (Castor) Seed Oil, Goat Milk",
+      "benefits": "Organic coconut oil moisturizes, softens and heals dry, damaged skin, Rich in proteins, vitamins, and minerals, Goat milk gently nourishes the skin, Versatile for body, face, shaving or hand soap",
+      "howToUse": "Lather soap on body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_018"
+    },
+    {
+      "name": "Natural Soap - Eucalyptus Pepperminty",
+      "slug": "natural-soap-eucalyptus-pepperminty",
+      "description": "The perfect, fresh aroma to start the day with this eucalyptus pepperminty soap. A natural remedy for stress, this is an exquisite blend of eucalyptus oils and natural peppermint to uplift and clear the mind. With a peppermint formula that deeply cleanses the skin, you will be left feeling refreshed and rejuvenated with a chemical-free formula.",
+      "price": 19.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-eucalyptus-pepperminty.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Eucalyptus Globulus Leaf Oil, Mentha Arvensis Leaf Oil, Ricinus Communis (Castor) Seed Oil, Goat milk",
+      "benefits": "Natural eucalyptus aroma for sensitive skin, Peppermint formula deeply cleanses the skin, Natural plant-based oils moisturizes skin, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_019"
+    },
+    {
+      "name": "Natural Soap - Green Tea & Lemongrass",
+      "slug": "natural-soap-green-tea-lemongrass",
+      "description": "Detoxify and calm your skin with natural green tea and lemongrass. A natural blend of green tea oils, this soap bar extracts unwanted grease and oils while repairing the skin. Green tea not only has properties to re-energize the skin, it is also packed with anti-aging antioxidants. Lemongrass essential oil provides deep pore cleansing and tightening.",
+      "price": 19.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-green-tea-lemongrass.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Cymbopogon Flexuosus (Lemongrass) Herb Oil, Carthamus Tinctorius (Safflower) Seed Oil, Camellia Sinensis (Green Tea) Leaf Extract, Lavandula Officinalis Flower Oil, Citrus Paradisi Peel Oil, Goat milk, Illite, Tocopheryl Acetate",
+      "benefits": "Green tea detoxifies and repairs skin, Age-defying properties from green tea extract, Lemongrass cleanses pores and soothes the skin, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_020"
+    },
+    {
+      "name": "Natural Soap - Citron",
+      "slug": "natural-soap-citron",
+      "description": "A mild, cleansing soap for the citrus lover - introducing the natural citron soap. With quality lime essential oils, it works to both brighten and soothe the skin, without stripping the skin of healthy oils. Packed with essential nutrients and vitamins, the blend of plant-based oils and goat's milk is the perfect way to wash off a hot summer's day.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-citron.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Citrus Aurantifolia (Lime) Oil, Ricinus Communis (Castor) Seed Oil, Goat milk",
+      "benefits": "Lime essential oil brightens and soothes the skin, Farm fresh goat's milk exfoliates the skin, Blend of natural oils eliminates dirt, oil, and makeup, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_021"
+    },
+    {
+      "name": "Natural Soap - Basil Blast",
+      "slug": "natural-soap-basil-blast",
+      "description": "A soft blend of basil and neem, this soap works wonders to help you achieve clearer skin. With a small but mighty amount of neem oil, it is the superpower of collagen production for bouncier skin, all the while controlling excessive oiliness for acne-prone skin. With the right amount of natural basil oil, its properties nourish, repair, and brighten skin complexion with a single use.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "/images/products/natural-soap-basil-blast.png"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Elaeis Guineensis (Palm) Kernel Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Azadirachta Indica Seed Oil, Ocimum Basilicum Oil, Lavandula Angustifolia (Lavender) Flower Oil, Ricinus Communis (Castor) Seed Oil, Goat Milk",
+      "benefits": "Neem oil controls excessive oiliness and stimulates collagen production, Basil's antioxidant properties nourish, repair, and brighten skin, Perfect for acne-prone skin, Chemical-free without the use of parabens",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_022"
+    },
+    {
+      "name": "Our Makeup Remover Solution",
+      "slug": "makeup-remover-solution",
+      "description": "Our Makeup Remover Solution is the one to add to your skincare kit! With a fresh, water-based formula, our solution is ultra gentle and soft for all skin types. With a lightweight formula, you will see how the solution works quickly to remove the makeup on your skin. Sweep away makeup without the oily residue!",
+      "price": 24,
+      "salePrice": null,
+      "images": [
+        "/images/products/makeup-remover-solution.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "cleansers",
+      "ingredients": "Aqua, Peg-6 Caprylic/capric Glycerides, Butylene Glycol, Peg-400, Disodium Cocoamphodiacetate, Coceth-7, Ppg-1 peg-9 Lauryl Glycol Ether, Peg-40 Hydrogenated Castor Oil, Cetylpyridinium Chloride, Dmdm Hydantoin, Butylene Glycol, Iodopropynyl Butylcarbamate, Citric Acid, Parfum",
+      "benefits": "Non-irritating for all skin types, No oily residue after use, Vegan, Paraben-free, and Cruelty-free, Recyclable packaging",
+      "howToUse": "Using a cotton pad, sweep over any area of your face that has makeup. Follow with your favorite cleanser and moisturizer.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_023"
+    },
+    {
+      "name": "The Lip and Eye Makeup Remover",
+      "slug": "lip-and-eye-makeup-remover",
+      "description": "An oil and water mix, this professional Lip and Eye Makeup Remover is the product you need to quickly remove makeup on sensitive skin. Remove the stubborn, long-lasting colors with this powerful yet gentle remover in one swipe. Do you have waterproof makeup on? No problem! Our ultra-gentle remover instantly wipes away small impurities on your eyes.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/makeup-remover-solution.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "cleansers",
+      "ingredients": "Cyclopentasiloxane, Isohexadecane, Ci 42090 And Caprylic/capric Triglyceride, Ci 60725 And Caprylic/capric Triglyceride, Aqua, Butylene Glycol, Disodium Edta, Sodium Chloride, Decyl Glucoside, Polyaminopropyl Biguanide, Dipotassium Phosphate, Ci 77007 And Aqua",
+      "benefits": "Quick and gentle for all skin types, Remove waterproof makeup instantly, Vegan, Paraben-free, and Cruelty-free, Recyclable packaging",
+      "howToUse": "Soak a cotton pad and place on closed eyelids, lashes, and lips for a couple of seconds. Gently wipe away after soaking.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_024"
+    },
+    {
+      "name": "Rose Quartz Roller",
+      "slug": "rose-quartz-roller",
+      "description": "Get the best-looking, detoxed skin you crave for with our high-impact rose quartz roller! Not only can you use this for your spa nights for relaxation, you can use it daily to reduce skin puffiness. The rose quartz roller stimulates lymphatic drainage and promotes blood circulation, making it the ideal tool to reduce fine lines and wrinkles.",
+      "price": 22.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/rose-quartz-roller.png"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "100% Natural Rose Quartz Stone, Zinc Alloy, Aluminum",
+      "benefits": "Rose quartz remains cool to the touch to reduce skin puffiness, Stimulates lymphatic drainage to eliminate toxins, Promotes blood circulation to reduce fine lines, Reduces acne and oily skin symptoms",
+      "howToUse": "Start in the middle of the face and roll outward towards the cheeks. Start from the eyebrows and roll upward across the forehead. Roll from under the lower lip down to the chin.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_025"
+    },
+    {
+      "name": "Sculpting Gua Sha - Glossy",
+      "slug": "sculpting-gua-sha-glossy",
+      "description": "Discover the ancient art of skincare with our exquisite Sculpting Gua Sha. Handcrafted with precision, this elegant beauty tool combines the wisdom of traditional Eastern medicine with modern aesthetics to elevate your skincare routine to new heights. Regular use improves blood flow, helping rejuvenate your skin, reduce puffiness, and achieve a natural, radiant glow.",
+      "price": 45.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/sculpting-gua-sha-glossy.png"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "N/A",
+      "benefits": "Made from high-quality ceramic that offers a smooth and cool surface, Carefully contoured shape fits perfectly in your hand, Perfect for facial massage, lymphatic drainage, and relieving muscle tension, Suitable for all skin types, including sensitive skin",
+      "howToUse": "Start with a clean face. Apply your favorite serum or facial oil to ensure smooth movement. Hold the Gua Sha tool at a 15-degree angle and gently glide it across your skin, using upward and outward strokes.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_026"
+    },
+    {
+      "name": "Everywhere Makeup Bag",
+      "slug": "everywhere-makeup-bag",
+      "description": "Looking for a larger makeup bag for longer days and vacations? This Everywhere Makeup Bag is the perfect fit. Carry this makeup bag everywhere for all your travels, with a multi-purpose, collapsable design. With secure waterproof exterior and a black aesthetic, pool days, here we come!",
+      "price": 22,
+      "salePrice": null,
+      "images": [
+        "/images/products/everywhere-makeup-bag.png"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": null,
+      "benefits": "Waterproof, easy-to-clean material, Extra interior compartments, Durable zipper for longevity, Dimensions: 6.7 x 5 x 3.3 inches",
+      "howToUse": "Organize your essentials, including cosmetics, toiletries, brushes, and makeup tools. Wipe clean with damp cloth when necessary.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_027"
+    },
+    {
+      "name": "Hair Clay",
+      "slug": "hair-clay",
+      "description": "Look no further for the perfect hair clay. A medium hold styling product formulated for those desiring a more natural look and a zero-shine finish. Easy to apply, it gives control and volume without weighing the hair down for a full day look! The hair clay rinses easily out of the hair and works well with most hair types and styles.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/hair-clay.png"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "Aqua, VP/DMAPA Acryates Copolymer, Beeswax, PVP K30, Ozokerite, Paraffin Wax, Cetearyl Alcohol, Glyceral Stearate, PVP, Propylene Glycol, Phenoxyethanol, Parfum/Fragrance",
+      "benefits": "Grapeseed and hempseed oil aids hair and scalp health, Medium hold with matte finish, Perfect for all hair types, Easy to rinse out, Cruelty and paraben free",
+      "howToUse": "Add a quarter-sized amount of clay to freshly shampooed or day-old hair to bring texture and volume to all styles.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_028"
+    },
+    {
+      "name": "Glow Mask",
+      "slug": "glow-mask",
+      "description": "Experience the rejuvenating effects of our deep-cleansing Glow Mask, which restores radiance and revitalizes your complexion after a single spa night. Cleanse your skin thoroughly with this thermal charcoal formula, utilizing sodium bicarbonate to absorb surplus oil and unclog your pores. Use warm water to activate the binchotan white charcoal formula, purifying your skin by eliminating toxins and impurities.",
+      "price": 52.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/glow-mask.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "PEG-8, Sodium Bicarbonate, Butylene Glycol, Glyceryl Stearate, Silica, Kaolin, Charcoal Powder, Tocopheryl Acetate, Sea Salt, Potassium Stearate, Phenoxyethanol, Fragrance (Parfum)",
+      "benefits": "Binchotan white charcoal formula purifies and detoxes your skin, Invigorates and energizes the complexion for a healthy glow, Natural, earthy, grounding scent, Suitable for all oily and mixed skin types, Vegan and cruelty-free, Paraben-free",
+      "howToUse": "Apply a generous amount to a dry, clean face, avoid the immediate eye area. Leave for 5 minutes, then wet hands and massage into skin to activate. Remove with moistened cotton pads and rinse well with warm water. Follow with moisturizer or night cream.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_029"
+    },
+    {
+      "name": "Liquid Shimmer - Hottie",
+      "slug": "liquid-shimmer-hottie",
+      "description": "Get that high impact shine you've always wanted with our liquid shimmer. Our innovative formula is versatile with brilliant shine, you can glam up any makeup look on your lips, eyelids, or cheekbones. Get creative with these shades and you'll love that it's crease-proof and smudge-proof! Combine our liquid shimmer with other products or use it on its own.",
+      "price": 25,
+      "salePrice": null,
+      "images": [
+        "/images/products/liquid-shimmer-hottie.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Triethanolamine, Phenoxyethanol, Methyl Alcohol, Methyl Acetate, May Contain: Titanium Dioxide, Ci 77491, Tin Oxide",
+      "benefits": "Pigment rich and long-lasting, Smooth application with shimmering finish, Versatile and crease-proof, Vegan and cruelty-free, Paraben and gluten-free",
+      "howToUse": "Gently use a small amount and apply with your finger or a small brush. Layer the Liquid Shimmer on top of eyeshadows, highlighters, and lipsticks or use on its own.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_030"
+    },
+    {
+      "name": "Liquid Shimmer - Gatsby",
+      "slug": "liquid-shimmer-gatsby",
+      "description": "Get that high impact shine you've always wanted with our liquid shimmer. Our innovative formula is versatile with brilliant shine, you can glam up any makeup look on your lips, eyelids, or cheekbones. Get creative with these shades and you'll love that it's crease-proof and smudge-proof!",
+      "price": 25,
+      "salePrice": null,
+      "images": [
+        "/images/products/liquid-shimmer-gatsby.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Triethanolamine, Phenoxyethanol, Methyl Alcohol, Methyl Acetate, May Contain: Titanium Dioxide, Ci 77491, Tin Oxide",
+      "benefits": "Pigment rich and long-lasting, Smooth application with shimmering finish, Versatile and crease-proof, Vegan and cruelty-free, Paraben and gluten-free",
+      "howToUse": "Gently use a small amount and apply with your finger or a small brush. Layer the Liquid Shimmer on top of eyeshadows, highlighters, and lipsticks or use on its own.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_031"
+    },
+    {
+      "name": "Pearl Eye Primer",
+      "slug": "pearl-eye-primer",
+      "description": "Our new Eye Primer has arrived! Cover the imperfections and discolorations of your eyelids with our smooth formula. With this Eye Primer, your eyeshadow will last all day and no creases will appear. Completely prevent creasing from happening so your eyeshadows last perfectly. This primer is sheer yet smooth, perfect for flawless application of any pop of color added to your eyelids.",
+      "price": 36.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/pearl-eye-primer.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Isododecane, Cyclopentasiloxane, Trimethylsiloxysilicate, Polyethylene, Disteardimonium Hectorite, Phenyl Trimethicone, Dimethicone, Hydrogenated Polyisobutene, Propylene Carbonate, Lecithin, Trihydroxystearin, Tocopheryl Acetate, BHT",
+      "benefits": "Smooth, creamy base, Long-lasting power with silicone formula, Prevent eyeshadow from creasing, Recyclable packaging",
+      "howToUse": "Using clean fingertips, blend the formula on your eyelids before applying eyeshadows.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_032"
+    },
+    {
+      "name": "Oil Control Setting Spray",
+      "slug": "oil-control-setting-spray",
+      "description": "A sheer, lightweight Oil Control Setting Spray that's perfect to keep your skin free of unwanted shine and oil. With witch hazel and magnolia extracts, this nutrient-packed mist instantly refreshes and prepares your skin to take on the day. Protect your sensitive skin while setting your makeup in place all in one go!",
+      "price": 26,
+      "salePrice": null,
+      "images": [
+        "/images/products/oil-control-setting-spray.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Butylene Glycol, Sodium Polystyrene Sulfonate, Hyaluronic Acid, Allantoin, Zinc Pca, Hydroxyacetophenone, Hamamelis Virginiana Extract, Magnolia Biondii Bud/flower Extract, Agastache Rugosa Extract, Disodium Edta, Phenoxyethanol, Ethylhexylglycerin, Peg-40 Hydrogenated Castor Oil",
+      "benefits": "Witch hazel to soothe your skin, Best suited for oily skin, Mattifying for best oil control, Paraben-free, Recyclable packaging",
+      "howToUse": "With eyes closed, hold the bottle at arm's length and spray lightly over your face.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_033"
+    },
+    {
+      "name": "Tanning Drops",
+      "slug": "tanning-drops",
+      "description": "Bring hydration and a summer-kissed glow to your skin. Mix a few drops with your favorite moisturizer, serum, or body lotion to build a fresh tan on your skin. This vegan formula is a blend of grapefruit peel oil and coconut oil for intense moisture. Designed for a gradual, natural-looking tan so you can choose your level of glow with each drop.",
+      "price": 43,
+      "salePrice": null,
+      "images": [
+        "/images/products/tanning-drops.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Water (Aqua), Dihydroxyacetone, Polysorbate 80, Erythrulose, Glycerin, Propylene Glycol, Sodium Metabisulfite, Phenoxyethanol, Persea Gratissima (Avocado) Oil, Xanthan Gum, Citrus Grandis (Grapefruit) Peel Oil, Cocos Nucifera (Coconut) Oil, Tocopheryl Acetate, Ethylhexylglycerin, Aloe Barbadensis Leaf Juice, Ascorbic Acid, Potassium Sorbate, Sodium Benzoate, Citric Acid, Limonene",
+      "benefits": "Grapefruit peel oil and coconut oil maximizes hydration, Light scent, perfect for sensitive skin, Buildable formula creates a controlled and natural glow, Paraben and gluten-free, Vegan and cruelty-free, Suitable for all skin types",
+      "howToUse": "Apply to a clean face as the final step of your skin care routine. Add 2-4 drops into your hand with your favorite moisturizer, serum, or body lotion. Wash hands thoroughly after application. Gradual tan will develop for up to 24 hours.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_034"
+    },
+    {
+      "name": "Lip Kit - Mauve Wife",
+      "slug": "lip-kit-mauve-wife",
+      "description": "Create your perfect lips with our premium Lip Kit. This curated kit includes a three-piece set of full-size products including a lip liner, lipstick, and lip gloss. Everything you need for a perfect pout. This set includes: Lip Liner in Antique Rose, Luxury Cream Lipstick in Magical Mauve, and Lip Gloss in Lavender.",
+      "price": 33.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/lip-kit-mauve-wife.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Lip Liner: Ricinus Communis (Castor) Seed Oil, Microcrystalline Wax, Paraffin, Petrolatum, Octyl Palmitate, Carnauba, Cera Alba, Lanolin, BHT, Caprylyl Glycol, Phenoxyethanol",
+      "benefits": "Easy to use and apply products, Perfectly pigmented Lip Liner and Lipstick, High-shine finish gloss, Convenient to travel with, Camelina Sativa Seed Oil rich in omega-3 fatty acids, Mango Butter softens fine lines, Paraben-free",
+      "howToUse": "Line and contour your lips with Lip Liner. Saturate your lips with color using the Luxury Cream Lipstick. Finish with a top coat of Lip Gloss to add volume.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_035"
+    },
+    {
+      "name": "Smoothing Lip Balm",
+      "slug": "smoothing-lip-balm",
+      "description": "Blur out any fine lines or dry patches on your lips with our Smoothing Lip Balm. This vanilla-scented product ensures that your lips stay moisturized without any stickiness. Packaged in a convenient tube that easily glides your lips and smoothly applies product. Also perfectly pocket-sized to be your quick, on-the-go lip balm.",
+      "price": 20.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/smoothing-lip-balm.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Vegetable Oil (Olus Oil), Hydrogenated Polyisobutene, Butyrospermum Parkii (Shea) Butter, Microcrystalline Wax, Beeswax, Simmondsia Chinensis (Jojoba) Seed Oil, Vitis Vinifera (Grape) Seed Oil, Hyaluronic Acid, Tocopheryl Acetate",
+      "benefits": "Nourishing oils for long-lasting moisture, Leaves lips soft and plump, Blurring effect to smooth out fine lines on the lips, Small and compact for convenience",
+      "howToUse": "Apply directly onto lips as needed throughout the day. Can be used alone or before lip color to prime.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_036"
+    },
+    {
+      "name": "Smooth & Sculpt Curl Enhancer",
+      "slug": "smooth-sculpt-curl-enhancer",
+      "description": "Introducing our Smooth & Sculpt Curl Enhancer, a lightweight styling mousse designed to lift, volumize, and hold your hairstyle effortlessly. Infused with advanced ingredients and nourishing extracts, this mousse is ideal for creating long-lasting, dynamic looks while caring for your hair's health. For curly hair.",
+      "price": 60.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/smooth-sculpt-curl-enhancer.png"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Water (Aqua), Glycerin, PVP, Cocamidopropyl Betaine, Polyquaternium-11, Tocopheryl Acetate, Panthenol, Hydrolyzed Soy Protein, Hydrolyzed Wheat Protein, VP/VA Copolymer, PEG-40 Hydrogenated Castor Oil, Polysorbate 20, Ethylhexylglycerin, Phenoxyethanol, Fragrance (Parfum)",
+      "benefits": "Adds volume and shine; rejuvenates or holds curls, PVP and VP/VA Copolymer provide excellent hold and texture, Cocamidopropyl Betaine cleanses and conditions the hair, Vitamin E acts as an antioxidant, Panthenol strengthens hair and improves texture, Vegan, Cruelty-Free, Recyclable Packaging",
+      "howToUse": "Emulsify in palms and work from base to ends of hair. Blow-dry or diffuse to curl.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_037"
+    },
+    {
+      "name": "Beard Butter",
+      "slug": "beard-butter",
+      "description": "The beard butter is a blend of moisturizing ingredients that nourishes your beard. It gives your facial hair a fuller look without weighing it down. Shea butter helps provide protection from the harmful free radicals in harsh weather conditions while being highly moisturizing to skin. Best applied after shaving or grooming to avoid irritation and dry skin.",
+      "price": 21,
+      "salePrice": null,
+      "images": [
+        "/images/products/beard-butter.png"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Butyrospermum Parkii (Shea Butter), Orbignya Oleifera (Babassu) Oil, Cera Alba (Yellow) Beeswax, Vitis Vinifera (Grape) Seed Oil, Cetyl Alcohol, d-Alpha Tocopherol, Rosmarinus Officinalis (Rosemary) Leaf Extract",
+      "benefits": "Shea butter promotes maximum moisture retention, Non-greasy product for an all-day hold, Multi-tasking product for both beard and skin, Easy metal screw top tins",
+      "howToUse": "After you shower and dry your beard, apply a dime-sized amount in your hand. Massage the butter into the hair and roots, while shaping your beard. Apply on a daily basis to promote a softer beard.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_038"
+    },
+    {
+      "name": "Beard Oil - Speakeasy",
+      "slug": "beard-oil-speakeasy",
+      "description": "Every beard deserves our all-natural premium beard oil. Crafted with the finest carrier oils to deeply hydrate and condition your beard. Using 100% essential oils, the natural scent will leave you smelling fresh all day. You can easily control the amount you apply using the provided dropper cap. Conditioning is essential for healthy beard growth.",
+      "price": 20.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/beard-oil.png"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Vitis Vinifera (Grape) Seed Oil, Cocos Nucifera (Coconut) Oil, Argania Spinosa (Argan) Kernal Oil, Simmondsia Chinensis (Jojoba) Seed Oil, Fragrance, d-Alpha Tocopherol, Rosmarinus Officinalis (Rosemary) Leaf Extract",
+      "benefits": "Jojoba oil promotes shine and a soft beard, Reduces beard itch, Blend of 100% essential oils (rosemary, argan and grape), All natural product, Vegan",
+      "howToUse": "After showering, dry your beard and apply a few drops to your beard. Use fingers to massage the product into the hair and roots. Apply on a daily basis to help your beard feel soft and healthy.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_039"
+    },
+    {
+      "name": "Beard Oil - Classic",
+      "slug": "beard-oil-classic",
+      "description": "Every beard deserves our all-natural premium beard oil. Crafted with the finest carrier oils to deeply hydrate and condition your beard. Using 100% essential oils, the natural scent will leave you smelling fresh all day. Conditioning is essential for healthy beard growth and our beard oil is a well-balanced product to add to your routine.",
+      "price": 20.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/beard-oil.png"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Vitis Vinifera (Grape) Seed Oil, Cocos Nucifera (Coconut) Oil, Argania Spinosa (Argan) Kernal Oil, Simmondsia Chinensis (Jojoba) Seed Oil, Fragrance, d-Alpha Tocopherol, Rosmarinus Officinalis (Rosemary) Leaf Extract",
+      "benefits": "Jojoba oil promotes shine and a soft beard, Reduces beard itch, Blend of 100% essential oils (rosemary, argan and grape), All natural product, Vegan",
+      "howToUse": "After showering, dry your beard and apply a few drops to your beard. Use fingers to massage the product into the hair and roots. Apply on a daily basis to help your beard feel soft and healthy.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_040"
+    },
+    {
+      "name": "Men's Under Eye Cream",
+      "slug": "mens-under-eye-cream",
+      "description": "The perfect under eye cream for men that lifts, repairs and reduces dark circles. This multi-action anti-wrinkle under eye cream visibly smoothes and lightens dark spots overnight. Instantly brighten your eye look and let the skin around your eyes absorb this quick-action under eye cream.",
+      "price": 54.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/mens-under-eye-cream.png"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Aqua, Caprylic/Capric Triglyceride, Glycerin, Glyceryl Stearate, PEG-100 Stearate, Stearic Acid, Carthamus Tinctorius (Safflower) Seed Oil, Cetyl Alcohol, Dimethicone, Helianthus Annuus (Sunflower) Seed Oil, Carbomer, Sodium PCA, Sodium Hydroxide, Aloe Barbadensis Leaf Juice, Hydrolyzed Wheat Protein, Malus Domestica Fruit Cell Culture Extract, Ascorbic Acid (Vitamin C), Xanthan Gum, Tocopheryl Acetate (Vitamin E), Retinyl Palmitate (Vitamin A), Lecithin, Phenoxyethanol, Ethylhexylglycerin, Fragrance",
+      "benefits": "Recharge energy and life overnight in your eyes, Vitamin C and E blend actively reduces appearance of dark circles, Organic aloe and vitamin A repairs and lifts skin around your eyes, Paraben, gluten, and cruelty free, Vegan and certified organic",
+      "howToUse": "Use a fingertip and apply a small amount along the under eye area. Pat gently to apply. Best used at night after cleanser and moisturizer.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_041"
+    },
+    {
+      "name": "Anti-Aging Rose Gold Oil",
+      "slug": "anti-aging-rose-gold-oil",
+      "description": "A luxurious anti-aging serum that easily absorbs antioxidants into the skin. This revitalizing rosehip facial oil will lock in moisture and leave your complexion feeling plump and looking brighter. Restore the youthful glow with omega fatty acids that help defend against natural collagen loss, reduced elasticity and wrinkle formation.",
+      "price": 29.95,
+      "salePrice": null,
+      "images": [
+        "/images/products/anti-aging-rose-gold-oil.png"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": null,
+      "benefits": "Rosehip oil boosts collagen formation and brightens skin, Omega fatty acids regulate skin's oil production and balances skin hydration, Antioxidants supports skin healing processes, Suitable for all skin types, Paraben free and cruelty free",
+      "howToUse": "Apply 2-3 drops into the palm of your hand and apply to face and neck. Massage gently into skin. Follow with face cream or SPF in the day time.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_042"
+    },
+    {
+      "name": "Kale Face Cleanser",
+      "slug": "kale-face-cleanser",
+      "description": "A gentle yet effective cleanser infused with nutrient-rich kale extract. This antioxidant-packed formula removes impurities while nourishing your skin with vitamins A, C, and K. Perfect for all skin types, it leaves your complexion fresh, clean, and glowing.",
+      "price": 43,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Kale_Face_Cleanser_png.png?v=1727592674"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Aqua, Kale Extract, Glycerin, Sodium Cocoyl Isethionate, Aloe Barbadensis Leaf Juice, Vitamin E, Vitamin C, Green Tea Extract",
+      "benefits": "Rich in vitamins A, C, and K, Antioxidant protection, Gentle cleansing without stripping, Suitable for all skin types",
+      "howToUse": "Massage onto damp skin in circular motions. Rinse thoroughly with warm water. Use morning and evening.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_043"
+    },
+    {
+      "name": "Hemp Infused Beard Growth Oil",
+      "slug": "hemp-infused-beard-oil",
+      "description": "Promote healthy beard growth with our hemp-infused beard oil. This nourishing formula combines the power of hemp seed oil with essential vitamins to stimulate follicles, reduce patchiness, and create a fuller, healthier-looking beard. The lightweight formula absorbs quickly without leaving a greasy residue.",
+      "price": 23,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Hemp_Infused_Beard_Oil_png.png?v=1727592304"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Cannabis Sativa (Hemp) Seed Oil, Jojoba Oil, Argan Oil, Vitamin E, Rosemary Essential Oil, Cedarwood Essential Oil",
+      "benefits": "Stimulates beard growth, Reduces patchiness, Hemp oil provides essential fatty acids, Lightweight and non-greasy, Vegan",
+      "howToUse": "Apply a few drops to palm, rub hands together, and massage into beard and skin beneath. Use daily for best results.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_044"
+    },
+    {
+      "name": "Men's Face Moisturizer",
+      "slug": "mens-face-moisturizer",
+      "description": "A lightweight, fast-absorbing moisturizer designed specifically for men's skin. This formula hydrates without feeling heavy or greasy, making it perfect for daily use. Enriched with natural ingredients to protect and nourish your skin throughout the day.",
+      "price": 50,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Mens_Face_Moisturizer_png.png?v=1727593101"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Aqua, Aloe Barbadensis Leaf Juice, Glycerin, Hyaluronic Acid, Vitamin E, Jojoba Oil, Green Tea Extract",
+      "benefits": "Lightweight and fast-absorbing, Hydrates without greasiness, Suitable for all skin types, Natural ingredients",
+      "howToUse": "Apply to clean face and neck morning and night. Massage in upward strokes until fully absorbed.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_045"
+    },
+    {
+      "name": "Men's Shampoo",
+      "slug": "mens-shampoo",
+      "description": "A revitalizing shampoo formulated for men's hair and scalp. This deep-cleansing formula removes buildup while nourishing hair follicles for stronger, healthier hair. Infused with natural botanicals to invigorate the scalp and promote hair vitality.",
+      "price": 38,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Mens_Shampoo_png.png?v=1727593140"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Aqua, Sodium Lauryl Sulfoacetate, Cocamidopropyl Betaine, Aloe Barbadensis Leaf Juice, Peppermint Oil, Tea Tree Oil, Biotin, Panthenol",
+      "benefits": "Deep cleansing without stripping, Stimulates scalp, Strengthens hair follicles, Refreshing scent, Paraben-free",
+      "howToUse": "Apply to wet hair, massage into scalp, and work through to ends. Rinse thoroughly. Follow with conditioner if desired.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_046"
+    },
+    {
+      "name": "Natural Soap - Sunflower Goddess",
+      "slug": "natural-soap-sunflower-goddess",
+      "description": "Embrace the nourishing power of sunflower with this luxurious natural soap. Sunflower oil is rich in vitamin E and essential fatty acids that deeply moisturize and protect your skin. The gentle formula cleanses without drying, leaving your skin soft and radiant.",
+      "price": 18,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_png_28926f84-b371-49a4-87f2-1713b8f82501.png?v=1727606347"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Helianthus Annuus (Sunflower) Seed Oil, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Goat Milk",
+      "benefits": "Rich in vitamin E, Essential fatty acids for moisture, Gentle cleansing, Suitable for all skin types, Chemical-free",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_047"
+    },
+    {
+      "name": "Highlighter Stick - Gold Rush",
+      "slug": "highlighter-stick-gold-rush",
+      "description": "Achieve a luminous, sun-kissed glow with our Gold Rush Highlighter Stick. This creamy, buildable formula glides on smoothly for a natural radiance or can be layered for a more dramatic effect. Perfect for cheekbones, brow bones, and the bridge of the nose.",
+      "price": 27,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Stick_png.png?v=1727592235"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Caprylic/Capric Triglyceride, Mica, Synthetic Wax, Silica, Jojoba Oil, Vitamin E, May Contain: Titanium Dioxide, Iron Oxides",
+      "benefits": "Buildable coverage, Creamy smooth application, Long-lasting wear, Cruelty-free and vegan",
+      "howToUse": "Apply to high points of the face - cheekbones, brow bones, bridge of nose, and cupid's bow. Blend with fingers or a brush.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_048"
+    },
+    {
+      "name": "Highlighter Stick - Rose Glow",
+      "slug": "highlighter-stick-rose-glow",
+      "description": "Add a soft, rosy radiance to your complexion with our Rose Glow Highlighter Stick. This versatile formula provides a subtle, dewy finish that enhances your natural beauty. The convenient stick format makes application effortless.",
+      "price": 27,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Stick_2_png.png?v=1727592265"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Caprylic/Capric Triglyceride, Mica, Synthetic Wax, Silica, Jojoba Oil, Vitamin E, May Contain: Titanium Dioxide, Iron Oxides, Red 7 Lake",
+      "benefits": "Soft rosy glow, Dewy finish, Easy stick application, Cruelty-free and vegan",
+      "howToUse": "Apply to high points of the face - cheekbones, brow bones, bridge of nose, and cupid's bow. Blend with fingers or a brush.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_049"
+    },
+    {
+      "name": "Winter Glow Essentials Set",
+      "slug": "winter-glow-essentials-set",
+      "description": "Combat dry winter skin with this curated collection of hydrating essentials. This bundle includes our best-selling moisturizers and serums to keep your skin glowing and protected during the cold months. Save when you buy the set!",
+      "price": 84.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Winter_Glow_Bundle_png.png?v=1727594652"
+      ],
+      "category": "Bundles",
+      "collection": "bundles",
+      "ingredients": null,
+      "benefits": "Complete winter skincare routine, Hydrating formula collection, Significant savings vs individual purchase, Perfect gift set",
+      "howToUse": "Follow the included routine guide for optimal results during winter months.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_050"
+    },
+    {
+      "name": "Rise & Glow Bundle",
+      "slug": "rise-and-glow-bundle",
+      "description": "Start your day with our complete Rise & Glow Bundle. This curated collection includes everything you need for a morning skincare routine that leaves your skin refreshed, hydrated, and glowing. The perfect set for achieving that natural radiance.",
+      "price": 267.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Rise_Glow_Bundle_png.png?v=1727594100"
+      ],
+      "category": "Bundles",
+      "collection": "bundles",
+      "ingredients": null,
+      "benefits": "Complete morning routine, Savings vs individual purchase, Perfectly paired products, Great gift option",
+      "howToUse": "Follow the included routine guide for optimal results.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_051"
+    },
+    {
+      "name": "Men's Grooming Essentials Bundle",
+      "slug": "mens-grooming-essentials-bundle",
+      "description": "Everything a man needs for a complete grooming routine. This bundle includes our best-selling beard care products, face moisturizer, and under eye cream. Perfect for gifting or upgrading your own grooming game.",
+      "price": 195.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Mens_Bundle_png.png?v=1727593020"
+      ],
+      "category": "Bundles",
+      "collection": "bundles",
+      "ingredients": null,
+      "benefits": "Complete men's grooming set, Premium beard care included, Face and eye care essentials, Significant savings",
+      "howToUse": "Use beard products after showering, moisturizer daily, and eye cream at night.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_052"
+    },
+    {
+      "name": "Biohacker's Skin Longevity Bundle",
+      "slug": "biohackers-skin-longevity-bundle",
+      "description": "The ultimate anti-aging collection inspired by biohacking principles. This comprehensive bundle includes our most potent serums and treatments for those serious about reversing the signs of aging. Scientifically formulated for maximum results.",
+      "price": 235.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Biohackers_Bundle_png.png?v=1727590828"
+      ],
+      "category": "Bundles",
+      "collection": "bundles",
+      "ingredients": null,
+      "benefits": "Complete anti-aging system, Significant savings, Scientifically formulated, Premium ingredients",
+      "howToUse": "Follow the included step-by-step routine guide for optimal anti-aging results.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_053"
+    },
+    {
       "name": "100 Beauty Tips: Free Download",
       "slug": "100-beauty-tips-free-download",
       "description": "Unlock the secrets to radiant beauty with our comprehensive guide featuring 100 expert tips covering skincare, makeup, hair care, and wellness. From morning routines to nighttime rituals, discover professional techniques for every aspect of your beauty journey.",
       "price": 0,
       "salePrice": null,
       "images": [
-        "/images/products/100-beauty-tips.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/100_Beauty_Tips_png.png?v=1727589480"
       ],
       "category": "eBooks",
       "collection": "ebooks",
       "ingredients": null,
-      "benefits": "Learn professional beauty techniques, develop personalized routines, understand ingredient science",
+      "benefits": "Learn professional beauty techniques, Develop personalized routines, Understand ingredient science, Free download",
       "howToUse": "Download and read at your leisure. Implement tips gradually for best results.",
       "inStock": true,
-      "featured": true,
-      "id": "prod_001"
+      "featured": false,
+      "id": "prod_054"
     },
     {
       "name": "100 Fashion Tips",
       "slug": "100-fashion-tips",
-      "description": "Elevate your style with 100 curated fashion tips from industry experts. Learn how to build a versatile wardrobe, master color coordination, and develop your personal style signature.",
+      "description": "Elevate your style with 100 curated fashion tips from industry experts. Learn how to build a versatile wardrobe, master color coordination, and develop your personal style signature. Your complete guide to looking your best.",
       "price": 5.95,
       "salePrice": null,
       "images": [
-        "/images/products/100-fashion-tips.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/100_Fashion_Tips_png.png?v=1727589520"
       ],
       "category": "eBooks",
       "collection": "ebooks",
       "ingredients": null,
-      "benefits": "Build a capsule wardrobe, learn styling techniques, develop personal style",
+      "benefits": "Build a capsule wardrobe, Learn styling techniques, Develop personal style, Digital download",
       "howToUse": "Digital download - read on any device",
       "inStock": true,
       "featured": false,
-      "id": "prod_002"
+      "id": "prod_055"
     },
     {
       "name": "99 Make Up Tips",
       "slug": "99-make-up-tips",
-      "description": "Master the art of makeup with 99 professional tips and techniques. From everyday natural looks to glamorous evening styles, this guide covers everything you need to enhance your beauty.",
+      "description": "Master the art of makeup with 99 professional tips and techniques. From everyday natural looks to glamorous evening styles, this guide covers everything you need to enhance your beauty. Perfect for beginners and makeup enthusiasts alike.",
       "price": 5.95,
       "salePrice": null,
       "images": [
-        "/images/products/99-makeup-tips.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/99_Makeup_Tips_png.png?v=1727589555"
       ],
       "category": "eBooks",
       "collection": "ebooks",
       "ingredients": null,
-      "benefits": "Learn professional makeup techniques, understand face shapes, master color theory",
+      "benefits": "Learn professional makeup techniques, Understand face shapes, Master color theory, Digital download",
       "howToUse": "Digital download - practice techniques with your own products",
       "inStock": true,
       "featured": false,
-      "id": "prod_003"
+      "id": "prod_056"
     },
     {
-      "name": "Active Eye Cream",
-      "slug": "active-eye-cream",
-      "description": "Revitalize the delicate eye area with our potent Active Eye Cream. Formulated with peptides and caffeine to reduce puffiness, minimize dark circles, and smooth fine lines for a refreshed, youthful appearance.",
-      "price": 75.24,
-      "salePrice": 38,
-      "images": [
-        "/images/products/active-eye-cream.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Caffeine, Peptide Complex, Hyaluronic Acid, Vitamin E, Aloe Vera, Green Tea Extract, Retinol, Niacinamide",
-      "benefits": "Reduces puffiness, minimizes dark circles, smooths fine lines, hydrates delicate eye area",
-      "howToUse": "Apply a small amount around the eye area morning and night. Gently pat until absorbed. Avoid direct contact with eyes.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_004"
-    },
-    {
-      "name": "All-in-one Body Wash",
-      "slug": "all-in-one-body-wash",
-      "description": "Simplify your shower routine with our All-in-one Body Wash. This versatile formula cleanses, moisturizes, and refreshes your skin in one step, leaving you feeling clean and hydrated.",
-      "price": 49.95,
+      "name": "Ayonne Gift Card",
+      "slug": "ayonne-gift-card",
+      "description": "Give the gift of beauty with Ayonne Gift Cards. Perfect for any occasion, let your loved ones choose their favorite skincare products and beauty essentials. Available in various denominations.",
+      "price": 25,
       "salePrice": null,
       "images": [
-        "/images/products/all-in-one-body-wash.jpg"
-      ],
-      "category": "Cleansers",
-      "collection": "cleansers",
-      "ingredients": "Aqua, Coconut-derived Surfactants, Aloe Vera, Vitamin E, Essential Oils, Glycerin",
-      "benefits": "Cleanses without stripping, moisturizes skin, refreshing scent",
-      "howToUse": "Apply to wet skin, lather, and rinse thoroughly.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_005"
-    },
-    {
-      "name": "Anti-aging Rose Gold Oil",
-      "slug": "anti-aging-rose-gold-oil",
-      "description": "Luxurious face oil infused with rose gold particles and potent anti-aging botanicals. This lightweight yet nourishing formula absorbs quickly to deliver deep hydration and a radiant, youthful glow.",
-      "price": 29.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/rose-gold-oil.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Rosehip Seed Oil, Jojoba Oil, Vitamin E, Rose Gold Particles, Rosemary Extract, Lavender Oil",
-      "benefits": "Deep hydration, anti-aging properties, radiant glow, improves skin texture",
-      "howToUse": "Apply 2-3 drops to cleansed face and neck. Gently massage in upward motions. Use morning and night.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_006"
-    },
-    {
-      "name": "Antioxidant Toner",
-      "slug": "antioxidant-toner",
-      "description": "Protect and refresh your skin with our Antioxidant Toner. Packed with vitamin C and green tea extracts, this alcohol-free formula balances pH levels while defending against environmental stressors.",
-      "price": 22.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/antioxidant-toner.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Vitamin C, Green Tea Extract, Witch Hazel, Aloe Vera, Niacinamide, Hyaluronic Acid",
-      "benefits": "Balances skin pH, protects against free radicals, hydrates, preps skin for serums",
-      "howToUse": "After cleansing, apply to cotton pad and sweep across face and neck. Follow with serum and moisturizer.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_007"
-    },
-    {
-      "name": "Ayonne Gift Cards",
-      "slug": "ayonne-gift-cards",
-      "description": "Give the gift of beauty with Ayonne Gift Cards. Perfect for any occasion, let your loved ones choose their favorite skincare products and beauty essentials.",
-      "price": 9.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/gift-card.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Gift_Card_png.png?v=1727592080"
       ],
       "category": "Gift Cards",
       "collection": "bundles",
       "ingredients": null,
-      "benefits": "Flexible gifting, never expires, can be used on any product",
+      "benefits": "Flexible gifting, Never expires, Can be used on any product, Perfect for any occasion",
       "howToUse": "Enter gift card code at checkout to redeem.",
       "inStock": true,
       "featured": false,
-      "id": "prod_008"
-    },
-    {
-      "name": "Hemp Infused Beard Oil",
-      "slug": "hemp-infused-beard-oil",
-      "description": "Nourish and condition your beard with our Hemp Infused Beard Oil. This lightweight formula tames unruly hair, reduces itchiness, and promotes healthy beard growth while providing a subtle, masculine scent.",
-      "price": 23,
-      "salePrice": null,
-      "images": [
-        "/images/products/hemp-beard-oil.jpg"
-      ],
-      "category": "Mens",
-      "collection": "mens",
-      "ingredients": "Hemp Seed Oil, Jojoba Oil, Argan Oil, Vitamin E, Cedarwood Essential Oil, Eucalyptus Oil",
-      "benefits": "Softens beard hair, reduces itchiness, promotes growth, adds shine",
-      "howToUse": "Apply a few drops to palm, rub hands together, and massage into beard and skin beneath. Use daily.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_009"
-    },
-    {
-      "name": "Rise & Glow Bundle",
-      "slug": "rise-and-glow-bundle",
-      "description": "Start your day with our complete Rise & Glow Bundle. This curated collection includes everything you need for a morning skincare routine that leaves your skin refreshed, hydrated, and glowing.",
-      "price": 267.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/rise-glow-bundle.jpg"
-      ],
-      "category": "Bundles",
-      "collection": "rise-and-glow",
-      "ingredients": null,
-      "benefits": "Complete morning routine, savings vs. individual purchase, perfectly paired products",
-      "howToUse": "Follow the included routine guide for optimal results.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_010"
-    },
-    {
-      "name": "Vitamin C Brightening Toner",
-      "slug": "vitamin-c-brightening-toner",
-      "description": "Illuminate your complexion with our Vitamin C Brightening Toner. This potent formula helps fade dark spots, even skin tone, and boost radiance while preparing your skin for the rest of your routine.",
-      "price": 36.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/vitamin-c-toner.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Ascorbic Acid (Vitamin C), Ferulic Acid, Hyaluronic Acid, Aloe Vera, Niacinamide",
-      "benefits": "Brightens skin, fades dark spots, evens skin tone, provides antioxidant protection",
-      "howToUse": "After cleansing, apply to face and neck with cotton pad or fingertips. Follow with serum and moisturizer.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_011"
+      "id": "prod_057"
     },
     {
       "name": "Bamboo Beard Comb",
       "slug": "bamboo-beard-comb",
-      "description": "Style your beard sustainably with our eco-friendly Bamboo Beard Comb. The smooth, anti-static teeth glide through facial hair without pulling, while the compact size makes it perfect for travel.",
+      "description": "Style your beard sustainably with our eco-friendly Bamboo Beard Comb. The smooth, anti-static teeth glide through facial hair without pulling, while the compact size makes it perfect for travel. A must-have for beard maintenance.",
       "price": 18,
       "salePrice": null,
       "images": [
-        "/images/products/bamboo-beard-comb.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Bamboo_Beard_Comb_png.png?v=1727590860"
       ],
       "category": "Mens",
       "collection": "mens",
-      "ingredients": null,
-      "benefits": "Anti-static, portable, eco-friendly, gentle on hair",
+      "ingredients": "100% Natural Bamboo",
+      "benefits": "Anti-static teeth, Portable and compact, Eco-friendly material, Gentle on hair and skin",
       "howToUse": "Gently comb through beard to detangle and style. Use after applying beard oil for best distribution.",
       "inStock": true,
       "featured": false,
-      "id": "prod_012"
-    },
-    {
-      "name": "Beard Butter",
-      "slug": "beard-butter",
-      "description": "Deep conditioning beard butter that softens coarse facial hair and nourishes the skin beneath. This rich, creamy formula provides long-lasting moisture and a natural, healthy shine.",
-      "price": 41.58,
-      "salePrice": 21,
-      "images": [
-        "/images/products/beard-butter.jpg"
-      ],
-      "category": "Mens",
-      "collection": "mens",
-      "ingredients": "Shea Butter, Coconut Oil, Argan Oil, Beeswax, Vitamin E, Essential Oils",
-      "benefits": "Softens beard, moisturizes skin, provides hold, reduces beardruff",
-      "howToUse": "Scoop a small amount, warm between palms, and work through beard from roots to tips.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_013"
+      "id": "prod_058"
     },
     {
       "name": "Beard Nylon Brush",
       "slug": "beard-nylon-brush",
-      "description": "Professional-grade nylon bristle brush designed specifically for beard grooming. Distributes oils evenly, removes debris, and helps train beard hair to grow in the desired direction.",
+      "description": "Professional-grade nylon bristle brush designed specifically for beard grooming. Distributes oils evenly, removes debris, and helps train beard hair to grow in the desired direction. Essential for a well-maintained beard.",
       "price": 19.95,
       "salePrice": null,
       "images": [
-        "/images/products/beard-brush.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Beard_Brush_png.png?v=1727590795"
       ],
       "category": "Mens",
       "collection": "mens",
-      "ingredients": null,
-      "benefits": "Distributes products evenly, exfoliates skin, trains hair growth, removes debris",
+      "ingredients": "Nylon Bristles, Wooden Handle",
+      "benefits": "Distributes products evenly, Exfoliates skin beneath beard, Trains hair growth direction, Removes debris",
       "howToUse": "Brush through beard daily, starting from the neck and working upward, then downward to shape.",
       "inStock": true,
       "featured": false,
-      "id": "prod_014"
+      "id": "prod_059"
     },
     {
-      "name": "Beard Oil - Classic",
-      "slug": "beard-oil-classic",
-      "description": "Our signature Beard Oil in a timeless Classic scent. This nourishing blend of premium oils hydrates, softens, and adds a healthy shine to your facial hair while soothing the skin beneath.",
-      "price": 20.95,
+      "name": "All-in-One Body Wash",
+      "slug": "all-in-one-body-wash",
+      "description": "Simplify your shower routine with our All-in-One Body Wash. This versatile formula cleanses, moisturizes, and refreshes your skin in one step, leaving you feeling clean and hydrated. Perfect for the whole family.",
+      "price": 49.95,
       "salePrice": null,
       "images": [
-        "/images/products/beard-oil-classic.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Body_Wash_png.png?v=1727591200"
       ],
-      "category": "Mens",
-      "collection": "mens",
-      "ingredients": "Jojoba Oil, Argan Oil, Sweet Almond Oil, Vitamin E, Cedarwood, Sandalwood, Bergamot",
-      "benefits": "Hydrates beard and skin, reduces itchiness, classic masculine scent",
-      "howToUse": "Apply 3-5 drops to palm, rub hands together, and massage into beard and skin. Use daily after showering.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_015"
-    },
-    {
-      "name": "Beard Oil - Speakeasy",
-      "slug": "beard-oil-speakeasy",
-      "description": "A sophisticated Beard Oil with our exclusive Speakeasy scent. Notes of bourbon, tobacco, and oak create a distinguished aroma while premium oils condition and strengthen your beard.",
-      "price": 20.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/beard-oil-speakeasy.jpg"
-      ],
-      "category": "Mens",
-      "collection": "mens",
-      "ingredients": "Jojoba Oil, Argan Oil, Grapeseed Oil, Vitamin E, Oak Moss, Tobacco Leaf, Vanilla, Bourbon Extract",
-      "benefits": "Sophisticated scent, deep conditioning, promotes healthy growth",
-      "howToUse": "Apply 3-5 drops to palm, rub hands together, and massage into beard and skin. Use daily.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_016"
-    },
-    {
-      "name": "Hyaluronic Moisturizer",
-      "slug": "hyaluronic-moisturizer",
-      "description": "A rich cream that combines hyaluronic acid with a boost of a plant-based alternative tamarindus indica seed gum delivering plumping and hydrating benefits. Contains 4% shea butter and vitamin E for deep nourishment.",
-      "price": 54.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/hyaluronic-moisturizer.jpg"
-      ],
-      "category": "Moisturizers",
-      "collection": "moisturizers",
-      "ingredients": "Aqua, Sunflower Seed Oil, Shea Butter, Glycerin, Sodium Hyaluronate, Green Tea Oil, Vitamin E, Squalane, Tamarindus Indica Seed Gum",
-      "benefits": "Plumps skin, locks in moisture, nourishes deeply, improves skin texture",
-      "howToUse": "Apply to cleansed skin morning and night. Recommended to use with the Firm Serum for very dry skin types.",
-      "inStock": false,
-      "featured": true,
-      "id": "prod_017"
-    },
-    {
-      "name": "Embrace Collagen Moisturizer",
-      "slug": "embrace-collagen-moisturizer",
-      "description": "Luxurious collagen-infused moisturizer that helps restore skin elasticity and firmness. This advanced formula penetrates deeply to hydrate and support your skin's natural collagen production.",
-      "price": 55,
-      "salePrice": null,
-      "images": [
-        "/images/products/embrace-collagen.jpg"
-      ],
-      "category": "Moisturizers",
-      "collection": "moisturizers",
-      "ingredients": "Aqua, Marine Collagen, Peptide Complex, Hyaluronic Acid, Vitamin C, Retinol, Jojoba Oil, Aloe Vera",
-      "benefits": "Boosts collagen production, improves elasticity, deeply hydrates, reduces wrinkles",
-      "howToUse": "Apply generously to face and neck after serum. Use morning and night for best results.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_018"
-    },
-    {
-      "name": "Collagen & Retinol Serum",
-      "slug": "collagen-retinol-serum",
-      "description": "Powerful anti-aging serum combining collagen-boosting peptides with retinol for maximum skin renewal. This potent formula targets fine lines, wrinkles, and uneven texture for visibly younger-looking skin.",
-      "price": 45.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/collagen-retinol-serum.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Retinol, Collagen Peptides, Hyaluronic Acid, Vitamin E, Niacinamide, Squalane",
-      "benefits": "Reduces fine lines, boosts collagen, improves texture, promotes cell renewal",
-      "howToUse": "Apply a few drops to cleansed skin at night. Start with 2-3 times per week and increase as tolerated. Always use SPF during the day.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_019"
-    },
-    {
-      "name": "Glycolic Acid Serum",
-      "slug": "glycolic-acid-serum",
-      "description": "Exfoliating glycolic acid serum that gently removes dead skin cells to reveal brighter, smoother skin. This alpha-hydroxy acid treatment helps minimize pores and improve overall skin texture.",
-      "price": 32.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/glycolic-serum.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Glycolic Acid (10%), Aloe Vera, Hyaluronic Acid, Green Tea Extract, Vitamin E",
-      "benefits": "Exfoliates dead skin, minimizes pores, brightens complexion, improves texture",
-      "howToUse": "Apply to cleansed skin 2-3 times per week at night. Avoid eye area. Always use SPF during the day.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_020"
-    },
-    {
-      "name": "Firming Serum",
-      "slug": "firming-serum",
-      "description": "Advanced firming serum designed to lift and tighten skin. This concentrated formula targets sagging and loss of firmness with a powerful blend of peptides and botanical extracts.",
-      "price": 48.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/firming-serum.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Peptide Complex, DMAE, Vitamin C, Hyaluronic Acid, Aloe Vera, Green Tea Extract",
-      "benefits": "Lifts and firms, improves elasticity, tightens pores, enhances contours",
-      "howToUse": "Apply to cleansed skin morning and night. Focus on areas prone to sagging. Follow with moisturizer.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_021"
-    },
-    {
-      "name": "Charcoal Soap Bar",
-      "slug": "charcoal-soap-bar",
-      "description": "Detoxifying charcoal soap that draws out impurities and excess oil. This natural bar cleanses deeply while maintaining skin's moisture balance, perfect for oily and acne-prone skin.",
-      "price": 12.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/charcoal-soap.jpg"
-      ],
-      "category": "Cleansers",
+      "category": "Soaps",
       "collection": "cleansers",
-      "ingredients": "Activated Charcoal, Coconut Oil, Olive Oil, Shea Butter, Tea Tree Oil, Eucalyptus",
-      "benefits": "Detoxifies skin, draws out impurities, controls oil, prevents breakouts",
-      "howToUse": "Lather in hands and apply to wet skin. Massage gently and rinse thoroughly.",
+      "ingredients": "Aqua, Coconut-derived Surfactants, Aloe Vera, Vitamin E, Essential Oils, Glycerin",
+      "benefits": "Cleanses without stripping, Moisturizes skin, Refreshing scent, Suitable for all skin types",
+      "howToUse": "Apply to wet skin, lather, and rinse thoroughly.",
       "inStock": true,
       "featured": false,
-      "id": "prod_022"
-    },
-    {
-      "name": "Apricot Soap Bar",
-      "slug": "apricot-soap-bar",
-      "description": "Gentle exfoliating soap bar with natural apricot kernel powder. This fruity, nourishing cleanser buffs away dead skin cells while hydrating and softening your complexion.",
-      "price": 12.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/apricot-soap.jpg"
-      ],
-      "category": "Cleansers",
-      "collection": "cleansers",
-      "ingredients": "Apricot Kernel Powder, Apricot Oil, Coconut Oil, Shea Butter, Vitamin E, Honey",
-      "benefits": "Gentle exfoliation, hydrates skin, softens complexion, fruity scent",
-      "howToUse": "Lather and massage onto damp skin in circular motions. Rinse thoroughly.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_023"
-    },
-    {
-      "name": "Turmeric Soap Bar",
-      "slug": "turmeric-soap-bar",
-      "description": "Brightening turmeric soap bar that helps even skin tone and reduce hyperpigmentation. This anti-inflammatory cleanser soothes skin while delivering a natural, healthy glow.",
-      "price": 12.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/turmeric-soap.jpg"
-      ],
-      "category": "Cleansers",
-      "collection": "cleansers",
-      "ingredients": "Turmeric Powder, Coconut Oil, Olive Oil, Honey, Vitamin E, Lemon Essential Oil",
-      "benefits": "Brightens skin, evens tone, anti-inflammatory, natural glow",
-      "howToUse": "Lather in hands and apply to wet skin. Leave on for 1-2 minutes for extra benefits before rinsing.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_024"
-    },
-    {
-      "name": "Biohacker's Bundle",
-      "slug": "biohackers-bundle",
-      "description": "The ultimate anti-aging collection inspired by biohacking principles. This comprehensive bundle includes our most potent serums and treatments for those serious about reversing the signs of aging.",
-      "price": 235.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/biohackers-bundle.jpg"
-      ],
-      "category": "Bundles",
-      "collection": "bundles",
-      "ingredients": null,
-      "benefits": "Complete anti-aging system, significant savings, scientifically formulated",
-      "howToUse": "Follow the included step-by-step routine guide for optimal results.",
-      "inStock": true,
-      "featured": true,
-      "id": "prod_025"
-    },
-    {
-      "name": "Niacinamide Serum",
-      "slug": "niacinamide-serum",
-      "description": "Multi-tasking niacinamide serum that minimizes pores, balances oil production, and improves skin texture. This vitamin B3 powerhouse also helps reduce the appearance of dark spots and blemishes.",
-      "price": 28.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/niacinamide-serum.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Aqua, Niacinamide (10%), Zinc PCA, Hyaluronic Acid, Aloe Vera",
-      "benefits": "Minimizes pores, controls oil, improves texture, fades dark spots",
-      "howToUse": "Apply a few drops to cleansed skin morning and night before moisturizer.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_026"
-    },
-    {
-      "name": "Vitamin E Oil",
-      "slug": "vitamin-e-oil",
-      "description": "Pure vitamin E oil for deep nourishment and skin repair. This versatile oil helps fade scars, moisturize dry patches, and protect skin from environmental damage.",
-      "price": 18.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/vitamin-e-oil.jpg"
-      ],
-      "category": "Serums",
-      "collection": "anti-aging-serums",
-      "ingredients": "Tocopherol (Vitamin E), Sunflower Seed Oil, Jojoba Oil",
-      "benefits": "Repairs skin, fades scars, deep moisture, antioxidant protection",
-      "howToUse": "Apply a few drops to target areas or mix with moisturizer for all-over treatment.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_027"
-    },
-    {
-      "name": "Sunday Self-Care Set",
-      "slug": "sunday-self-care-set",
-      "description": "Transform your Sundays into spa days with this indulgent self-care set. Includes everything you need for a relaxing at-home facial and body treatment.",
-      "price": 89.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/sunday-selfcare-set.jpg"
-      ],
-      "category": "Rituals",
-      "collection": "self-care",
-      "ingredients": null,
-      "benefits": "Complete spa experience, relaxation, skin rejuvenation",
-      "howToUse": "Follow the included ritual guide for a complete self-care experience.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_028"
-    },
-    {
-      "name": "Hydrating Face Mist",
-      "slug": "hydrating-face-mist",
-      "description": "Refreshing hydrating mist that provides instant moisture and a dewy glow. Perfect for setting makeup, refreshing skin throughout the day, or adding extra hydration to your routine.",
-      "price": 24.95,
-      "salePrice": null,
-      "images": [
-        "/images/products/face-mist.jpg"
-      ],
-      "category": "Moisturizers",
-      "collection": "moisturizers",
-      "ingredients": "Aqua, Rose Water, Hyaluronic Acid, Aloe Vera, Glycerin, Cucumber Extract",
-      "benefits": "Instant hydration, refreshes skin, sets makeup, dewy finish",
-      "howToUse": "Spritz onto face from 8-10 inches away. Use anytime skin needs a refresh.",
-      "inStock": true,
-      "featured": false,
-      "id": "prod_029"
+      "id": "prod_060"
     },
     {
       "name": "Retinol Night Cream",
       "slug": "retinol-night-cream",
-      "description": "Intensive overnight treatment featuring encapsulated retinol for gentle yet effective results. Wake up to smoother, more radiant skin as this powerful cream works while you sleep.",
+      "description": "Intensive overnight treatment featuring encapsulated retinol for gentle yet effective results. Wake up to smoother, more radiant skin as this powerful cream works while you sleep to reduce fine lines and improve skin texture.",
       "price": 58.95,
       "salePrice": null,
       "images": [
-        "/images/products/retinol-night-cream.jpg"
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Retinol_Night_Cream_png.png?v=1727594045"
       ],
       "category": "Moisturizers",
       "collection": "moisturizers",
-      "ingredients": "Aqua, Encapsulated Retinol, Peptides, Shea Butter, Vitamin E, Squalane, Hyaluronic Acid",
-      "benefits": "Reduces wrinkles, smooths texture, promotes cell renewal, deep hydration",
-      "howToUse": "Apply to cleansed skin at night as the last step in your routine. Use SPF during the day.",
+      "ingredients": "Aqua, Encapsulated Retinol, Peptide Complex, Shea Butter, Vitamin E, Squalane, Hyaluronic Acid",
+      "benefits": "Reduces fine lines and wrinkles, Smooths skin texture, Promotes cell renewal, Deep overnight hydration",
+      "howToUse": "Apply to cleansed skin at night as the last step in your routine. Always use SPF during the day when using retinol products.",
       "inStock": true,
       "featured": false,
-      "id": "prod_030"
+      "id": "prod_061"
+    },
+    {
+      "name": "Hydrating Face Mist",
+      "slug": "hydrating-face-mist",
+      "description": "Refreshing hydrating mist that provides instant moisture and a dewy glow. Perfect for setting makeup, refreshing skin throughout the day, or adding extra hydration to your skincare routine. Keep your skin hydrated on the go.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Face_Mist_png.png?v=1727591900"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Rose Water, Hyaluronic Acid, Aloe Vera, Glycerin, Cucumber Extract",
+      "benefits": "Instant hydration, Refreshes and revitalizes, Sets makeup, Dewy finish",
+      "howToUse": "Spritz onto face from 8-10 inches away. Use anytime skin needs a refresh.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_062"
+    },
+    {
+      "name": "Daily Repair Shampoo",
+      "slug": "daily-repair-shampoo",
+      "description": "Revitalize your hair with our Daily Repair Shampoo. This nourishing formula gently cleanses while repairing damaged hair from root to tip. Infused with botanical oils and proteins to strengthen hair and promote healthy growth.",
+      "price": 38.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Daily_Repair_Shampoo_png.png?v=1727591800"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Sodium Lauryl Sulfoacetate, Cocamidopropyl Betaine, Aloe Barbadensis Leaf Juice, Argan Oil, Keratin, Panthenol, Vitamin E",
+      "benefits": "Repairs damaged hair, Strengthens from root to tip, Promotes healthy growth, Suitable for all hair types, Vegan and cruelty-free",
+      "howToUse": "Apply to wet hair, massage into scalp, and work through to ends. Rinse thoroughly. Follow with Daily Repair Conditioner.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_063"
+    },
+    {
+      "name": "Foaming Beard Wash",
+      "slug": "foaming-beard-wash",
+      "description": "Keep your beard clean and fresh with our Foaming Beard Wash. This gentle, sulfate-free formula removes dirt and oil without stripping natural moisture. Leaves your beard soft, manageable, and subtly scented.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Foaming_Beard_Wash_png.png?v=1727592000"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Aqua, Cocamidopropyl Betaine, Sodium Cocoyl Isethionate, Aloe Barbadensis Leaf Juice, Tea Tree Oil, Peppermint Oil, Glycerin",
+      "benefits": "Sulfate-free gentle cleansing, Removes dirt without stripping oils, Softens beard, Refreshing scent, Paraben-free",
+      "howToUse": "Apply to wet beard, massage into a lather, and rinse thoroughly. Use daily or as needed.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_064"
+    },
+    {
+      "name": "Beard Oil - Unscented",
+      "slug": "beard-oil-unscented",
+      "description": "Our premium unscented beard oil for those who prefer no fragrance. The same nourishing formula with jojoba, argan, and grapeseed oils to hydrate and condition your beard without any added scent.",
+      "price": 20.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Beard_Oil_Unscented_png.png?v=1727590850"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Vitis Vinifera (Grape) Seed Oil, Cocos Nucifera (Coconut) Oil, Argania Spinosa (Argan) Kernel Oil, Simmondsia Chinensis (Jojoba) Seed Oil, d-Alpha Tocopherol",
+      "benefits": "Fragrance-free formula, Deeply conditions beard, Reduces itch, All natural oils, Vegan",
+      "howToUse": "Apply a few drops to palm and massage into beard and skin beneath. Use daily for best results.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_065"
+    },
+    {
+      "name": "Grooming Kit",
+      "slug": "grooming-kit",
+      "description": "The complete men's grooming toolkit. This kit includes everything you need for beard maintenance: beard comb, brush, scissors, and a stylish carrying case. Perfect for home use or travel.",
+      "price": 45.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Grooming_Kit_png.png?v=1727592100"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Stainless Steel, Natural Bamboo, Boar Bristles",
+      "benefits": "Complete grooming set, Professional-quality tools, Portable carrying case, Great gift option",
+      "howToUse": "Use comb and brush for daily styling. Scissors for trimming stray hairs. Store in case for travel.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_066"
+    },
+    {
+      "name": "Shaving Gel",
+      "slug": "shaving-gel",
+      "description": "Experience a smooth, comfortable shave with our premium Shaving Gel. This transparent gel allows for precision shaving while moisturizing and protecting your skin. Suitable for all skin types.",
+      "price": 18.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Shaving_Gel_png.png?v=1727594200"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Aqua, Glycerin, Aloe Barbadensis Leaf Juice, Sodium Cocoyl Isethionate, Menthol, Vitamin E",
+      "benefits": "Transparent for precision shaving, Moisturizing formula, Prevents razor burn, Cooling sensation, Paraben-free",
+      "howToUse": "Apply to wet skin, work into a lather, and shave with the grain. Rinse thoroughly.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_067"
+    },
+    {
+      "name": "Natural Soap - Charcoal",
+      "slug": "natural-soap-charcoal",
+      "description": "Deep cleanse with our activated charcoal soap. This powerful detoxifying soap draws out impurities and excess oils while the blend of natural oils keeps skin moisturized. Perfect for oily and acne-prone skin.",
+      "price": 18.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Charcoal_png.png?v=1727593300"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Activated Charcoal, Water, Sodium Hydroxide, Butyrospermum Parkii (Shea) Butter, Tea Tree Oil, Goat Milk",
+      "benefits": "Activated charcoal draws out impurities, Deep pore cleansing, Controls excess oil, Suitable for acne-prone skin, Chemical-free",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_068"
+    },
+    {
+      "name": "Natural Soap - Rose Honey",
+      "slug": "natural-soap-rose-honey",
+      "description": "Indulge in the luxurious blend of rose and honey. This romantic soap combines the moisturizing properties of honey with the soothing essence of rose. Perfect for dry and sensitive skin types.",
+      "price": 18.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Rose_Honey_png.png?v=1727593400"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Water, Sodium Hydroxide, Honey, Rosa Damascena (Rose) Flower Oil, Butyrospermum Parkii (Shea) Butter, Goat Milk",
+      "benefits": "Honey moisturizes deeply, Rose soothes and calms skin, Romantic fragrance, Suitable for sensitive skin, Chemical-free",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_069"
+    },
+    {
+      "name": "Natural Soap - Tea Tree",
+      "slug": "natural-soap-tea-tree",
+      "description": "Harness the natural antibacterial power of tea tree oil. This invigorating soap helps fight acne and blemishes while providing a refreshing, clean feeling. Great for problem skin.",
+      "price": 18.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Tea_Tree_png.png?v=1727593500"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Water, Sodium Hydroxide, Melaleuca Alternifolia (Tea Tree) Leaf Oil, Butyrospermum Parkii (Shea) Butter, Goat Milk",
+      "benefits": "Tea tree oil fights bacteria, Helps clear acne, Refreshing scent, Suitable for problem skin, Chemical-free",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_070"
+    },
+    {
+      "name": "Natural Soap - Aloe",
+      "slug": "natural-soothing-soap-aloe",
+      "description": "Experience the healing power of aloe vera with our soothing aloe soap. This gentle formula calms irritated skin while providing deep hydration. Perfect for sunburned or sensitive skin.",
+      "price": 18.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Soap_Aloe_png.png?v=1727593200"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Olea Europaea (Olive) Oil, Cocos Nucifera (Coconut) Oil, Water, Sodium Hydroxide, Aloe Barbadensis Leaf Juice, Butyrospermum Parkii (Shea) Butter, Goat Milk",
+      "benefits": "Aloe vera soothes and heals, Deep hydration, Calms irritated skin, Suitable for sensitive skin, Chemical-free",
+      "howToUse": "Lather soap for body, face, or hands.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_071"
+    },
+    {
+      "name": "Liquid Shimmer - Champagne",
+      "slug": "liquid-shimmer-champagne",
+      "description": "A sophisticated champagne shimmer that adds elegant sparkle to any look. This versatile formula can be used on eyes, lips, or cheekbones for a luminous, celebratory glow.",
+      "price": 25.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Champagne_png.png?v=1727592700"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Phenoxyethanol, May Contain: Titanium Dioxide, Iron Oxides",
+      "benefits": "Sophisticated champagne shimmer, Versatile application, Crease-proof, Vegan and cruelty-free",
+      "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_072"
+    },
+    {
+      "name": "Liquid Shimmer - Goldie",
+      "slug": "liquid-shimmer-goldie",
+      "description": "A rich gold shimmer that delivers stunning brilliance. Perfect for creating bold, glamorous looks or adding a touch of luxury to your everyday makeup.",
+      "price": 25.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Goldie_png.png?v=1727592750"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Phenoxyethanol, May Contain: Titanium Dioxide, Iron Oxides",
+      "benefits": "Rich gold shimmer, High impact brilliance, Crease-proof, Vegan and cruelty-free",
+      "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_073"
+    },
+    {
+      "name": "Liquid Shimmer - Metal",
+      "slug": "liquid-shimmer-metal",
+      "description": "An edgy metallic shimmer for bold, modern looks. This multidimensional formula catches the light beautifully, perfect for evening events and special occasions.",
+      "price": 25.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Metal_png.png?v=1727592800"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Phenoxyethanol, May Contain: Titanium Dioxide, Iron Oxides",
+      "benefits": "Edgy metallic finish, Multidimensional shimmer, Crease-proof, Vegan and cruelty-free",
+      "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_074"
+    },
+    {
+      "name": "Liquid Shimmer - Rosy",
+      "slug": "liquid-shimmer-rosy",
+      "description": "A romantic rosy pink shimmer that adds a soft, feminine glow. Perfect for creating fresh, youthful looks or adding a subtle pop of color.",
+      "price": 25.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Liquid_Shimmer_Rosy_png.png?v=1727592850"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Propylene Glycol, Mica, Calcium Aluminum Borosilicate, Polyvinyl Alcohol, Xanthan Gum, Carbomer, Phenoxyethanol, May Contain: Titanium Dioxide, Iron Oxides, Red 7 Lake",
+      "benefits": "Romantic rosy shimmer, Soft feminine glow, Crease-proof, Vegan and cruelty-free",
+      "howToUse": "Apply with finger or brush to eyes, lips, or cheekbones. Layer for more intensity.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_075"
+    },
+    {
+      "name": "Lip Kit - Life's a Peach",
+      "slug": "lip-kit-life-s-a-peach",
+      "description": "A peachy-perfect lip kit for a fresh, natural look. This set includes a lip liner, lipstick, and lip gloss in coordinating peach tones. Everything you need for luscious lips.",
+      "price": 33.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Kit_Peach_png.png?v=1727592600"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Lip Liner: Ricinus Communis (Castor) Seed Oil, Microcrystalline Wax, Paraffin, Petrolatum, Octyl Palmitate, Carnauba, Cera Alba, Lanolin, BHT, Caprylyl Glycol, Phenoxyethanol",
+      "benefits": "Fresh peach tones, Complete 3-piece set, High-shine gloss included, Paraben-free",
+      "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_076"
+    },
+    {
+      "name": "Lip Kit - Pretty in Pink",
+      "slug": "lip-kit-pretty-in-pink",
+      "description": "A classic pink lip kit for timeless beauty. This set includes a lip liner, lipstick, and lip gloss in complementary pink shades. Perfect for everyday glamour.",
+      "price": 33.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Kit_Pink_png.png?v=1727592650"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Lip Liner: Ricinus Communis (Castor) Seed Oil, Microcrystalline Wax, Paraffin, Petrolatum, Octyl Palmitate, Carnauba, Cera Alba, Lanolin, BHT, Caprylyl Glycol, Phenoxyethanol",
+      "benefits": "Classic pink shades, Complete 3-piece set, High-shine gloss included, Paraben-free",
+      "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_077"
+    },
+    {
+      "name": "Lip Kit - Red Apple",
+      "slug": "lip-kit-red-apple",
+      "description": "A bold red lip kit for statement-making looks. This set includes a lip liner, lipstick, and lip gloss in sultry red tones. Perfect for evening glamour.",
+      "price": 33.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Kit_Red_png.png?v=1727592680"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Lip Liner: Ricinus Communis (Castor) Seed Oil, Microcrystalline Wax, Paraffin, Petrolatum, Octyl Palmitate, Carnauba, Cera Alba, Lanolin, BHT, Caprylyl Glycol, Phenoxyethanol",
+      "benefits": "Bold red shades, Complete 3-piece set, High-shine gloss included, Paraben-free",
+      "howToUse": "Line lips with liner, apply lipstick, finish with gloss for volume.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_078"
+    },
+    {
+      "name": "Lip Gloss - Clear",
+      "slug": "lip-gloss-clear",
+      "description": "A versatile clear lip gloss that adds shine and volume without color. Perfect for layering over lipstick or wearing alone for a natural, glossy finish.",
+      "price": 18.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Gloss_Clear_png.png?v=1727592500"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Polybutene, Hydrogenated Polyisobutene, Ethylene/Propylene Copolymer, Silica, Flavor, Tocopheryl Acetate",
+      "benefits": "High-shine finish, Non-sticky formula, Can be worn alone or layered, Adds volume to lips",
+      "howToUse": "Apply directly to lips or layer over lipstick for added shine.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_079"
+    },
+    {
+      "name": "Lip Plumping Oil",
+      "slug": "lip-plumping-oil",
+      "description": "Get fuller-looking lips with our nourishing lip plumping oil. This tingly formula contains peptides and natural plumping agents to enhance lip volume while moisturizing.",
+      "price": 22.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Plumping_Oil_png.png?v=1727592550"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Polybutene, Simmondsia Chinensis (Jojoba) Seed Oil, Menthol, Capsicum Annuum Fruit Extract, Palmitoyl Tripeptide-38, Vitamin E",
+      "benefits": "Plumps lips naturally, Moisturizing formula, Tingly sensation, Long-lasting hydration",
+      "howToUse": "Apply to clean lips as needed throughout the day. Can be worn alone or under lipstick.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_080"
+    },
+    {
+      "name": "Lip Scrub",
+      "slug": "lip-scrub",
+      "description": "Exfoliate and smooth your lips with our sweet lip scrub. This gentle formula buffs away dry, flaky skin to reveal soft, kissable lips. Use before applying lip color for best results.",
+      "price": 16.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Lip_Scrub_png.png?v=1727592580"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Sucrose, Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea) Butter, Mel (Honey), Flavor, Vitamin E",
+      "benefits": "Gentle exfoliation, Removes dry skin, Hydrating formula, Sweet flavor",
+      "howToUse": "Apply small amount to lips, massage in circular motions, wipe or lick off. Follow with lip balm.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_081"
+    },
+    {
+      "name": "Plumping Lip Gloss",
+      "slug": "plumping-lip-gloss",
+      "description": "A high-shine gloss with lip-plumping benefits. This formula combines brilliant shine with a subtle tingle to create fuller-looking lips instantly.",
+      "price": 21.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Plumping_Lip_Gloss_png.png?v=1727593900"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Polybutene, Hydrogenated Polyisobutene, Mica, Menthol, Capsicum Annuum Extract, Flavor, Vitamin E",
+      "benefits": "Plumping effect, High-shine finish, Non-sticky, Moisturizing",
+      "howToUse": "Apply directly to lips. Reapply as desired for extra plump and shine.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_082"
+    },
+    {
+      "name": "Vegan Lip Balm",
+      "slug": "vegan-lip-balm",
+      "description": "A 100% vegan lip balm that provides lasting moisture and protection. Made with plant-based ingredients, this balm keeps lips soft and hydrated all day.",
+      "price": 12.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Vegan_Lip_Balm_png.png?v=1727594500"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Candelilla Wax, Cocos Nucifera (Coconut) Oil, Butyrospermum Parkii (Shea) Butter, Simmondsia Chinensis (Jojoba) Seed Oil, Vitamin E",
+      "benefits": "100% vegan formula, Long-lasting moisture, Natural ingredients, Eco-friendly packaging",
+      "howToUse": "Apply to lips as needed throughout the day.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_083"
+    },
+    {
+      "name": "Light Touch Blender",
+      "slug": "light-touch-blender",
+      "description": "The perfect makeup sponge for flawless application. This soft, bouncy blender seamlessly blends foundation, concealer, and powder for an airbrushed finish.",
+      "price": 14.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Light_Touch_Blender_png.png?v=1727592650"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Latex-free Foam",
+      "benefits": "Flawless application, Works wet or dry, Latex-free, Easy to clean",
+      "howToUse": "Dampen sponge, squeeze out excess water, and bounce product onto skin for seamless blending.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_084"
+    },
+    {
+      "name": "Natural Konjac Sponge",
+      "slug": "natural-konjac-sponge",
+      "description": "A 100% natural konjac sponge for gentle cleansing. This biodegradable sponge gently exfoliates while cleansing, leaving skin soft and refreshed.",
+      "price": 12.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Konjac_Sponge_png.png?v=1727592650"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "Konjac Root Fibers",
+      "benefits": "100% natural, Gentle exfoliation, Biodegradable, Suitable for all skin types",
+      "howToUse": "Soak in warm water until soft. Use with or without cleanser to gently massage face. Rinse and air dry after use.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_085"
+    },
+    {
+      "name": "Setting Spray",
+      "slug": "setting-spray",
+      "description": "Lock in your makeup for all-day wear with our Setting Spray. This lightweight mist sets makeup without feeling heavy, keeping your look fresh for hours.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Setting_Spray_png.png?v=1727594150"
+      ],
+      "category": "Cosmetics",
+      "collection": "rise-and-glow",
+      "ingredients": "Aqua, Alcohol Denat, PVP, Glycerin, Aloe Barbadensis Leaf Juice, Green Tea Extract, Phenoxyethanol",
+      "benefits": "All-day makeup lock, Lightweight formula, Refreshing mist, Paraben-free",
+      "howToUse": "Hold 8-10 inches from face, close eyes, and mist in an X and T pattern. Allow to dry.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_086"
+    },
+    {
+      "name": "Sea Spray",
+      "slug": "sea-spray",
+      "description": "Create effortless beach waves with our Sea Spray. This texturizing mist adds volume and that coveted tousled, just-from-the-ocean look to all hair types.",
+      "price": 22.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Sea_Spray_png.png?v=1727594100"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "Aqua, Sea Salt, Magnesium Sulfate, Aloe Barbadensis Leaf Juice, Coconut Oil, PVP",
+      "benefits": "Creates beach waves, Adds volume and texture, Natural sea salt formula, Suitable for all hair types",
+      "howToUse": "Spray onto damp or dry hair. Scrunch and tousle with fingers for natural waves.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_087"
+    },
+    {
+      "name": "Volumizing Hair Spray",
+      "slug": "volumizing-hair-spray",
+      "description": "Achieve big, bouncy hair with our Volumizing Hair Spray. This lightweight formula lifts hair at the root without stiffness or residue.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Volumizing_Hair_Spray_png.png?v=1727594600"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "Aqua, VP/VA Copolymer, Alcohol Denat, Panthenol, Keratin, Vitamin E",
+      "benefits": "Lifts and volumizes, Flexible hold, No residue, Humidity resistant",
+      "howToUse": "Spray at roots and throughout hair. Style as desired. Can be brushed through.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_088"
+    },
+    {
+      "name": "Styling Wax",
+      "slug": "styling-wax",
+      "description": "Achieve any hairstyle with our versatile Styling Wax. This pliable formula provides medium hold with a natural finish, perfect for creating texture and definition.",
+      "price": 24.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Styling_Wax_png.png?v=1727594300"
+      ],
+      "category": "Rituals",
+      "collection": "self-care",
+      "ingredients": "Aqua, Beeswax, Carnauba Wax, Cetearyl Alcohol, Glycerin, PVP, Fragrance",
+      "benefits": "Medium flexible hold, Natural finish, Adds texture and definition, Easy to restyle",
+      "howToUse": "Warm a small amount in palms and work through damp or dry hair. Style as desired.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_089"
+    },
+    {
+      "name": "Hydra-Silk Leave-In Conditioner",
+      "slug": "hydra-silk-leave-in-conditioner",
+      "description": "Transform dry, tangled hair with our silky leave-in conditioner. This lightweight formula detangles, smooths, and adds shine without weighing hair down.",
+      "price": 28.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Leave_In_Conditioner_png.png?v=1727592650"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Cetearyl Alcohol, Behentrimonium Chloride, Argan Oil, Silk Amino Acids, Panthenol, Vitamin E",
+      "benefits": "Detangles instantly, Adds silky shine, Lightweight formula, Heat protection",
+      "howToUse": "Apply to damp hair from mid-lengths to ends. Comb through and style as desired. Do not rinse.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_090"
+    },
+    {
+      "name": "Luxe Leave-In Conditioner",
+      "slug": "luxe-leave-in-conditioner",
+      "description": "Our premium leave-in conditioner for ultimate hair luxury. Infused with argan oil and keratin for deep nourishment and silky smooth results.",
+      "price": 32.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Luxe_Leave_In_png.png?v=1727592700"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Cetearyl Alcohol, Behentrimonium Chloride, Argania Spinosa (Argan) Kernel Oil, Hydrolyzed Keratin, Panthenol, Vitamin E",
+      "benefits": "Deep nourishment, Keratin strengthening, Frizz control, Heat protection up to 450°F",
+      "howToUse": "Apply to damp hair from mid-lengths to ends. Style as desired.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_091"
+    },
+    {
+      "name": "Nourish Scalp and Hair Oil",
+      "slug": "nourish-scalp-and-hair-oil",
+      "description": "A nourishing blend of oils for scalp and hair health. This lightweight oil stimulates the scalp, strengthens hair, and adds brilliant shine.",
+      "price": 28.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Scalp_Hair_Oil_png.png?v=1727594050"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Argania Spinosa (Argan) Oil, Simmondsia Chinensis (Jojoba) Seed Oil, Ricinus Communis (Castor) Seed Oil, Rosmarinus Officinalis (Rosemary) Leaf Oil, Mentha Piperita (Peppermint) Oil, Vitamin E",
+      "benefits": "Stimulates scalp, Strengthens hair, Adds shine, Promotes growth",
+      "howToUse": "Apply a few drops to scalp and massage. Work through ends for shine. Use before washing or as a finishing oil.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_092"
+    },
+    {
+      "name": "Nourish Hand Cream",
+      "slug": "nourish-hand-cream",
+      "description": "Deeply nourish your hands with our rich hand cream. This fast-absorbing formula hydrates and protects, leaving hands soft and smooth without greasiness.",
+      "price": 18.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Hand_Cream_png.png?v=1727592200"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Glycerin, Butyrospermum Parkii (Shea) Butter, Cetearyl Alcohol, Simmondsia Chinensis (Jojoba) Seed Oil, Vitamin E, Aloe Barbadensis Leaf Juice",
+      "benefits": "Fast-absorbing, Non-greasy, Long-lasting moisture, Light fragrance",
+      "howToUse": "Apply to hands as needed. Massage until absorbed.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_093"
+    },
+    {
+      "name": "Shea Body Butter",
+      "slug": "shea-body-butter",
+      "description": "Indulge in deep hydration with our luxurious Shea Body Butter. This rich, whipped formula melts into skin for long-lasting moisture and silky softness.",
+      "price": 32.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Shea_Body_Butter_png.png?v=1727594150"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Butyrospermum Parkii (Shea) Butter, Cocos Nucifera (Coconut) Oil, Simmondsia Chinensis (Jojoba) Seed Oil, Vitamin E, Essential Oils",
+      "benefits": "Deep hydration, Whipped texture, Melts into skin, Long-lasting moisture",
+      "howToUse": "Apply generously to body after showering. Massage into skin until absorbed.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_094"
+    },
+    {
+      "name": "Oil Control Hydrator",
+      "slug": "oil-control-hydrator",
+      "description": "A lightweight moisturizer that hydrates while controlling excess oil. Perfect for oily and combination skin types looking for balanced hydration.",
+      "price": 36.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Oil_Control_Hydrator_png.png?v=1727593800"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Niacinamide, Hyaluronic Acid, Zinc PCA, Aloe Barbadensis Leaf Juice, Salicylic Acid, Green Tea Extract",
+      "benefits": "Controls excess oil, Lightweight formula, Mattifying effect, Non-comedogenic",
+      "howToUse": "Apply to clean face morning and night. Follow with SPF during the day.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_095"
+    },
+    {
+      "name": "Antioxidant Toner",
+      "slug": "antioxidant-toner",
+      "description": "A refreshing toner packed with antioxidants to protect and revitalize your skin. Preps skin for better absorption of serums and moisturizers.",
+      "price": 28.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Antioxidant_Toner_png.png?v=1727590700"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Aqua, Witch Hazel, Green Tea Extract, Vitamin C, Vitamin E, Aloe Barbadensis Leaf Juice, Niacinamide",
+      "benefits": "Antioxidant protection, Preps skin, Balances pH, Reduces pores",
+      "howToUse": "Apply to cleansed face with cotton pad or pat directly onto skin. Follow with serum.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_096"
+    },
+    {
+      "name": "Mint Exfoliating Facial Polish",
+      "slug": "mint-exfoliating-facial-polish",
+      "description": "A refreshing mint facial polish that gently exfoliates and invigorates skin. Natural exfoliants remove dead skin cells while mint cools and refreshes.",
+      "price": 32.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Mint_Polish_png.png?v=1727593000"
+      ],
+      "category": "Soaps",
+      "collection": "cleansers",
+      "ingredients": "Aqua, Glycerin, Walnut Shell Powder, Aloe Barbadensis Leaf Juice, Mentha Piperita (Peppermint) Oil, Green Tea Extract, Vitamin E",
+      "benefits": "Gentle exfoliation, Cooling mint sensation, Brightens skin, Suitable for all skin types",
+      "howToUse": "Apply to damp skin, massage in circular motions, rinse thoroughly. Use 2-3 times per week.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_097"
+    },
+    {
+      "name": "Solid Fragrance - Cedar & Tobacco",
+      "slug": "solid-fragrance-cedar-tobacco",
+      "description": "A sophisticated solid fragrance with notes of cedar and tobacco. This travel-friendly format allows for subtle, personal scenting throughout the day.",
+      "price": 28.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Solid_Fragrance_Cedar_png.png?v=1727594200"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Beeswax, Coconut Oil, Shea Butter, Fragrance (Cedar, Tobacco, Vanilla)",
+      "benefits": "Travel-friendly, Long-lasting scent, Subtle application, Moisturizing base",
+      "howToUse": "Warm product with fingertip and apply to pulse points: wrists, neck, behind ears.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_098"
+    },
+    {
+      "name": "Solid Fragrance - Speakeasy",
+      "slug": "solid-fragrance-speakeasy",
+      "description": "An intriguing solid fragrance inspired by the roaring twenties. Notes of bourbon, leather, and spice create a sophisticated, masculine scent.",
+      "price": 28.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Solid_Fragrance_Speakeasy_png.png?v=1727594250"
+      ],
+      "category": "Mens",
+      "collection": "mens",
+      "ingredients": "Beeswax, Coconut Oil, Shea Butter, Fragrance (Bourbon, Leather, Spice)",
+      "benefits": "Travel-friendly, Long-lasting scent, Subtle application, Moisturizing base",
+      "howToUse": "Warm product with fingertip and apply to pulse points: wrists, neck, behind ears.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_099"
+    },
+    {
+      "name": "22 In-Depth Health and Beauty Tips",
+      "slug": "22-in-depth-health-and-beauty-tips",
+      "description": "A comprehensive eBook covering 22 expert health and beauty tips. Learn holistic approaches to skincare, wellness, and self-care from industry professionals.",
+      "price": 4.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/22_Health_Tips_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Expert health tips, Holistic beauty advice, Digital download, Lifetime access",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_100"
+    },
+    {
+      "name": "Dr. Morgan Levine Biohacking Bundle",
+      "slug": "dr-morgan-levine-biohacking-bundle",
+      "description": "Inspired by Dr. Morgan Levine's research on biological aging, this premium bundle combines our most powerful anti-aging products to help you optimize your skin's longevity. A complete system for those serious about skin biohacking.",
+      "price": 249.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Biohacking_Bundle_png.png?v=1727594250"
+      ],
+      "category": "Bundles",
+      "collection": "bundles",
+      "ingredients": "Includes: Collagen & Retinol Serum, Hyaluronic Acid Serum, Embrace Collagen Moisturizer, Glycolic Acid Serum, Vitamin C Toner",
+      "benefits": "Complete anti-aging system, Biohacking-inspired formulas, Premium value bundle, Clinical-grade ingredients",
+      "howToUse": "Follow individual product instructions. Use AM and PM for best results.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_101"
+    },
+    {
+      "name": "Highlighter Stick - Beige Lights",
+      "slug": "highlighter-stick-beige-lights",
+      "description": "A subtle, champagne-toned highlighter stick perfect for fair to light skin tones. Creates a natural, lit-from-within glow on cheekbones, brow bones, and cupid's bow.",
+      "price": 27.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Beige_png.png?v=1727594250"
+      ],
+      "category": "Self Care",
+      "collection": "rise-and-glow",
+      "ingredients": "Ricinus Communis (Castor) Seed Oil, Caprylic/Capric Triglyceride, Synthetic Wax, Mica, Titanium Dioxide",
+      "benefits": "Natural glow, Buildable coverage, Creamy texture, Long-lasting wear",
+      "howToUse": "Apply directly to high points of face - cheekbones, bridge of nose, cupid's bow. Blend with fingers or sponge.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_102"
+    },
+    {
+      "name": "Highlighter Stick - Bronze Lights",
+      "slug": "highlighter-stick-bronze-lights",
+      "description": "A warm, bronze-toned highlighter stick ideal for medium to deep skin tones. Delivers a sun-kissed, radiant finish on cheekbones and body.",
+      "price": 27.00,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Highlighter_Bronze_png.png?v=1727594250"
+      ],
+      "category": "Self Care",
+      "collection": "rise-and-glow",
+      "ingredients": "Ricinus Communis (Castor) Seed Oil, Caprylic/Capric Triglyceride, Synthetic Wax, Mica, Iron Oxides",
+      "benefits": "Sun-kissed glow, Universal bronze shade, Creamy texture, Buildable intensity",
+      "howToUse": "Apply directly to high points of face and body. Blend with fingers or sponge for a natural finish.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_103"
+    },
+    {
+      "name": "Anti-Aging Cream",
+      "slug": "anti-aging-cream",
+      "description": "A luxurious anti-aging cream formulated with peptides, retinol, and botanical extracts. Targets fine lines, wrinkles, and loss of firmness while deeply hydrating the skin.",
+      "price": 74.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Anti_Aging_Cream_png.png?v=1727594250"
+      ],
+      "category": "Anti Aging serums",
+      "collection": "anti-aging-serums",
+      "ingredients": "Aqua, Glycerin, Retinol, Peptides, Hyaluronic Acid, Vitamin E, Shea Butter, Jojoba Oil",
+      "benefits": "Reduces fine lines, Firms skin, Deep hydration, Improves skin elasticity",
+      "howToUse": "Apply to clean face and neck at night. Can be layered over serum. Use sunscreen during the day.",
+      "inStock": true,
+      "featured": true,
+      "id": "prod_104"
+    },
+    {
+      "name": "Natural Daily Moisturizer",
+      "slug": "natural-daily-moisturizer",
+      "description": "A lightweight, all-natural daily moisturizer suitable for all skin types. Hydrates and protects skin throughout the day without leaving a greasy residue.",
+      "price": 47.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Daily_Moisturizer_png.png?v=1727594250"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Aloe Barbadensis Leaf Juice, Glycerin, Jojoba Oil, Vitamin E, Chamomile Extract, Green Tea Extract",
+      "benefits": "Lightweight hydration, All-natural formula, Non-greasy, All skin types",
+      "howToUse": "Apply to clean face and neck morning and evening. Layer under sunscreen during the day.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_105"
+    },
+    {
+      "name": "Natural Super Hydration Face Moisturizer",
+      "slug": "natural-super-hydration-moisturizer",
+      "description": "An intensely hydrating moisturizer for dry and dehydrated skin. Packed with hyaluronic acid and natural oils to restore moisture and plump the skin.",
+      "price": 34.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Super_Hydration_Moisturizer_png.png?v=1727594250"
+      ],
+      "category": "Moisturizers",
+      "collection": "moisturizers",
+      "ingredients": "Aqua, Hyaluronic Acid, Squalane, Avocado Oil, Shea Butter, Vitamin E, Aloe Vera",
+      "benefits": "Intense hydration, Plumps skin, Restores moisture barrier, Natural ingredients",
+      "howToUse": "Apply generously to clean face and neck. Use morning and evening for best results.",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_106"
+    },
+    {
+      "name": "Best Skin Ever: A Comprehensive Guide",
+      "slug": "best-skin-ever-guide",
+      "description": "Your ultimate guide to achieving the best skin of your life. This comprehensive eBook covers skincare fundamentals, ingredient science, routine building, and expert tips for every skin type.",
+      "price": 7.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Best_Skin_Ever_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Comprehensive skincare education, Expert tips, All skin types, Digital download",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_107"
+    },
+    {
+      "name": "Wrinkle Reverse: How To Reverse Time On Your Complexion",
+      "slug": "wrinkle-reverse-ebook",
+      "description": "Learn the science-backed methods to reduce and prevent wrinkles. This eBook covers anti-aging ingredients, lifestyle factors, and professional treatments for youthful skin.",
+      "price": 9.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Wrinkle_Reverse_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Anti-aging education, Science-backed methods, Prevention tips, Digital download",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_108"
+    },
+    {
+      "name": "The Natural Acne Remedy",
+      "slug": "natural-acne-remedy-ebook",
+      "description": "A natural approach to treating and preventing acne. This eBook covers holistic remedies, dietary changes, and skincare routines to achieve clear skin without harsh chemicals.",
+      "price": 7.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Natural_Acne_Remedy_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Natural remedies, Holistic approach, Dietary guidance, Digital download",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_109"
+    },
+    {
+      "name": "Sultry Skin: How To Get Beautiful Glowing Skin",
+      "slug": "sultry-skin-ebook",
+      "description": "Discover the secrets to achieving radiant, glowing skin. This eBook covers skincare routines, product recommendations, and lifestyle tips for luminous, healthy-looking skin.",
+      "price": 7.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Sultry_Skin_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Glowing skin secrets, Product recommendations, Lifestyle tips, Digital download",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_110"
+    },
+    {
+      "name": "Dress for Your Body Type",
+      "slug": "dress-for-body-type-ebook",
+      "description": "Learn how to dress for your unique body shape and feel confident in any outfit. This style guide covers body types, flattering silhouettes, and wardrobe essentials.",
+      "price": 7.95,
+      "salePrice": null,
+      "images": [
+        "https://cdn.shopify.com/s/files/1/0853/5257/9420/files/Dress_Body_Type_png.png?v=1727589400"
+      ],
+      "category": "eBooks",
+      "collection": "ebooks",
+      "ingredients": null,
+      "benefits": "Body type guidance, Style tips, Wardrobe essentials, Digital download",
+      "howToUse": "Digital download - read on any device",
+      "inStock": true,
+      "featured": false,
+      "id": "prod_111"
     }
   ]
 }

@@ -1,19 +1,13 @@
 'use client'
 
 import Link from 'next/link'
-import { useState } from 'react'
 
 interface NavItem {
   name: string
   href: string
-  submenu?: { name: string; href: string }[]
 }
 
 const navItems: NavItem[] = [
-  {
-    name: 'AI Skin Analysis',
-    href: '/skin-analysis',
-  },
   {
     name: 'BioHack: Anti-Aging Serums',
     href: '/collections/anti-aging-serums',
@@ -54,8 +48,6 @@ interface NavigationProps {
 }
 
 export default function Navigation({ mobile, onClose }: NavigationProps) {
-  const [openSubmenu, setOpenSubmenu] = useState<string | null>(null)
-
   if (mobile) {
     return (
       <nav className="py-4 px-4">
@@ -71,15 +63,6 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
               </Link>
             </li>
           ))}
-          <li className="pt-4 border-t border-[#1C4444]/10">
-            <Link
-              href="/collections/all"
-              className="block py-2 text-[#1C4444] font-medium hover:opacity-70 transition-opacity text-sm"
-              onClick={onClose}
-            >
-              Shop All
-            </Link>
-          </li>
         </ul>
       </nav>
     )
@@ -89,12 +72,7 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
     <nav className="flex justify-center">
       <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
         {navItems.map((item) => (
-          <li
-            key={item.name}
-            className="relative"
-            onMouseEnter={() => setOpenSubmenu(item.name)}
-            onMouseLeave={() => setOpenSubmenu(null)}
-          >
+          <li key={item.name}>
             <Link
               href={item.href}
               className="text-[#1C4444] text-sm hover:underline underline-offset-4 transition-all whitespace-nowrap"

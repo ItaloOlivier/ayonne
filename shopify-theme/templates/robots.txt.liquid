@@ -1,0 +1,55 @@
+User-agent: *
+Disallow: /admin
+Disallow: /cart
+Disallow: /carts
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /orders
+Disallow: /account
+Disallow: /search
+Disallow: /policies/
+Disallow: /a/downloads/-/*
+Disallow: /85352579420/checkouts
+Disallow: /85352579420/orders
+Disallow: /*?*oseid=*
+Disallow: /*preview_theme_id*
+Disallow: /*preview_script_id*
+Disallow: /.well-known/shopify/monorail
+Disallow: /apple-app-site-association
+Disallow: /cdn/wpm/*.js
+Disallow: /recommendations/products
+Disallow: /*/recommendations/products
+Disallow: /collections/*sort_by*
+Disallow: /collections/*+*
+Disallow: /blogs/*+*
+
+Sitemap: https://ayonne.skin/sitemap.xml
+
+# Google AdsBot
+User-agent: adsbot-google
+Disallow: /checkout
+Disallow: /checkouts/
+Disallow: /carts
+Disallow: /orders
+Disallow: /*?*oseid=*
+Disallow: /*preview_theme_id*
+Disallow: /*preview_script_id*
+Disallow: /cdn/wpm/*.js
+
+# Block known bots (optional)
+User-agent: Nutch
+Disallow: /
+
+User-agent: AhrefsBot
+Crawl-delay: 10
+Disallow: /
+
+User-agent: AhrefsSiteAudit
+Crawl-delay: 10
+Disallow: /
+
+User-agent: MJ12bot
+Crawl-delay: 10
+
+User-agent: Pinterest
+Crawl-delay: 1
