@@ -52,7 +52,7 @@ export interface CustomerSession {
 function signToken(customerId: string): string {
   const timestamp = Date.now()
   const payload = `${customerId}.${timestamp}`
-  const signature = createHmac('sha256', SESSION_SECRET)
+  const signature = createHmac('sha256', getSessionSecret())
     .update(payload)
     .digest('hex')
     .substring(0, 16) // Use first 16 chars for shorter token
@@ -71,7 +71,7 @@ function verifyToken(token: string): string | null {
     const payload = `${customerId}.${timestamp}`
 
     // Verify signature
-    const expectedSignature = createHmac('sha256', SESSION_SECRET)
+    const expectedSignature = createHmac('sha256', getSessionSecret())
       .update(payload)
       .digest('hex')
       .substring(0, 16)

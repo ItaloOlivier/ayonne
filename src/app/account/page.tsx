@@ -204,19 +204,19 @@ export default function AccountPage() {
             </div>
 
             {/* Recent Analyses */}
-            <div className="bg-white rounded-xl p-6 md:p-8">
-              <div className="flex items-center justify-between mb-6">
+            <div className="card-luxury p-8 md:p-10">
+              <div className="flex items-center justify-between mb-8">
                 <div>
-                  <h2 className="text-xl font-medium text-[#1C4444] mb-1">
+                  <h2 className="text-xl font-medium text-[#1C4444] mb-2 tracking-wide">
                     Recent Analyses
                   </h2>
-                  <p className="text-[#1C4444]/60 text-sm">
+                  <p className="text-[#1C4444]/50 text-sm">
                     Your most recent skin analyses
                   </p>
                 </div>
                 <Link
                   href="/skin-analysis/history"
-                  className="text-[#1C4444] hover:text-[#1C4444]/70 text-sm font-medium"
+                  className="text-[#1C4444] hover:text-[#D4AF37] text-sm font-medium tracking-wide transition-all duration-300"
                 >
                   View All
                 </Link>
@@ -228,27 +228,27 @@ export default function AccountPage() {
                     <Link
                       key={analysis.id}
                       href={`/skin-analysis/results/${analysis.id}`}
-                      className="block p-4 border border-[#1C4444]/10 rounded-lg hover:border-[#1C4444]/30 transition-colors"
+                      className="block p-5 border border-[#1C4444]/8 rounded-xl hover:border-[#1C4444]/20 hover:shadow-luxury transition-all duration-300 group"
                     >
                       <div className="flex items-center justify-between">
                         <div>
-                          <p className="font-medium text-[#1C4444]">
+                          <p className="font-medium text-[#1C4444] tracking-wide">
                             {analysis.skinType ? `${analysis.skinType.charAt(0).toUpperCase() + analysis.skinType.slice(1)} Skin` : 'Analysis'}
                           </p>
-                          <p className="text-sm text-[#1C4444]/60">
+                          <p className="text-sm text-[#1C4444]/50 mt-1">
                             {formatDate(analysis.createdAt)}
                           </p>
                         </div>
-                        <div className="flex items-center gap-2">
+                        <div className="flex items-center gap-3">
                           {analysis.conditions?.slice(0, 2).map((c: { id: string; name: string }) => (
                             <span
                               key={c.id}
-                              className="text-xs bg-[#F4EBE7] text-[#1C4444] px-2 py-1 rounded"
+                              className="text-xs bg-[#F4EBE7] text-[#1C4444] px-3 py-1.5 rounded-full"
                             >
                               {c.name}
                             </span>
                           ))}
-                          <svg className="w-5 h-5 text-[#1C4444]/40" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <svg className="w-5 h-5 text-[#1C4444]/30 group-hover:text-[#D4AF37] transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                           </svg>
                         </div>
@@ -257,11 +257,11 @@ export default function AccountPage() {
                   ))}
                 </div>
               ) : (
-                <div className="text-center py-8">
-                  <p className="text-[#1C4444]/60 mb-4">No analyses yet</p>
+                <div className="text-center py-12">
+                  <p className="text-[#1C4444]/50 mb-6">No analyses yet</p>
                   <Link
                     href="/skin-analysis"
-                    className="inline-flex items-center gap-2 btn-primary"
+                    className="inline-flex items-center gap-3 bg-[#1C4444] text-white px-8 py-4 rounded-xl hover:bg-[#1C4444]/90 transition-all duration-300 shadow-luxury hover:shadow-luxury-lg btn-luxury"
                   >
                     Start Your First Analysis
                   </Link>
@@ -270,38 +270,38 @@ export default function AccountPage() {
             </div>
 
             {/* Quick Actions */}
-            <div className="grid md:grid-cols-2 gap-4">
+            <div className="grid md:grid-cols-2 gap-6">
               <Link
                 href="/skin-analysis"
-                className="bg-[#1C4444] text-white rounded-xl p-6 hover:bg-[#1C4444]/90 transition-colors group"
+                className="bg-gradient-to-br from-[#1C4444] to-[#1C4444]/95 text-white rounded-2xl p-8 hover:shadow-luxury-lg transition-all duration-300 group hover:-translate-y-1"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-lg mb-1">New Analysis</h3>
-                    <p className="text-white/70 text-sm">
+                    <h3 className="font-medium text-lg mb-2 tracking-wide">New Analysis</h3>
+                    <p className="text-white/60 text-sm">
                       Take a new photo to track your progress
                     </p>
                   </div>
-                  <svg className="w-8 h-8 text-white/50 group-hover:text-white transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
+                  <svg className="w-10 h-10 text-white/40 group-hover:text-[#D4AF37] transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M3 9a2 2 0 012-2h.93a2 2 0 001.664-.89l.812-1.22A2 2 0 0110.07 4h3.86a2 2 0 011.664.89l.812 1.22A2 2 0 0018.07 7H19a2 2 0 012 2v9a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 13a3 3 0 11-6 0 3 3 0 016 0z" />
                   </svg>
                 </div>
               </Link>
 
               <Link
                 href="/skin-analysis/history"
-                className="bg-white border-2 border-[#1C4444] text-[#1C4444] rounded-xl p-6 hover:bg-[#1C4444] hover:text-white transition-colors group"
+                className="bg-white border-2 border-[#1C4444]/15 text-[#1C4444] rounded-2xl p-8 hover:border-[#1C4444] hover:shadow-luxury transition-all duration-300 group hover:-translate-y-1"
               >
                 <div className="flex items-center justify-between">
                   <div>
-                    <h3 className="font-medium text-lg mb-1">View Progress</h3>
-                    <p className="opacity-70 text-sm">
+                    <h3 className="font-medium text-lg mb-2 tracking-wide">View Progress</h3>
+                    <p className="text-[#1C4444]/50 text-sm">
                       See how your skin has improved
                     </p>
                   </div>
-                  <svg className="w-8 h-8 opacity-50 group-hover:opacity-100 transition-opacity" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  <svg className="w-10 h-10 text-[#1C4444]/30 group-hover:text-[#D4AF37] transition-all duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                   </svg>
                 </div>
               </Link>
