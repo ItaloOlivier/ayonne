@@ -5,6 +5,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import ProgressTimeline from '@/components/skin-analysis/ProgressTimeline'
 import TrendChart from '@/components/skin-analysis/TrendChart'
+import { DailyReminder } from '@/components/skin-analysis/PersonalizedDashboard'
 import { calculateSkinScores, getQualityColor, getSkinAgeColor } from '@/lib/skin-analysis/scoring'
 
 interface DetectedCondition {
@@ -282,6 +283,11 @@ export default function HistoryPage() {
               </div>
             ) : (
               <div className="space-y-8">
+                {/* Daily Reminder - nudge users to analyze if they haven't today */}
+                <DailyReminder
+                  lastAnalysisDate={analyses[0]?.createdAt || null}
+                />
+
                 {/* Dual Score Overview - Matching Analysis Page Design */}
                 {latestScores && (
                   <div className="grid md:grid-cols-2 gap-6">

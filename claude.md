@@ -204,6 +204,11 @@ The skin analysis uses advanced Anthropic Claude API features:
 - **LiveCameraCapture component**: Drop-in smart camera
   - Feature flag: `FEATURE_SMART_AUTO_CAPTURE`
   - Falls back to manual capture if disabled
+- **Camera permission fallback**: Upload mode when camera access denied
+  - Shows helpful error message with browser settings guidance
+  - "Upload Photo Instead" button switches to file upload mode
+  - Full 3-angle workflow preserved with file picker
+  - "Try Camera Again" option to retry camera access
 
 ### Dual Scoring System
 - **Skin Age**: Estimated biological skin age based on aging indicators
@@ -257,10 +262,11 @@ The skin analysis uses advanced Anthropic Claude API features:
 - **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
 - **Achievement System**: 14+ badge types (First Steps, Week Warrior, Glow Up, Flawless, etc.)
 - **Health Score**: Animated circular progress with count-up effect, trend indicators
-- **Social Proof**: Live activity feed, user counts, ratings display
-- **Scarcity Indicators**: Stock warnings, viewer counts, countdown timers
-- **Celebration Animations**: Confetti, score-up effects, achievement unlock animations
-- **Personalized Dashboard**: Goals, progress bars, condition trends, daily reminders
+- **Social Proof**: Live activity feed banner on results page, recent purchase popups
+- **Scarcity Indicators**: Stock warnings, viewer counts on top recommended product
+- **Celebration Animations**: Confetti for +10 points, score-up for +5 points, achievement for new users
+- **Daily Reminders**: Shown on history page if user hasn't analyzed today
+- **PWA Install Prompt**: iOS/Android app install prompt on results page
 
 ## Shopify Integration
 

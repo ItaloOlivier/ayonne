@@ -5,6 +5,7 @@ import { formatPrice } from '@/lib/utils'
 import { getShopifyProductUrl, SHOPIFY_STORE_URL } from '@/lib/shopify'
 import { getShopifyImageUrl, buildShopifyCartUrl } from '@/lib/shopify-products'
 import { useToast } from '@/components/ui/Toast'
+import ScarcityIndicator from './ScarcityIndicator'
 
 type SortOption = 'relevance' | 'price-low' | 'price-high'
 
@@ -29,9 +30,10 @@ interface ProductCardProps {
   idx: number
   isSelected: boolean
   onToggleSelect: () => void
+  showScarcity?: boolean
 }
 
-function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps) {
+function ProductCard({ rec, idx, isSelected, onToggleSelect, showScarcity = false }: ProductCardProps) {
   const [imageError, setImageError] = useState(false)
 
   // Get the Shopify slug for product URLs (use productShopifySlug if available, fallback to productSlug)
@@ -139,6 +141,16 @@ function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps)
             </span>
           )}
         </div>
+
+        {/* Scarcity indicator for top recommendation */}
+        {showScarcity && (
+          <div className="mt-3 pt-3 border-t border-[#1C4444]/10">
+            <ScarcityIndicator
+              productName={rec.productName}
+              stockLevel="low"
+            />
+          </div>
+        )}
       </div>
     </div>
   )
@@ -278,6 +290,7 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
             idx={idx}
             isSelected={selectedSlugs.has(rec.productSlug)}
             onToggleSelect={() => toggleSelect(rec.productSlug)}
+            showScarcity={idx === 0}
           />
         ))}
       </div>

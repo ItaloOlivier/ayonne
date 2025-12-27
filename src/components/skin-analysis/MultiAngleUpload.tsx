@@ -82,9 +82,11 @@ export default function MultiAngleUpload({
   const [isCameraActive, setIsCameraActive] = useState(false)
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
   const [countdown, setCountdown] = useState<number | null>(null)
+  const [useUploadMode, setUseUploadMode] = useState(false)
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
+  const fileInputRef = useRef<HTMLInputElement>(null)
 
   // Cleanup camera stream on unmount
   useEffect(() => {
@@ -286,6 +288,54 @@ export default function MultiAngleUpload({
     stopCamera()
   }, [stopCamera])
 
+  // Switch to upload mode when camera fails
+  const handleUploadFallback = useCallback(() => {
+    setIsCameraActive(false)
+    stopCamera()
+    setUseUploadMode(true)
+  }, [stopCamera])
+
+  // Handle file upload
+  const handleFileUpload = useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
+    const file = event.target.files?.[0]
+    if (!file || currentStep === 'review') return
+
+    // Create preview from file
+    const reader = new FileReader()
+    reader.onload = (e) => {
+      const preview = e.target?.result as string
+
+      const newImage: CapturedImage = {
+        file,
+        preview,
+        angle: currentStep as 'front' | 'left' | 'right',
+      }
+
+      setCapturedImages(prev => {
+        const newMap = new Map(prev)
+        newMap.set(currentStep, newImage)
+        return newMap
+      })
+
+      // Move to next step
+      const currentIndex = STEPS_ORDER.indexOf(currentStep as Exclude<CaptureStep, 'review'>)
+      if (currentIndex < STEPS_ORDER.length - 1) {
+        setCurrentStep(STEPS_ORDER[currentIndex + 1])
+      } else {
+        // All photos captured, go to review
+        setCurrentStep('review')
+      }
+    }
+    reader.readAsDataURL(file)
+
+    // Reset the input so the same file can be selected again
+    event.target.value = ''
+  }, [currentStep])
+
+  const triggerFileUpload = useCallback(() => {
+    fileInputRef.current?.click()
+  }, [])
+
   const currentConfig = currentStep !== 'review' ? ANGLE_CONFIGS[currentStep] : null
   const completedCount = capturedImages.size
   const progress = (completedCount / 3) * 100
@@ -456,8 +506,128 @@ export default function MultiAngleUpload({
         </div>
       )}
 
-      {/* Start camera button or camera view */}
-      {!isCameraActive && !cameraError ? (
+      {/* Hidden file input for upload mode */}
+      <input
+        ref={fileInputRef}
+        type="file"
+        accept="image/*"
+        capture="user"
+        onChange={handleFileUpload}
+        className="hidden"
+      />
+
+      {/* Upload mode UI */}
+      {useUploadMode && !isCameraActive ? (
+        <div className="text-center space-y-6 animate-elegant-fade-in">
+          <div className="card-luxury p-8 space-y-6">
+            {/* Upload icon */}
+            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#1C4444]/10 to-[#1C4444]/5 flex items-center justify-center">
+              <svg className="w-10 h-10 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+              </svg>
+            </div>
+
+            {/* Instruction */}
+            <div>
+              <p className="text-lg text-[#1C4444] mb-2 tracking-wide">
+                Upload your {currentConfig?.label.toLowerCase()}
+              </p>
+              <p className="text-[#1C4444]/60 text-sm">
+                {currentConfig?.instruction}
+              </p>
+            </div>
+
+            {/* Tips */}
+            <div className="bg-[#F4EBE7]/50 rounded-lg p-4">
+              <ul className="space-y-3">
+                {currentConfig?.tips.map((tip, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 text-[#1C4444]/70 text-sm"
+                  >
+                    <div className="w-5 h-5 rounded-full bg-[#1C4444]/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <button
+            onClick={triggerFileUpload}
+            className="btn-primary btn-luxury w-full py-4 text-sm tracking-widest"
+          >
+            Choose Photo
+          </button>
+
+          <button
+            onClick={() => setUseUploadMode(false)}
+            className="text-[#1C4444]/70 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
+          >
+            Try Camera Again
+          </button>
+
+          <button
+            onClick={handleCancel}
+            className="text-[#1C4444]/50 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
+          >
+            Cancel
+          </button>
+
+          {/* Progress thumbnails */}
+          {capturedImages.size > 0 && (
+            <div className="flex justify-center gap-3 pt-4">
+              {STEPS_ORDER.map((angle, index) => {
+                const image = capturedImages.get(angle)
+                const isCurrent = angle === currentStep
+                return (
+                  <div
+                    key={angle}
+                    className={cn(
+                      'relative w-14 h-14 rounded-xl overflow-hidden transition-all duration-300',
+                      image ? 'shadow-luxury' : '',
+                      isCurrent && !image && 'ring-2 ring-[#D4AF37] ring-offset-2'
+                    )}
+                  >
+                    {image ? (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={image.preview}
+                          alt={ANGLE_CONFIGS[angle].label}
+                          className="w-full h-full object-cover"
+                        />
+                        <div className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] flex items-center justify-center">
+                          <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      </>
+                    ) : (
+                      <div className={cn(
+                        'w-full h-full flex items-center justify-center transition-colors',
+                        isCurrent ? 'bg-[#D4AF37]/20' : 'bg-[#1C4444]/5'
+                      )}>
+                        <span className={cn(
+                          'text-xs font-medium',
+                          isCurrent ? 'text-[#D4AF37]' : 'text-[#1C4444]/30'
+                        )}>
+                          {index + 1}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      ) : !isCameraActive && !cameraError ? (
+        /* Start camera button */
         <div className="text-center space-y-6 animate-elegant-fade-in">
           <div className="card-luxury p-8 space-y-6">
             {/* Elegant camera icon */}
@@ -517,6 +687,7 @@ export default function MultiAngleUpload({
                 angle={currentStep as 'front' | 'left' | 'right'}
                 onCapture={handleLiveCameraCapture}
                 onCancel={handleLiveCameraCancel}
+                onUploadFallback={handleUploadFallback}
                 autoCapture={true}
                 showGuide={true}
               />
