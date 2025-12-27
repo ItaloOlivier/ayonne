@@ -1,9 +1,13 @@
 'use client'
 
+import { useEffect, useState } from 'react'
+
 interface SkinHealthScoreProps {
   score: number
   previousScore?: number
   size?: 'sm' | 'md' | 'lg'
+  animate?: boolean
+  showLabel?: boolean
 }
 
 function getScoreColor(score: number): string {
@@ -22,9 +26,41 @@ function getScoreLabel(score: number): string {
   return 'Needs Care'
 }
 
-export default function SkinHealthScore({ score, previousScore, size = 'md' }: SkinHealthScoreProps) {
+export default function SkinHealthScore({
+  score,
+  previousScore,
+  size = 'md',
+  animate = false,
+  showLabel = true,
+}: SkinHealthScoreProps) {
+  const [displayScore, setDisplayScore] = useState(animate ? 0 : score)
   const color = getScoreColor(score)
   const label = getScoreLabel(score)
+
+  // Animate score counting up
+  useEffect(() => {
+    if (!animate) {
+      setDisplayScore(score)
+      return
+    }
+
+    const duration = 1500
+    const steps = 60
+    const increment = score / steps
+    let current = 0
+
+    const interval = setInterval(() => {
+      current += increment
+      if (current >= score) {
+        setDisplayScore(score)
+        clearInterval(interval)
+      } else {
+        setDisplayScore(Math.round(current))
+      }
+    }, duration / steps)
+
+    return () => clearInterval(interval)
+  }, [score, animate])
 
   // Calculate trend
   const trend = previousScore !== undefined ? score - previousScore : 0
@@ -42,7 +78,7 @@ export default function SkinHealthScore({ score, previousScore, size = 'md' }: S
   // SVG circle calculations
   const radius = 45
   const circumference = 2 * Math.PI * radius
-  const progress = (score / 100) * circumference
+  const progress = (displayScore / 100) * circumference
   const offset = circumference - progress
 
   return (
@@ -76,7 +112,7 @@ export default function SkinHealthScore({ score, previousScore, size = 'md' }: S
         {/* Score text in center */}
         <div className="absolute inset-0 flex flex-col items-center justify-center">
           <span className={`${sizeConfig.text} font-semibold text-[#1C4444]`}>
-            {score}
+            {displayScore}
           </span>
           {previousScore !== undefined && trend !== 0 && (
             <div className={`flex items-center gap-0.5 ${trend > 0 ? 'text-green-600' : 'text-red-500'}`}>
@@ -96,9 +132,11 @@ export default function SkinHealthScore({ score, previousScore, size = 'md' }: S
       </div>
 
       {/* Label below */}
-      <span className={`mt-2 ${sizeConfig.label} font-medium`} style={{ color }}>
-        {label}
-      </span>
+      {showLabel && (
+        <span className={`mt-2 ${sizeConfig.label} font-medium`} style={{ color }}>
+          {label}
+        </span>
+      )}
     </div>
   )
 }
