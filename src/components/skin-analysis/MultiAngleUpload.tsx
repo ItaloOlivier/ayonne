@@ -83,6 +83,8 @@ export default function MultiAngleUpload({
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
   const [countdown, setCountdown] = useState<number | null>(null)
   const [useUploadMode, setUseUploadMode] = useState(false)
+  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false)
+  const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied' | 'unknown'>('unknown')
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -97,7 +99,38 @@ export default function MultiAngleUpload({
     }
   }, [cameraStream])
 
-  const startCamera = useCallback(async () => {
+  // Check camera permission state
+  const checkCameraPermission = useCallback(async (): Promise<'prompt' | 'granted' | 'denied'> => {
+    try {
+      // Try the Permissions API first (not available on all browsers)
+      if (navigator.permissions && navigator.permissions.query) {
+        const result = await navigator.permissions.query({ name: 'camera' as PermissionName })
+        return result.state as 'prompt' | 'granted' | 'denied'
+      }
+    } catch {
+      // Permissions API not supported or error - that's okay
+    }
+    // Default to 'prompt' if we can't determine the state
+    return 'prompt'
+  }, [])
+
+  // Handle the initial camera button click - show permission prompt
+  const handleCameraButtonClick = useCallback(async () => {
+    const permission = await checkCameraPermission()
+    setPermissionState(permission)
+
+    if (permission === 'granted') {
+      // Already have permission, start camera directly
+      startCameraDirectly()
+    } else {
+      // Show permission explanation prompt
+      setShowPermissionPrompt(true)
+    }
+  }, [checkCameraPermission])
+
+  // Start camera directly (after permission granted or user clicks "Allow Camera")
+  const startCameraDirectly = useCallback(async () => {
+    setShowPermissionPrompt(false)
     setCameraError(null)
     setIsCameraActive(true)
 
@@ -116,6 +149,7 @@ export default function MultiAngleUpload({
       })
 
       setCameraStream(stream)
+      setPermissionState('granted')
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
@@ -123,10 +157,14 @@ export default function MultiAngleUpload({
       }
     } catch (err) {
       console.error('Camera error:', err)
+      setPermissionState('denied')
       setCameraError('Unable to access camera. Please check permissions.')
       setIsCameraActive(false)
     }
   }, [facingMode, cameraStream])
+
+  // Alias for compatibility with retakePhoto
+  const startCamera = startCameraDirectly
 
   const stopCamera = useCallback(() => {
     if (cameraStream) {
@@ -654,7 +692,7 @@ export default function MultiAngleUpload({
             </div>
           )}
         </div>
-      ) : !isCameraActive && !cameraError ? (
+      ) : !isCameraActive && !cameraError && !useUploadMode ? (
         /* Start camera button */
         <div className="text-center space-y-6 animate-elegant-fade-in">
           <div className="card-luxury p-8 space-y-6">
@@ -693,10 +731,17 @@ export default function MultiAngleUpload({
           </div>
 
           <button
-            onClick={startCamera}
+            onClick={handleCameraButtonClick}
             className="btn-primary btn-luxury w-full py-4 text-sm tracking-widest"
           >
             Open Camera
+          </button>
+
+          <button
+            onClick={() => setUseUploadMode(true)}
+            className="text-[#1C4444]/70 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
+          >
+            Upload Photo Instead
           </button>
 
           <button
@@ -706,7 +751,81 @@ export default function MultiAngleUpload({
             Cancel
           </button>
         </div>
-      ) : isCameraActive && (
+      ) : null}
+
+      {/* Camera Permission Request Modal */}
+      {showPermissionPrompt && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
+          <div className="bg-white rounded-2xl shadow-2xl max-w-sm mx-4 overflow-hidden animate-elegant-fade-in">
+            {/* Header with camera icon */}
+            <div className="bg-gradient-to-br from-[#1C4444] to-[#1C4444]/90 p-6 text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
+                <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                </svg>
+              </div>
+              <h3 className="text-white text-xl font-light tracking-wide">Camera Access Needed</h3>
+            </div>
+
+            {/* Content */}
+            <div className="p-6 space-y-4">
+              <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
+                To analyze your skin accurately, we need to capture photos of your face from multiple angles.
+              </p>
+
+              {permissionState === 'denied' ? (
+                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
+                  <p className="text-amber-800 text-sm text-center">
+                    <strong>Camera access was denied.</strong> Please enable camera permissions in your browser settings, then try again.
+                  </p>
+                </div>
+              ) : (
+                <div className="bg-[#F4EBE7]/50 rounded-lg p-4 space-y-2">
+                  <p className="text-[#1C4444]/70 text-xs text-center">
+                    When prompted, tap <strong>&quot;Allow&quot;</strong> to enable camera access.
+                  </p>
+                </div>
+              )}
+
+              {/* Privacy note */}
+              <div className="flex items-center justify-center gap-2 text-[#1C4444]/50 text-xs">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                </svg>
+                <span>Your photos are analyzed securely and privately</span>
+              </div>
+            </div>
+
+            {/* Actions */}
+            <div className="p-4 pt-0 space-y-3">
+              <button
+                onClick={startCameraDirectly}
+                className="w-full py-3 px-6 bg-[#1C4444] text-white rounded-lg font-medium tracking-wide hover:bg-[#1C4444]/90 transition-colors uppercase text-sm"
+              >
+                {permissionState === 'denied' ? 'Try Again' : 'Allow Camera Access'}
+              </button>
+              <button
+                onClick={() => {
+                  setShowPermissionPrompt(false)
+                  setUseUploadMode(true)
+                }}
+                className="w-full py-3 px-6 border-2 border-[#1C4444]/20 text-[#1C4444] rounded-lg font-medium tracking-wide hover:border-[#1C4444]/40 hover:bg-[#1C4444]/5 transition-colors uppercase text-sm"
+              >
+                Upload Photo Instead
+              </button>
+              <button
+                onClick={() => setShowPermissionPrompt(false)}
+                className="w-full py-2 text-[#1C4444]/50 hover:text-[#1C4444] text-sm transition-colors"
+              >
+                Cancel
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {isCameraActive && (
         <div className="relative">
           {/* Smart Auto-Capture Mode (with quality monitoring) */}
           {FEATURES.SMART_AUTO_CAPTURE ? (
