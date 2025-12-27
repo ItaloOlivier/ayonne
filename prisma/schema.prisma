@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model Product {
+  id          String      @id @default(cuid())
+  name        String
+  slug        String      @unique
+  description String      @db.Text
+  price       Decimal     @db.Decimal(10, 2)
+  salePrice   Decimal?    @db.Decimal(10, 2)
+  images      String[]
+  category    String
+  collection  String
+  ingredients String?     @db.Text
+  benefits    String?     @db.Text
+  howToUse    String?     @db.Text
+  inStock     Boolean     @default(true)
+  featured    Boolean     @default(false)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  orderItems  OrderItem[]
+  cartItems   CartItem[]
+}
+
+model Collection {
+  id          String  @id @default(cuid())
+  name        String
+  slug        String  @unique
+  description String?
+  image       String?
+}
+
+model Customer {
+  id            String         @id @default(cuid())
+  email         String         @unique
+  password      String
+  firstName     String?
+  lastName      String?
+  orders        Order[]
+  cart          Cart?
+  skinAnalyses  SkinAnalysis[]
+  createdAt     DateTime       @default(now())
+}
+
+model Cart {
+  id         String     @id @default(cuid())
+  customerId String?    @unique
+  customer   Customer?  @relation(fields: [customerId], references: [id])
+  sessionId  String?    @unique
+  items      CartItem[]
+  createdAt  DateTime   @default(now())
+  updatedAt  DateTime   @updatedAt
+}
+
+model CartItem {
+  id        String  @id @default(cuid())
+  cartId    String
+  cart      Cart    @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int     @default(1)
+
+  @@unique([cartId, productId])
+}
+
+model Order {
+  id              String      @id @default(cuid())
+  orderNumber     String      @unique
+  customerId      String?
+  customer        Customer?   @relation(fields: [customerId], references: [id])
+  email           String
+  status          OrderStatus @default(PENDING)
+  subtotal        Decimal     @db.Decimal(10, 2)
+  tax             Decimal     @db.Decimal(10, 2)
+  shipping        Decimal     @db.Decimal(10, 2)
+  total           Decimal     @db.Decimal(10, 2)
+  shippingAddress Json
+  billingAddress  Json
+  stripeSessionId String?
+  items           OrderItem[]
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+  quantity  Int
+  price     Decimal @db.Decimal(10, 2)
+  name      String
+}
+
+enum OrderStatus {
+  PENDING
+  PAID
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+  REFUNDED
+}
+
+model Admin {
+  id       String @id @default(cuid())
+  email    String @unique
+  password String
+  name     String
+}
+
+model SkinAnalysis {
+  id              String    @id @default(cuid())
+  sessionId       String?   // For anonymous users
+  customerId      String?   // For logged-in users
+  customer        Customer? @relation(fields: [customerId], references: [id])
+
+  originalImage   String    // URL to uploaded image
+  agedImage       String?   // URL to AI-generated aged image
+
+  skinType        String?   // oily, dry, combination, normal, sensitive
+  conditions      Json      // Array of detected conditions with confidence scores
+
+  recommendations Json?     // Product recommendations based on analysis
+  advice          Json?     // Skincare advice/tips
+
+  status          AnalysisStatus @default(PENDING)
+  errorMessage    String?   // If analysis failed, store error message
+
+  createdAt       DateTime  @default(now())
+  updatedAt       DateTime  @updatedAt
+
+  @@index([sessionId])
+  @@index([customerId])
+}
+
+enum AnalysisStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}

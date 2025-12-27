@@ -1,0 +1,106 @@
+@import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&display=swap');
+
+:root {
+  --background: #F4EBE7;
+  --foreground: #1C4444;
+  --accent: #1C4444;
+  --muted: rgba(28, 68, 68, 0.75);
+  --button-bg: #1C4444;
+  --button-text: #FFFFFF;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-accent: var(--accent);
+  --color-muted: var(--muted);
+  --font-sans: 'IBM Plex Sans', sans-serif;
+}
+
+body {
+  background: var(--background);
+  color: var(--muted);
+  font-family: 'IBM Plex Sans', sans-serif;
+  font-size: 1rem;
+  line-height: 1.6;
+  letter-spacing: 0.06rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: var(--foreground);
+  font-weight: 400;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+button {
+  cursor: pointer;
+}
+
+.btn-primary {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--button-bg);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: transparent;
+  color: var(--button-bg);
+}
+
+.btn-secondary {
+  background-color: transparent;
+  color: var(--button-bg);
+  padding: 0.75rem 1.5rem;
+  border: 1px solid var(--button-bg);
+  font-size: 0.875rem;
+  font-weight: 400;
+  letter-spacing: 0.1rem;
+  text-transform: uppercase;
+  transition: all 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background-color: var(--button-bg);
+  color: var(--button-text);
+}
+
+input, textarea, select {
+  border: 1px solid rgba(28, 68, 68, 0.55);
+  background: transparent;
+  padding: 0.75rem 1rem;
+  font-size: 1rem;
+  color: var(--foreground);
+  width: 100%;
+}
+
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--foreground);
+}
+
+.container {
+  max-width: 120rem;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+@media (min-width: 768px) {
+  .container {
+    padding: 0 2rem;
+  }
+}
