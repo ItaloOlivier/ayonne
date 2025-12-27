@@ -82,13 +82,29 @@ Respond ONLY with valid JSON, no other text:
     }
 
     try {
-      const parsed = JSON.parse(content)
+      // Clean up the response - remove markdown code blocks if present
+      let jsonContent = content.trim()
+
+      // Remove ```json and ``` markers if present
+      if (jsonContent.startsWith('```json')) {
+        jsonContent = jsonContent.slice(7)
+      } else if (jsonContent.startsWith('```')) {
+        jsonContent = jsonContent.slice(3)
+      }
+
+      if (jsonContent.endsWith('```')) {
+        jsonContent = jsonContent.slice(0, -3)
+      }
+
+      jsonContent = jsonContent.trim()
+
+      const parsed = JSON.parse(jsonContent)
       return {
         skinType: parsed.skinType as SkinType,
         conditions: parsed.conditions || [],
       }
-    } catch {
-      console.error('Failed to parse AI response:', content)
+    } catch (parseError) {
+      console.error('Failed to parse AI response:', content, parseError)
       return getSmartFallbackAnalysis()
     }
   } catch (error) {
