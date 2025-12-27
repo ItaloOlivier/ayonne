@@ -5,27 +5,27 @@ import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 
 export default function Footer() {
   return (
-    <footer className="bg-[#F4EBE7]">
+    <footer className="bg-gradient-to-b from-[#F4EBE7] to-[#F4EBE7]/95">
       {/* Main Footer Content */}
-      <div className="border-t border-[#1C4444]/10">
-        <div className="container mx-auto px-4 lg:px-8 py-12">
-          <div className="grid md:grid-cols-3 gap-8 max-w-4xl mx-auto text-center md:text-left">
+      <div className="border-t border-[#1C4444]/8">
+        <div className="container mx-auto px-4 lg:px-8 py-16">
+          <div className="grid md:grid-cols-3 gap-12 max-w-4xl mx-auto text-center md:text-left">
             {/* AI Analyzer */}
             <div>
-              <h3 className="text-lg font-medium text-[#1C4444] mb-4">AI Skin Analyzer</h3>
-              <ul className="space-y-2 text-sm text-[#1C4444]/70">
+              <h3 className="text-lg font-medium text-[#1C4444] mb-5 tracking-wide">AI Skin Analyzer</h3>
+              <ul className="space-y-3 text-sm text-[#1C4444]/70">
                 <li>
-                  <Link href="/skin-analysis" className="hover:text-[#1C4444] transition-colors">
+                  <Link href="/skin-analysis" className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide">
                     Start Analysis
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pages/about" className="hover:text-[#1C4444] transition-colors">
+                  <Link href="/pages/about" className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide">
                     About Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pages/faq" className="hover:text-[#1C4444] transition-colors">
+                  <Link href="/pages/faq" className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide">
                     FAQ
                   </Link>
                 </li>
@@ -34,14 +34,14 @@ export default function Footer() {
 
             {/* Shop */}
             <div>
-              <h3 className="text-lg font-medium text-[#1C4444] mb-4">Shop Ayonne</h3>
-              <ul className="space-y-2 text-sm text-[#1C4444]/70">
+              <h3 className="text-lg font-medium text-[#1C4444] mb-5 tracking-wide">Shop Ayonne</h3>
+              <ul className="space-y-3 text-sm text-[#1C4444]/70">
                 <li>
                   <a
                     href={SHOPIFY_STORE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#1C4444] transition-colors inline-flex items-center gap-1"
+                    className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide inline-flex items-center gap-1"
                   >
                     All Products
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -54,7 +54,7 @@ export default function Footer() {
                     href={`${SHOPIFY_STORE_URL}/collections/anti-aging-serums`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#1C4444] transition-colors inline-flex items-center gap-1"
+                    className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide inline-flex items-center gap-1"
                   >
                     Anti-Aging Serums
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -67,7 +67,7 @@ export default function Footer() {
                     href={`${SHOPIFY_STORE_URL}/collections/moisturizers`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#1C4444] transition-colors inline-flex items-center gap-1"
+                    className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide inline-flex items-center gap-1"
                   >
                     Moisturizers
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -80,15 +80,15 @@ export default function Footer() {
 
             {/* Support */}
             <div>
-              <h3 className="text-lg font-medium text-[#1C4444] mb-4">Support</h3>
-              <ul className="space-y-2 text-sm text-[#1C4444]/70">
+              <h3 className="text-lg font-medium text-[#1C4444] mb-5 tracking-wide">Support</h3>
+              <ul className="space-y-3 text-sm text-[#1C4444]/70">
                 <li>
-                  <Link href="/pages/contact" className="hover:text-[#1C4444] transition-colors">
+                  <Link href="/pages/contact" className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide">
                     Contact Us
                   </Link>
                 </li>
                 <li>
-                  <Link href="/pages/shipping" className="hover:text-[#1C4444] transition-colors">
+                  <Link href="/pages/shipping" className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide">
                     Shipping Info
                   </Link>
                 </li>
@@ -97,7 +97,7 @@ export default function Footer() {
                     href={`${SHOPIFY_STORE_URL}/policies/refund-policy`}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="hover:text-[#1C4444] transition-colors inline-flex items-center gap-1"
+                    className="hover:text-[#1C4444] transition-all duration-300 hover:tracking-wide inline-flex items-center gap-1"
                   >
                     Return Policy
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -112,17 +112,17 @@ export default function Footer() {
       </div>
 
       {/* Bottom Section */}
-      <div className="border-t border-[#1C4444]/10">
-        <div className="container mx-auto px-4 lg:px-8 py-6">
-          <div className="flex flex-col items-center gap-4">
+      <div className="border-t border-[#1C4444]/8">
+        <div className="container mx-auto px-4 lg:px-8 py-8">
+          <div className="flex flex-col items-center gap-5">
             {/* Copyright & Links */}
-            <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[#1C4444]/70 text-sm">
+            <div className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[#1C4444]/60 text-sm tracking-wide">
               <span>&copy; {new Date().getFullYear()}, Ayonne</span>
-              <span className="hidden sm:inline">|</span>
-              <Link href="/policies/privacy-policy" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+              <span className="hidden sm:inline text-[#1C4444]/30">|</span>
+              <Link href="/policies/privacy-policy" className="hover:text-[#1C4444] transition-all duration-300">
                 Privacy Policy
               </Link>
-              <Link href="/policies/terms-of-service" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+              <Link href="/policies/terms-of-service" className="hover:text-[#1C4444] transition-all duration-300">
                 Terms of Service
               </Link>
             </div>
@@ -132,7 +132,7 @@ export default function Footer() {
               href={SHOPIFY_STORE_URL}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 text-[#1C4444] text-sm hover:underline"
+              className="inline-flex items-center gap-2 text-[#1C4444] text-sm font-medium tracking-wide hover:text-[#D4AF37] transition-all duration-300"
             >
               Shop at ayonne.skin
               <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">

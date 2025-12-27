@@ -46,13 +46,13 @@ export default function Header() {
   return (
     <>
       {/* Announcement Bar */}
-      <div className="bg-[#1C4444] text-white text-center py-2 px-4">
-        <p className="text-xs md:text-sm">
-          Get personalized skincare recommendations with our AI Skin Analyzer
+      <div className="bg-[#1C4444] text-white text-center py-2.5 px-4">
+        <p className="text-xs md:text-sm tracking-wide">
+          Discover your personalized skincare journey with our <span className="font-medium">AI Skin Analyzer</span>
         </p>
       </div>
 
-      <header className="sticky top-0 z-50 bg-[#F4EBE7]">
+      <header className="sticky top-0 z-50 bg-[#F4EBE7]/95 backdrop-blur-md shadow-luxury">
         {/* Main Header Row */}
         <div className="border-b border-[#1C4444]/10">
           <div className="container mx-auto px-4 lg:px-8">
@@ -128,7 +128,7 @@ export default function Header() {
                   href={SHOPIFY_STORE_URL}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="hidden sm:flex items-center gap-2 bg-[#1C4444] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1C4444]/90 transition-colors"
+                  className="hidden sm:flex items-center gap-2 bg-[#1C4444] text-white text-sm px-5 py-2.5 rounded-lg hover:bg-[#1C4444]/90 transition-all duration-300 shadow-sm hover:shadow-md btn-luxury"
                 >
                   <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
@@ -163,24 +163,26 @@ export default function Header() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden sm:block border-b border-[#1C4444]/10">
+        <div className="hidden sm:block border-b border-[#1C4444]/8">
           <div className="container mx-auto px-4 lg:px-8">
-            <nav className="py-3">
-              <ul className="flex items-center justify-center gap-x-8">
+            <nav className="py-4">
+              <ul className="flex items-center justify-center gap-x-10">
                 <li>
                   <Link
                     href="/"
-                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all"
+                    className="text-[#1C4444] text-sm uppercase tracking-widest font-normal hover:text-[#1C4444]/70 transition-all duration-300 relative group"
                   >
                     Home
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#1C4444] transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
                 <li>
                   <Link
                     href="/skin-analysis"
-                    className="text-[#1C4444] text-sm uppercase tracking-wide font-medium hover:underline underline-offset-4 transition-all"
+                    className="text-[#1C4444] text-sm uppercase tracking-widest font-medium hover:text-[#1C4444]/70 transition-all duration-300 relative group"
                   >
                     AI Skin Analysis
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#D4AF37] transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
                 {isLoggedIn && (
@@ -188,23 +190,25 @@ export default function Header() {
                     <li>
                       <Link
                         href="/skin-analysis/history"
-                        className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1.5"
+                        className="text-[#1C4444] text-sm uppercase tracking-widest font-normal hover:text-[#1C4444]/70 transition-all duration-300 inline-flex items-center gap-1.5 relative group"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
                         </svg>
                         My Progress
+                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#1C4444] transition-all duration-300 group-hover:w-full" />
                       </Link>
                     </li>
                     <li>
                       <Link
                         href="/my-recommendations"
-                        className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1.5"
+                        className="text-[#1C4444] text-sm uppercase tracking-widest font-normal hover:text-[#1C4444]/70 transition-all duration-300 inline-flex items-center gap-1.5 relative group"
                       >
                         <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                           <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                         </svg>
                         My Recommendations
+                        <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#1C4444] transition-all duration-300 group-hover:w-full" />
                       </Link>
                     </li>
                   </>
@@ -214,20 +218,22 @@ export default function Header() {
                     href={SHOPIFY_STORE_URL}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1"
+                    className="text-[#1C4444] text-sm uppercase tracking-widest font-normal hover:text-[#1C4444]/70 transition-all duration-300 inline-flex items-center gap-1 relative group"
                   >
                     Shop Products
                     <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
                     </svg>
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#1C4444] transition-all duration-300 group-hover:w-full" />
                   </a>
                 </li>
                 <li>
                   <Link
                     href="/pages/about"
-                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all"
+                    className="text-[#1C4444] text-sm uppercase tracking-widest font-normal hover:text-[#1C4444]/70 transition-all duration-300 relative group"
                   >
                     About
+                    <span className="absolute -bottom-1 left-0 w-0 h-px bg-[#1C4444] transition-all duration-300 group-hover:w-full" />
                   </Link>
                 </li>
               </ul>

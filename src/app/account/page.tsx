@@ -73,21 +73,24 @@ export default function AccountPage() {
 
   if (isLoading) {
     return (
-      <div className="min-h-screen bg-[#F4EBE7] flex items-center justify-center">
-        <div className="w-8 h-8 border-4 border-[#1C4444] border-t-transparent rounded-full animate-spin" />
+      <div className="min-h-screen bg-gradient-to-b from-[#F4EBE7] to-[#F4EBE7]/95 flex items-center justify-center">
+        <div className="flex flex-col items-center gap-4">
+          <div className="w-10 h-10 border-3 border-[#1C4444] border-t-transparent rounded-full animate-spin" />
+          <p className="text-[#1C4444]/50 text-sm tracking-wide">Loading your profile...</p>
+        </div>
       </div>
     )
   }
 
   return (
-    <div className="min-h-screen bg-[#F4EBE7]">
+    <div className="min-h-screen bg-gradient-to-b from-[#F4EBE7] to-[#F4EBE7]/95">
       {/* Header */}
-      <section className="py-8 md:py-12">
+      <section className="py-10 md:py-14">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="flex items-center justify-between mb-8">
+          <div className="flex items-center justify-between mb-10">
             <Link
               href="/"
-              className="inline-flex items-center text-[#1C4444]/60 hover:text-[#1C4444] transition-colors"
+              className="inline-flex items-center text-[#1C4444]/50 hover:text-[#1C4444] transition-all duration-300 tracking-wide text-sm"
             >
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
@@ -96,7 +99,7 @@ export default function AccountPage() {
             </Link>
             <button
               onClick={handleLogout}
-              className="inline-flex items-center text-[#1C4444]/60 hover:text-red-600 transition-colors"
+              className="inline-flex items-center text-[#1C4444]/50 hover:text-red-500 transition-all duration-300 tracking-wide text-sm"
             >
               <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
@@ -106,10 +109,13 @@ export default function AccountPage() {
           </div>
 
           <div className="max-w-4xl mx-auto">
-            <h1 className="text-3xl md:text-4xl font-normal text-[#1C4444] mb-2">
+            <p className="text-sm uppercase tracking-[0.25em] text-[#D4AF37] mb-3">
+              Your Profile
+            </p>
+            <h1 className="text-3xl md:text-4xl font-light text-[#1C4444] mb-3 tracking-tight">
               My Account
             </h1>
-            <p className="text-[#1C4444]/60">
+            <p className="text-[#1C4444]/55 leading-relaxed">
               Manage your profile and view your skin analysis history
             </p>
           </div>
@@ -117,47 +123,47 @@ export default function AccountPage() {
       </section>
 
       {/* Content */}
-      <section className="pb-16 md:pb-24">
+      <section className="pb-20 md:pb-28">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
             {/* Profile Card */}
-            <div className="bg-white rounded-xl p-6 md:p-8">
-              <div className="flex items-start justify-between mb-6">
+            <div className="card-luxury p-8 md:p-10">
+              <div className="flex items-start justify-between mb-8">
                 <div>
-                  <h2 className="text-xl font-medium text-[#1C4444] mb-1">
+                  <h2 className="text-xl font-medium text-[#1C4444] mb-2 tracking-wide">
                     Profile Information
                   </h2>
-                  <p className="text-[#1C4444]/60 text-sm">
+                  <p className="text-[#1C4444]/50 text-sm">
                     Your account details
                   </p>
                 </div>
-                <div className="w-16 h-16 bg-[#1C4444] text-white rounded-full flex items-center justify-center text-2xl font-light">
+                <div className="w-18 h-18 bg-gradient-to-br from-[#1C4444] to-[#1C4444]/90 text-white rounded-full flex items-center justify-center text-2xl font-light shadow-luxury">
                   {customer?.firstName?.[0]?.toUpperCase() || 'U'}
                 </div>
               </div>
 
-              <div className="grid md:grid-cols-2 gap-6">
+              <div className="grid md:grid-cols-2 gap-8">
                 <div>
-                  <label className="block text-sm text-[#1C4444]/50 mb-1">Name</label>
-                  <p className="text-[#1C4444] font-medium">
+                  <label className="block text-xs uppercase tracking-widest text-[#1C4444]/40 mb-2">Name</label>
+                  <p className="text-[#1C4444] font-medium text-lg">
                     {customer?.firstName} {customer?.lastName || ''}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm text-[#1C4444]/50 mb-1">Email</label>
-                  <p className="text-[#1C4444] font-medium">
+                  <label className="block text-xs uppercase tracking-widest text-[#1C4444]/40 mb-2">Email</label>
+                  <p className="text-[#1C4444] font-medium text-lg">
                     {customer?.email}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm text-[#1C4444]/50 mb-1">Phone</label>
-                  <p className="text-[#1C4444] font-medium">
+                  <label className="block text-xs uppercase tracking-widest text-[#1C4444]/40 mb-2">Phone</label>
+                  <p className="text-[#1C4444] font-medium text-lg">
                     {customer?.phone || 'Not provided'}
                   </p>
                 </div>
                 <div>
-                  <label className="block text-sm text-[#1C4444]/50 mb-1">Member Since</label>
-                  <p className="text-[#1C4444] font-medium">
+                  <label className="block text-xs uppercase tracking-widest text-[#1C4444]/40 mb-2">Member Since</label>
+                  <p className="text-[#1C4444] font-medium text-lg">
                     {customer?.createdAt ? formatDate(customer.createdAt) : '-'}
                   </p>
                 </div>
@@ -165,34 +171,34 @@ export default function AccountPage() {
             </div>
 
             {/* Stats Card */}
-            <div className="bg-white rounded-xl p-6 md:p-8">
-              <h2 className="text-xl font-medium text-[#1C4444] mb-6">
+            <div className="card-luxury p-8 md:p-10">
+              <h2 className="text-xl font-medium text-[#1C4444] mb-8 tracking-wide">
                 Your Skin Journey
               </h2>
-              <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                <div className="text-center p-4 bg-[#F4EBE7] rounded-lg">
-                  <p className="text-3xl font-light text-[#1C4444] mb-1">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-5">
+                <div className="text-center p-6 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#1C4444]/5">
+                  <p className="text-3xl font-light text-[#1C4444] mb-2">
                     {analyses.length}
                   </p>
-                  <p className="text-sm text-[#1C4444]/60">Total Analyses</p>
+                  <p className="text-xs uppercase tracking-widest text-[#1C4444]/50">Total Analyses</p>
                 </div>
-                <div className="text-center p-4 bg-[#F4EBE7] rounded-lg">
-                  <p className="text-3xl font-light text-[#1C4444] mb-1">
+                <div className="text-center p-6 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#1C4444]/5">
+                  <p className="text-3xl font-light text-[#1C4444] mb-2">
                     {analyses[0]?.skinType || '-'}
                   </p>
-                  <p className="text-sm text-[#1C4444]/60">Current Skin Type</p>
+                  <p className="text-xs uppercase tracking-widest text-[#1C4444]/50">Skin Type</p>
                 </div>
-                <div className="text-center p-4 bg-[#F4EBE7] rounded-lg">
-                  <p className="text-3xl font-light text-[#1C4444] mb-1">
+                <div className="text-center p-6 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#1C4444]/5">
+                  <p className="text-3xl font-light text-[#1C4444] mb-2">
                     {analyses[0]?.conditions?.length || 0}
                   </p>
-                  <p className="text-sm text-[#1C4444]/60">Active Concerns</p>
+                  <p className="text-xs uppercase tracking-widest text-[#1C4444]/50">Concerns</p>
                 </div>
-                <div className="text-center p-4 bg-[#F4EBE7] rounded-lg">
-                  <p className="text-3xl font-light text-[#1C4444] mb-1">
+                <div className="text-center p-6 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#1C4444]/5">
+                  <p className="text-3xl font-light text-[#1C4444] mb-2">
                     {analyses.length > 0 ? formatDate(analyses[0].createdAt).split(',')[0] : '-'}
                   </p>
-                  <p className="text-sm text-[#1C4444]/60">Last Analysis</p>
+                  <p className="text-xs uppercase tracking-widest text-[#1C4444]/50">Last Analysis</p>
                 </div>
               </div>
             </div>

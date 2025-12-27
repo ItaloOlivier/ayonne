@@ -22,9 +22,19 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    if (!password || password.length < 6) {
+    // NIST recommends minimum 8 characters for passwords
+    if (!password || password.length < 8) {
       return NextResponse.json(
-        { error: 'Password must be at least 6 characters' },
+        { error: 'Password must be at least 8 characters' },
+        { status: 400 }
+      )
+    }
+
+    // Basic email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
+    if (!emailRegex.test(email.trim())) {
+      return NextResponse.json(
+        { error: 'Please enter a valid email address' },
         { status: 400 }
       )
     }
