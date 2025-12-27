@@ -1,6 +1,5 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
-import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
 import AnalysisResults from '@/components/skin-analysis/AnalysisResults'
 import ProductRecommendations from '@/components/skin-analysis/ProductRecommendations'
@@ -138,12 +137,12 @@ export default async function ResultsPage({ params }: PageProps) {
               {/* Your Photo */}
               <div className="bg-white rounded-xl p-6">
                 <h3 className="text-lg font-medium text-[#1C4444] mb-4">Your Photo</h3>
-                <div className="relative aspect-square max-w-md mx-auto rounded-lg overflow-hidden">
-                  <Image
+                <div className="relative aspect-square max-w-md mx-auto rounded-lg overflow-hidden bg-[#F4EBE7]">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={analysis.originalImage}
                     alt="Your uploaded photo"
-                    fill
-                    className="object-cover"
+                    className="w-full h-full object-cover"
                   />
                 </div>
               </div>
