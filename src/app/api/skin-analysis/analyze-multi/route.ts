@@ -151,8 +151,8 @@ async function analyzeSkinWithAIMultiAngle(
   const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
 
   if (!ANTHROPIC_API_KEY) {
-    console.warn('Anthropic API key not configured, using smart fallback analysis')
-    return getSmartFallbackAnalysis()
+    console.error('ANTHROPIC_API_KEY not configured - skin analysis requires this key')
+    throw new Error('AI analysis unavailable: ANTHROPIC_API_KEY not configured')
   }
 
   try {
