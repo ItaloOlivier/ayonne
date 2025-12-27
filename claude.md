@@ -1,100 +1,157 @@
-# Ayonne E-Commerce Project
+# Ayonne AI Skin Analyzer
 
 ## Project Overview
 
-This is a Next.js 16 e-commerce platform for Ayonne skincare products, replicating the original Shopify store at ayonne.skin.
+This is a Next.js 16 AI Skin Analyzer that works alongside the main Ayonne Shopify store at ayonne.skin. Users upload a photo, receive AI-powered skin analysis, and get personalized product recommendations that link directly to the Shopify store for checkout.
+
+## Architecture
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│                     Hybrid Architecture                          │
+├─────────────────────────────────────────────────────────────────┤
+│                                                                  │
+│  ┌──────────────────────┐         ┌──────────────────────┐      │
+│  │   AI Skin Analyzer   │         │    Shopify Store     │      │
+│  │   (ai.ayonne.skin)   │◄───────►│   (ayonne.skin)      │      │
+│  │                      │         │                      │      │
+│  │  • Photo upload      │         │  • Product catalog   │      │
+│  │  • AI analysis       │         │  • Shopping cart     │      │
+│  │  • Recommendations   │         │  • Checkout/Payment  │      │
+│  │  • Customer accounts │         │  • Order fulfillment │      │
+│  └──────────────────────┘         └──────────────────────┘      │
+│           │                                                      │
+│           ▼                                                      │
+│  ┌──────────────────────┐                                       │
+│  │   Railway + Postgres  │                                       │
+│  │   Anthropic Claude    │                                       │
+│  │   Vercel Blob         │                                       │
+│  └──────────────────────┘                                       │
+│                                                                  │
+└─────────────────────────────────────────────────────────────────┘
+```
 
 ## Tech Stack
 
 - **Framework**: Next.js 16 (App Router)
 - **Database**: PostgreSQL with Prisma ORM
+- **AI Analysis**: Anthropic Claude API (image analysis)
+- **Image Storage**: Vercel Blob
 - **Styling**: Tailwind CSS 4
-- **State Management**: Zustand (cart persistence)
 - **Language**: TypeScript
-- **Deployment**: Railway
+- **Deployment**: Railway (ai.ayonne.skin)
+- **E-commerce**: Shopify (ayonne.skin) - external
 
 ## Project Structure
 
 ```
 src/
-├── app/                    # Next.js App Router pages
-│   ├── api/               # API routes (checkout, search, skin-analysis)
-│   ├── cart/              # Shopping cart page
-│   ├── checkout/          # Multi-step checkout flow
-│   ├── collections/[slug] # Product collection pages
-│   ├── pages/             # Static pages (about, contact, faq, shipping)
-│   ├── policies/          # Policy pages (refund, privacy, terms)
-│   ├── products/[slug]    # Product detail pages
-│   └── skin-analysis/     # AI Skin Analysis feature
+├── app/
+│   ├── api/
+│   │   └── skin-analysis/
+│   │       ├── analyze/      # AI skin analysis endpoint
+│   │       ├── history/      # User analysis history
+│   │       └── trends/       # Skin health trends
+│   ├── skin-analysis/
+│   │   ├── page.tsx          # Upload photo page
+│   │   └── results/[id]/     # Analysis results page
+│   └── page.tsx              # Homepage (AI analyzer focused)
 ├── components/
-│   ├── cart/              # CartDrawer
-│   ├── layout/            # Header, Footer, Navigation, SearchModal
-│   ├── product/           # ProductCard, AddToCartButton
-│   └── skin-analysis/     # ImageUpload, AgedFaceComparison
+│   ├── layout/               # Header, Footer, Navigation
+│   └── skin-analysis/
+│       ├── ImageUpload.tsx
+│       ├── AnalysisResults.tsx
+│       ├── ProductRecommendations.tsx  # Multi-select checkout
+│       ├── SkincareAdvice.tsx
+│       ├── SkinHealthScore.tsx
+│       └── HistoryCard.tsx
 ├── lib/
-│   ├── prisma.ts          # Prisma client singleton
-│   ├── utils.ts           # Utility functions (formatPrice, cn, etc.)
-│   ├── stripe.ts          # Stripe configuration (prepared)
-│   └── skin-analysis/     # AI analysis logic
-├── store/
-│   └── cart.ts            # Zustand cart store
+│   ├── prisma.ts             # Prisma client singleton
+│   ├── shopify.ts            # Shopify URL helpers
+│   ├── utils.ts              # Utility functions
+│   └── skin-analysis/
+│       ├── conditions.ts     # Skin condition definitions
+│       ├── recommendations.ts # Product matching logic
+│       └── advice.ts         # Personalized skincare tips
 └── types/
-    └── index.ts           # TypeScript interfaces
+    └── index.ts
 ```
 
-## Key Files
+## Key Features
 
-- `prisma/schema.prisma` - Database schema (Product, Order, Customer, Cart, etc.)
-- `prisma/seed-data.json` - Product catalog data
-- `src/app/layout.tsx` - Root layout with Header/Footer
-- `src/app/page.tsx` - Homepage with hero, collections, featured products
-- `src/store/cart.ts` - Cart state management with localStorage persistence
+### AI Skin Analysis
+- Upload photo via camera or file
+- Claude AI analyzes for skin type and conditions
+- Detects: fine lines, wrinkles, dark spots, acne, dryness, oiliness, redness, dullness, large pores, uneven texture, dark circles, dehydration
+- Smart fallback with varied results if AI unavailable
+
+### Product Recommendations
+- Matches products to detected skin conditions
+- Multi-select product cards with checkboxes
+- "Checkout on Ayonne" button adds all selected to Shopify cart
+- Shows total price for selected products
+- Products link directly to Shopify store
+
+### User Accounts
+- Email/password registration
+- One free analysis per day
+- Analysis history tracking
+- Skin health trends over time
+
+## Shopify Integration
+
+All product purchases happen on the main Shopify store. This app provides:
+
+```typescript
+// src/lib/shopify.ts
+export const SHOPIFY_STORE_URL = 'https://ayonne.skin'
+
+// Single product link
+getShopifyProductUrl(slug) → https://ayonne.skin/products/{slug}
+
+// Multi-product cart (for bulk checkout)
+// Format: /cart/product-1:1,product-2:1,product-3:1
+getCartUrl() → https://ayonne.skin/cart/{slug1}:1,{slug2}:1
+```
+
+## API Routes
+
+- `POST /api/skin-analysis/analyze` - Analyze uploaded image (requires customerId)
+- `GET /api/skin-analysis/history` - Get user's analysis history
+- `GET /api/skin-analysis/trends` - Get skin health trends
+
+## Database Models
+
+- **Customer**: email, password, skinAnalyses
+- **SkinAnalysis**: sessionId, customerId, originalImage, skinType, conditions, recommendations, advice, status
+- **Product**: name, slug, description, price, images, skinConcerns (for matching)
+
+## Environment Variables
+
+```
+DATABASE_URL=           # PostgreSQL connection string
+ANTHROPIC_API_KEY=      # Claude API for skin analysis
+BLOB_READ_WRITE_TOKEN=  # Vercel Blob for image storage
+```
+
+## Development Commands
+
+```bash
+npm run dev             # Start dev server
+npm run build           # Production build
+npx prisma studio       # Database GUI
+npx prisma db push      # Push schema to database
+```
 
 ## Design System
 
 - **Primary Background**: #F4EBE7 (warm beige)
 - **Primary Color**: #1C4444 (dark teal)
 - **Font**: IBM Plex Sans
-- **Button Styles**: `.btn-primary`, `.btn-secondary` (defined in globals.css)
+- **Button Styles**: `.btn-primary`, `.btn-secondary`
 
-## Database Models
+## Deployment
 
-- **Product**: name, slug, description, price, salePrice, images, category, collection
-- **Collection**: name, slug, description
-- **Order**: orderNumber, status, items, shipping/billing addresses
-- **Customer**: email, password, orders
-- **Cart/CartItem**: session-based or customer-linked cart
-
-## API Routes
-
-- `POST /api/checkout` - Create order
-- `GET /api/products/search?q=` - Product search
-- `POST /api/skin-analysis/analyze` - AI skin analysis
-
-## Development Commands
-
-```bash
-npm run dev          # Start dev server
-npm run build        # Production build
-npx prisma studio    # Database GUI
-npx prisma migrate dev  # Run migrations
-npx ts-node prisma/seed.ts  # Seed products
-```
-
-## Environment Variables
-
-```
-DATABASE_URL=        # PostgreSQL connection string
-NEXTAUTH_SECRET=     # Auth secret
-NEXTAUTH_URL=        # App URL
-```
-
-## Features
-
-- Product catalog with 8 collections
-- Shopping cart with quantity controls
-- Free shipping over $50
-- Multi-step checkout (information → payment)
-- Product search with debounced API calls
-- AI Skin Analysis feature
-- Responsive mobile-first design
+- **Platform**: Railway
+- **Domain**: ai.ayonne.skin
+- **Auto-deploy**: On push to main branch
