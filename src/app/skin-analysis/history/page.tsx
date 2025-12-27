@@ -7,8 +7,6 @@ import ProgressTimeline from '@/components/skin-analysis/ProgressTimeline'
 import TrendChart from '@/components/skin-analysis/TrendChart'
 import SkinHealthScore, { calculateHealthScore } from '@/components/skin-analysis/SkinHealthScore'
 
-const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
-
 interface DetectedCondition {
   id: string
   name: string
@@ -35,7 +33,7 @@ type Period = 'week' | 'month' | '3months' | 'all'
 
 export default function HistoryPage() {
   const router = useRouter()
-  const [customerId, setCustomerId] = useState<string | null>(null)
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean | null>(null)
   const [analyses, setAnalyses] = useState<Analysis[]>([])
   const [trends, setTrends] = useState<TrendData | null>(null)
   const [isLoading, setIsLoading] = useState(true)
@@ -45,19 +43,28 @@ export default function HistoryPage() {
   const [hasMore, setHasMore] = useState(false)
   const [period, setPeriod] = useState<Period>('month')
 
-  // Get customer ID from localStorage
+  // Check if user is authenticated via cookie
   useEffect(() => {
-    const storedId = localStorage.getItem(CUSTOMER_STORAGE_KEY)
-    if (!storedId) {
-      router.push('/skin-analysis')
-      return
+    const checkAuth = async () => {
+      try {
+        const response = await fetch('/api/auth/me')
+        if (response.ok) {
+          setIsAuthenticated(true)
+        } else {
+          setIsAuthenticated(false)
+          router.push('/login?redirect=/skin-analysis/history')
+        }
+      } catch {
+        setIsAuthenticated(false)
+        router.push('/login?redirect=/skin-analysis/history')
+      }
     }
-    setCustomerId(storedId)
+    checkAuth()
   }, [router])
 
   // Fetch history
   const fetchHistory = useCallback(async (pageNum: number, append: boolean = false) => {
-    if (!customerId) return
+    if (!isAuthenticated) return
 
     try {
       if (append) {
@@ -67,7 +74,7 @@ export default function HistoryPage() {
       }
 
       const response = await fetch(
-        `/api/skin-analysis/history?customerId=${customerId}&page=${pageNum}&limit=10`
+        `/api/skin-analysis/history?page=${pageNum}&limit=10`
       )
       const data = await response.json()
 
@@ -88,15 +95,15 @@ export default function HistoryPage() {
       setIsLoading(false)
       setIsLoadingMore(false)
     }
-  }, [customerId])
+  }, [isAuthenticated])
 
   // Fetch trends
   const fetchTrends = useCallback(async () => {
-    if (!customerId) return
+    if (!isAuthenticated) return
 
     try {
       const response = await fetch(
-        `/api/skin-analysis/trends?customerId=${customerId}&period=${period}`
+        `/api/skin-analysis/trends?period=${period}`
       )
       const data = await response.json()
 
@@ -106,22 +113,22 @@ export default function HistoryPage() {
     } catch (err) {
       console.error('Failed to fetch trends:', err)
     }
-  }, [customerId, period])
+  }, [isAuthenticated, period])
 
   // Initial fetch
   useEffect(() => {
-    if (customerId) {
+    if (isAuthenticated) {
       fetchHistory(1)
       fetchTrends()
     }
-  }, [customerId, fetchHistory, fetchTrends])
+  }, [isAuthenticated, fetchHistory, fetchTrends])
 
   // Refetch trends when period changes
   useEffect(() => {
-    if (customerId) {
+    if (isAuthenticated) {
       fetchTrends()
     }
-  }, [period, customerId, fetchTrends])
+  }, [period, isAuthenticated, fetchTrends])
 
   const handleLoadMore = () => {
     fetchHistory(page + 1, true)
@@ -135,7 +142,7 @@ export default function HistoryPage() {
     ? calculateHealthScore((analyses[1].conditions as DetectedCondition[]) || [])
     : undefined
 
-  if (isLoading && !customerId) {
+  if (isAuthenticated === null) {
     return (
       <div className="min-h-screen bg-[#F4EBE7] flex items-center justify-center">
         <div className="w-8 h-8 border-4 border-[#1C4444] border-t-transparent rounded-full animate-spin" />

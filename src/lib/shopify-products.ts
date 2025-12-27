@@ -63,7 +63,7 @@ export const SHOPIFY_PRODUCT_MAP: Record<string, ShopifyProduct> = {
   'anti-aging-rose-gold-oil': {
     handle: 'anti-aging-rose-gold-oil-1',
     variantId: '53383867007324',
-    imageUrl: 'https://ayonne.skin/cdn/shop/files/0002-2966083111382356424.png?v=1744873844&width=800',
+    imageUrl: 'https://cdn.shopify.com/s/files/1/0853/5257/9420/files/0002-2966083111382356424.png?v=1744873844',
     title: 'Anti-aging Rose Gold Oil',
   },
   'hydration-serum': {
