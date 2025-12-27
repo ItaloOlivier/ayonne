@@ -4,9 +4,6 @@ import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
-const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
-const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
-
 export default function LoginPage() {
   const router = useRouter()
   const [email, setEmail] = useState('')
@@ -32,10 +29,7 @@ export default function LoginPage() {
         throw new Error(data.error || 'Login failed')
       }
 
-      // Store customer ID and data
-      localStorage.setItem(CUSTOMER_STORAGE_KEY, data.customer.id)
-      localStorage.setItem(CUSTOMER_DATA_KEY, JSON.stringify(data.customer))
-
+      // Cookie is set automatically by the API
       // Redirect to skin analysis page
       router.push('/skin-analysis')
     } catch (err) {

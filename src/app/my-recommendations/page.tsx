@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
-import { getShopifyProductInfo, buildShopifyCartUrl } from '@/lib/shopify-products'
+import { getShopifyProduct, buildShopifyCartUrl } from '@/lib/shopify-products'
 
 interface Product {
   id: string
@@ -220,7 +220,7 @@ export default function MyRecommendationsPage() {
                   <>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
                       {latestAnalysis.recommendations.map((product: RecommendedProduct) => {
-                        const shopifyInfo = getShopifyProductInfo(product.slug)
+                        const shopifyInfo = getShopifyProduct(product.slug)
                         const imageUrl = shopifyInfo?.imageUrl || product.images?.[0] || '/images/products/placeholder.jpg'
                         const isSelected = selectedProducts.has(product.slug)
 

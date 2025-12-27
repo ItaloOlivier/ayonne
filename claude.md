@@ -49,7 +49,9 @@ src/
 ├── app/
 │   ├── api/
 │   │   ├── auth/
-│   │   │   └── login/        # Login API endpoint
+│   │   │   ├── login/        # Login API endpoint (sets session cookie)
+│   │   │   ├── logout/       # Logout API endpoint (clears session cookie)
+│   │   │   └── me/           # Get current user from cookie
 │   │   └── skin-analysis/
 │   │       ├── analyze/      # AI skin analysis endpoint
 │   │       ├── history/      # User analysis history
@@ -80,6 +82,7 @@ src/
 │       └── PersonalizedDashboard.tsx # User dashboard with goals
 ├── lib/
 │   ├── prisma.ts             # Prisma client singleton
+│   ├── auth.ts               # Session cookie utilities (HTTP-only cookies)
 │   ├── shopify.ts            # Shopify URL helpers
 │   ├── shopify-products.ts   # Product image/variant ID mapping
 │   ├── utils.ts              # Utility functions
@@ -111,14 +114,16 @@ src/
 - Shows total price for selected products
 - Products link directly to Shopify store
 
-### User Accounts
+### User Accounts & Cross-Device Sessions
 - Email/password registration with bcrypt hashing
 - Login page at `/login`
 - Account/profile page at `/account`
 - Analysis history tracking
 - Skin health trends over time
 - Logout functionality in header
-- Customer data stored in localStorage (`ayonne_customer_id`, `ayonne_customer_data`)
+- **HTTP-only session cookies** for cross-device authentication (30-day expiry)
+- Users can log in on phone and laptop to access the same data
+- Session managed server-side via `/api/auth/me` endpoint
 
 ### Gamification & Engagement
 - **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
@@ -158,8 +163,13 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 
 ## API Routes
 
-- `POST /api/auth/login` - User login with email/password
-- `POST /api/skin-analysis/signup` - User registration
+### Authentication
+- `POST /api/auth/login` - Login with email/password (sets HTTP-only session cookie)
+- `POST /api/auth/logout` - Logout (clears session cookie)
+- `GET /api/auth/me` - Get current authenticated user from cookie
+
+### Skin Analysis
+- `POST /api/skin-analysis/signup` - User registration (sets session cookie)
 - `POST /api/skin-analysis/analyze` - Analyze uploaded image (requires customerId)
 - `GET /api/skin-analysis/history` - Get user's analysis history
 - `GET /api/skin-analysis/trends` - Get skin health trends
@@ -169,7 +179,9 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 
 - **Customer**: email, password, skinAnalyses
 - **SkinAnalysis**: sessionId, customerId, originalImage, skinType, conditions, recommendations, advice, status
-- **Product**: name, slug, description, price, images, skinConcerns (for matching)
+- **Product**: name, slug, shopifySlug, description, price, images, skinConcerns, active (for matching)
+  - `shopifySlug`: The actual Shopify product handle for linking (may differ from local slug)
+  - `active`: Whether product exists on Shopify (filters inactive products from recommendations)
 
 ## Environment Variables
 

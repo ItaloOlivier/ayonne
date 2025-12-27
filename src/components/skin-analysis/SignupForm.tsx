@@ -3,18 +3,8 @@
 import { useState } from 'react'
 import Link from 'next/link'
 
-interface CustomerData {
-  id: string
-  email: string
-  firstName: string
-  lastName: string | null
-  phone: string | null
-  createdAt: string
-  analysisCount: number
-}
-
 interface SignupFormProps {
-  onSuccess: (customerId: string, customerData: CustomerData) => void
+  onSuccess: (customerId: string) => void
   onCancel: () => void
   isLoading?: boolean
 }
@@ -101,18 +91,8 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
         return
       }
 
-      // Create customer data object
-      const customerData: CustomerData = {
-        id: data.customerId,
-        email: formData.email.toLowerCase().trim(),
-        firstName: formData.firstName.trim(),
-        lastName: formData.lastName?.trim() || null,
-        phone: formData.phone?.trim() || null,
-        createdAt: new Date().toISOString(),
-        analysisCount: 0,
-      }
-
-      onSuccess(data.customerId, customerData)
+      // Cookie is set automatically by the API
+      onSuccess(data.customerId)
     } catch (error) {
       console.error('Signup error:', error)
       setErrors({ general: 'Something went wrong. Please try again.' })

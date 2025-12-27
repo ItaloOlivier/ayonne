@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { setSessionCookie } from '@/lib/auth'
 import * as bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -55,8 +56,8 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Return customer data (without password)
-    return NextResponse.json({
+    // Create response with customer data
+    const response = NextResponse.json({
       success: true,
       customer: {
         id: customer.id,
@@ -68,6 +69,12 @@ export async function POST(request: NextRequest) {
         analysisCount: customer._count.skinAnalyses,
       }
     })
+
+    // Set HTTP-only session cookie for cross-device persistence
+    const cookieData = setSessionCookie(customer.id)
+    response.cookies.set(cookieData.name, cookieData.value, cookieData.options as Parameters<typeof response.cookies.set>[2])
+
+    return response
   } catch (error) {
     console.error('Login error:', error)
     return NextResponse.json(

@@ -8,20 +8,6 @@ import SignupForm from '@/components/skin-analysis/SignupForm'
 
 type Step = 'upload' | 'signup' | 'analyzing'
 
-// Helper to get/set customer ID from localStorage
-const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
-const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
-
-function getStoredCustomerId(): string | null {
-  if (typeof window === 'undefined') return null
-  return localStorage.getItem(CUSTOMER_STORAGE_KEY)
-}
-
-function setStoredCustomerId(customerId: string) {
-  if (typeof window === 'undefined') return
-  localStorage.setItem(CUSTOMER_STORAGE_KEY, customerId)
-}
-
 export default function SkinAnalysisPage() {
   const router = useRouter()
   const [step, setStep] = useState<Step>('upload')
@@ -31,31 +17,23 @@ export default function SkinAnalysisPage() {
   const [storedCustomerId, setStoredCustomerIdState] = useState<string | null>(null)
   const [isCheckingUser, setIsCheckingUser] = useState(true)
 
-  // Check for existing user on mount
+  // Check for existing user on mount via cookie-based auth
   useEffect(() => {
-    const customerId = getStoredCustomerId()
-    if (customerId) {
-      // Verify the customer still exists
-      fetch(`/api/skin-analysis/verify-customer?id=${customerId}`)
-        .then(res => res.json())
-        .then(data => {
-          if (data.valid) {
-            setStoredCustomerIdState(customerId)
-          } else {
-            // Clear invalid customer ID
-            localStorage.removeItem(CUSTOMER_STORAGE_KEY)
-          }
-        })
-        .catch(() => {
-          // On error, keep the ID but let the analysis endpoint validate it
-          setStoredCustomerIdState(customerId)
-        })
-        .finally(() => {
-          setIsCheckingUser(false)
-        })
-    } else {
-      setIsCheckingUser(false)
-    }
+    fetch('/api/auth/me')
+      .then(res => res.json())
+      .then(data => {
+        if (data.authenticated && data.customer) {
+          setStoredCustomerIdState(data.customer.id)
+        } else {
+          setStoredCustomerIdState(null)
+        }
+      })
+      .catch(() => {
+        setStoredCustomerIdState(null)
+      })
+      .finally(() => {
+        setIsCheckingUser(false)
+      })
   }, [])
 
   const handleImageSelect = (file: File) => {
@@ -116,11 +94,9 @@ export default function SkinAnalysisPage() {
     }
   }
 
-  const handleSignupSuccess = async (customerId: string, customerData: { id: string; email: string; firstName: string; lastName: string | null; phone: string | null; createdAt: string; analysisCount: number }) => {
-    // Store the customer ID and data for future visits
-    setStoredCustomerId(customerId)
+  const handleSignupSuccess = async (customerId: string) => {
+    // Cookie is set automatically by the register API
     setStoredCustomerIdState(customerId)
-    localStorage.setItem(CUSTOMER_DATA_KEY, JSON.stringify(customerData))
 
     // Run the analysis
     runAnalysis(customerId)
