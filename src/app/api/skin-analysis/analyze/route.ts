@@ -238,25 +238,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Check for daily limit - one analysis per day per customer
-    const today = new Date()
-    today.setHours(0, 0, 0, 0)
-
-    const existingTodayAnalysis = await prisma.skinAnalysis.findFirst({
-      where: {
-        customerId: customerId,
-        createdAt: { gte: today },
-        status: { in: ['PROCESSING', 'COMPLETED'] },
-      },
-    })
-
-    if (existingTodayAnalysis) {
-      return NextResponse.json(
-        { error: 'You have already used the skin analyzer today. Please try again tomorrow.' },
-        { status: 429 }
-      )
-    }
-
     // Validate file type
     const validTypes = ['image/jpeg', 'image/png', 'image/webp']
     if (!validTypes.includes(imageFile.type)) {
