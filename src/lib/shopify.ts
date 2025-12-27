@@ -10,6 +10,8 @@ export const shopifyUrls = {
   cart: `${SHOPIFY_STORE_URL}/cart`,
   checkout: `${SHOPIFY_STORE_URL}/checkout`,
   account: `${SHOPIFY_STORE_URL}/account`,
+  // Add to cart URL - this opens Shopify with the product added to cart
+  addToCart: (slug: string) => `${SHOPIFY_STORE_URL}/cart/add?id=${slug}`,
 }
 
 // Map our collection slugs to Shopify collection handles
@@ -31,4 +33,10 @@ export function getShopifyProductUrl(slug: string): string {
 export function getShopifyCollectionUrl(slug: string): string {
   const shopifySlug = collectionMapping[slug] || slug
   return shopifyUrls.collections(shopifySlug)
+}
+
+// Get the "Add to Cart" URL - redirects to product page where user can add to cart
+// Shopify doesn't support direct add-to-cart via URL without variant ID, so we link to product page
+export function getShopifyAddToCartUrl(slug: string): string {
+  return `${SHOPIFY_STORE_URL}/products/${slug}#add-to-cart`
 }

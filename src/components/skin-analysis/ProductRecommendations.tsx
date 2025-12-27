@@ -4,6 +4,12 @@ import { useState } from 'react'
 import { formatPrice } from '@/lib/utils'
 import { getShopifyProductUrl, SHOPIFY_STORE_URL } from '@/lib/shopify'
 
+// Get product image from Shopify CDN based on product slug
+function getShopifyProductImage(slug: string): string {
+  // Shopify CDN URL pattern for product images
+  return `https://ayonne.skin/cdn/shop/files/${slug}.png`
+}
+
 interface RecommendedProduct {
   productId: string
   productName: string
@@ -22,7 +28,12 @@ interface ProductRecommendationsProps {
 function ProductCard({ rec, idx }: { rec: RecommendedProduct; idx: number }) {
   const [imageError, setImageError] = useState(false)
 
-  const showPlaceholder = !rec.productImage || imageError
+  // Try to get image from Shopify CDN, fallback to provided image
+  const imageUrl = rec.productImage && !rec.productImage.includes('placeholder')
+    ? rec.productImage
+    : getShopifyProductImage(rec.productSlug)
+
+  const showPlaceholder = imageError
 
   return (
     <div className="group border border-[#1C4444]/10 rounded-lg overflow-hidden hover:border-[#1C4444]/30 transition-colors">
@@ -41,7 +52,7 @@ function ProductCard({ rec, idx }: { rec: RecommendedProduct; idx: number }) {
           </div>
         ) : (
           <img
-            src={rec.productImage!}
+            src={imageUrl}
             alt={rec.productName}
             className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
             onError={() => setImageError(true)}
@@ -98,7 +109,7 @@ function ProductCard({ rec, idx }: { rec: RecommendedProduct; idx: number }) {
           )}
         </div>
 
-        {/* Shop on Ayonne Button */}
+        {/* Add to Cart Button */}
         <a
           href={getShopifyProductUrl(rec.productSlug)}
           target="_blank"
@@ -106,9 +117,9 @@ function ProductCard({ rec, idx }: { rec: RecommendedProduct; idx: number }) {
           className="w-full bg-[#1C4444] text-white text-sm py-2 px-4 rounded-lg hover:bg-[#1C4444]/90 transition-colors flex items-center justify-center gap-2"
         >
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
           </svg>
-          Shop on Ayonne
+          Add to Cart
         </a>
       </div>
     </div>
