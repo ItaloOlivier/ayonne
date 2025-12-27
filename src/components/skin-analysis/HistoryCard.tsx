@@ -174,11 +174,11 @@ export default function HistoryCard({ analysis, previousScore, isLatest, onDelet
         </div>
       </Link>
 
-      {/* Delete button - appears on hover */}
+      {/* Delete button - always visible on mobile, hover on desktop */}
       {onDelete && (
         <button
           onClick={handleConfirmClick}
-          className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/0 hover:bg-red-50 text-[#1C4444]/30 hover:text-red-500 opacity-0 group-hover:opacity-100 transition-all duration-200 z-5"
+          className="absolute top-2 right-2 p-1.5 rounded-lg bg-white/80 md:bg-white/0 hover:bg-red-50 text-[#1C4444]/40 hover:text-red-500 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-all duration-200 z-5"
           aria-label="Delete analysis"
           title="Delete this analysis"
         >
