@@ -28,6 +28,12 @@ model Product {
   updatedAt   DateTime    @updatedAt
   orderItems  OrderItem[]
   cartItems   CartItem[]
+
+  // Indexes for common queries
+  @@index([category])
+  @@index([collection])
+  @@index([active, featured])
+  @@index([active, category])
 }
 
 model Collection {
@@ -89,6 +95,12 @@ model Order {
   items           OrderItem[]
   createdAt       DateTime    @default(now())
   updatedAt       DateTime    @updatedAt
+
+  // Indexes for common queries
+  @@index([customerId])
+  @@index([email])
+  @@index([status])
+  @@index([createdAt])
 }
 
 model OrderItem {
@@ -142,6 +154,8 @@ model SkinAnalysis {
 
   @@index([sessionId])
   @@index([customerId])
+  @@index([customerId, status])
+  @@index([createdAt])
 }
 
 enum AnalysisStatus {
