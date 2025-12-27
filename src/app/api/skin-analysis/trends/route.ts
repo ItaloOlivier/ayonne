@@ -99,7 +99,7 @@ export async function GET(request: NextRequest) {
     const healthScores: { date: string; score: number }[] = []
 
     for (const analysis of analyses) {
-      const conditions = analysis.conditions as DetectedCondition[]
+      const conditions = (analysis.conditions as unknown as DetectedCondition[]) || []
       const dateStr = analysis.createdAt.toISOString().split('T')[0]
 
       // Calculate health score for this analysis

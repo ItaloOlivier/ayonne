@@ -98,15 +98,26 @@ export default async function ResultsPage({ params }: PageProps) {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto">
             <div className="flex items-center justify-between">
-              <Link
-                href="/skin-analysis"
-                className="inline-flex items-center text-[#1C4444]/60 hover:text-[#1C4444] transition-colors"
-              >
-                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                </svg>
-                New Analysis
-              </Link>
+              <div className="flex items-center gap-4">
+                <Link
+                  href="/skin-analysis"
+                  className="inline-flex items-center text-[#1C4444]/60 hover:text-[#1C4444] transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                  </svg>
+                  New Analysis
+                </Link>
+                <Link
+                  href="/skin-analysis/history"
+                  className="inline-flex items-center text-[#1C4444]/60 hover:text-[#1C4444] transition-colors"
+                >
+                  <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                  </svg>
+                  My Progress
+                </Link>
+              </div>
 
               <div className="text-right">
                 <p className="text-sm text-[#1C4444]/50">
@@ -161,21 +172,29 @@ export default async function ResultsPage({ params }: PageProps) {
             {/* Skincare Advice */}
             <SkincareAdvice advice={advice} />
 
-            {/* Come back tomorrow CTA */}
+            {/* Track Progress CTA */}
             <div className="bg-white rounded-xl p-6">
               <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
                 <div>
                   <h3 className="text-lg font-medium text-[#1C4444]">Track Your Progress</h3>
                   <p className="text-[#1C4444]/60 text-sm">
-                    Come back tomorrow to analyze your skin again and track improvements over time.
+                    View your skin health journey and see how your skin improves over time.
                   </p>
                 </div>
-                <Link
-                  href="/"
-                  className="btn-secondary whitespace-nowrap"
-                >
-                  Browse Products
-                </Link>
+                <div className="flex gap-3">
+                  <Link
+                    href="/skin-analysis/history"
+                    className="btn-primary whitespace-nowrap"
+                  >
+                    View My Progress
+                  </Link>
+                  <Link
+                    href="/"
+                    className="btn-secondary whitespace-nowrap"
+                  >
+                    Browse Products
+                  </Link>
+                </div>
               </div>
             </div>
 
