@@ -1,286 +1,176 @@
 import Link from 'next/link'
-import { prisma } from '@/lib/prisma'
-import ProductCard from '@/components/product/ProductCard'
-import { Product } from '@/types'
-import HeroSlideshow from '@/components/home/HeroSlideshow'
-import FeaturedProduct from '@/components/home/FeaturedProduct'
-import ReviewsCarousel from '@/components/home/ReviewsCarousel'
-import BannerSlideshow from '@/components/home/BannerSlideshow'
-import AIAppPromo from '@/components/home/AIAppPromo'
+import Image from 'next/image'
+import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 
-async function getProductsByCollection(collectionSlug: string, limit: number = 4): Promise<Product[]> {
-  try {
-    const products = await prisma.product.findMany({
-      where: { collection: collectionSlug, inStock: true },
-      take: limit,
-      orderBy: { createdAt: 'desc' },
-    })
-    return products.map(p => ({
-      ...p,
-      price: Number(p.price),
-      salePrice: p.salePrice ? Number(p.salePrice) : null,
-    }))
-  } catch (error) {
-    console.error('Error fetching products:', error)
-    return []
-  }
-}
-
-async function getFeaturedProduct(slug: string): Promise<Product | null> {
-  try {
-    const product = await prisma.product.findUnique({
-      where: { slug },
-    })
-    if (!product) return null
-    return {
-      ...product,
-      price: Number(product.price),
-      salePrice: product.salePrice ? Number(product.salePrice) : null,
-    }
-  } catch (error) {
-    console.error('Error fetching featured product:', error)
-    return null
-  }
-}
-
-// Section Banner Slides
-const hydrationBannerSlides = [
-  { image: '/images/banners/hydration-banner-1.svg', link: '/collections/moisturizers' },
-  { image: '/images/banners/hydration-banner-2.svg', link: '/collections/moisturizers' },
-  { image: '/images/banners/hydration-banner-3.svg', link: '/collections/moisturizers' },
-]
-
-const ebooksBannerSlides = [
-  { image: '/images/banners/ebooks-banner-1.svg', link: '/collections/ebooks' },
-  { image: '/images/banners/ebooks-banner-2.svg', link: '/collections/ebooks' },
-]
-
-const cleansersBannerSlides = [
-  { image: '/images/banners/cleansers-banner-1.svg', link: '/collections/cleansers' },
-  { image: '/images/banners/cleansers-banner-2.svg', link: '/collections/cleansers' },
-]
-
-const bundlesBannerSlides = [
-  { image: '/images/banners/bundles-banner.svg', link: '/collections/bundles' },
-]
-
-export default async function HomePage() {
-  const [
-    antiAgingProducts,
-    moisturizerProducts,
-    cleanserProducts,
-    ebookProducts,
-    bundleProducts,
-    featuredRoseGoldOil,
-    featuredHydrationSerum,
-    featuredEbook,
-    featuredSoap,
-    featuredBundle,
-  ] = await Promise.all([
-    getProductsByCollection('anti-aging-serums', 4),
-    getProductsByCollection('moisturizers', 4),
-    getProductsByCollection('cleansers', 4),
-    getProductsByCollection('ebooks', 4),
-    getProductsByCollection('bundles', 4),
-    getFeaturedProduct('anti-aging-rose-gold-oil'),
-    getFeaturedProduct('hydration-serum'),
-    getFeaturedProduct('100-beauty-tips-free-download'),
-    getFeaturedProduct('natural-soap-charcoal'),
-    getFeaturedProduct('biohackers-skin-longevity-bundle'),
-  ])
-
+export default function HomePage() {
   return (
     <>
-      {/* 1. Hero Slideshow */}
-      <HeroSlideshow />
-
-      {/* 2. Brand Introduction Text */}
-      <section className="py-10 md:py-14">
+      {/* Hero Section */}
+      <section className="relative bg-gradient-to-b from-[#F4EBE7] to-white py-16 md:py-24">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
-            <p className="text-lg md:text-xl lg:text-2xl font-normal text-[#1C4444] leading-relaxed">
-              Transform your skincare routine with Ayonne anti-aging serums, designed to turn back time without compromising your values. Our cruelty-free formulas are packed with powerful, skin-loving ingredients to rejuvenate your complexion and smooth fine lines. Plus, we ship directly from North America for fast delivery, so glowing skin is just around the corner. It&apos;s time to invest in a serum that&apos;s as kind to animals as it is to your skin—why wait for perfect skin when it&apos;s a serum away?
+            <h1 className="text-4xl md:text-5xl lg:text-6xl font-light text-[#1C4444] mb-6">
+              Discover Your Perfect Skincare Routine
+            </h1>
+            <p className="text-lg md:text-xl text-[#1C4444]/70 mb-8 max-w-2xl mx-auto">
+              Our AI-powered skin analyzer examines your unique skin characteristics and recommends
+              personalized products from the Ayonne collection.
             </p>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                href="/skin-analysis"
+                className="inline-flex items-center justify-center gap-2 bg-[#1C4444] text-white text-lg px-8 py-4 rounded-lg hover:bg-[#1C4444]/90 transition-colors"
+              >
+                <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                </svg>
+                Start AI Skin Analysis
+              </Link>
+              <a
+                href={SHOPIFY_STORE_URL}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 border-2 border-[#1C4444] text-[#1C4444] text-lg px-8 py-4 rounded-lg hover:bg-[#1C4444] hover:text-white transition-colors"
+              >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                </svg>
+                Shop All Products
+              </a>
+            </div>
           </div>
         </div>
       </section>
 
-      {/* 3. Anti-Aging Serums Collection */}
-      <section className="py-9 md:py-11">
+      {/* How It Works */}
+      <section className="py-16 md:py-20 bg-white">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
-              Biohack With Us And Age Smarter
-            </h2>
+          <h2 className="text-3xl md:text-4xl font-light text-[#1C4444] text-center mb-12">
+            How It Works
+          </h2>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            {/* Step 1 */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1C4444] text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-light">
+                1
+              </div>
+              <h3 className="text-xl font-medium text-[#1C4444] mb-2">Upload Your Photo</h3>
+              <p className="text-[#1C4444]/60">
+                Take a clear selfie or upload an existing photo. Our AI works best with good lighting and a front-facing view.
+              </p>
+            </div>
+            {/* Step 2 */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1C4444] text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-light">
+                2
+              </div>
+              <h3 className="text-xl font-medium text-[#1C4444] mb-2">AI Analysis</h3>
+              <p className="text-[#1C4444]/60">
+                Our advanced AI examines your skin for concerns like fine lines, texture, hydration, and more.
+              </p>
+            </div>
+            {/* Step 3 */}
+            <div className="text-center">
+              <div className="w-16 h-16 bg-[#1C4444] text-white rounded-full flex items-center justify-center mx-auto mb-4 text-2xl font-light">
+                3
+              </div>
+              <h3 className="text-xl font-medium text-[#1C4444] mb-2">Get Recommendations</h3>
+              <p className="text-[#1C4444]/60">
+                Receive personalized product recommendations from Ayonne tailored to your unique skin needs.
+              </p>
+            </div>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {antiAgingProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
+          <div className="text-center mt-12">
             <Link
-              href="/collections/anti-aging-serums"
-              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+              href="/skin-analysis"
+              className="inline-flex items-center gap-2 bg-[#1C4444] text-white px-8 py-3 rounded-lg hover:bg-[#1C4444]/90 transition-colors"
             >
-              View all
+              Try It Now - It&apos;s Free
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+              </svg>
             </Link>
           </div>
         </div>
       </section>
 
-      {/* 4. Featured Product - Rose Gold Oil */}
-      {featuredRoseGoldOil && (
-        <FeaturedProduct product={featuredRoseGoldOil} imagePosition="left" />
-      )}
-
-      {/* 5. Reviews Carousel (Judge.me style) */}
-      <ReviewsCarousel />
-
-      {/* 6. AI Skin Analysis App Promo */}
-      <AIAppPromo />
-
-      {/* 7. Hydration Banner Slideshow */}
-      <BannerSlideshow slides={hydrationBannerSlides} />
-
-      {/* 8. Featured Product - Hydration Serum */}
-      {featuredHydrationSerum && (
-        <FeaturedProduct product={featuredHydrationSerum} imagePosition="left" />
-      )}
-
-      {/* 9. Moisturizers Collection */}
-      <section className="py-9 md:py-11">
+      {/* Why Choose Ayonne */}
+      <section className="py-16 md:py-20 bg-[#F4EBE7]">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
-              Good Hydration Is Half Way To A Win!
-            </h2>
-          </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {moisturizerProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/collections/moisturizers"
-              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 10. eBooks Banner Slideshow */}
-      <BannerSlideshow slides={ebooksBannerSlides} />
-
-      {/* 11. Featured Product - eBook */}
-      {featuredEbook && (
-        <FeaturedProduct product={featuredEbook} imagePosition="left" />
-      )}
-
-      {/* 12. eBooks Collection */}
-      <section className="py-9 md:py-11">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {ebookProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/collections/ebooks"
-              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 13. Cleansers Banner Slideshow */}
-      <BannerSlideshow slides={cleansersBannerSlides} />
-
-      {/* 14. Featured Product - Natural Soap */}
-      {featuredSoap && (
-        <FeaturedProduct product={featuredSoap} imagePosition="left" />
-      )}
-
-      {/* 15. Cleansers Collection */}
-      <section className="py-9 md:py-11">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {cleanserProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/collections/cleansers"
-              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 16. Bundles Banner */}
-      <BannerSlideshow slides={bundlesBannerSlides} autoRotate={false} />
-
-      {/* 17. Featured Product - Biohacker's Bundle */}
-      {featuredBundle && (
-        <FeaturedProduct product={featuredBundle} imagePosition="left" />
-      )}
-
-      {/* 18. Bundles Collection */}
-      <section className="py-9 md:py-11">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
-            {bundleProducts.map((product) => (
-              <ProductCard key={product.id} product={product} />
-            ))}
-          </div>
-          <div className="text-center mt-8">
-            <Link
-              href="/collections/bundles"
-              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
-          </div>
-        </div>
-      </section>
-
-      {/* 19. Trust Badges */}
-      <section className="py-12 md:py-16 bg-[#1C4444]">
-        <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
-            <div className="text-white">
-              <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <h2 className="text-3xl md:text-4xl font-light text-[#1C4444] text-center mb-4">
+            Why Choose Ayonne
+          </h2>
+          <p className="text-[#1C4444]/60 text-center mb-12 max-w-2xl mx-auto">
+            Our skincare products are designed to turn back time without compromising your values.
+          </p>
+          <div className="grid md:grid-cols-4 gap-6 max-w-5xl mx-auto">
+            <div className="bg-white p-6 rounded-xl text-center">
+              <div className="w-12 h-12 mx-auto mb-4 text-[#1C4444]">
+                <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium uppercase tracking-wider">Cruelty Free</p>
+              <h3 className="font-medium text-[#1C4444] mb-2">Cruelty Free</h3>
+              <p className="text-sm text-[#1C4444]/60">Never tested on animals</p>
             </div>
-            <div className="text-white">
-              <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="bg-white p-6 rounded-xl text-center">
+              <div className="w-12 h-12 mx-auto mb-4 text-[#1C4444]">
+                <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M5 3v4M3 5h4M6 17v4m-2-2h4m5-16l2.286 6.857L21 12l-5.714 2.143L13 21l-2.286-6.857L5 12l5.714-2.143L13 3z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium uppercase tracking-wider">Vegan</p>
+              <h3 className="font-medium text-[#1C4444] mb-2">Vegan</h3>
+              <p className="text-sm text-[#1C4444]/60">100% plant-based ingredients</p>
             </div>
-            <div className="text-white">
-              <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
-                <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="bg-white p-6 rounded-xl text-center">
+              <div className="w-12 h-12 mx-auto mb-4 text-[#1C4444]">
+                <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
                 </svg>
               </div>
-              <p className="text-sm font-medium uppercase tracking-wider">Paraben Free</p>
+              <h3 className="font-medium text-[#1C4444] mb-2">Paraben Free</h3>
+              <p className="text-sm text-[#1C4444]/60">Clean, safe formulas</p>
             </div>
+            <div className="bg-white p-6 rounded-xl text-center">
+              <div className="w-12 h-12 mx-auto mb-4 text-[#1C4444]">
+                <svg className="w-full h-full" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                </svg>
+              </div>
+              <h3 className="font-medium text-[#1C4444] mb-2">Fast Shipping</h3>
+              <p className="text-sm text-[#1C4444]/60">Ships from North America</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* CTA Section */}
+      <section className="py-16 md:py-20 bg-[#1C4444]">
+        <div className="container mx-auto px-4 lg:px-8 text-center">
+          <h2 className="text-3xl md:text-4xl font-light text-white mb-4">
+            Ready to Transform Your Skin?
+          </h2>
+          <p className="text-white/70 mb-8 max-w-xl mx-auto">
+            Start your personalized skincare journey today with our free AI analysis.
+          </p>
+          <div className="flex flex-col sm:flex-row gap-4 justify-center">
+            <Link
+              href="/skin-analysis"
+              className="inline-flex items-center justify-center gap-2 bg-white text-[#1C4444] px-8 py-4 rounded-lg hover:bg-white/90 transition-colors font-medium"
+            >
+              Get Your Free Analysis
+            </Link>
+            <a
+              href={SHOPIFY_STORE_URL}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center justify-center gap-2 border-2 border-white text-white px-8 py-4 rounded-lg hover:bg-white hover:text-[#1C4444] transition-colors"
+            >
+              Visit Ayonne Store
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+              </svg>
+            </a>
           </div>
         </div>
       </section>

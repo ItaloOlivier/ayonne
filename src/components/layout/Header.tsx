@@ -3,51 +3,39 @@
 import Link from 'next/link'
 import Image from 'next/image'
 import { useState } from 'react'
-import { useCartStore } from '@/store/cart'
-import Navigation from './Navigation'
-import CartDrawer from '../cart/CartDrawer'
-import SearchModal from './SearchModal'
-import AnnouncementBar from './AnnouncementBar'
+import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 
 export default function Header() {
-  const [isSearchOpen, setIsSearchOpen] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
-  const { items, openCart } = useCartStore()
-  const itemCount = items.reduce((sum, item) => sum + item.quantity, 0)
 
   return (
     <>
       {/* Announcement Bar */}
-      <AnnouncementBar />
+      <div className="bg-[#1C4444] text-white text-center py-2 px-4">
+        <p className="text-xs md:text-sm">
+          Get personalized skincare recommendations with our AI Skin Analyzer
+        </p>
+      </div>
 
       <header className="sticky top-0 z-50 bg-[#F4EBE7]">
-        {/* Main Header Row - Search, Logo, Account/Cart */}
+        {/* Main Header Row */}
         <div className="border-b border-[#1C4444]/10">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex items-center justify-between py-4">
-              {/* Left - Search */}
+              {/* Left - Back to Shop */}
               <div className="flex-1 flex justify-start">
-                <button
-                  onClick={() => setIsSearchOpen(true)}
-                  className="p-2 text-[#1C4444] hover:opacity-70 transition-opacity"
-                  aria-label="Search"
+                <a
+                  href={SHOPIFY_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:flex items-center gap-2 text-[#1C4444] text-sm hover:opacity-70 transition-opacity"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M21 21l-5.197-5.197m0 0A7.5 7.5 0 105.196 5.196a7.5 7.5 0 0010.607 10.607z"
-                    />
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
                   </svg>
-                </button>
+                  Shop Ayonne
+                </a>
               </div>
 
               {/* Center - Logo */}
@@ -56,7 +44,7 @@ export default function Header() {
                   {!logoError ? (
                     <Image
                       src="/images/ayonne-logo.png"
-                      alt="Ayonne - Age Smarter, Glow Brighter"
+                      alt="Ayonne - AI Skin Analyzer"
                       width={180}
                       height={80}
                       className="h-16 md:h-20 w-auto"
@@ -69,67 +57,31 @@ export default function Header() {
                         AYONNE
                       </span>
                       <p className="text-[10px] text-[#1C4444]/60 tracking-widest">
-                        AGE SMARTER. GLOW BRIGHTER
+                        AI SKIN ANALYZER
                       </p>
                     </div>
                   )}
                 </Link>
               </div>
 
-              {/* Right - Account & Cart */}
+              {/* Right - Shop Button */}
               <div className="flex-1 flex justify-end items-center gap-2">
-                {/* Account */}
-                <Link
-                  href="/account"
-                  className="p-2 text-[#1C4444] hover:opacity-70 transition-opacity hidden sm:block"
-                  aria-label="Account"
+                {/* Shop on Ayonne Button */}
+                <a
+                  href={SHOPIFY_STORE_URL}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="hidden sm:flex items-center gap-2 bg-[#1C4444] text-white text-sm px-4 py-2 rounded-lg hover:bg-[#1C4444]/90 transition-colors"
                 >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z"
-                    />
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                   </svg>
-                </Link>
-
-                {/* Cart */}
-                <button
-                  onClick={openCart}
-                  className="p-2 text-[#1C4444] hover:opacity-70 transition-opacity relative"
-                  aria-label="Cart"
-                >
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth={1.5}
-                    stroke="currentColor"
-                    className="w-5 h-5"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                    />
-                  </svg>
-                  {itemCount > 0 && (
-                    <span className="absolute -top-0.5 -right-0.5 bg-[#1C4444] text-white text-[10px] min-w-[18px] h-[18px] flex items-center justify-center rounded-full font-medium">
-                      {itemCount}
-                    </span>
-                  )}
-                </button>
+                  Shop Now
+                </a>
 
                 {/* Mobile Menu Button */}
                 <button
-                  className="p-2 text-[#1C4444] lg:hidden"
+                  className="p-2 text-[#1C4444] sm:hidden"
                   onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
                   aria-label="Toggle menu"
                 >
@@ -153,26 +105,104 @@ export default function Header() {
           </div>
         </div>
 
-        {/* Desktop Navigation - Below Header */}
-        <div className="hidden lg:block border-b border-[#1C4444]/10">
+        {/* Desktop Navigation */}
+        <div className="hidden sm:block border-b border-[#1C4444]/10">
           <div className="container mx-auto px-4 lg:px-8">
-            <Navigation />
+            <nav className="py-3">
+              <ul className="flex items-center justify-center gap-x-8">
+                <li>
+                  <Link
+                    href="/"
+                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all"
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/skin-analysis"
+                    className="text-[#1C4444] text-sm uppercase tracking-wide font-medium hover:underline underline-offset-4 transition-all"
+                  >
+                    AI Skin Analysis
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href={SHOPIFY_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all inline-flex items-center gap-1"
+                  >
+                    Shop Products
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    href="/pages/about"
+                    className="text-[#1C4444] text-sm uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all"
+                  >
+                    About
+                  </Link>
+                </li>
+              </ul>
+            </nav>
           </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-b border-[#1C4444]/10 bg-[#F4EBE7]">
-            <Navigation mobile onClose={() => setIsMobileMenuOpen(false)} />
+          <div className="sm:hidden border-b border-[#1C4444]/10 bg-[#F4EBE7]">
+            <nav className="py-4 px-4">
+              <ul className="space-y-1">
+                <li>
+                  <Link
+                    href="/"
+                    className="block py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Home
+                  </Link>
+                </li>
+                <li>
+                  <Link
+                    href="/skin-analysis"
+                    className="block py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider font-medium"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    AI Skin Analysis
+                  </Link>
+                </li>
+                <li>
+                  <a
+                    href={SHOPIFY_STORE_URL}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-2 py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    Shop Products
+                    <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                    </svg>
+                  </a>
+                </li>
+                <li>
+                  <Link
+                    href="/pages/about"
+                    className="block py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                    onClick={() => setIsMobileMenuOpen(false)}
+                  >
+                    About
+                  </Link>
+                </li>
+              </ul>
+            </nav>
           </div>
         )}
       </header>
-
-      {/* Search Modal */}
-      <SearchModal isOpen={isSearchOpen} onClose={() => setIsSearchOpen(false)} />
-
-      {/* Cart Drawer */}
-      <CartDrawer />
     </>
   )
 }

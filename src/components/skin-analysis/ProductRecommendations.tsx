@@ -1,9 +1,7 @@
 'use client'
 
-import Link from 'next/link'
 import { formatPrice } from '@/lib/utils'
-import { useCartStore } from '@/store/cart'
-import { Product } from '@/types'
+import { getShopifyProductUrl, SHOPIFY_STORE_URL } from '@/lib/shopify'
 
 interface RecommendedProduct {
   productId: string
@@ -21,28 +19,8 @@ interface ProductRecommendationsProps {
 }
 
 export default function ProductRecommendations({ recommendations }: ProductRecommendationsProps) {
-  const { addItem } = useCartStore()
-
   if (recommendations.length === 0) {
     return null
-  }
-
-  const handleAddToCart = (rec: RecommendedProduct) => {
-    // Create a minimal Product object for the cart
-    const product: Product = {
-      id: rec.productId,
-      name: rec.productName,
-      slug: rec.productSlug,
-      description: '',
-      price: rec.productPrice,
-      salePrice: rec.productSalePrice,
-      images: rec.productImage ? [rec.productImage] : [],
-      category: '',
-      collection: '',
-      inStock: true,
-      featured: false,
-    }
-    addItem(product, 1)
   }
 
   return (
@@ -59,7 +37,12 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
             className="group border border-[#1C4444]/10 rounded-lg overflow-hidden hover:border-[#1C4444]/30 transition-colors"
           >
             {/* Product Image */}
-            <Link href={`/products/${rec.productSlug}`} className="block relative aspect-square bg-[#F4EBE7]">
+            <a
+              href={getShopifyProductUrl(rec.productSlug)}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="block relative aspect-square bg-[#F4EBE7]"
+            >
               {rec.productImage ? (
                 <img
                   src={rec.productImage}
@@ -87,15 +70,19 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
                   Sale
                 </div>
               )}
-            </Link>
+            </a>
 
             {/* Product Info */}
             <div className="p-4">
-              <Link href={`/products/${rec.productSlug}`}>
+              <a
+                href={getShopifyProductUrl(rec.productSlug)}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
                 <h4 className="text-[#1C4444] font-medium text-sm mb-1 line-clamp-2 group-hover:text-[#1C4444]/80">
                   {rec.productName}
                 </h4>
-              </Link>
+              </a>
 
               {/* Why recommended */}
               <p className="text-[#1C4444]/50 text-xs mb-3 line-clamp-2">
@@ -120,16 +107,18 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
                 )}
               </div>
 
-              {/* Add to Cart Button */}
-              <button
-                onClick={() => handleAddToCart(rec)}
+              {/* Shop on Ayonne Button */}
+              <a
+                href={getShopifyProductUrl(rec.productSlug)}
+                target="_blank"
+                rel="noopener noreferrer"
                 className="w-full bg-[#1C4444] text-white text-sm py-2 px-4 rounded-lg hover:bg-[#1C4444]/90 transition-colors flex items-center justify-center gap-2"
               >
                 <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
                 </svg>
-                Add to Cart
-              </button>
+                Shop on Ayonne
+              </a>
             </div>
           </div>
         ))}
@@ -137,15 +126,17 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
 
       {/* View All Products CTA */}
       <div className="mt-6 text-center">
-        <Link
-          href="/collections/all"
+        <a
+          href={SHOPIFY_STORE_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="inline-flex items-center gap-2 text-[#1C4444] font-medium hover:text-[#1C4444]/70 transition-colors"
         >
-          View All Products
+          Browse All Products on Ayonne.skin
           <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
           </svg>
-        </Link>
+        </a>
       </div>
     </div>
   )
