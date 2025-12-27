@@ -70,16 +70,24 @@ src/
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout
 │       ├── SkincareAdvice.tsx
-│       ├── SkinHealthScore.tsx
-│       └── HistoryCard.tsx
+│       ├── SkinHealthScore.tsx      # Animated circular score
+│       ├── HistoryCard.tsx
+│       ├── StreakCounter.tsx        # Fire animation streak tracking
+│       ├── AchievementBadges.tsx    # Gamification badges
+│       ├── SocialProof.tsx          # Live activity indicators
+│       ├── ScarcityIndicator.tsx    # Stock/urgency elements
+│       ├── CelebrationAnimation.tsx # Confetti/unlock effects
+│       └── PersonalizedDashboard.tsx # User dashboard with goals
 ├── lib/
 │   ├── prisma.ts             # Prisma client singleton
 │   ├── shopify.ts            # Shopify URL helpers
+│   ├── shopify-products.ts   # Product image/variant ID mapping
 │   ├── utils.ts              # Utility functions
 │   └── skin-analysis/
 │       ├── conditions.ts     # Skin condition definitions
 │       ├── recommendations.ts # Product matching logic
-│       └── advice.ts         # Personalized skincare tips
+│       ├── advice.ts         # Personalized skincare tips
+│       └── health-score.ts   # Score calculation utilities
 └── types/
     └── index.ts
 ```
@@ -108,6 +116,15 @@ src/
 - Logout functionality in header
 - Customer data stored in localStorage (`ayonne_customer_id`, `ayonne_customer_data`)
 
+### Gamification & Engagement
+- **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
+- **Achievement System**: 14+ badge types (First Steps, Week Warrior, Glow Up, Flawless, etc.)
+- **Health Score**: Animated circular progress with count-up effect, trend indicators
+- **Social Proof**: Live activity feed, user counts, ratings display
+- **Scarcity Indicators**: Stock warnings, viewer counts, countdown timers
+- **Celebration Animations**: Confetti, score-up effects, achievement unlock animations
+- **Personalized Dashboard**: Goals, progress bars, condition trends, daily reminders
+
 ## Shopify Integration
 
 All product purchases happen on the main Shopify store. This app provides:
@@ -119,9 +136,20 @@ export const SHOPIFY_STORE_URL = 'https://ayonne.skin'
 // Single product link
 getShopifyProductUrl(slug) → https://ayonne.skin/products/{slug}
 
-// Multi-product cart (for bulk checkout)
-// Format: /cart/product-1:1,product-2:1,product-3:1
-getCartUrl() → https://ayonne.skin/cart/{slug1}:1,{slug2}:1
+// src/lib/shopify-products.ts
+// Maps local slugs to Shopify variant IDs and CDN image URLs
+SHOPIFY_PRODUCT_MAP = {
+  'vitamin-c-lotion': {
+    handle: 'vitamin-c-lotion-1',
+    variantId: '53383867597148',
+    imageUrl: 'https://cdn.shopify.com/...',
+  },
+  // ... 100+ products
+}
+
+// Multi-product cart using variant IDs
+buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
+→ https://ayonne.skin/cart/53383867597148:1,53383867564380:1
 ```
 
 ## API Routes
@@ -162,6 +190,18 @@ npx prisma db push      # Push schema to database
 - **Primary Color**: #1C4444 (dark teal)
 - **Font**: IBM Plex Sans
 - **Button Styles**: `.btn-primary`, `.btn-secondary`
+
+### CSS Animations (globals.css)
+- `.animate-confetti` - Falling confetti effect
+- `.animate-bounce-in` - Scale bounce entrance
+- `.animate-score-up` - Score improvement celebration
+- `.animate-achievement-unlock` - Badge unlock with rotation
+- `.animate-sparkle` - Twinkling sparkle effect
+- `.animate-shine` - Sweeping shine effect
+- `.animate-slide-up` - Slide up entrance
+- `.animate-slide-in` - Slide in from left
+- `.animate-pulse-ring` - Expanding ring pulse
+- `.animate-float` - Gentle floating motion
 
 ## Deployment
 
