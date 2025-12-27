@@ -9,19 +9,19 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
-    name: 'BioHack: Anti-Aging Serums',
+    name: 'BioHack',
     href: '/collections/anti-aging-serums',
   },
   {
-    name: 'Hydration Station: Moisturizers',
+    name: 'Hydration Station',
     href: '/collections/moisturizers',
   },
   {
-    name: 'Squeaky Clean: Soaps & Cleansers',
+    name: 'Squeaky Clean',
     href: '/collections/cleansers',
   },
   {
-    name: 'Sunday Self-Care Rituals',
+    name: 'Self-Care',
     href: '/collections/self-care',
   },
   {
@@ -29,7 +29,7 @@ const navItems: NavItem[] = [
     href: '/collections/rise-and-glow',
   },
   {
-    name: 'Knowledge Is Beauty: eBooks',
+    name: 'eBooks',
     href: '/collections/ebooks',
   },
   {
@@ -37,7 +37,7 @@ const navItems: NavItem[] = [
     href: '/collections/mens',
   },
   {
-    name: 'Save with Bundles',
+    name: 'Bundles',
     href: '/collections/bundles',
   },
 ]
@@ -51,12 +51,12 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
   if (mobile) {
     return (
       <nav className="py-4 px-4">
-        <ul className="space-y-3">
+        <ul className="space-y-1">
           {navItems.map((item) => (
             <li key={item.name}>
               <Link
                 href={item.href}
-                className="block py-2 text-[#1C4444] hover:opacity-70 transition-opacity text-sm"
+                className="block py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider font-normal"
                 onClick={onClose}
               >
                 {item.name}
@@ -69,13 +69,13 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
   }
 
   return (
-    <nav className="flex justify-center">
-      <ul className="flex flex-wrap justify-center gap-x-6 gap-y-2">
+    <nav className="flex">
+      <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
         {navItems.map((item) => (
           <li key={item.name}>
             <Link
               href={item.href}
-              className="text-[#1C4444] text-sm hover:underline underline-offset-4 transition-all whitespace-nowrap"
+              className="text-[#1C4444] text-sm uppercase tracking-wider font-normal hover:underline underline-offset-4 transition-all whitespace-nowrap"
             >
               {item.name}
             </Link>

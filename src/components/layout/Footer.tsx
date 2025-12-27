@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState } from 'react'
 
 export default function Footer() {
@@ -19,22 +20,24 @@ export default function Footer() {
       <div className="border-t border-[#1C4444]/10">
         <div className="container mx-auto px-4 lg:px-8 py-12">
           <div className="max-w-md mx-auto text-center">
-            <h3 className="text-xl font-normal text-[#1C4444] mb-6">Subscribe to our emails</h3>
+            <h3 className="text-xl font-normal text-[#1C4444] mb-2">Subscribe to our emails</h3>
+            <p className="text-sm text-[#1C4444]/70 mb-6">Be the first to know about new collections and exclusive offers.</p>
             {subscribed ? (
-              <p className="text-[#1C4444]/70">Thank you for subscribing!</p>
+              <p className="text-[#1C4444] font-medium">Thank you for subscribing!</p>
             ) : (
-              <form onSubmit={handleSubscribe} className="flex">
+              <form onSubmit={handleSubscribe} className="flex max-w-sm mx-auto">
                 <input
                   type="email"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Email"
                   required
-                  className="flex-grow px-4 py-3 bg-transparent border border-[#1C4444]/30 text-[#1C4444] placeholder:text-[#1C4444]/50 focus:border-[#1C4444] outline-none"
+                  className="flex-grow px-4 py-3 bg-transparent border border-[#1C4444]/30 text-[#1C4444] placeholder:text-[#1C4444]/50 focus:border-[#1C4444] outline-none text-sm"
                 />
                 <button
                   type="submit"
                   className="px-4 py-3 border border-[#1C4444]/30 border-l-0 text-[#1C4444] hover:bg-[#1C4444] hover:text-white transition-colors"
+                  aria-label="Subscribe"
                 >
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
@@ -57,12 +60,11 @@ export default function Footer() {
         </div>
       </div>
 
-      {/* Bottom Section */}
+      {/* Country Selector */}
       <div className="border-t border-[#1C4444]/10">
         <div className="container mx-auto px-4 lg:px-8 py-6">
-          <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-            {/* Country Selector */}
-            <div className="flex items-center gap-2 text-[#1C4444]/70 text-sm">
+          <div className="flex justify-center">
+            <button className="flex items-center gap-2 text-[#1C4444] text-sm border border-[#1C4444]/30 px-4 py-2 hover:border-[#1C4444] transition-colors">
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 fill="none"
@@ -78,27 +80,56 @@ export default function Footer() {
                 />
               </svg>
               <span>United States | USD $</span>
-            </div>
+              <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
 
+      {/* Bottom Section */}
+      <div className="border-t border-[#1C4444]/10">
+        <div className="container mx-auto px-4 lg:px-8 py-6">
+          <div className="flex flex-col items-center gap-6">
             {/* Payment Methods */}
-            <div className="flex items-center gap-2">
-              {['amex', 'apple', 'diners', 'discover', 'jcb', 'mastercard', 'visa'].map((method) => (
-                <div
-                  key={method}
-                  className="w-10 h-6 bg-white rounded flex items-center justify-center text-[10px] uppercase text-[#1C4444]/70 border border-[#1C4444]/10"
-                >
-                  {method.slice(0, 4)}
-                </div>
-              ))}
+            <div className="flex items-center gap-2 flex-wrap justify-center">
+              <Image src="/images/payment/amex.svg" alt="American Express" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/apple-pay.svg" alt="Apple Pay" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/diners.svg" alt="Diners Club" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/discover.svg" alt="Discover" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/google-pay.svg" alt="Google Pay" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/mastercard.svg" alt="Mastercard" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/paypal.svg" alt="PayPal" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/shop-pay.svg" alt="Shop Pay" width={38} height={24} className="h-6 w-auto" />
+              <Image src="/images/payment/visa.svg" alt="Visa" width={38} height={24} className="h-6 w-auto" />
             </div>
 
             {/* Copyright & Links */}
             <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2 text-[#1C4444]/70 text-sm">
               <span>&copy; {new Date().getFullYear()}, Ayonne</span>
-              <Link href="/policies/refund-policy" className="hover:text-[#1C4444]">Refund policy</Link>
-              <Link href="/policies/privacy-policy" className="hover:text-[#1C4444]">Privacy policy</Link>
-              <Link href="/policies/terms-of-service" className="hover:text-[#1C4444]">Terms of service</Link>
+              <span className="hidden sm:inline">|</span>
+              <Link href="/policies/refund-policy" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+                Refund policy
+              </Link>
+              <Link href="/policies/privacy-policy" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+                Privacy policy
+              </Link>
+              <Link href="/policies/terms-of-service" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+                Terms of service
+              </Link>
+              <Link href="/pages/contact" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+                Contact
+              </Link>
+              <Link href="/pages/shipping" className="hover:text-[#1C4444] hover:underline underline-offset-2">
+                Shipping
+              </Link>
             </div>
+
+            {/* Powered by */}
+            <p className="text-xs text-[#1C4444]/50">
+              Powered by Ayonne
+            </p>
           </div>
         </div>
       </div>

@@ -6,9 +6,11 @@ import { Product } from '@/types'
 
 interface AddToCartButtonProps {
   product: Product
+  className?: string
+  compact?: boolean
 }
 
-export default function AddToCartButton({ product }: AddToCartButtonProps) {
+export default function AddToCartButton({ product, className, compact }: AddToCartButtonProps) {
   const [quantity, setQuantity] = useState(1)
   const [isAdding, setIsAdding] = useState(false)
   const addItem = useCartStore((state) => state.addItem)
@@ -24,8 +26,30 @@ export default function AddToCartButton({ product }: AddToCartButtonProps) {
     }, 1000)
   }
 
+  if (compact) {
+    return (
+      <button
+        onClick={handleAddToCart}
+        disabled={!product.inStock || isAdding}
+        className={`py-3 px-6 text-center text-sm uppercase tracking-wider font-normal transition-colors ${
+          product.inStock
+            ? isAdding
+              ? 'bg-green-600 text-white'
+              : 'bg-[#1C4444] text-white hover:bg-[#1C4444]/90'
+            : 'bg-[#1C4444]/30 text-white cursor-not-allowed'
+        } ${className || ''}`}
+      >
+        {!product.inStock
+          ? 'Sold Out'
+          : isAdding
+          ? 'Added!'
+          : 'Add to Cart'}
+      </button>
+    )
+  }
+
   return (
-    <div className="space-y-4">
+    <div className={`space-y-4 ${className || ''}`}>
       {/* Quantity Selector */}
       <div>
         <label htmlFor="quantity" className="block text-sm text-[#1C4444]/70 mb-2">

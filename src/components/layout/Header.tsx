@@ -7,6 +7,7 @@ import { useCartStore } from '@/store/cart'
 import Navigation from './Navigation'
 import CartDrawer from '../cart/CartDrawer'
 import SearchModal from './SearchModal'
+import AnnouncementBar from './AnnouncementBar'
 
 export default function Header() {
   const [isSearchOpen, setIsSearchOpen] = useState(false)
@@ -17,54 +18,65 @@ export default function Header() {
 
   return (
     <>
-      <header className="sticky top-0 z-50 bg-[#F4EBE7]">
-        {/* Main Header - Logo Centered */}
-        <div className="container mx-auto px-4 lg:px-8">
-          {/* Top Row - Logo Centered */}
-          <div className="flex items-center justify-center py-6 relative">
-            {/* Mobile Menu Button - Left */}
-            <button
-              className="lg:hidden absolute left-4 p-2 text-[#1C4444]"
-              onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
-              aria-label="Toggle menu"
-            >
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                strokeWidth={1.5}
-                stroke="currentColor"
-                className="w-6 h-6"
-              >
-                {isMobileMenuOpen ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
-                )}
-              </svg>
-            </button>
+      {/* Announcement Bar */}
+      <AnnouncementBar />
 
-            {/* Centered Logo */}
-            <Link href="/" className="block">
-              {!logoError ? (
-                <Image
-                  src="/images/ayonne-logo.png"
-                  alt="Ayonne"
-                  width={600}
-                  height={100}
-                  className="h-12 md:h-16 lg:h-20 w-auto"
-                  priority
-                  onError={() => setLogoError(true)}
-                />
-              ) : (
-                <span className="text-3xl md:text-4xl lg:text-5xl font-normal tracking-wider text-[#1C4444]">
-                  Ayonne
-                </span>
-              )}
-            </Link>
+      <header className="sticky top-0 z-50 bg-[#F4EBE7] border-b border-[#1C4444]/10">
+        {/* Main Header */}
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="flex items-center justify-between py-5">
+            {/* Left - Mobile Menu Button */}
+            <div className="flex items-center lg:hidden">
+              <button
+                className="p-2 -ml-2 text-[#1C4444]"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  strokeWidth={1.5}
+                  stroke="currentColor"
+                  className="w-6 h-6"
+                >
+                  {isMobileMenuOpen ? (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+                  ) : (
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                  )}
+                </svg>
+              </button>
+            </div>
+
+            {/* Desktop Navigation - Left */}
+            <div className="hidden lg:flex lg:flex-1">
+              <Navigation />
+            </div>
+
+            {/* Center - Logo */}
+            <div className="flex-shrink-0">
+              <Link href="/" className="block">
+                {!logoError ? (
+                  <Image
+                    src="/images/ayonne-logo.png"
+                    alt="Ayonne"
+                    width={220}
+                    height={60}
+                    className="h-10 md:h-12 w-auto"
+                    priority
+                    onError={() => setLogoError(true)}
+                  />
+                ) : (
+                  <span className="text-2xl md:text-3xl font-normal tracking-wider text-[#1C4444]">
+                    Ayonne
+                  </span>
+                )}
+              </Link>
+            </div>
 
             {/* Right Icons */}
-            <div className="absolute right-4 flex items-center gap-4">
+            <div className="flex items-center gap-2 lg:flex-1 lg:justify-end">
               {/* Search */}
               <button
                 onClick={() => setIsSearchOpen(true)}
@@ -115,38 +127,50 @@ export default function Header() {
                 className="p-2 text-[#1C4444] hover:opacity-70 transition-opacity relative"
                 aria-label="Cart"
               >
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  fill="none"
-                  viewBox="0 0 24 24"
-                  strokeWidth={1.5}
-                  stroke="currentColor"
-                  className="w-5 h-5"
-                >
-                  <path
-                    strokeLinecap="round"
-                    strokeLinejoin="round"
-                    d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
-                  />
-                </svg>
+                {itemCount > 0 ? (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                    />
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    fill="none"
+                    viewBox="0 0 24 24"
+                    strokeWidth={1.5}
+                    stroke="currentColor"
+                    className="w-5 h-5"
+                  >
+                    <path
+                      strokeLinecap="round"
+                      strokeLinejoin="round"
+                      d="M15.75 10.5V6a3.75 3.75 0 10-7.5 0v4.5m11.356-1.993l1.263 12c.07.665-.45 1.243-1.119 1.243H4.25a1.125 1.125 0 01-1.12-1.243l1.264-12A1.125 1.125 0 015.513 7.5h12.974c.576 0 1.059.435 1.119 1.007zM8.625 10.5a.375.375 0 11-.75 0 .375.375 0 01.75 0zm7.5 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z"
+                    />
+                  </svg>
+                )}
                 {itemCount > 0 && (
-                  <span className="absolute -top-1 -right-1 bg-[#1C4444] text-white text-xs w-5 h-5 flex items-center justify-center rounded-full">
+                  <span className="absolute -top-0.5 -right-0.5 bg-[#1C4444] text-white text-[10px] min-w-[18px] h-[18px] flex items-center justify-center rounded-full font-medium">
                     {itemCount}
                   </span>
                 )}
               </button>
             </div>
           </div>
-
-          {/* Desktop Navigation - Below Logo */}
-          <div className="hidden lg:block border-t border-[#1C4444]/10 py-3">
-            <Navigation />
-          </div>
         </div>
 
         {/* Mobile Navigation */}
         {isMobileMenuOpen && (
-          <div className="lg:hidden border-t border-[#1C4444]/10">
+          <div className="lg:hidden border-t border-[#1C4444]/10 bg-[#F4EBE7]">
             <Navigation mobile onClose={() => setIsMobileMenuOpen(false)} />
           </div>
         )}
