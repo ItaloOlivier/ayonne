@@ -19,11 +19,15 @@ async function getCollection(slug: string) {
     }
   }
 
-  const collection = await prisma.collection.findUnique({
-    where: { slug },
-  })
-
-  return collection
+  try {
+    const collection = await prisma.collection.findUnique({
+      where: { slug },
+    })
+    return collection
+  } catch (error) {
+    console.error('Error fetching collection:', error)
+    return null
+  }
 }
 
 async function getProducts(
@@ -54,37 +58,46 @@ async function getProducts(
     }
   })()
 
-  const [products, total] = await Promise.all([
-    prisma.product.findMany({
-      where,
-      orderBy,
-      skip: (page - 1) * perPage,
-      take: perPage,
-    }),
-    prisma.product.count({ where }),
-  ])
+  try {
+    const [products, total] = await Promise.all([
+      prisma.product.findMany({
+        where,
+        orderBy,
+        skip: (page - 1) * perPage,
+        take: perPage,
+      }),
+      prisma.product.count({ where }),
+    ])
 
-  return {
-    products: products.map(p => ({
-      ...p,
-      price: Number(p.price),
-      salePrice: p.salePrice ? Number(p.salePrice) : null,
-    })),
-    total,
+    return {
+      products: products.map(p => ({
+        ...p,
+        price: Number(p.price),
+        salePrice: p.salePrice ? Number(p.salePrice) : null,
+      })),
+      total,
+    }
+  } catch (error) {
+    console.error('Error fetching products:', error)
+    return { products: [], total: 0 }
   }
 }
 
 export async function generateMetadata({ params }: PageProps) {
-  const { slug } = await params
-  const collection = await getCollection(slug)
+  try {
+    const { slug } = await params
+    const collection = await getCollection(slug)
 
-  if (!collection) {
-    return { title: 'Collection Not Found' }
-  }
+    if (!collection) {
+      return { title: 'Collection Not Found' }
+    }
 
-  return {
-    title: collection.name,
-    description: collection.description,
+    return {
+      title: collection.name,
+      description: collection.description,
+    }
+  } catch {
+    return { title: 'Collection' }
   }
 }
 
