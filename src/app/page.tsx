@@ -84,9 +84,9 @@ export default async function HomePage() {
     getProductsByCollection('bundles', 4),
     getFeaturedProduct('anti-aging-rose-gold-oil'),
     getFeaturedProduct('hydration-serum'),
-    getFeaturedProduct('100-beauty-tips-ebook'),
+    getFeaturedProduct('100-beauty-tips-free-download'),
     getFeaturedProduct('natural-soap-charcoal'),
-    getFeaturedProduct('biohackers-bundle'),
+    getFeaturedProduct('biohackers-skin-longevity-bundle'),
   ])
 
   return (
