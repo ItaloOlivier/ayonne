@@ -1,10 +1,25 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { setSessionCookie } from '@/lib/auth'
+import { checkRateLimit, getClientIP, RATE_LIMITS, createRateLimitHeaders } from '@/lib/rate-limit'
 import * as bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
   try {
+    // Rate limit by IP address
+    const clientIP = getClientIP(request)
+    const rateLimitResult = checkRateLimit(`login:${clientIP}`, RATE_LIMITS.auth)
+
+    if (!rateLimitResult.success) {
+      return NextResponse.json(
+        { error: 'Too many login attempts. Please try again later.' },
+        {
+          status: 429,
+          headers: createRateLimitHeaders(rateLimitResult),
+        }
+      )
+    }
+
     const { email, password } = await request.json()
 
     // Validate required fields
