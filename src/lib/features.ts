@@ -29,6 +29,12 @@ export const FEATURES = {
    * Provides deeper reasoning for edge cases
    */
   EXTENDED_THINKING: process.env.FEATURE_EXTENDED_THINKING === 'true',
+
+  /**
+   * Enable image preprocessing for consistent quality
+   * Normalizes exposure, white balance, and contrast before AI analysis
+   */
+  IMAGE_PREPROCESSING: process.env.FEATURE_IMAGE_PREPROCESSING !== 'false', // Enabled by default
 }
 
 /**
@@ -40,5 +46,6 @@ export function logFeatureStatus(): void {
     STREAMING: FEATURES.STREAMING,
     TOOL_USE: FEATURES.TOOL_USE,
     EXTENDED_THINKING: FEATURES.EXTENDED_THINKING,
+    IMAGE_PREPROCESSING: FEATURES.IMAGE_PREPROCESSING,
   })
 }

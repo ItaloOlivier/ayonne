@@ -13,6 +13,12 @@ import {
   buildAnalysisResults,
   getSmartFallbackAnalysis,
 } from '@/lib/skin-analysis/analyzer'
+import {
+  preprocessImage,
+  validateImageQuality,
+  generateQualityReport,
+} from '@/lib/skin-analysis/image-preprocessing'
+import { FEATURES } from '@/lib/features'
 
 // Multi-angle skin analysis prompt with cross-referencing
 const MULTI_ANGLE_ANALYSIS_PROMPT = `You are a board-certified dermatologist conducting a comprehensive multi-angle skin assessment. You have been provided with THREE facial photographs from different angles for enhanced diagnostic accuracy.
@@ -265,16 +271,48 @@ export async function POST(request: NextRequest) {
 
     const sessionId = generateSessionId()
 
-    // Convert all images to buffers and base64
+    // Convert all images to buffers
     const [frontBuffer, leftBuffer, rightBuffer] = await Promise.all([
       frontImage!.arrayBuffer().then(buf => Buffer.from(buf)),
       leftImage!.arrayBuffer().then(buf => Buffer.from(buf)),
       rightImage!.arrayBuffer().then(buf => Buffer.from(buf)),
     ])
 
-    const frontBase64 = frontBuffer.toString('base64')
-    const leftBase64 = leftBuffer.toString('base64')
-    const rightBase64 = rightBuffer.toString('base64')
+    // Validate and preprocess images for consistent quality
+    const [frontValidation, leftValidation, rightValidation] = await Promise.all([
+      validateImageQuality(frontBuffer),
+      validateImageQuality(leftBuffer),
+      validateImageQuality(rightBuffer),
+    ])
+
+    // Log quality issues but don't block (just warn)
+    const allIssues = [
+      ...frontValidation.issues.map(i => `Front: ${i}`),
+      ...leftValidation.issues.map(i => `Left: ${i}`),
+      ...rightValidation.issues.map(i => `Right: ${i}`),
+    ]
+
+    if (allIssues.length > 0) {
+      console.warn('[QUALITY] Image quality issues detected:', allIssues)
+    }
+
+    // Preprocess images for optimal AI analysis
+    const [processedFront, processedLeft, processedRight] = await Promise.all([
+      preprocessImage(frontBuffer, { normalizeExposure: true, correctWhiteBalance: true }),
+      preprocessImage(leftBuffer, { normalizeExposure: true, correctWhiteBalance: true }),
+      preprocessImage(rightBuffer, { normalizeExposure: true, correctWhiteBalance: true }),
+    ])
+
+    // Log preprocessing results
+    console.log('[PREPROCESSING] Front:', generateQualityReport(
+      processedFront.originalStats,
+      processedFront.processedStats,
+      processedFront.applied
+    ))
+
+    const frontBase64 = processedFront.base64
+    const leftBase64 = processedLeft.base64
+    const rightBase64 = processedRight.base64
 
     // Create initial analysis record
     const analysis = await prisma.skinAnalysis.create({
