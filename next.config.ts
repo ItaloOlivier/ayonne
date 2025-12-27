@@ -20,7 +20,7 @@ const nextConfig: NextConfig = {
         hostname: '**.blob.vercel-storage.com',
       },
     ],
-    unoptimized: process.env.NODE_ENV === 'development',
+    unoptimized: true, // Bypass Next.js image optimization - use CDN images directly
   },
   output: 'standalone',
 };
