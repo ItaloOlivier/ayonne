@@ -48,18 +48,25 @@ This is a Next.js 16 AI Skin Analyzer that works alongside the main Ayonne Shopi
 src/
 ├── app/
 │   ├── api/
+│   │   ├── auth/
+│   │   │   └── login/        # Login API endpoint
 │   │   └── skin-analysis/
 │   │       ├── analyze/      # AI skin analysis endpoint
 │   │       ├── history/      # User analysis history
+│   │       ├── signup/       # User registration endpoint
 │   │       └── trends/       # Skin health trends
+│   ├── account/              # User account/profile page
+│   ├── login/                # Login page
 │   ├── skin-analysis/
 │   │   ├── page.tsx          # Upload photo page
+│   │   ├── history/          # Analysis history page
 │   │   └── results/[id]/     # Analysis results page
 │   └── page.tsx              # Homepage (AI analyzer focused)
 ├── components/
-│   ├── layout/               # Header, Footer, Navigation
+│   ├── layout/               # Header (with auth), Footer, Navigation
 │   └── skin-analysis/
 │       ├── ImageUpload.tsx
+│       ├── SignupForm.tsx           # User registration form
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout
 │       ├── SkincareAdvice.tsx
@@ -93,10 +100,13 @@ src/
 - Products link directly to Shopify store
 
 ### User Accounts
-- Email/password registration
-- One free analysis per day
+- Email/password registration with bcrypt hashing
+- Login page at `/login`
+- Account/profile page at `/account`
 - Analysis history tracking
 - Skin health trends over time
+- Logout functionality in header
+- Customer data stored in localStorage (`ayonne_customer_id`, `ayonne_customer_data`)
 
 ## Shopify Integration
 
@@ -116,9 +126,12 @@ getCartUrl() → https://ayonne.skin/cart/{slug1}:1,{slug2}:1
 
 ## API Routes
 
+- `POST /api/auth/login` - User login with email/password
+- `POST /api/skin-analysis/signup` - User registration
 - `POST /api/skin-analysis/analyze` - Analyze uploaded image (requires customerId)
 - `GET /api/skin-analysis/history` - Get user's analysis history
 - `GET /api/skin-analysis/trends` - Get skin health trends
+- `GET /api/skin-analysis/verify-customer` - Verify customer exists
 
 ## Database Models
 
