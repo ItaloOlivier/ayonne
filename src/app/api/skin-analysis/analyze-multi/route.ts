@@ -280,21 +280,30 @@ export async function POST(request: NextRequest) {
     const { skinType, conditions, asymmetryNotes, analysisQuality } =
       await analyzeSkinWithAIMultiAngle(frontBase64, leftBase64, rightBase64)
 
-    // Compress and upload front image as the main display image
-    const compressedFront = await compressImage(frontBuffer)
-    const storedImageUrl = await uploadImage(
-      compressedFront,
-      `skin-analysis/${customerId}-${sessionId}-front.jpg`
-    )
+    // Compress and upload all three images in parallel
+    const [compressedFront, compressedLeft, compressedRight] = await Promise.all([
+      compressImage(frontBuffer),
+      compressImage(leftBuffer),
+      compressImage(rightBuffer),
+    ])
+
+    const [frontImageUrl, leftImageUrl, rightImageUrl] = await Promise.all([
+      uploadImage(compressedFront, `skin-analysis/${customerId}-${sessionId}-front.jpg`),
+      uploadImage(compressedLeft, `skin-analysis/${customerId}-${sessionId}-left.jpg`),
+      uploadImage(compressedRight, `skin-analysis/${customerId}-${sessionId}-right.jpg`),
+    ])
 
     // Build recommendations and advice
     const { recommendations, advice } = await buildAnalysisResults(skinType, conditions)
 
-    // Update analysis record with results
+    // Update analysis record with results (all 3 images stored)
     const updatedAnalysis = await prisma.skinAnalysis.update({
       where: { id: analysis.id },
       data: {
-        originalImage: storedImageUrl,
+        originalImage: frontImageUrl, // Keep for backwards compatibility
+        frontImage: frontImageUrl,
+        leftImage: leftImageUrl,
+        rightImage: rightImageUrl,
         skinType,
         conditions: JSON.parse(JSON.stringify(conditions)),
         agedImage: null,

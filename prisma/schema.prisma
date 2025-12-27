@@ -137,7 +137,10 @@ model SkinAnalysis {
   customerId      String?   // For logged-in users
   customer        Customer? @relation(fields: [customerId], references: [id])
 
-  originalImage   String    // URL to uploaded image
+  originalImage   String    // URL to uploaded image (front view for backwards compat)
+  frontImage      String?   // URL to front view (multi-angle)
+  leftImage       String?   // URL to left profile (multi-angle)
+  rightImage      String?   // URL to right profile (multi-angle)
   agedImage       String?   // URL to AI-generated aged image
 
   skinType        String?   // oily, dry, combination, normal, sensitive

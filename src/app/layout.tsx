@@ -3,6 +3,7 @@ import { IBM_Plex_Sans } from "next/font/google"
 import "./globals.css"
 import Header from "@/components/layout/Header"
 import Footer from "@/components/layout/Footer"
+import { ToastProvider } from "@/components/ui/Toast"
 
 const ibmPlexSans = IBM_Plex_Sans({
   weight: ['400', '500', '600', '700'],
@@ -214,11 +215,13 @@ export default function RootLayout({
         />
       </head>
       <body className={`${ibmPlexSans.variable} font-sans antialiased min-h-screen flex flex-col`}>
-        <Header />
-        <main className="flex-grow">
-          {children}
-        </main>
-        <Footer />
+        <ToastProvider>
+          <Header />
+          <main className="flex-grow">
+            {children}
+          </main>
+          <Footer />
+        </ToastProvider>
       </body>
     </html>
   )

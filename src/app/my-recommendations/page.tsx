@@ -299,28 +299,108 @@ export default function MyRecommendationsPage() {
                       })}
                     </div>
 
-                    {/* Checkout Bar */}
-                    <div className="sticky bottom-0 bg-white border-t border-[#1C4444]/10 p-4 -mx-4 lg:-mx-8">
-                      <div className="container mx-auto max-w-5xl">
-                        <div className="flex items-center justify-between gap-4">
-                          <div>
-                            <p className="text-sm text-[#1C4444]/60">
-                              {selectedProducts.size} product{selectedProducts.size !== 1 ? 's' : ''} selected
-                            </p>
-                            <p className="text-xl font-medium text-[#1C4444]">
-                              Total: {formatPrice(getTotalPrice())}
-                            </p>
+                    {/* Enhanced Checkout Bar */}
+                    <div className="sticky bottom-0 bg-white border-t border-[#1C4444]/10 shadow-luxury-lg -mx-4 lg:-mx-8">
+                      <div className="container mx-auto max-w-5xl p-4">
+                        {/* Free Shipping Progress */}
+                        {selectedProducts.size > 0 && getTotalPrice() < 50 && (
+                          <div className="mb-4 p-3 bg-gradient-to-r from-[#F4EBE7] to-[#F4EBE7]/50 rounded-lg border border-[#D4AF37]/20">
+                            <div className="flex items-center gap-2 mb-2">
+                              <svg className="w-4 h-4 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8v10a2 2 0 002 2h10a2 2 0 002-2V8m-9 4h4" />
+                              </svg>
+                              <span className="text-sm text-[#1C4444] font-medium">
+                                Add {formatPrice(50 - getTotalPrice())} more for FREE shipping!
+                              </span>
+                            </div>
+                            <div className="h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
+                              <div
+                                className="h-full bg-gradient-to-r from-[#D4AF37] to-[#C9A227] rounded-full transition-all duration-500"
+                                style={{ width: `${Math.min((getTotalPrice() / 50) * 100, 100)}%` }}
+                              />
+                            </div>
                           </div>
-                          <button
-                            onClick={handleCheckout}
-                            disabled={selectedProducts.size === 0}
-                            className="btn-primary flex items-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed"
-                          >
-                            <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
-                            </svg>
-                            Checkout on Ayonne
-                          </button>
+                        )}
+
+                        {selectedProducts.size > 0 && getTotalPrice() >= 50 && (
+                          <div className="mb-4 p-3 bg-gradient-to-r from-[#1C4444]/5 to-transparent rounded-lg border border-[#1C4444]/10">
+                            <div className="flex items-center gap-2">
+                              <svg className="w-4 h-4 text-[#1C4444]" fill="currentColor" viewBox="0 0 20 20">
+                                <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                              </svg>
+                              <span className="text-sm text-[#1C4444] font-medium">
+                                You qualify for FREE shipping!
+                              </span>
+                            </div>
+                          </div>
+                        )}
+
+                        <div className="flex flex-col sm:flex-row items-center justify-between gap-4">
+                          <div className="text-center sm:text-left">
+                            {selectedProducts.size > 0 && (
+                              <>
+                                <p className="text-sm text-[#1C4444]/60">
+                                  {selectedProducts.size} personalized product{selectedProducts.size !== 1 ? 's' : ''} selected
+                                </p>
+                                <p className="text-2xl font-medium text-[#1C4444]">
+                                  {formatPrice(getTotalPrice())}
+                                </p>
+                                {/* Trust indicators */}
+                                <div className="flex items-center gap-3 mt-2">
+                                  <div className="flex items-center gap-1 text-xs text-[#1C4444]/50">
+                                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                    </svg>
+                                    <span>Secure</span>
+                                  </div>
+                                  <div className="flex items-center gap-1 text-xs text-[#1C4444]/50">
+                                    <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                                    </svg>
+                                    <span>30-Day Returns</span>
+                                  </div>
+                                </div>
+                              </>
+                            )}
+                          </div>
+
+                          {/* Premium CTA Button */}
+                          <div className="flex flex-col items-center sm:items-end gap-2">
+                            <button
+                              onClick={handleCheckout}
+                              disabled={selectedProducts.size === 0}
+                              className={`group relative inline-flex items-center justify-center gap-3 px-8 py-4 rounded-lg font-medium transition-all duration-300 overflow-hidden ${
+                                selectedProducts.size === 0
+                                  ? 'bg-[#1C4444]/20 text-[#1C4444]/50 cursor-not-allowed'
+                                  : 'bg-gradient-to-r from-[#1C4444] to-[#2D5A5A] text-white shadow-luxury hover:shadow-luxury-lg hover:scale-[1.02]'
+                              }`}
+                            >
+                              {/* Shine effect on hover */}
+                              {selectedProducts.size > 0 && (
+                                <span className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-700" />
+                              )}
+
+                              <svg className="w-5 h-5 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />
+                              </svg>
+                              <span className="relative z-10 text-base tracking-wide">
+                                {selectedProducts.size === 0 ? 'Select Your Products' : 'Complete Your Routine'}
+                              </span>
+                              {selectedProducts.size > 0 && (
+                                <svg className="w-4 h-4 relative z-10 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                                </svg>
+                              )}
+                            </button>
+                            {selectedProducts.size > 0 && (
+                              <p className="text-xs text-[#1C4444]/40 flex items-center gap-1">
+                                <svg className="w-3 h-3" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+                                </svg>
+                                Opens Ayonne.skin checkout
+                              </p>
+                            )}
+                          </div>
                         </div>
                       </div>
                     </div>

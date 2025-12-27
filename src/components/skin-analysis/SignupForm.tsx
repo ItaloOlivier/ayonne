@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 
 interface SignupFormProps {
   onSuccess: (customerId: string) => void
@@ -14,7 +15,6 @@ interface SignupFormData {
   firstName: string
   lastName: string
   email: string
-  phone: string
   password: string
 }
 
@@ -27,7 +27,6 @@ interface FormErrors {
   firstName?: string
   lastName?: string
   email?: string
-  phone?: string
   password?: string
   general?: string
 }
@@ -38,7 +37,6 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
     firstName: '',
     lastName: '',
     email: '',
-    phone: '',
     password: '',
   })
   const [loginData, setLoginData] = useState<LoginFormData>({
@@ -312,23 +310,6 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
             )}
           </div>
 
-          {/* Phone */}
-          <div>
-            <label htmlFor="phone" className="block text-sm font-medium text-[#1C4444] mb-1">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={signupData.phone}
-              onChange={handleSignupChange}
-              className="w-full px-3 py-2 border border-[#1C4444]/20 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#1C4444]/20 focus:border-[#1C4444] transition-colors"
-              placeholder="+1 (555) 000-0000"
-              disabled={submitting || isLoading}
-            />
-          </div>
-
           {/* Password */}
           <div>
             <label htmlFor="signupPassword" className="block text-sm font-medium text-[#1C4444] mb-1">
@@ -409,9 +390,17 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
 
           {/* Password */}
           <div>
-            <label htmlFor="loginPassword" className="block text-sm font-medium text-[#1C4444] mb-1">
-              Password <span className="text-red-500">*</span>
-            </label>
+            <div className="flex items-center justify-between mb-1">
+              <label htmlFor="loginPassword" className="block text-sm font-medium text-[#1C4444]">
+                Password <span className="text-red-500">*</span>
+              </label>
+              <Link
+                href="/forgot-password"
+                className="text-xs text-[#1C4444]/60 hover:text-[#D4AF37] transition-colors"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <input
               type="password"
               id="loginPassword"
