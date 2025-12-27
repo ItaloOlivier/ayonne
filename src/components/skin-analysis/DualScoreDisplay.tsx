@@ -1,7 +1,7 @@
 'use client'
 
 import { useEffect, useState, useRef } from 'react'
-import { SkinScores, getQualityColor, getSkinAgeColor } from '@/lib/skin-analysis/scoring'
+import { SkinScores, getQualityColor, getSkinAgeColor, getQualityAccessibleLabel, getSkinAgeAccessibleLabel, getCategoryAccessibleLabel } from '@/lib/skin-analysis/scoring'
 
 interface DualScoreDisplayProps {
   scores: SkinScores
@@ -98,25 +98,33 @@ export default function DualScoreDisplay({
 
   if (compact) {
     return (
-      <div className="flex gap-6">
+      <div className="flex gap-6" role="region" aria-label="Skin analysis scores">
         {/* Compact Skin Vitality */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md"
-            style={{ backgroundColor: skinAgeColor }}>
+          <div
+            className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md"
+            style={{ backgroundColor: skinAgeColor }}
+            role="img"
+            aria-label={getSkinAgeAccessibleLabel(scores.skinAge, userAge)}
+          >
             {displaySkinAge}
           </div>
           <div className="text-xs">
             <div className="text-[#1C4444]/50 font-light tracking-wide">Vitality</div>
             {showAchievable && improvement > 0 && (
-              <div className="text-[#1C4444] font-medium">→ {scores.achievableSkinAge}</div>
+              <div className="text-[#1C4444] font-medium" aria-label={`Potential vitality: ${scores.achievableSkinAge} years`}>→ {scores.achievableSkinAge}</div>
             )}
           </div>
         </div>
 
         {/* Compact Quality */}
         <div className="flex items-center gap-3">
-          <div className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md"
-            style={{ backgroundColor: qualityColor }}>
+          <div
+            className="w-11 h-11 rounded-full flex items-center justify-center text-white text-sm font-semibold shadow-md"
+            style={{ backgroundColor: qualityColor }}
+            role="img"
+            aria-label={getQualityAccessibleLabel(scores.qualityScore)}
+          >
             {displayQuality}
           </div>
           <div className="text-xs">
@@ -129,11 +137,11 @@ export default function DualScoreDisplay({
   }
 
   return (
-    <div ref={containerRef} className="grid md:grid-cols-2 gap-8">
+    <div ref={containerRef} className="grid md:grid-cols-2 gap-8" role="region" aria-label="Skin analysis results">
       {/* Skin Vitality Card - Hero Focus */}
-      <div className="bg-white rounded-2xl p-8 border border-[#1C4444]/8 shadow-sm">
+      <div className="bg-white rounded-2xl p-8 border border-[#1C4444]/8 shadow-sm" role="group" aria-labelledby="vitality-heading">
         <div className="text-center mb-6">
-          <h3 className="text-xs font-medium text-[#1C4444]/40 uppercase tracking-[0.2em] mb-1">
+          <h3 id="vitality-heading" className="text-xs font-medium text-[#1C4444]/40 uppercase tracking-[0.2em] mb-1">
             Skin Vitality
           </h3>
           <p className="text-[#1C4444]/60 text-sm font-light">
@@ -148,6 +156,8 @@ export default function DualScoreDisplay({
             <div
               className="w-24 h-24 rounded-full flex items-center justify-center text-white text-3xl font-light mx-auto mb-3 shadow-lg transition-all duration-700"
               style={{ backgroundColor: skinAgeColor }}
+              role="img"
+              aria-label={getSkinAgeAccessibleLabel(scores.skinAge, userAge)}
             >
               {displaySkinAge}
             </div>
@@ -201,9 +211,9 @@ export default function DualScoreDisplay({
       </div>
 
       {/* Skin Health Card */}
-      <div className="bg-white rounded-2xl p-8 border border-[#1C4444]/8 shadow-sm">
+      <div className="bg-white rounded-2xl p-8 border border-[#1C4444]/8 shadow-sm" role="group" aria-labelledby="health-heading">
         <div className="text-center mb-6">
-          <h3 className="text-xs font-medium text-[#1C4444]/40 uppercase tracking-[0.2em] mb-1">
+          <h3 id="health-heading" className="text-xs font-medium text-[#1C4444]/40 uppercase tracking-[0.2em] mb-1">
             Skin Health
           </h3>
           <p className="text-[#1C4444]/60 text-sm font-light">
@@ -213,8 +223,8 @@ export default function DualScoreDisplay({
 
         {/* Elegant Circular Score */}
         <div className="flex justify-center mb-8">
-          <div className="relative w-32 h-32">
-            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
+          <div className="relative w-32 h-32" role="img" aria-label={getQualityAccessibleLabel(scores.qualityScore)}>
+            <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100" aria-hidden="true">
               {/* Background circle - more subtle */}
               <circle
                 cx="50"
@@ -248,13 +258,13 @@ export default function DualScoreDisplay({
         </div>
 
         {/* Category Breakdown - Refined */}
-        <div className="space-y-3">
+        <div className="space-y-3" role="list" aria-label="Category breakdown">
           {Object.entries(scores.categories).map(([category, score]) => (
-            <div key={category} className="flex items-center gap-4">
+            <div key={category} className="flex items-center gap-4" role="listitem" aria-label={getCategoryAccessibleLabel(category, score)}>
               <span className="text-xs text-[#1C4444]/50 w-20 capitalize font-light tracking-wide">
                 {category}
               </span>
-              <div className="flex-1 h-1.5 bg-[#F4EBE7] rounded-full overflow-hidden">
+              <div className="flex-1 h-1.5 bg-[#F4EBE7] rounded-full overflow-hidden" role="progressbar" aria-valuenow={score} aria-valuemin={0} aria-valuemax={100}>
                 <div
                   className="h-full rounded-full transition-all duration-1000 ease-out"
                   style={{

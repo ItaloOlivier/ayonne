@@ -59,28 +59,34 @@ src/
 │   │       └── trends/       # Skin health trends
 │   ├── account/              # User account/profile page
 │   ├── login/                # Login page
+│   ├── forgot-password/      # Password reset request page
+│   ├── my-recommendations/   # Saved product recommendations page
 │   ├── skin-analysis/
 │   │   ├── page.tsx          # Upload photo page
 │   │   ├── history/          # Analysis history page
+│   │   ├── compare/          # Side-by-side analysis comparison
 │   │   └── results/[id]/     # Analysis results page
 │   └── page.tsx              # Homepage (AI analyzer focused)
 ├── components/
 │   ├── layout/               # Header (with auth), Footer, Navigation
+│   ├── ui/
+│   │   └── Toast.tsx         # Toast notification system with context provider
 │   └── skin-analysis/
-│       ├── MultiAngleUpload.tsx      # 3-angle photo capture (front, left, right)
-│       ├── SignupForm.tsx           # User registration form
+│       ├── MultiAngleUpload.tsx      # 3-angle photo capture with face guide overlay
+│       ├── SignupForm.tsx            # User registration form (email, name, password)
+│       ├── AnalysisProgress.tsx      # Step-by-step analysis progress indicator
 │       ├── AnalysisResults.tsx
-│       ├── ProductRecommendations.tsx  # Multi-select checkout
+│       ├── ProductRecommendations.tsx  # Multi-select checkout with sorting
 │       ├── SkincareAdvice.tsx
-│       ├── SkinHealthScore.tsx      # Animated circular score with trend
-│       ├── HistoryCard.tsx          # Compact history list cards
-│       ├── ProgressTimeline.tsx     # Analysis history list component
-│       ├── DualScoreDisplay.tsx     # Skin age + quality score display
-│       ├── StreakCounter.tsx        # Fire animation streak tracking
-│       ├── AchievementBadges.tsx    # Gamification badges
-│       ├── SocialProof.tsx          # Live activity indicators
-│       ├── ScarcityIndicator.tsx    # Stock/urgency elements
-│       ├── CelebrationAnimation.tsx # Confetti/unlock effects
+│       ├── SkinHealthScore.tsx       # Animated circular score with trend
+│       ├── HistoryCard.tsx           # Compact history list cards (accessible)
+│       ├── ProgressTimeline.tsx      # Analysis history list component
+│       ├── DualScoreDisplay.tsx      # Skin age + quality score display (accessible)
+│       ├── StreakCounter.tsx         # Fire animation streak tracking
+│       ├── AchievementBadges.tsx     # Gamification badges
+│       ├── SocialProof.tsx           # Live activity indicators
+│       ├── ScarcityIndicator.tsx     # Stock/urgency elements
+│       ├── CelebrationAnimation.tsx  # Confetti/unlock effects
 │       └── PersonalizedDashboard.tsx # User dashboard with goals
 ├── lib/
 │   ├── prisma.ts             # Prisma client singleton
@@ -149,6 +155,15 @@ src/
 - **Trend Chart**: Line graph with period selector (week/month/3months/all)
 - **History Cards**: Thumbnail + date + dual score circles (Vitality & Health)
 - **Progress Tracking**: Shows improvement since first analysis for both scores
+- **Compare Analyses**: Link to side-by-side comparison view (when 2+ analyses exist)
+
+### Analysis Comparison Page
+- **Side-by-side view**: Compare any two analyses
+- **Dropdown selectors**: Choose earlier vs later analysis
+- **Summary cards**: Health change, Vitality change, Days between
+- **Image comparison**: Photos with date badges
+- **Score comparison**: Color-coded score circles with change indicators
+- **Category breakdown**: Bar chart comparison for hydration, clarity, texture, radiance
 
 ### Gamification & Engagement
 - **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
@@ -192,6 +207,8 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 - `POST /api/auth/login` - Login with email/password (sets HTTP-only session cookie)
 - `POST /api/auth/logout` - Logout (clears session cookie)
 - `GET /api/auth/me` - Get current authenticated user from cookie
+- `POST /api/auth/forgot-password` - Request password reset email
+- `POST /api/auth/reset-password` - Reset password with token
 
 ### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)
@@ -243,7 +260,8 @@ npx prisma db push      # Push schema to database
 - **Primary Background**: #F4EBE7 (warm beige)
 - **Primary Color**: #1C4444 (dark teal)
 - **Font**: IBM Plex Sans
-- **Button Styles**: `.btn-primary`, `.btn-secondary`
+- **Button Styles**: `.btn-primary`, `.btn-secondary` (8px border-radius, flexbox centered)
+- **Button Variants**: `.btn-sm`, `.btn-lg`, `.btn-rounded` (pill shape)
 
 ### Luxury UI Components
 - `.card-luxury` - Elevated white card with subtle shadow and border
@@ -260,10 +278,11 @@ npx prisma db push      # Push schema to database
 - `.animate-achievement-unlock` - Badge unlock with rotation
 - `.animate-sparkle` - Twinkling sparkle effect
 - `.animate-shine` - Sweeping shine effect
-- `.animate-slide-up` - Slide up entrance
+- `.animate-slide-up` - Slide up entrance (toasts)
 - `.animate-slide-in` - Slide in from left
 - `.animate-pulse-ring` - Expanding ring pulse
 - `.animate-float` - Gentle floating motion
+- `.animate-scan-line` - Camera scan line for face guide
 
 ### Color Palette
 - **Primary Teal**: #1C4444 - Main brand color, buttons, text
@@ -275,6 +294,16 @@ npx prisma db push      # Push schema to database
   - Fair (55-69): #8B7355 (warm bronze)
   - Needs Attention (40-54): #A67C52 (copper)
   - Needs Care (<40): #996B4A (terracotta)
+
+### Accessibility
+- **ARIA labels**: All color-coded score elements have descriptive aria-labels
+- **Accessible functions** in `scoring.ts`:
+  - `getQualityAccessibleLabel(score)` - Descriptive label for health scores
+  - `getSkinAgeAccessibleLabel(skinAge, chronologicalAge)` - Descriptive label for vitality
+  - `getCategoryAccessibleLabel(category, score)` - Descriptive label for category bars
+- **Progress bars**: Use `role="progressbar"` with `aria-valuenow/min/max`
+- **Tooltips**: Color-coded elements have title attributes for hover context
+- **Semantic structure**: Proper headings, landmarks, and ARIA roles
 
 ## Deployment
 

@@ -484,10 +484,29 @@ export default function MultiAngleUpload({
               style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
             />
 
-            {/* Face guide overlay */}
+            {/* Face guide overlay - Enhanced with face silhouette */}
             <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              {/* Outer glow ring */}
               <div
-                className="w-[70%] h-[80%] border-2 border-white/50 rounded-[40%] transition-transform duration-300"
+                className="absolute w-[72%] h-[82%] border border-white/20 rounded-[40%] transition-transform duration-300"
+                style={{ transform: currentConfig?.silhouetteTransform || '' }}
+              />
+              {/* Main guide outline */}
+              <div
+                className="relative w-[70%] h-[80%] border-2 border-white/60 rounded-[40%] transition-transform duration-300"
+                style={{ transform: currentConfig?.silhouetteTransform || '' }}
+              >
+                {/* Face feature guides (subtle) */}
+                <div className="absolute inset-0 flex flex-col items-center justify-center">
+                  {/* Eye level line */}
+                  <div className="absolute top-[35%] left-[15%] right-[15%] border-t border-dashed border-white/20" />
+                  {/* Nose line */}
+                  <div className="absolute top-[35%] bottom-[35%] left-1/2 border-l border-dashed border-white/20" style={{ transform: 'translateX(-50%)' }} />
+                </div>
+              </div>
+              {/* Animated scan line */}
+              <div
+                className="absolute w-[68%] h-0.5 bg-gradient-to-r from-transparent via-[#D4AF37]/50 to-transparent animate-scan-line"
                 style={{ transform: currentConfig?.silhouetteTransform || '' }}
               />
             </div>

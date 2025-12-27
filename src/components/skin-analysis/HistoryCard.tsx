@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { calculateSkinScores, getQualityColor, getSkinAgeColor } from '@/lib/skin-analysis/scoring'
+import { calculateSkinScores, getQualityColor, getSkinAgeColor, getSkinAgeAccessibleLabel, getQualityAccessibleLabel } from '@/lib/skin-analysis/scoring'
 
 interface DetectedCondition {
   id: string
@@ -77,6 +77,9 @@ export default function HistoryCard({ analysis, previousScore, isLatest }: Histo
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-sm"
                 style={{ backgroundColor: getSkinAgeColor(scores.skinAge, 30) }}
+                role="img"
+                aria-label={getSkinAgeAccessibleLabel(scores.skinAge, 30)}
+                title={`Skin vitality: ${scores.skinAge} years`}
               >
                 {scores.skinAge}
               </div>
@@ -88,6 +91,9 @@ export default function HistoryCard({ analysis, previousScore, isLatest }: Histo
               <div
                 className="w-10 h-10 rounded-full flex items-center justify-center text-white text-xs font-semibold shadow-sm"
                 style={{ backgroundColor: getQualityColor(scores.qualityScore) }}
+                role="img"
+                aria-label={getQualityAccessibleLabel(scores.qualityScore)}
+                title={`Health score: ${scores.qualityScore}/100 - ${scores.qualityLabel}`}
               >
                 {scores.qualityScore}
               </div>
@@ -96,7 +102,11 @@ export default function HistoryCard({ analysis, previousScore, isLatest }: Histo
 
             {/* Trend indicator - subtle */}
             {trend !== 0 && (
-              <div className={`text-xs font-medium ${trend > 0 ? 'text-[#1C4444]' : 'text-[#8B7355]'}`}>
+              <div
+                className={`text-xs font-medium ${trend > 0 ? 'text-[#1C4444]' : 'text-[#8B7355]'}`}
+                title={trend > 0 ? `Improved by ${trend} points since last analysis` : `Declined by ${Math.abs(trend)} points since last analysis`}
+                aria-label={trend > 0 ? `Improvement: plus ${trend} points` : `Change: minus ${Math.abs(trend)} points`}
+              >
                 {trend > 0 ? '+' : ''}{trend}
               </div>
             )}

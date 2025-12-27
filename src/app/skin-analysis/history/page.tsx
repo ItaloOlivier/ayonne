@@ -184,15 +184,29 @@ export default function HistoryPage() {
       <section className="py-10 md:py-14 relative">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-5xl mx-auto">
-            <Link
-              href="/skin-analysis"
-              className="inline-flex items-center text-[#1C4444]/50 hover:text-[#1C4444] mb-8 transition-all duration-300 tracking-wide text-sm"
-            >
-              <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-              </svg>
-              Back to Skin Analysis
-            </Link>
+            <div className="flex items-center justify-between mb-8">
+              <Link
+                href="/skin-analysis"
+                className="inline-flex items-center text-[#1C4444]/50 hover:text-[#1C4444] transition-all duration-300 tracking-wide text-sm"
+              >
+                <svg className="w-4 h-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
+                </svg>
+                Back to Skin Analysis
+              </Link>
+
+              {analyses.length >= 2 && (
+                <Link
+                  href="/skin-analysis/compare"
+                  className="inline-flex items-center gap-2 text-[#1C4444] hover:text-[#D4AF37] transition-all duration-300 tracking-wide text-sm font-medium"
+                >
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                  </svg>
+                  Compare Analyses
+                </Link>
+              )}
+            </div>
 
             <p className="text-sm uppercase tracking-[0.25em] text-[#D4AF37] mb-3">
               Your Journey

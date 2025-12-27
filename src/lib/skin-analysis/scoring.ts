@@ -269,3 +269,39 @@ export function formatSkinAgeDisplay(skinAge: number, achievableAge: number): {
     improvement: improvement > 0 ? `-${improvement} years` : 'Optimal',
   }
 }
+
+/**
+ * Get accessible text description for quality score (for screen readers)
+ */
+export function getQualityAccessibleLabel(score: number): string {
+  const label = getQualityLabel(score)
+  if (score >= 85) return `${label} skin health (${score}/100) - Your skin is in excellent condition`
+  if (score >= 70) return `${label} skin health (${score}/100) - Your skin is healthy with minor areas to improve`
+  if (score >= 55) return `${label} skin health (${score}/100) - Your skin has some concerns that can be addressed`
+  if (score >= 40) return `${label} skin health (${score}/100) - Your skin needs attention in several areas`
+  return `${label} (${score}/100) - Your skin would benefit from a dedicated skincare routine`
+}
+
+/**
+ * Get accessible text description for skin vitality (for screen readers)
+ */
+export function getSkinAgeAccessibleLabel(skinAge: number, chronologicalAge: number): string {
+  const difference = skinAge - chronologicalAge
+  if (difference <= 0) return `Skin vitality: ${skinAge} years - Radiant, your skin appears younger than your chronological age`
+  if (difference <= 3) return `Skin vitality: ${skinAge} years - Balanced, your skin is close to your chronological age`
+  if (difference <= 6) return `Skin vitality: ${skinAge} years - Room to improve, slight signs of premature aging`
+  if (difference <= 10) return `Skin vitality: ${skinAge} years - Needs attention, visible signs of premature aging`
+  return `Skin vitality: ${skinAge} years - Care recommended, significant signs of premature aging`
+}
+
+/**
+ * Get accessible text description for category score (for screen readers)
+ */
+export function getCategoryAccessibleLabel(category: string, score: number): string {
+  const categoryName = category.charAt(0).toUpperCase() + category.slice(1)
+  if (score >= 85) return `${categoryName}: Excellent (${score}/100)`
+  if (score >= 70) return `${categoryName}: Good (${score}/100)`
+  if (score >= 55) return `${categoryName}: Fair (${score}/100)`
+  if (score >= 40) return `${categoryName}: Needs attention (${score}/100)`
+  return `${categoryName}: Needs care (${score}/100)`
+}

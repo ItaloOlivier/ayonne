@@ -51,16 +51,22 @@ button {
   cursor: pointer;
 }
 
+/* Design System: Standard button border-radius is 0.5rem (8px) */
 .btn-primary {
   background-color: var(--button-bg);
   color: var(--button-text);
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.75rem;
   border: 1px solid var(--button-bg);
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-primary:hover {
@@ -71,18 +77,40 @@ button {
 .btn-secondary {
   background-color: transparent;
   color: var(--button-bg);
-  padding: 0.75rem 1.5rem;
+  padding: 0.875rem 1.75rem;
   border: 1px solid var(--button-bg);
+  border-radius: 0.5rem;
   font-size: 0.875rem;
   font-weight: 400;
   letter-spacing: 0.1rem;
   text-transform: uppercase;
   transition: all 0.2s ease;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
 }
 
 .btn-secondary:hover {
   background-color: var(--button-bg);
   color: var(--button-text);
+}
+
+/* Small button variant */
+.btn-sm {
+  padding: 0.5rem 1rem;
+  font-size: 0.75rem;
+}
+
+/* Large button variant */
+.btn-lg {
+  padding: 1rem 2rem;
+  font-size: 1rem;
+}
+
+/* Rounded button variant (for pill-shaped buttons) */
+.btn-rounded {
+  border-radius: 9999px;
 }
 
 input, textarea, select {
@@ -402,6 +430,44 @@ input:focus, textarea:focus, select:focus {
 
 .animate-gentle-glow {
   animation: gentle-glow 3s ease-in-out infinite;
+}
+
+/* Camera scan line animation */
+@keyframes scan-line {
+  0% {
+    top: 20%;
+    opacity: 0;
+  }
+  10% {
+    opacity: 1;
+  }
+  90% {
+    opacity: 1;
+  }
+  100% {
+    top: 80%;
+    opacity: 0;
+  }
+}
+
+.animate-scan-line {
+  animation: scan-line 2.5s ease-in-out infinite;
+}
+
+/* Slide up animation for toasts */
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up {
+  animation: slide-up 0.3s ease-out forwards;
 }
 
 /* Luxury shadows and effects */
