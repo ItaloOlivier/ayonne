@@ -134,6 +134,30 @@ export default function HistoryPage() {
     fetchHistory(page + 1, true)
   }
 
+  const handleDelete = async (id: string) => {
+    try {
+      const response = await fetch(`/api/skin-analysis/${id}`, {
+        method: 'DELETE',
+      })
+
+      if (!response.ok) {
+        const data = await response.json()
+        throw new Error(data.error || 'Failed to delete analysis')
+      }
+
+      // Remove from local state
+      setAnalyses(prev => prev.filter(a => a.id !== id))
+
+      // Refresh trends if we still have analyses
+      if (analyses.length > 1) {
+        fetchTrends()
+      }
+    } catch (error) {
+      console.error('Delete error:', error)
+      throw error // Re-throw so the component can handle it
+    }
+  }
+
   // Calculate dual scores using the same system as the analysis page
   const latestScores = useMemo(() => {
     if (analyses.length === 0) return null
@@ -503,6 +527,7 @@ export default function HistoryPage() {
                     hasMore={hasMore}
                     onLoadMore={handleLoadMore}
                     isLoading={isLoadingMore}
+                    onDelete={handleDelete}
                   />
                 </div>
 

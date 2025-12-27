@@ -23,6 +23,7 @@ interface ProgressTimelineProps {
   hasMore: boolean
   onLoadMore: () => void
   isLoading?: boolean
+  onDelete?: (id: string) => Promise<void>
 }
 
 export default function ProgressTimeline({
@@ -30,6 +31,7 @@ export default function ProgressTimeline({
   hasMore,
   onLoadMore,
   isLoading,
+  onDelete,
 }: ProgressTimelineProps) {
   if (analyses.length === 0) {
     return (
@@ -77,6 +79,7 @@ export default function ProgressTimeline({
           analysis={analysis}
           previousScore={analysis.previousScore}
           isLatest={index === 0}
+          onDelete={onDelete}
         />
       ))}
 
