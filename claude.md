@@ -75,6 +75,7 @@ src/
 │       ├── MultiAngleUpload.tsx      # 3-angle photo capture with face guide overlay
 │       ├── SignupForm.tsx            # User registration form (email, name, password)
 │       ├── AnalysisProgress.tsx      # Step-by-step analysis progress indicator
+│       ├── QualityIndicator.tsx      # Real-time image quality feedback
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout with sorting
 │       ├── SkincareAdvice.tsx
@@ -107,7 +108,9 @@ src/
 │       ├── tool-handlers.ts  # Tool execution handlers
 │       ├── tool-use-analyzer.ts    # Analysis with tool use
 │       ├── extended-thinking.ts    # Deep reasoning for complex cases
-│       └── unified-analyzer.ts     # Intelligent method selection
+│       ├── unified-analyzer.ts     # Intelligent method selection
+│       ├── image-quality.ts        # Pre-analysis quality validation
+│       └── image-preprocessing.ts  # Server-side image normalization
 └── types/
     └── index.ts
 ```
@@ -153,6 +156,29 @@ The skin analysis uses advanced Anthropic Claude API features:
 - **Unified Analyzer**: Intelligently selects best method based on context
   - Import: `import { analyzeSkin } from '@/lib/skin-analysis/unified-analyzer'`
   - Auto-selects: standard, tool-use, or extended-thinking
+
+- **Image Preprocessing** (enabled by default): Normalizes images before AI analysis
+  - Auto white balance correction
+  - Exposure normalization
+  - Contrast enhancement
+  - Feature flag: `FEATURE_IMAGE_PREPROCESSING`
+
+### Image Quality System
+- **Pre-analysis validation**: Checks images before sending to AI
+  - Resolution (minimum 640x640, ideal 1280x1280)
+  - Brightness (detects too dark/overexposed)
+  - Contrast (ensures facial features visible)
+  - Sharpness (Laplacian variance for blur detection)
+  - Color balance (detects color casts)
+- **Weighted scoring**: Sharpness 30%, brightness 25%, contrast/resolution/color 15% each
+- **Server-side preprocessing**: Uses Sharp library to normalize images
+  - Corrects white balance for consistent skin tone detection
+  - Normalizes exposure regardless of lighting conditions
+  - Enhances contrast for better feature detection
+- **QualityIndicator component**: Real-time feedback during camera capture
+  - Live brightness meter
+  - Quality badge (Excellent/Good/Acceptable/Poor)
+  - Actionable warnings for issues
 
 ### Dual Scoring System
 - **Skin Age**: Estimated biological skin age based on aging indicators
