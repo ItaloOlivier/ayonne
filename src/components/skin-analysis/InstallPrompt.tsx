@@ -14,12 +14,22 @@ export default function InstallPrompt() {
   const [isStandalone, setIsStandalone] = useState(false)
 
   useEffect(() => {
-    // Check if already installed
+    // Check if already installed (standalone mode)
     const isStandaloneMode = window.matchMedia('(display-mode: standalone)').matches
       || (window.navigator as { standalone?: boolean }).standalone === true
     setIsStandalone(isStandaloneMode)
 
-    if (isStandaloneMode) return
+    // If running in standalone mode, mark as installed and don't show prompt
+    if (isStandaloneMode) {
+      localStorage.setItem('ayonne_app_installed', 'true')
+      return
+    }
+
+    // Check if user has previously installed the app
+    const hasInstalled = localStorage.getItem('ayonne_app_installed')
+    if (hasInstalled) {
+      return
+    }
 
     // Check if iOS
     const isIOSDevice = /iPad|iPhone|iPod/.test(navigator.userAgent) && !(window as { MSStream?: unknown }).MSStream
@@ -56,6 +66,8 @@ export default function InstallPrompt() {
       deferredPrompt.prompt()
       const { outcome } = await deferredPrompt.userChoice
       if (outcome === 'accepted') {
+        // Mark as installed so we never show the prompt again
+        localStorage.setItem('ayonne_app_installed', 'true')
         setShowPrompt(false)
       }
       setDeferredPrompt(null)
