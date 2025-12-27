@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
+import sharp from 'sharp'
 import { prisma } from '@/lib/prisma'
 import { getCustomerIdFromCookie } from '@/lib/auth'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
@@ -9,9 +10,32 @@ import { getPersonalizedAdvice } from '@/lib/skin-analysis/advice'
 // Rate limit: max analyses per customer per hour
 const RATE_LIMIT_ANALYSES_PER_HOUR = 5
 
+// Image compression settings
+const COMPRESSED_IMAGE_MAX_WIDTH = 800
+const COMPRESSED_IMAGE_QUALITY = 75
+
 // Generate a session ID for anonymous users
 function generateSessionId(): string {
   return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
+}
+
+// Compress image for storage after analysis
+async function compressImage(imageBuffer: Buffer): Promise<Buffer> {
+  try {
+    const compressed = await sharp(imageBuffer)
+      .resize(COMPRESSED_IMAGE_MAX_WIDTH, null, {
+        withoutEnlargement: true, // Don't upscale small images
+        fit: 'inside',
+      })
+      .jpeg({ quality: COMPRESSED_IMAGE_QUALITY, progressive: true })
+      .toBuffer()
+
+    console.log(`Image compressed: ${imageBuffer.length} -> ${compressed.length} bytes (${Math.round((1 - compressed.length / imageBuffer.length) * 100)}% reduction)`)
+    return compressed
+  } catch (error) {
+    console.error('Image compression failed:', error)
+    return imageBuffer // Return original if compression fails
+  }
 }
 
 // Analyze skin using Claude/Anthropic API for more accurate results
@@ -296,33 +320,42 @@ export async function POST(request: NextRequest) {
     const imageBuffer = Buffer.from(arrayBuffer)
     const imageBase64 = imageBuffer.toString('base64')
 
-    // Upload image to Vercel Blob
-    let originalImageUrl: string
-
-    try {
-      const blob = await put(`skin-analysis/${customerId}-${sessionId}-original.${imageFile.type.split('/')[1]}`, imageFile, {
-        access: 'public',
-        addRandomSuffix: true,
-      })
-      originalImageUrl = blob.url
-    } catch (blobError) {
-      console.error('Blob upload error:', blobError)
-      originalImageUrl = `data:${imageFile.type};base64,${imageBase64}`
-    }
-
-    // Create initial analysis record linked to customer
+    // Create initial analysis record with placeholder image
     const analysis = await prisma.skinAnalysis.create({
       data: {
         sessionId,
         customerId,
-        originalImage: originalImageUrl,
+        originalImage: '', // Will be updated after compression
         conditions: [],
         status: 'PROCESSING',
       },
     })
 
-    // Run AI analysis with Anthropic
+    // Run AI analysis with Anthropic (uses original quality for best results)
     const { skinType, conditions } = await analyzeSkinWithAI(imageBase64)
+
+    // After analysis, compress the image for storage
+    const compressedBuffer = await compressImage(imageBuffer)
+
+    // Upload compressed image to Vercel Blob
+    let storedImageUrl: string
+
+    try {
+      const blob = await put(
+        `skin-analysis/${customerId}-${sessionId}.jpg`,
+        compressedBuffer,
+        {
+          access: 'public',
+          addRandomSuffix: true,
+          contentType: 'image/jpeg',
+        }
+      )
+      storedImageUrl = blob.url
+    } catch (blobError) {
+      console.error('Blob upload error:', blobError)
+      // Fallback to compressed base64 if blob upload fails
+      storedImageUrl = `data:image/jpeg;base64,${compressedBuffer.toString('base64')}`
+    }
 
     // Get product recommendations
     const recommendations = await getProductRecommendations(skinType, conditions, 6)
@@ -331,10 +364,11 @@ export async function POST(request: NextRequest) {
     const conditionIds = conditions.map(c => c.id)
     const advice = getPersonalizedAdvice(skinType, conditionIds)
 
-    // Update analysis record with results
+    // Update analysis record with results and compressed image
     const updatedAnalysis = await prisma.skinAnalysis.update({
       where: { id: analysis.id },
       data: {
+        originalImage: storedImageUrl,
         skinType,
         conditions: JSON.parse(JSON.stringify(conditions)),
         agedImage: null,

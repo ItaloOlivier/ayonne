@@ -7,26 +7,24 @@ import Image from 'next/image'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 import { getShopifyProduct, buildShopifyCartUrl } from '@/lib/shopify-products'
 
-interface Product {
-  id: string
-  name: string
-  slug: string
-  price: number
-  salePrice: number | null
-  images: string[]
-  skinConcerns: string[]
-}
-
-interface RecommendedProduct extends Product {
+// Matches the structure stored in the database from analyze endpoint
+interface StoredRecommendation {
+  productId: string
+  productName: string
+  productSlug: string
+  productShopifySlug: string | null
+  productImage: string | null
+  productPrice: number
+  productSalePrice: number | null
   reason: string
-  matchScore: number
+  relevanceScore: number
 }
 
 interface SkinAnalysis {
   id: string
   skinType: string | null
   conditions: Array<{ name: string; confidence: number }>
-  recommendations: RecommendedProduct[]
+  recommendations: StoredRecommendation[]
   createdAt: string
 }
 
@@ -59,7 +57,7 @@ export default function MyRecommendationsPage() {
           setLatestAnalysis(analysis)
           // Pre-select top 3 products
           if (analysis.recommendations && analysis.recommendations.length > 0) {
-            const topProducts = analysis.recommendations.slice(0, 3).map((p: RecommendedProduct) => p.slug)
+            const topProducts = analysis.recommendations.slice(0, 3).map((p: StoredRecommendation) => p.productSlug)
             setSelectedProducts(new Set(topProducts))
           }
         }
@@ -97,8 +95,8 @@ export default function MyRecommendationsPage() {
   const getTotalPrice = () => {
     if (!latestAnalysis?.recommendations) return 0
     return latestAnalysis.recommendations
-      .filter((p: RecommendedProduct) => selectedProducts.has(p.slug))
-      .reduce((sum: number, p: RecommendedProduct) => sum + (p.salePrice || p.price), 0)
+      .filter((p: StoredRecommendation) => selectedProducts.has(p.productSlug))
+      .reduce((sum: number, p: StoredRecommendation) => sum + (p.productSalePrice || p.productPrice), 0)
   }
 
   if (isLoading) {
@@ -219,24 +217,24 @@ export default function MyRecommendationsPage() {
                 {latestAnalysis.recommendations && latestAnalysis.recommendations.length > 0 ? (
                   <>
                     <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mb-8">
-                      {latestAnalysis.recommendations.map((product: RecommendedProduct) => {
-                        const shopifyInfo = getShopifyProduct(product.slug)
-                        const imageUrl = shopifyInfo?.imageUrl || product.images?.[0] || '/images/products/placeholder.jpg'
-                        const isSelected = selectedProducts.has(product.slug)
+                      {latestAnalysis.recommendations.map((product: StoredRecommendation) => {
+                        const shopifyInfo = getShopifyProduct(product.productSlug)
+                        const imageUrl = shopifyInfo?.imageUrl || product.productImage || '/images/products/placeholder.jpg'
+                        const isSelected = selectedProducts.has(product.productSlug)
 
                         return (
                           <div
-                            key={product.slug}
+                            key={product.productSlug}
                             className={`bg-white rounded-xl overflow-hidden border-2 transition-all cursor-pointer ${
                               isSelected ? 'border-[#1C4444] shadow-lg' : 'border-transparent hover:border-[#1C4444]/30'
                             }`}
-                            onClick={() => toggleProduct(product.slug)}
+                            onClick={() => toggleProduct(product.productSlug)}
                           >
                             {/* Product Image */}
                             <div className="relative aspect-square bg-[#F4EBE7]">
                               <Image
                                 src={imageUrl}
-                                alt={product.name}
+                                alt={product.productName}
                                 fill
                                 className="object-cover"
                               />
@@ -251,9 +249,9 @@ export default function MyRecommendationsPage() {
                                 )}
                               </div>
                               {/* Match Badge */}
-                              {product.matchScore && (
+                              {product.relevanceScore > 0 && (
                                 <div className="absolute top-3 left-3 bg-[#1C4444] text-white text-xs px-2 py-1 rounded-full">
-                                  {Math.round(product.matchScore * 100)}% Match
+                                  {Math.min(Math.round(product.relevanceScore), 99)}% Match
                                 </div>
                               )}
                             </div>
@@ -261,7 +259,7 @@ export default function MyRecommendationsPage() {
                             {/* Product Info */}
                             <div className="p-4">
                               <h3 className="font-medium text-[#1C4444] mb-1 line-clamp-2">
-                                {product.name}
+                                {product.productName}
                               </h3>
                               {product.reason && (
                                 <p className="text-[#1C4444]/60 text-sm mb-3 line-clamp-2">
@@ -270,23 +268,23 @@ export default function MyRecommendationsPage() {
                               )}
                               <div className="flex items-center justify-between">
                                 <div>
-                                  {product.salePrice ? (
+                                  {product.productSalePrice ? (
                                     <div className="flex items-center gap-2">
                                       <span className="font-medium text-[#1C4444]">
-                                        {formatPrice(product.salePrice)}
+                                        {formatPrice(product.productSalePrice)}
                                       </span>
                                       <span className="text-sm text-[#1C4444]/50 line-through">
-                                        {formatPrice(product.price)}
+                                        {formatPrice(product.productPrice)}
                                       </span>
                                     </div>
                                   ) : (
                                     <span className="font-medium text-[#1C4444]">
-                                      {formatPrice(product.price)}
+                                      {formatPrice(product.productPrice)}
                                     </span>
                                   )}
                                 </div>
                                 <a
-                                  href={`${SHOPIFY_STORE_URL}/products/${shopifyInfo?.handle || product.slug}`}
+                                  href={`${SHOPIFY_STORE_URL}/products/${shopifyInfo?.handle || product.productShopifySlug || product.productSlug}`}
                                   target="_blank"
                                   rel="noopener noreferrer"
                                   onClick={(e) => e.stopPropagation()}
