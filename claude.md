@@ -67,7 +67,7 @@ src/
 ├── components/
 │   ├── layout/               # Header (with auth), Footer, Navigation
 │   └── skin-analysis/
-│       ├── ImageUpload.tsx
+│       ├── MultiAngleUpload.tsx      # 3-angle photo capture (front, left, right)
 │       ├── SignupForm.tsx           # User registration form
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout
@@ -100,13 +100,14 @@ src/
 
 ## Key Features
 
-### AI Skin Analysis
-- Upload photo via camera or file
-- Camera mode with elegant woman's face silhouette overlay guide
-  - Soft glow effect with gradient
-  - Subtle eye, nose, and lip placement guides
-  - Corner brackets for professional framing
-- Claude AI analyzes for skin type and conditions
+### AI Skin Analysis (3-Angle Capture)
+- **Multi-angle photo capture**: Front, left profile, right profile
+- Guided camera interface with face positioning overlay
+  - Step-by-step capture flow with progress indicators
+  - Angle-specific instructions and tips
+  - 3-second countdown timer for each capture
+  - Review screen with retake option per angle
+- Claude AI analyzes all three angles for comprehensive assessment
 - Detects: fine lines, wrinkles, dark spots, acne, dryness, oiliness, redness, dullness, large pores, uneven texture, dark circles, dehydration
 - Smart fallback with varied results if AI unavailable
 
@@ -185,7 +186,8 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 
 ### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)
-- `POST /api/skin-analysis/analyze` - Analyze uploaded image (auth required, rate limited: 5/hour)
+- `POST /api/skin-analysis/analyze-multi` - Analyze 3-angle photos (front, left, right) - primary endpoint
+- `POST /api/skin-analysis/analyze` - Legacy single image endpoint (auth required, rate limited: 5/hour)
 - `GET /api/skin-analysis/[id]` - Get specific analysis (owner only)
 - `GET /api/skin-analysis/history` - Get user's analysis history (auth required)
 - `GET /api/skin-analysis/trends` - Get skin health trends (auth required)
