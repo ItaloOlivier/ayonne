@@ -167,3 +167,15 @@ enum AnalysisStatus {
   COMPLETED
   FAILED
 }
+
+// Token revocation for security (logout all sessions, password change, etc.)
+model RevokedToken {
+  id          String   @id @default(cuid())
+  customerId  String
+  revokedAt   DateTime @default(now())
+  reason      String?  // "logout_all", "password_change", "security"
+  expiresAt   DateTime // When this revocation record can be cleaned up
+
+  @@index([customerId])
+  @@index([expiresAt])
+}

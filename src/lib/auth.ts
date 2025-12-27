@@ -61,14 +61,16 @@ function signToken(customerId: string): string {
 
 /**
  * Verify and extract customer ID from signed token
+ * Returns both customerId and timestamp for revocation checking
  */
-function verifyToken(token: string): string | null {
+function verifyToken(token: string): { customerId: string; timestamp: number } | null {
   try {
     const parts = token.split('.')
     if (parts.length !== 3) return null
 
-    const [customerId, timestamp, signature] = parts
-    const payload = `${customerId}.${timestamp}`
+    const [customerId, timestampStr, signature] = parts
+    const timestamp = parseInt(timestampStr, 10)
+    const payload = `${customerId}.${timestampStr}`
 
     // Verify signature
     const expectedSignature = createHmac('sha256', getSessionSecret())
@@ -79,13 +81,44 @@ function verifyToken(token: string): string | null {
     if (signature !== expectedSignature) return null
 
     // Check if token is expired (30 days)
-    const tokenAge = Date.now() - parseInt(timestamp, 10)
+    const tokenAge = Date.now() - timestamp
     if (tokenAge > COOKIE_MAX_AGE * 1000) return null
 
-    return customerId
+    return { customerId, timestamp }
   } catch {
     return null
   }
+}
+
+/**
+ * Check if a token has been revoked (e.g., via logout all sessions)
+ */
+async function isTokenRevoked(customerId: string, tokenTimestamp: number): Promise<boolean> {
+  try {
+    const revocation = await prisma.revokedToken.findFirst({
+      where: {
+        customerId,
+        revokedAt: { gt: new Date(tokenTimestamp) },
+        expiresAt: { gt: new Date() },
+      },
+    })
+    return revocation !== null
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Revoke all tokens for a customer (logout from all devices)
+ */
+export async function revokeAllTokens(customerId: string, reason: string = 'logout_all'): Promise<void> {
+  await prisma.revokedToken.create({
+    data: {
+      customerId,
+      reason,
+      expiresAt: new Date(Date.now() + COOKIE_MAX_AGE * 1000), // Keep for 30 days
+    },
+  })
 }
 
 /**
@@ -136,13 +169,19 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
     }
 
     // Verify the signed token
-    const customerId = verifyToken(sessionCookie.value)
-    if (!customerId) {
+    const tokenData = verifyToken(sessionCookie.value)
+    if (!tokenData) {
+      return null
+    }
+
+    // Check if token has been revoked
+    const revoked = await isTokenRevoked(tokenData.customerId, tokenData.timestamp)
+    if (revoked) {
       return null
     }
 
     const customer = await prisma.customer.findUnique({
-      where: { id: customerId },
+      where: { id: tokenData.customerId },
       select: {
         id: true,
         email: true,
@@ -183,8 +222,16 @@ export async function getCustomerIdFromCookie(): Promise<string | null> {
     const cookieStore = await cookies()
     const sessionCookie = cookieStore.get(CUSTOMER_COOKIE_NAME)
     if (!sessionCookie?.value) return null
+
     // Verify the signed token and extract customer ID
-    return verifyToken(sessionCookie.value)
+    const tokenData = verifyToken(sessionCookie.value)
+    if (!tokenData) return null
+
+    // Check if token has been revoked
+    const revoked = await isTokenRevoked(tokenData.customerId, tokenData.timestamp)
+    if (revoked) return null
+
+    return tokenData.customerId
   } catch {
     return null
   }

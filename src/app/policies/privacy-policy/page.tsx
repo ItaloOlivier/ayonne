@@ -19,14 +19,27 @@ const sections = [
     ],
   },
   {
+    title: 'AI Skin Analysis Data',
+    content: 'When you use our AI Skin Analyzer feature, we collect and process:',
+    items: [
+      'Photos you upload or capture (front, left, and right profile views)',
+      'AI-generated skin analysis results (skin type, conditions, scores)',
+      'Personalized product recommendations based on your analysis',
+      'Analysis history to track your skin health progress over time',
+    ],
+    note: 'Your skin photos are stored securely and processed by our AI system solely to provide personalized skincare recommendations. Photos are retained for 90 days to enable progress tracking, after which they are automatically deleted.',
+  },
+  {
     title: 'How We Use Your Information',
     content: 'We use the information we collect to:',
     items: [
       'Process and fulfill your orders',
+      'Provide AI-powered skin analysis and personalized recommendations',
+      'Track your skin health progress over time',
       'Send order confirmations and shipping updates',
       'Respond to your questions and provide customer support',
       'Send promotional emails (you can opt out anytime)',
-      'Improve our products and services',
+      'Improve our products and AI analysis accuracy',
       'Comply with legal obligations',
     ],
   },
@@ -43,22 +56,36 @@ const sections = [
   {
     title: 'Data Security',
     content:
-      'We implement appropriate security measures to protect your personal information. All payment transactions are encrypted using SSL technology. Your data is stored securely and accessed only by authorized personnel.',
+      'We implement appropriate security measures to protect your personal information. All payment transactions are encrypted using SSL technology. Your data is stored securely and accessed only by authorized personnel. Session tokens are cryptographically signed and can be revoked at any time.',
   },
   {
-    title: 'Your Rights',
-    content: 'You have the right to:',
+    title: 'Data Retention',
+    content: 'We retain your data for the following periods:',
     items: [
-      'Access the personal information we hold about you',
-      'Request correction of inaccurate information',
-      'Request deletion of your personal information',
-      'Opt out of marketing communications',
+      'Account information: Until you delete your account',
+      'Skin analysis photos: 90 days (automatically deleted)',
+      'Skin analysis results: Until you delete them or your account',
+      'Order history: 7 years (legal/tax requirements)',
+      'Session data: 30 days',
     ],
   },
   {
-    title: 'Cookies',
+    title: 'Your Rights (GDPR/CCPA)',
+    content: 'You have the right to:',
+    items: [
+      'Access the personal information we hold about you',
+      'Export your data in a portable format (JSON)',
+      'Request correction of inaccurate information',
+      'Request deletion of your personal information and account',
+      'Revoke all active sessions (logout from all devices)',
+      'Opt out of marketing communications',
+    ],
+    note: 'You can exercise these rights from your Account settings page or by contacting us at privacy@ayonne.skin.',
+  },
+  {
+    title: 'Cookies & Sessions',
     content:
-      'We use cookies and similar technologies to enhance your browsing experience, analyze website traffic, and personalize content. You can manage cookie preferences through your browser settings.',
+      'We use cookies and similar technologies to enhance your browsing experience, analyze website traffic, and personalize content. Our session cookies are HTTP-only and secure, protecting against common web attacks. You can manage cookie preferences through your browser settings.',
   },
 ]
 
@@ -117,6 +144,13 @@ export default function PrivacyPolicyPage() {
                             </li>
                           ))}
                         </ul>
+                      )}
+                      {section.note && (
+                        <div className="mt-4 p-4 bg-[#F4EBE7]/50 rounded-lg border border-[#D4AF37]/20">
+                          <p className="text-sm text-[#1C4444]/70 leading-relaxed italic">
+                            {section.note}
+                          </p>
+                        </div>
                       )}
                     </div>
                   </div>

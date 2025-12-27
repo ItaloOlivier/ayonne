@@ -300,9 +300,12 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 ### Authentication
 - `POST /api/auth/login` - Login with email/password (sets HTTP-only session cookie)
 - `POST /api/auth/logout` - Logout (clears session cookie)
+- `POST /api/auth/logout-all` - Logout from all devices (revokes all session tokens)
 - `GET /api/auth/me` - Get current authenticated user from cookie
 - `POST /api/auth/forgot-password` - Request password reset email
 - `POST /api/auth/reset-password` - Reset password with token
+- `DELETE /api/auth/delete-account` - Permanently delete account and all data (GDPR)
+- `GET /api/auth/export-data` - Export all user data as JSON (GDPR data portability)
 
 ### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)
@@ -330,15 +333,23 @@ BLOB_READ_WRITE_TOKEN=  # Vercel Blob for image storage
 SESSION_SECRET=         # Secret for signing session tokens (required in production)
 ```
 
-## Security Features
+## Security & Privacy Features
 
 - **Signed session tokens**: HMAC-SHA256 signed cookies prevent forgery
+- **Token revocation**: Server-side token invalidation via RevokedToken table
 - **Authentication required**: All analysis endpoints require valid session
 - **Rate limiting**: 5 analyses per customer per hour
 - **Owner verification**: Users can only view their own analyses
 - **HTTP-only cookies**: Session tokens not accessible via JavaScript
 - **Secure cookies**: HTTPS-only in production
 - **Image compression**: Photos compressed to 800px/75% JPEG after AI analysis for storage efficiency
+
+### GDPR/Privacy Compliance
+- **Account deletion**: DELETE `/api/auth/delete-account` removes all user data
+- **Data export**: GET `/api/auth/export-data` provides portable JSON export
+- **Logout all devices**: POST `/api/auth/logout-all` revokes all active sessions
+- **Data retention**: 90-day image retention, 30-day session tokens
+- **Privacy policy**: Updated with skin analysis data handling details
 
 ## Development Commands
 

@@ -49,7 +49,7 @@ export default function LoginPage() {
         {/* Header */}
         <div className="text-center mb-10">
           <Link href="/" className="inline-block mb-8">
-            <h1 className="text-2xl font-normal tracking-[0.2em] text-[#1C4444]">AYONNE</h1>
+            <h1 className="text-5xl md:text-6xl font-normal tracking-[0.25em] text-[#1C4444]">AYONNE</h1>
           </Link>
           <p className="text-sm uppercase tracking-[0.25em] text-[#D4AF37] mb-4">
             Welcome Back
