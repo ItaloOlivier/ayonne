@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getCustomerIdFromCookie } from '@/lib/auth'
 
 export async function GET(
   request: NextRequest,
@@ -7,6 +8,9 @@ export async function GET(
 ) {
   try {
     const { id } = await params
+
+    // Get authenticated customer ID from cookie
+    const authenticatedCustomerId = await getCustomerIdFromCookie()
 
     const analysis = await prisma.skinAnalysis.findUnique({
       where: { id },
@@ -16,6 +20,14 @@ export async function GET(
       return NextResponse.json(
         { error: 'Analysis not found' },
         { status: 404 }
+      )
+    }
+
+    // Security: Verify the requesting user owns this analysis
+    if (analysis.customerId !== authenticatedCustomerId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
       )
     }
 

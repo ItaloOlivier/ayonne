@@ -1,9 +1,13 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { put } from '@vercel/blob'
 import { prisma } from '@/lib/prisma'
+import { getCustomerIdFromCookie } from '@/lib/auth'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
 import { getProductRecommendations } from '@/lib/skin-analysis/recommendations'
 import { getPersonalizedAdvice } from '@/lib/skin-analysis/advice'
+
+// Rate limit: max analyses per customer per hour
+const RATE_LIMIT_ANALYSES_PER_HOUR = 5
 
 // Generate a session ID for anonymous users
 function generateSessionId(): string {
@@ -209,7 +213,7 @@ export async function POST(request: NextRequest) {
   try {
     const formData = await request.formData()
     const imageFile = formData.get('image') as File | null
-    const customerId = formData.get('customerId') as string | null
+    const formCustomerId = formData.get('customerId') as string | null
 
     if (!imageFile) {
       return NextResponse.json(
@@ -218,13 +222,26 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Customer ID is now required
-    if (!customerId) {
+    // Security: Verify customer from session cookie
+    const authenticatedCustomerId = await getCustomerIdFromCookie()
+
+    // Customer must be authenticated
+    if (!authenticatedCustomerId) {
       return NextResponse.json(
-        { error: 'Please create an account to use the skin analyzer' },
+        { error: 'Please log in to use the skin analyzer' },
         { status: 401 }
       )
     }
+
+    // If customerId provided in form, verify it matches authenticated user
+    if (formCustomerId && formCustomerId !== authenticatedCustomerId) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      )
+    }
+
+    const customerId = authenticatedCustomerId
 
     // Verify customer exists
     const customer = await prisma.customer.findUnique({
@@ -235,6 +252,22 @@ export async function POST(request: NextRequest) {
       return NextResponse.json(
         { error: 'Invalid account. Please sign up again.' },
         { status: 401 }
+      )
+    }
+
+    // Rate limiting: Check how many analyses in the past hour
+    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
+    const recentAnalysesCount = await prisma.skinAnalysis.count({
+      where: {
+        customerId,
+        createdAt: { gte: oneHourAgo },
+      },
+    })
+
+    if (recentAnalysesCount >= RATE_LIMIT_ANALYSES_PER_HOUR) {
+      return NextResponse.json(
+        { error: `You can only perform ${RATE_LIMIT_ANALYSES_PER_HOUR} analyses per hour. Please try again later.` },
+        { status: 429 }
       )
     }
 

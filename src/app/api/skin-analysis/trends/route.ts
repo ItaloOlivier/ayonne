@@ -1,5 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getCustomerIdFromCookie } from '@/lib/auth'
 
 interface DetectedCondition {
   id: string
@@ -55,13 +56,15 @@ function getPeriodStartDate(period: string): Date {
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const customerId = searchParams.get('customerId')
     const period = searchParams.get('period') || 'month'
+
+    // Security: Get customer ID from authenticated session, not query param
+    const customerId = await getCustomerIdFromCookie()
 
     if (!customerId) {
       return NextResponse.json(
-        { error: 'Customer ID is required' },
-        { status: 400 }
+        { error: 'Unauthorized' },
+        { status: 401 }
       )
     }
 

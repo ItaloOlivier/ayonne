@@ -1,19 +1,19 @@
-import { NextRequest, NextResponse } from 'next/server'
+import { NextResponse } from 'next/server'
+import { getCustomerIdFromCookie, getCurrentCustomer } from '@/lib/auth'
 import { prisma } from '@/lib/prisma'
 
-export async function GET(request: NextRequest) {
+// This endpoint verifies the current authenticated user from session cookie
+// No longer accepts arbitrary customer IDs from query params (security fix)
+export async function GET() {
   try {
-    const { searchParams } = new URL(request.url)
-    const customerId = searchParams.get('id')
+    // Get authenticated customer from session cookie
+    const customerId = await getCustomerIdFromCookie()
 
     if (!customerId) {
       return NextResponse.json({ valid: false })
     }
 
-    const customer = await prisma.customer.findUnique({
-      where: { id: customerId },
-      select: { id: true, firstName: true },
-    })
+    const customer = await getCurrentCustomer()
 
     if (!customer) {
       return NextResponse.json({ valid: false })

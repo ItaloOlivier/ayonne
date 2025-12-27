@@ -1,30 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
+import { getCustomerIdFromCookie } from '@/lib/auth'
 
 export async function GET(request: NextRequest) {
   try {
     const { searchParams } = new URL(request.url)
-    const customerId = searchParams.get('customerId')
     const page = parseInt(searchParams.get('page') || '1', 10)
     const limit = parseInt(searchParams.get('limit') || '10', 10)
 
+    // Security: Get customer ID from authenticated session, not query param
+    const customerId = await getCustomerIdFromCookie()
+
     if (!customerId) {
       return NextResponse.json(
-        { error: 'Customer ID is required' },
-        { status: 400 }
-      )
-    }
-
-    // Verify customer exists
-    const customer = await prisma.customer.findUnique({
-      where: { id: customerId },
-      select: { id: true },
-    })
-
-    if (!customer) {
-      return NextResponse.json(
-        { error: 'Customer not found' },
-        { status: 404 }
+        { error: 'Unauthorized' },
+        { status: 401 }
       )
     }
 

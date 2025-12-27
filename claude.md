@@ -168,12 +168,13 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 - `POST /api/auth/logout` - Logout (clears session cookie)
 - `GET /api/auth/me` - Get current authenticated user from cookie
 
-### Skin Analysis
+### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)
-- `POST /api/skin-analysis/analyze` - Analyze uploaded image (requires customerId)
-- `GET /api/skin-analysis/history` - Get user's analysis history
-- `GET /api/skin-analysis/trends` - Get skin health trends
-- `GET /api/skin-analysis/verify-customer` - Verify customer exists
+- `POST /api/skin-analysis/analyze` - Analyze uploaded image (auth required, rate limited: 5/hour)
+- `GET /api/skin-analysis/[id]` - Get specific analysis (owner only)
+- `GET /api/skin-analysis/history` - Get user's analysis history (auth required)
+- `GET /api/skin-analysis/trends` - Get skin health trends (auth required)
+- `GET /api/skin-analysis/verify-customer` - Verify current session
 
 ## Database Models
 
@@ -189,7 +190,17 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 DATABASE_URL=           # PostgreSQL connection string
 ANTHROPIC_API_KEY=      # Claude API for skin analysis
 BLOB_READ_WRITE_TOKEN=  # Vercel Blob for image storage
+SESSION_SECRET=         # Secret for signing session tokens (required in production)
 ```
+
+## Security Features
+
+- **Signed session tokens**: HMAC-SHA256 signed cookies prevent forgery
+- **Authentication required**: All analysis endpoints require valid session
+- **Rate limiting**: 5 analyses per customer per hour
+- **Owner verification**: Users can only view their own analyses
+- **HTTP-only cookies**: Session tokens not accessible via JavaScript
+- **Secure cookies**: HTTPS-only in production
 
 ## Development Commands
 
