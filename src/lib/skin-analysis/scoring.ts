@@ -229,26 +229,28 @@ export function getQualityLabel(score: number): string {
 }
 
 /**
- * Get color for quality score
+ * Luxury color palette for quality score
+ * Uses warm, sophisticated tones instead of traffic light colors
  */
 export function getQualityColor(score: number): string {
-  if (score >= 85) return '#22c55e' // green
-  if (score >= 70) return '#84cc16' // lime
-  if (score >= 55) return '#eab308' // yellow
-  if (score >= 40) return '#f97316' // orange
-  return '#ef4444' // red
+  if (score >= 85) return '#1C4444' // Brand teal - excellent
+  if (score >= 70) return '#2D5A5A' // Lighter teal - good
+  if (score >= 55) return '#8B7355' // Warm bronze - fair
+  if (score >= 40) return '#A67C52' // Copper - needs attention
+  return '#996B4A'                  // Terracotta - needs care
 }
 
 /**
- * Get color for skin age difference
+ * Luxury color palette for skin vitality
+ * Uses brand-aligned sophisticated tones
  */
 export function getSkinAgeColor(skinAge: number, chronologicalAge: number): string {
   const difference = skinAge - chronologicalAge
-  if (difference <= 0) return '#22c55e'   // green - younger than actual age
-  if (difference <= 3) return '#84cc16'   // lime - slightly older
-  if (difference <= 6) return '#eab308'   // yellow - moderately older
-  if (difference <= 10) return '#f97316'  // orange - significantly older
-  return '#ef4444'                        // red - much older
+  if (difference <= 0) return '#1C4444'   // Brand teal - radiant
+  if (difference <= 3) return '#2D5A5A'   // Lighter teal - balanced
+  if (difference <= 6) return '#6B8E8E'   // Sage - room to improve
+  if (difference <= 10) return '#8B7355'  // Warm bronze - attention needed
+  return '#A67C52'                        // Copper - care recommended
 }
 
 /**
