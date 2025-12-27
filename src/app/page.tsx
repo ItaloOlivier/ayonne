@@ -2,7 +2,7 @@ import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import ProductCard from '@/components/product/ProductCard'
 import { Product } from '@/types'
-import HeroProductCarousel from '@/components/home/HeroProductCarousel'
+import HeroSlideshow from '@/components/home/HeroSlideshow'
 import FeaturedProduct from '@/components/home/FeaturedProduct'
 import ReviewsCarousel from '@/components/home/ReviewsCarousel'
 import BannerSlideshow from '@/components/home/BannerSlideshow'
@@ -64,28 +64,8 @@ const bundlesBannerSlides = [
   { image: '/images/banners/bundles-banner.svg', link: '/collections/bundles' },
 ]
 
-async function getHeroProducts(): Promise<Product[]> {
-  try {
-    // Get featured products from different collections for the hero carousel
-    const products = await prisma.product.findMany({
-      where: { featured: true, inStock: true },
-      take: 10,
-      orderBy: { createdAt: 'desc' },
-    })
-    return products.map(p => ({
-      ...p,
-      price: Number(p.price),
-      salePrice: p.salePrice ? Number(p.salePrice) : null,
-    }))
-  } catch (error) {
-    console.error('Error fetching hero products:', error)
-    return []
-  }
-}
-
 export default async function HomePage() {
   const [
-    heroProducts,
     antiAgingProducts,
     moisturizerProducts,
     cleanserProducts,
@@ -97,7 +77,6 @@ export default async function HomePage() {
     featuredSoap,
     featuredBundle,
   ] = await Promise.all([
-    getHeroProducts(),
     getProductsByCollection('anti-aging-serums', 4),
     getProductsByCollection('moisturizers', 4),
     getProductsByCollection('cleansers', 4),
@@ -112,8 +91,8 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* 1. Hero Product Carousel */}
-      <HeroProductCarousel products={heroProducts} />
+      {/* 1. Hero Slideshow */}
+      <HeroSlideshow />
 
       {/* 2. Brand Introduction Text */}
       <section className="py-10 md:py-14">
