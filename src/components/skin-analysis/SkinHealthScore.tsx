@@ -10,7 +10,7 @@ interface SkinHealthScoreProps {
   showLabel?: boolean
 }
 
-function getScoreColor(score: number): string {
+export function getScoreColor(score: number): string {
   if (score >= 80) return '#22c55e' // green
   if (score >= 60) return '#84cc16' // lime
   if (score >= 40) return '#eab308' // yellow
@@ -18,11 +18,11 @@ function getScoreColor(score: number): string {
   return '#ef4444' // red
 }
 
-function getScoreLabel(score: number): string {
+export function getScoreLabel(score: number): string {
   if (score >= 80) return 'Excellent'
   if (score >= 60) return 'Good'
   if (score >= 40) return 'Fair'
-  if (score >= 20) return 'Needs Attention'
+  if (score >= 20) return 'Needs Work'
   return 'Needs Care'
 }
 

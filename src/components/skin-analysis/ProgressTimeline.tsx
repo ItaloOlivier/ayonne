@@ -69,33 +69,16 @@ export default function ProgressTimeline({
   })
 
   return (
-    <div className="space-y-4">
-      {/* Timeline */}
-      <div className="relative">
-        {/* Timeline line */}
-        <div className="absolute left-4 top-0 bottom-0 w-0.5 bg-[#1C4444]/10" />
-
-        {/* Timeline items */}
-        <div className="space-y-4">
-          {analysesWithScores.map((analysis, index) => (
-            <div key={analysis.id} className="relative pl-10">
-              {/* Timeline dot */}
-              <div className={`absolute left-2 top-6 w-4 h-4 rounded-full border-2 ${
-                index === 0
-                  ? 'bg-[#1C4444] border-[#1C4444]'
-                  : 'bg-white border-[#1C4444]/30'
-              }`} />
-
-              {/* Card */}
-              <HistoryCard
-                analysis={analysis}
-                previousScore={analysis.previousScore}
-                isLatest={index === 0}
-              />
-            </div>
-          ))}
-        </div>
-      </div>
+    <div className="space-y-3">
+      {/* Analysis cards - clean list without timeline */}
+      {analysesWithScores.map((analysis, index) => (
+        <HistoryCard
+          key={analysis.id}
+          analysis={analysis}
+          previousScore={analysis.previousScore}
+          isLatest={index === 0}
+        />
+      ))}
 
       {/* Load more button */}
       {hasMore && (
@@ -103,7 +86,7 @@ export default function ProgressTimeline({
           <button
             onClick={onLoadMore}
             disabled={isLoading}
-            className="inline-flex items-center gap-2 px-6 py-2 text-[#1C4444] border border-[#1C4444]/30 rounded-lg hover:bg-[#1C4444]/5 transition-colors disabled:opacity-50"
+            className="inline-flex items-center gap-2 px-6 py-2.5 text-[#1C4444] border border-[#1C4444]/20 rounded-lg hover:bg-[#1C4444]/5 transition-colors disabled:opacity-50"
           >
             {isLoading ? (
               <>

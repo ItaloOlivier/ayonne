@@ -72,8 +72,9 @@ src/
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout
 │       ├── SkincareAdvice.tsx
-│       ├── SkinHealthScore.tsx      # Animated circular score
-│       ├── HistoryCard.tsx
+│       ├── SkinHealthScore.tsx      # Animated circular score with trend
+│       ├── HistoryCard.tsx          # Compact history list cards
+│       ├── ProgressTimeline.tsx     # Analysis history list component
 │       ├── StreakCounter.tsx        # Fire animation streak tracking
 │       ├── AchievementBadges.tsx    # Gamification badges
 │       ├── SocialProof.tsx          # Live activity indicators
@@ -201,6 +202,7 @@ SESSION_SECRET=         # Secret for signing session tokens (required in product
 - **Owner verification**: Users can only view their own analyses
 - **HTTP-only cookies**: Session tokens not accessible via JavaScript
 - **Secure cookies**: HTTPS-only in production
+- **Image compression**: Photos compressed to 800px/75% JPEG after AI analysis for storage efficiency
 
 ## Development Commands
 
