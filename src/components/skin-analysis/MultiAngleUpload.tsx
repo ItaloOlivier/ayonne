@@ -766,27 +766,70 @@ export default function MultiAngleUpload({
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
                 </svg>
               </div>
-              <h3 className="text-white text-xl font-light tracking-wide">Camera Access Needed</h3>
+              <h3 className="text-white text-xl font-light tracking-wide">
+                {permissionState === 'denied' ? 'Camera Access Blocked' : 'Camera Access Needed'}
+              </h3>
             </div>
 
             {/* Content */}
             <div className="p-6 space-y-4">
-              <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
-                To analyze your skin accurately, we need to capture photos of your face from multiple angles.
-              </p>
-
               {permissionState === 'denied' ? (
-                <div className="bg-amber-50 border border-amber-200 rounded-lg p-4">
-                  <p className="text-amber-800 text-sm text-center">
-                    <strong>Camera access was denied.</strong> Please enable camera permissions in your browser settings, then try again.
+                <>
+                  <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
+                    Camera access was previously blocked. To use the camera, you&apos;ll need to enable it in your browser settings.
                   </p>
-                </div>
+
+                  {/* Platform-specific instructions */}
+                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
+                    <p className="text-amber-800 text-sm font-medium text-center">
+                      How to enable camera:
+                    </p>
+                    <div className="text-amber-700 text-xs space-y-2">
+                      <div className="flex items-start gap-2">
+                        <span className="font-bold">Chrome:</span>
+                        <span>Tap the lock icon 🔒 in the address bar → Site settings → Camera → Allow</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="font-bold">Safari:</span>
+                        <span>Settings → Safari → Camera → Allow</span>
+                      </div>
+                      <div className="flex items-start gap-2">
+                        <span className="font-bold">Firefox:</span>
+                        <span>Tap the lock icon → Clear permissions → Reload page</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  <p className="text-[#1C4444]/60 text-xs text-center">
+                    After enabling, tap &quot;Try Again&quot; below.
+                  </p>
+                </>
               ) : (
-                <div className="bg-[#F4EBE7]/50 rounded-lg p-4 space-y-2">
-                  <p className="text-[#1C4444]/70 text-xs text-center">
-                    When prompted, tap <strong>&quot;Allow&quot;</strong> to enable camera access.
+                <>
+                  <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
+                    To analyze your skin accurately, we need to capture photos of your face from multiple angles.
                   </p>
-                </div>
+
+                  {/* Browser permission popup preview */}
+                  <div className="bg-[#F4EBE7] rounded-lg p-4 space-y-3">
+                    <div className="flex items-center justify-center gap-2">
+                      <div className="w-8 h-8 rounded-full bg-[#1C4444]/10 flex items-center justify-center">
+                        <svg className="w-4 h-4 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                        </svg>
+                      </div>
+                      <span className="text-[#1C4444] text-sm font-medium">ai.ayonne.skin wants to use your camera</span>
+                    </div>
+                    <div className="flex justify-center gap-2">
+                      <span className="px-3 py-1 bg-white rounded text-[#1C4444]/50 text-xs">Block</span>
+                      <span className="px-3 py-1 bg-[#1C4444] text-white rounded text-xs font-medium">Allow ← Tap this</span>
+                    </div>
+                  </div>
+
+                  <p className="text-[#1C4444]/60 text-xs text-center">
+                    A browser popup will appear. Tap <strong>&quot;Allow&quot;</strong> to grant camera access.
+                  </p>
+                </>
               )}
 
               {/* Privacy note */}
@@ -802,17 +845,34 @@ export default function MultiAngleUpload({
             <div className="p-4 pt-0 space-y-3">
               <button
                 onClick={startCameraDirectly}
-                className="w-full py-3 px-6 bg-[#1C4444] text-white rounded-lg font-medium tracking-wide hover:bg-[#1C4444]/90 transition-colors uppercase text-sm"
+                className="w-full py-3.5 px-6 bg-[#1C4444] text-white rounded-lg font-medium tracking-wide hover:bg-[#1C4444]/90 transition-colors uppercase text-sm flex items-center justify-center gap-2"
               >
-                {permissionState === 'denied' ? 'Try Again' : 'Allow Camera Access'}
+                {permissionState === 'denied' ? (
+                  <>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                    </svg>
+                    Try Again
+                  </>
+                ) : (
+                  <>
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
+                    </svg>
+                    Enable Camera
+                  </>
+                )}
               </button>
               <button
                 onClick={() => {
                   setShowPermissionPrompt(false)
                   setUseUploadMode(true)
                 }}
-                className="w-full py-3 px-6 border-2 border-[#1C4444]/20 text-[#1C4444] rounded-lg font-medium tracking-wide hover:border-[#1C4444]/40 hover:bg-[#1C4444]/5 transition-colors uppercase text-sm"
+                className="w-full py-3 px-6 border-2 border-[#1C4444]/20 text-[#1C4444] rounded-lg font-medium tracking-wide hover:border-[#1C4444]/40 hover:bg-[#1C4444]/5 transition-colors uppercase text-sm flex items-center justify-center gap-2"
               >
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
                 Upload Photo Instead
               </button>
               <button
