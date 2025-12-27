@@ -7,29 +7,34 @@ interface NavItem {
   href: string
 }
 
-const navItems: NavItem[] = [
+// Row 1 - Main collections
+const navItemsRow1: NavItem[] = [
   {
-    name: 'BioHack',
+    name: 'Biohack: Anti-Aging Serums',
     href: '/collections/anti-aging-serums',
   },
   {
-    name: 'Hydration Station',
+    name: 'Hydration Station: Moisturizers',
     href: '/collections/moisturizers',
   },
   {
-    name: 'Squeaky Clean',
+    name: 'Squeaky Clean: Soaps & Cleansers',
     href: '/collections/cleansers',
   },
   {
-    name: 'Self-Care',
+    name: 'Sunday Self-Care Rituals',
     href: '/collections/self-care',
   },
+]
+
+// Row 2 - Additional collections
+const navItemsRow2: NavItem[] = [
   {
     name: 'Rise & Glow',
     href: '/collections/rise-and-glow',
   },
   {
-    name: 'eBooks',
+    name: 'Knowledge Is Beauty: eBooks',
     href: '/collections/ebooks',
   },
   {
@@ -37,10 +42,12 @@ const navItems: NavItem[] = [
     href: '/collections/mens',
   },
   {
-    name: 'Bundles',
+    name: 'Save with Bundles',
     href: '/collections/bundles',
   },
 ]
+
+const allNavItems = [...navItemsRow1, ...navItemsRow2]
 
 interface NavigationProps {
   mobile?: boolean
@@ -52,7 +59,7 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
     return (
       <nav className="py-4 px-4">
         <ul className="space-y-1">
-          {navItems.map((item) => (
+          {allNavItems.map((item) => (
             <li key={item.name}>
               <Link
                 href={item.href}
@@ -69,9 +76,23 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
   }
 
   return (
-    <nav className="flex">
-      <ul className="flex items-center gap-x-4 xl:gap-x-5">
-        {navItems.map((item) => (
+    <nav className="py-3">
+      {/* Row 1 */}
+      <ul className="flex items-center justify-center gap-x-6 xl:gap-x-8 mb-2">
+        {navItemsRow1.map((item) => (
+          <li key={item.name}>
+            <Link
+              href={item.href}
+              className="text-[#1C4444] text-[13px] uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all whitespace-nowrap"
+            >
+              {item.name}
+            </Link>
+          </li>
+        ))}
+      </ul>
+      {/* Row 2 */}
+      <ul className="flex items-center justify-center gap-x-6 xl:gap-x-8">
+        {navItemsRow2.map((item) => (
           <li key={item.name}>
             <Link
               href={item.href}
