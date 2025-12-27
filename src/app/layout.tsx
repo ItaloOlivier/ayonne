@@ -17,6 +17,12 @@ export const metadata: Metadata = {
   },
   description: "Shop Ayonne's skincare line, inspired by Bryan Johnson's Blue Project Protocol. Discover anti-aging serums, glow-enhancing products, and beauty eBooks for radiant, youthful skin.",
   keywords: ["skincare", "anti-aging", "serums", "moisturizers", "vegan", "cruelty-free", "beauty"],
+  manifest: "/manifest.json",
+  appleWebApp: {
+    capable: true,
+    statusBarStyle: "default",
+    title: "Ayonne",
+  },
   openGraph: {
     title: "Ayonne | Science-Backed Skincare",
     description: "Transform your skincare routine with science-backed, cruelty-free formulas designed to turn back time.",
@@ -33,6 +39,12 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
+      <head>
+        <meta name="theme-color" content="#1C4444" />
+        <meta name="apple-mobile-web-app-capable" content="yes" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+        <link rel="apple-touch-icon" href="/icon-192.png" />
+      </head>
       <body className={`${ibmPlexSans.variable} font-sans antialiased min-h-screen flex flex-col`}>
         <Header />
         <main className="flex-grow">
