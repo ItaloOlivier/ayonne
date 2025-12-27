@@ -13,6 +13,7 @@ export default function SkinAnalysisPage() {
   const router = useRouter()
   const [step, setStep] = useState<Step>('capture')
   const [error, setError] = useState<string | null>(null)
+  const [errorDetails, setErrorDetails] = useState<string[]>([])
   const [multiAngleImages, setMultiAngleImages] = useState<CapturedImage[]>([])
   const [storedCustomerId, setStoredCustomerIdState] = useState<string | null>(null)
   const [isCheckingUser, setIsCheckingUser] = useState(true)
@@ -53,6 +54,7 @@ export default function SkinAnalysisPage() {
 
     setStep('analyzing')
     setError(null)
+    setErrorDetails([])
 
     try {
       const formData = new FormData()
@@ -81,6 +83,11 @@ export default function SkinAnalysisPage() {
         if (response.status === 429) {
           throw new Error(data.error || 'You have already used the skin analyzer today. Please try again tomorrow.')
         }
+        // Handle image quality errors with detailed feedback
+        if (response.status === 400 && data.details && Array.isArray(data.details)) {
+          setErrorDetails(data.details)
+          throw new Error(data.error || 'Image quality issue detected')
+        }
         throw new Error(data.error || 'Analysis failed')
       }
 
@@ -107,6 +114,7 @@ export default function SkinAnalysisPage() {
   const handleStartOver = () => {
     setMultiAngleImages([])
     setError(null)
+    setErrorDetails([])
     setStep('capture')
   }
 
@@ -175,7 +183,27 @@ export default function SkinAnalysisPage() {
               <>
                 {error && (
                   <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
-                    <p className="text-red-700 text-sm">{error}</p>
+                    <div className="flex items-start gap-3">
+                      <svg className="w-5 h-5 text-red-500 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                      </svg>
+                      <div>
+                        <p className="text-red-700 text-sm font-medium">{error}</p>
+                        {errorDetails.length > 0 && (
+                          <ul className="mt-2 space-y-1">
+                            {errorDetails.map((detail, index) => (
+                              <li key={index} className="text-red-600 text-sm flex items-center gap-2">
+                                <span className="w-1.5 h-1.5 bg-red-400 rounded-full flex-shrink-0" />
+                                {detail}
+                              </li>
+                            ))}
+                          </ul>
+                        )}
+                        <p className="mt-3 text-[#1C4444]/70 text-xs">
+                          Tip: For best results, use natural daylight or face a window. Avoid harsh overhead lighting or dark rooms.
+                        </p>
+                      </div>
+                    </div>
                   </div>
                 )}
 

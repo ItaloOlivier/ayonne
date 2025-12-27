@@ -285,15 +285,48 @@ export async function POST(request: NextRequest) {
       validateImageQuality(rightBuffer),
     ])
 
-    // Log quality issues but don't block (just warn)
+    // Collect all quality issues
     const allIssues = [
       ...frontValidation.issues.map(i => `Front: ${i}`),
       ...leftValidation.issues.map(i => `Left: ${i}`),
       ...rightValidation.issues.map(i => `Right: ${i}`),
     ]
 
+    // Define critical issues that should block analysis
+    const criticalPatterns = ['too dark', 'overexposed', 'Resolution too low']
+    const criticalIssues = allIssues.filter(issue =>
+      criticalPatterns.some(pattern => issue.toLowerCase().includes(pattern.toLowerCase()))
+    )
+
+    // Block analysis if any critical quality issues are detected
+    if (criticalIssues.length > 0) {
+      console.error('[QUALITY] Critical image quality issues - blocking analysis:', criticalIssues)
+
+      // Provide user-friendly error messages
+      const userMessages: string[] = []
+      if (criticalIssues.some(i => i.toLowerCase().includes('too dark'))) {
+        userMessages.push('Some images are too dark. Please take photos in a well-lit area.')
+      }
+      if (criticalIssues.some(i => i.toLowerCase().includes('overexposed'))) {
+        userMessages.push('Some images are overexposed. Please avoid direct bright light sources.')
+      }
+      if (criticalIssues.some(i => i.toLowerCase().includes('resolution'))) {
+        userMessages.push('Some images are too low resolution. Please use a higher quality camera setting.')
+      }
+
+      return NextResponse.json(
+        {
+          error: 'Image quality too low for accurate analysis',
+          details: userMessages,
+          issues: criticalIssues,
+        },
+        { status: 400 }
+      )
+    }
+
+    // Log non-critical issues as warnings
     if (allIssues.length > 0) {
-      console.warn('[QUALITY] Image quality issues detected:', allIssues)
+      console.warn('[QUALITY] Minor image quality issues detected (proceeding):', allIssues)
     }
 
     // Preprocess images for optimal AI analysis

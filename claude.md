@@ -169,12 +169,15 @@ The skin analysis uses advanced Anthropic Claude API features:
 
 ### Image Quality System
 - **Pre-analysis validation**: Checks images before sending to AI
-  - Resolution (minimum 640x640, ideal 1280x1280)
-  - Brightness (detects too dark/overexposed)
-  - Contrast (ensures facial features visible)
-  - Sharpness (Laplacian variance for blur detection)
-  - Color balance (detects color casts)
-- **Weighted scoring**: Sharpness 30%, brightness 25%, contrast/resolution/color 15% each
+  - Resolution (minimum 400x400)
+  - Brightness (detects too dark < 40, overexposed > 220)
+  - Contrast (ensures facial features visible, minimum 20)
+- **Critical issue blocking**: API returns 400 error for unusable images
+  - Too dark → "Please take photos in a well-lit area"
+  - Overexposed → "Please avoid direct bright light sources"
+  - Low resolution → "Please use a higher quality camera setting"
+  - User sees detailed error with tips for retaking photos
+- **Non-critical issues**: Minor contrast issues logged but analysis proceeds
 - **Server-side preprocessing**: Uses Sharp library to normalize images
   - Corrects white balance for consistent skin tone detection
   - Normalizes exposure regardless of lighting conditions
