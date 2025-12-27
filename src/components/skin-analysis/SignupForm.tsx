@@ -1,9 +1,20 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
+
+interface CustomerData {
+  id: string
+  email: string
+  firstName: string
+  lastName: string | null
+  phone: string | null
+  createdAt: string
+  analysisCount: number
+}
 
 interface SignupFormProps {
-  onSuccess: (customerId: string) => void
+  onSuccess: (customerId: string, customerData: CustomerData) => void
   onCancel: () => void
   isLoading?: boolean
 }
@@ -90,7 +101,18 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
         return
       }
 
-      onSuccess(data.customerId)
+      // Create customer data object
+      const customerData: CustomerData = {
+        id: data.customerId,
+        email: formData.email.toLowerCase().trim(),
+        firstName: formData.firstName.trim(),
+        lastName: formData.lastName?.trim() || null,
+        phone: formData.phone?.trim() || null,
+        createdAt: new Date().toISOString(),
+        analysisCount: 0,
+      }
+
+      onSuccess(data.customerId, customerData)
     } catch (error) {
       console.error('Signup error:', error)
       setErrors({ general: 'Something went wrong. Please try again.' })
@@ -264,6 +286,16 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
       <p className="mt-4 text-center text-xs text-[#1C4444]/50">
         By creating an account, you agree to receive personalized skincare recommendations and occasional updates from Ayonne.
       </p>
+
+      {/* Login Link */}
+      <div className="mt-6 pt-4 border-t border-[#1C4444]/10 text-center">
+        <p className="text-sm text-[#1C4444]/60">
+          Already have an account?{' '}
+          <Link href="/login" className="text-[#1C4444] font-medium hover:underline">
+            Sign in
+          </Link>
+        </p>
+      </div>
     </div>
   )
 }

@@ -3,12 +3,7 @@
 import { useState } from 'react'
 import { formatPrice } from '@/lib/utils'
 import { getShopifyProductUrl, SHOPIFY_STORE_URL } from '@/lib/shopify'
-
-// Get product image from Shopify CDN based on product slug
-function getShopifyProductImage(slug: string): string {
-  // Shopify CDN URL pattern for product images
-  return `https://ayonne.skin/cdn/shop/files/${slug}.png`
-}
+import { getShopifyImageUrl, buildShopifyCartUrl } from '@/lib/shopify-products'
 
 interface RecommendedProduct {
   productId: string
@@ -35,12 +30,11 @@ interface ProductCardProps {
 function ProductCard({ rec, idx, isSelected, onToggleSelect }: ProductCardProps) {
   const [imageError, setImageError] = useState(false)
 
-  // Try to get image from Shopify CDN, fallback to provided image
-  const imageUrl = rec.productImage && !rec.productImage.includes('placeholder')
-    ? rec.productImage
-    : getShopifyProductImage(rec.productSlug)
+  // Get image from Shopify CDN mapping, fallback to provided image
+  const shopifyImage = getShopifyImageUrl(rec.productSlug)
+  const imageUrl = shopifyImage || rec.productImage || ''
 
-  const showPlaceholder = imageError
+  const showPlaceholder = imageError || !imageUrl
 
   return (
     <div className={`group border rounded-lg overflow-hidden transition-colors ${
@@ -179,12 +173,11 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
     0
   )
 
-  // Build Shopify cart URL with all selected products
-  // Format: /cart/product-handle-1:1,product-handle-2:1
+  // Build Shopify cart URL with all selected products using variant IDs
   const getCartUrl = () => {
     if (selectedProducts.length === 0) return SHOPIFY_STORE_URL
-    const items = selectedProducts.map(p => `${p.productSlug}:1`).join(',')
-    return `${SHOPIFY_STORE_URL}/cart/${items}`
+    const slugs = selectedProducts.map(p => p.productSlug)
+    return buildShopifyCartUrl(slugs)
   }
 
   const allSelected = selectedSlugs.size === recommendations.length

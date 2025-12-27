@@ -2,12 +2,46 @@
 
 import Link from 'next/link'
 import Image from 'next/image'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
+
+const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
+const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
+
+interface CustomerData {
+  firstName: string
+}
 
 export default function Header() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [logoError, setLogoError] = useState(false)
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [customerName, setCustomerName] = useState<string | null>(null)
+
+  useEffect(() => {
+    const customerId = localStorage.getItem(CUSTOMER_STORAGE_KEY)
+    const customerData = localStorage.getItem(CUSTOMER_DATA_KEY)
+
+    if (customerId) {
+      setIsLoggedIn(true)
+      if (customerData) {
+        try {
+          const data: CustomerData = JSON.parse(customerData)
+          setCustomerName(data.firstName)
+        } catch {
+          // Ignore parse errors
+        }
+      }
+    }
+  }, [])
+
+  const handleLogout = () => {
+    localStorage.removeItem(CUSTOMER_STORAGE_KEY)
+    localStorage.removeItem(CUSTOMER_DATA_KEY)
+    setIsLoggedIn(false)
+    setCustomerName(null)
+    setIsMobileMenuOpen(false)
+  }
 
   return (
     <>
@@ -64,8 +98,31 @@ export default function Header() {
                 </Link>
               </div>
 
-              {/* Right - Shop Button */}
-              <div className="flex-1 flex justify-end items-center gap-2">
+              {/* Right - Account & Shop */}
+              <div className="flex-1 flex justify-end items-center gap-3">
+                {/* Account Link - Desktop */}
+                {isLoggedIn ? (
+                  <Link
+                    href="/account"
+                    className="hidden sm:flex items-center gap-2 text-[#1C4444] text-sm hover:opacity-70 transition-opacity"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    {customerName || 'Account'}
+                  </Link>
+                ) : (
+                  <Link
+                    href="/login"
+                    className="hidden sm:flex items-center gap-2 text-[#1C4444] text-sm hover:opacity-70 transition-opacity"
+                  >
+                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                    </svg>
+                    Login
+                  </Link>
+                )}
+
                 {/* Shop on Ayonne Button */}
                 <a
                   href={SHOPIFY_STORE_URL}
@@ -198,6 +255,53 @@ export default function Header() {
                     About
                   </Link>
                 </li>
+
+                {/* Divider */}
+                <li className="py-2">
+                  <div className="h-px bg-[#1C4444]/10" />
+                </li>
+
+                {/* Account Section */}
+                {isLoggedIn ? (
+                  <>
+                    <li>
+                      <Link
+                        href="/account"
+                        className="flex items-center gap-2 py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                        onClick={() => setIsMobileMenuOpen(false)}
+                      >
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                        </svg>
+                        My Account
+                      </Link>
+                    </li>
+                    <li>
+                      <button
+                        onClick={handleLogout}
+                        className="flex items-center gap-2 py-3 text-red-600 hover:opacity-70 transition-opacity text-sm uppercase tracking-wider w-full text-left"
+                      >
+                        <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1" />
+                        </svg>
+                        Logout
+                      </button>
+                    </li>
+                  </>
+                ) : (
+                  <li>
+                    <Link
+                      href="/login"
+                      className="flex items-center gap-2 py-3 text-[#1C4444] hover:opacity-70 transition-opacity text-sm uppercase tracking-wider"
+                      onClick={() => setIsMobileMenuOpen(false)}
+                    >
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" />
+                      </svg>
+                      Login / Sign Up
+                    </Link>
+                  </li>
+                )}
               </ul>
             </nav>
           </div>

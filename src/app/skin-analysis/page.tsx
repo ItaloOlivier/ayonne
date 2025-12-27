@@ -10,6 +10,7 @@ type Step = 'upload' | 'signup' | 'analyzing'
 
 // Helper to get/set customer ID from localStorage
 const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
+const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
 
 function getStoredCustomerId(): string | null {
   if (typeof window === 'undefined') return null
@@ -115,10 +116,11 @@ export default function SkinAnalysisPage() {
     }
   }
 
-  const handleSignupSuccess = async (customerId: string) => {
-    // Store the customer ID for future visits
+  const handleSignupSuccess = async (customerId: string, customerData: { id: string; email: string; firstName: string; lastName: string | null; phone: string | null; createdAt: string; analysisCount: number }) => {
+    // Store the customer ID and data for future visits
     setStoredCustomerId(customerId)
     setStoredCustomerIdState(customerId)
+    localStorage.setItem(CUSTOMER_DATA_KEY, JSON.stringify(customerData))
 
     // Run the analysis
     runAnalysis(customerId)
