@@ -99,24 +99,8 @@ export default function MultiAngleUpload({
     }
   }, [cameraStream])
 
-  // Check camera permission state
-  const checkCameraPermission = useCallback(async (): Promise<'prompt' | 'granted' | 'denied'> => {
-    try {
-      // Try the Permissions API first (not available on all browsers)
-      if (navigator.permissions && navigator.permissions.query) {
-        const result = await navigator.permissions.query({ name: 'camera' as PermissionName })
-        return result.state as 'prompt' | 'granted' | 'denied'
-      }
-    } catch {
-      // Permissions API not supported or error - that's okay
-    }
-    // Default to 'prompt' if we can't determine the state
-    return 'prompt'
-  }, [])
-
-  // Start camera directly (after permission granted or user clicks "Allow Camera")
-  // IMPORTANT: This must be defined BEFORE handleCameraButtonClick to avoid stale closure
-  const startCameraDirectly = useCallback(async () => {
+  // Start camera - this triggers the browser's permission dialog if needed
+  const startCamera = useCallback(async () => {
     setShowPermissionPrompt(false)
     setCameraError(null)
     setIsCameraActive(true)
@@ -145,27 +129,11 @@ export default function MultiAngleUpload({
     } catch (err) {
       console.error('Camera error:', err)
       setPermissionState('denied')
-      setCameraError('Unable to access camera. Please check permissions.')
+      // Show the help modal with instructions when permission is denied
+      setShowPermissionPrompt(true)
       setIsCameraActive(false)
     }
   }, [facingMode, cameraStream])
-
-  // Alias for compatibility with retakePhoto
-  const startCamera = startCameraDirectly
-
-  // Handle the initial camera button click - show permission prompt
-  const handleCameraButtonClick = useCallback(async () => {
-    const permission = await checkCameraPermission()
-    setPermissionState(permission)
-
-    if (permission === 'granted') {
-      // Already have permission, start camera directly
-      startCameraDirectly()
-    } else {
-      // Show permission explanation prompt
-      setShowPermissionPrompt(true)
-    }
-  }, [checkCameraPermission, startCameraDirectly])
 
   const stopCamera = useCallback(() => {
     if (cameraStream) {
@@ -732,7 +700,7 @@ export default function MultiAngleUpload({
           </div>
 
           <button
-            onClick={handleCameraButtonClick}
+            onClick={startCamera}
             className="btn-primary btn-luxury w-full py-4 text-sm tracking-widest"
           >
             Open Camera
@@ -754,114 +722,64 @@ export default function MultiAngleUpload({
         </div>
       ) : null}
 
-      {/* Camera Permission Request Modal */}
+      {/* Camera Permission Help Modal - Only shown when permission is denied */}
       {showPermissionPrompt && (
         <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
           <div className="bg-white rounded-2xl shadow-2xl max-w-sm mx-4 overflow-hidden animate-elegant-fade-in">
-            {/* Header with camera icon */}
-            <div className="bg-gradient-to-br from-[#1C4444] to-[#1C4444]/90 p-6 text-center">
+            {/* Header */}
+            <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-6 text-center">
               <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
                 <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
                 </svg>
               </div>
               <h3 className="text-white text-xl font-light tracking-wide">
-                {permissionState === 'denied' ? 'Camera Access Blocked' : 'Camera Access Needed'}
+                Camera Access Blocked
               </h3>
             </div>
 
             {/* Content */}
             <div className="p-6 space-y-4">
-              {permissionState === 'denied' ? (
-                <>
-                  <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
-                    Camera access was previously blocked. To use the camera, you&apos;ll need to enable it in your browser settings.
-                  </p>
+              <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
+                Camera access was blocked. To use the camera, enable it in your browser settings.
+              </p>
 
-                  {/* Platform-specific instructions */}
-                  <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
-                    <p className="text-amber-800 text-sm font-medium text-center">
-                      How to enable camera:
-                    </p>
-                    <div className="text-amber-700 text-xs space-y-2">
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold">Chrome:</span>
-                        <span>Tap the lock icon 🔒 in the address bar → Site settings → Camera → Allow</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold">Safari:</span>
-                        <span>Settings → Safari → Camera → Allow</span>
-                      </div>
-                      <div className="flex items-start gap-2">
-                        <span className="font-bold">Firefox:</span>
-                        <span>Tap the lock icon → Clear permissions → Reload page</span>
-                      </div>
-                    </div>
+              {/* Platform-specific instructions */}
+              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
+                <p className="text-amber-800 text-sm font-medium text-center">
+                  How to enable camera:
+                </p>
+                <div className="text-amber-700 text-xs space-y-2">
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold shrink-0">Chrome:</span>
+                    <span>Tap 🔒 in address bar → Site settings → Camera → Allow</span>
                   </div>
-
-                  <p className="text-[#1C4444]/60 text-xs text-center">
-                    After enabling, tap &quot;Try Again&quot; below.
-                  </p>
-                </>
-              ) : (
-                <>
-                  <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
-                    To analyze your skin accurately, we need to capture photos of your face from multiple angles.
-                  </p>
-
-                  {/* Browser permission popup preview */}
-                  <div className="bg-[#F4EBE7] rounded-lg p-4 space-y-3">
-                    <div className="flex items-center justify-center gap-2">
-                      <div className="w-8 h-8 rounded-full bg-[#1C4444]/10 flex items-center justify-center">
-                        <svg className="w-4 h-4 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                        </svg>
-                      </div>
-                      <span className="text-[#1C4444] text-sm font-medium">ai.ayonne.skin wants to use your camera</span>
-                    </div>
-                    <div className="flex justify-center gap-2">
-                      <span className="px-3 py-1 bg-white rounded text-[#1C4444]/50 text-xs">Block</span>
-                      <span className="px-3 py-1 bg-[#1C4444] text-white rounded text-xs font-medium">Allow ← Tap this</span>
-                    </div>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold shrink-0">Safari:</span>
+                    <span>Settings → Safari → Camera → Allow for this site</span>
                   </div>
-
-                  <p className="text-[#1C4444]/60 text-xs text-center">
-                    A browser popup will appear. Tap <strong>&quot;Allow&quot;</strong> to grant camera access.
-                  </p>
-                </>
-              )}
-
-              {/* Privacy note */}
-              <div className="flex items-center justify-center gap-2 text-[#1C4444]/50 text-xs">
-                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
-                </svg>
-                <span>Your photos are analyzed securely and privately</span>
+                  <div className="flex items-start gap-2">
+                    <span className="font-bold shrink-0">Firefox:</span>
+                    <span>Tap 🔒 → Clear permissions → Reload page</span>
+                  </div>
+                </div>
               </div>
+
+              <p className="text-[#1C4444]/60 text-xs text-center">
+                After enabling camera in settings, tap &quot;Try Again&quot;
+              </p>
             </div>
 
             {/* Actions */}
             <div className="p-4 pt-0 space-y-3">
               <button
-                onClick={startCameraDirectly}
+                onClick={startCamera}
                 className="w-full py-3.5 px-6 bg-[#1C4444] text-white rounded-lg font-medium tracking-wide hover:bg-[#1C4444]/90 transition-colors uppercase text-sm flex items-center justify-center gap-2"
               >
-                {permissionState === 'denied' ? (
-                  <>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                    </svg>
-                    Try Again
-                  </>
-                ) : (
-                  <>
-                    <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z" />
-                    </svg>
-                    Enable Camera
-                  </>
-                )}
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                </svg>
+                Try Again
               </button>
               <button
                 onClick={() => {
