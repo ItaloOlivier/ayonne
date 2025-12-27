@@ -38,7 +38,7 @@ async function analyzeSkinWithHuggingFace(imageBuffer: Buffer): Promise<{
           'Authorization': `Bearer ${HF_TOKEN}`,
           'Content-Type': 'application/octet-stream',
         },
-        body: imageBuffer,
+        body: new Uint8Array(imageBuffer),
       }
     )
 
@@ -209,9 +209,9 @@ export async function POST(request: NextRequest) {
       where: { id: analysis.id },
       data: {
         skinType,
-        conditions: conditions,
+        conditions: JSON.parse(JSON.stringify(conditions)),
         agedImage: agedImageUrl,
-        recommendations: recommendations.map(r => ({
+        recommendations: JSON.parse(JSON.stringify(recommendations.map(r => ({
           productId: r.product.id,
           productName: r.product.name,
           productSlug: r.product.slug,
@@ -220,8 +220,8 @@ export async function POST(request: NextRequest) {
           productSalePrice: r.product.salePrice,
           reason: r.reason,
           relevanceScore: r.relevanceScore,
-        })),
-        advice: advice,
+        })))),
+        advice: JSON.parse(JSON.stringify(advice)),
         status: 'COMPLETED',
       },
     })

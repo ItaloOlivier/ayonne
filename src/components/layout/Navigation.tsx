@@ -11,6 +11,10 @@ interface NavItem {
 
 const navItems: NavItem[] = [
   {
+    name: 'AI Skin Analysis',
+    href: '/skin-analysis',
+  },
+  {
     name: 'BioHack: Anti-Aging Serums',
     href: '/collections/anti-aging-serums',
   },

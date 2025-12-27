@@ -79,3 +79,49 @@ export type OrderStatus =
   | 'DELIVERED'
   | 'CANCELLED'
   | 'REFUNDED'
+
+export type AnalysisStatus =
+  | 'PENDING'
+  | 'PROCESSING'
+  | 'COMPLETED'
+  | 'FAILED'
+
+export interface SkinAnalysis {
+  id: string
+  sessionId?: string | null
+  customerId?: string | null
+  originalImage: string
+  agedImage?: string | null
+  skinType?: string | null
+  conditions: DetectedCondition[]
+  recommendations?: ProductRecommendation[] | null
+  advice?: AdviceItem[] | null
+  status: AnalysisStatus
+  errorMessage?: string | null
+  createdAt: Date
+  updatedAt: Date
+}
+
+export interface DetectedCondition {
+  id: string
+  name: string
+  confidence: number
+  description: string
+}
+
+export interface ProductRecommendation {
+  productId: string
+  productName: string
+  productSlug: string
+  productImage: string | null
+  productPrice: number
+  productSalePrice: number | null
+  reason: string
+  relevanceScore: number
+}
+
+export interface AdviceItem {
+  title: string
+  tip: string
+  priority: 'high' | 'medium' | 'low'
+}

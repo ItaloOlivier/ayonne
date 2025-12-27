@@ -148,6 +148,76 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* AI Skin Analysis CTA */}
+      <section className="py-16 md:py-20 bg-[#1C4444]">
+        <div className="container mx-auto px-4 lg:px-8">
+          <div className="max-w-4xl mx-auto">
+            <div className="grid md:grid-cols-2 gap-8 items-center">
+              <div className="text-white">
+                <div className="inline-flex items-center gap-2 bg-white/10 px-3 py-1 rounded-full text-sm mb-4">
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
+                  </svg>
+                  AI-Powered
+                </div>
+                <h2 className="text-3xl md:text-4xl font-normal mb-4">
+                  Discover Your Skin&apos;s Future
+                </h2>
+                <p className="text-white/80 mb-6">
+                  Upload a selfie and our AI will analyze your skin type, detect concerns, and show you what you might look like in 20 years. Get personalized product recommendations based on your unique skin needs.
+                </p>
+                <ul className="space-y-2 text-white/70 mb-8">
+                  <li className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Skin type & condition analysis
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Face aging simulation (+20 years)
+                  </li>
+                  <li className="flex items-center gap-2">
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    Personalized product recommendations
+                  </li>
+                </ul>
+                <Link
+                  href="/skin-analysis"
+                  className="inline-flex items-center gap-2 bg-white text-[#1C4444] px-6 py-3 rounded-lg font-medium hover:bg-white/90 transition-colors"
+                >
+                  Try Free Skin Analysis
+                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+                  </svg>
+                </Link>
+              </div>
+              <div className="relative hidden md:block">
+                <div className="aspect-square bg-white/10 rounded-2xl flex items-center justify-center">
+                  <div className="text-center p-8">
+                    <div className="w-24 h-24 mx-auto mb-6 rounded-full bg-white/20 flex items-center justify-center">
+                      <svg className="w-12 h-12 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15.75 6a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0zM4.501 20.118a7.5 7.5 0 0114.998 0A17.933 17.933 0 0112 21.75c-2.676 0-5.216-.584-7.499-1.632z" />
+                      </svg>
+                    </div>
+                    <p className="text-white/80 text-lg">
+                      See your future self
+                    </p>
+                    <p className="text-white/50 text-sm mt-2">
+                      Upload a photo to begin
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* About Section */}
       <section className="py-16 md:py-20">
         <div className="container mx-auto px-4 lg:px-8">
