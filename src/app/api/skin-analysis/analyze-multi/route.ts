@@ -287,13 +287,8 @@ export async function POST(request: NextRequest) {
       `skin-analysis/${customerId}-${sessionId}-front.jpg`
     )
 
-    // Build recommendations and advice with asymmetry notes
-    const extraAdvice = asymmetryNotes ? { asymmetryNotes } : undefined
-    const { recommendations, advice } = await buildAnalysisResults(
-      skinType,
-      conditions,
-      extraAdvice
-    )
+    // Build recommendations and advice
+    const { recommendations, advice } = await buildAnalysisResults(skinType, conditions)
 
     // Update analysis record with results
     const updatedAnalysis = await prisma.skinAnalysis.update({

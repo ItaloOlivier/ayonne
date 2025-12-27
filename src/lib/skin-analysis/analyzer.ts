@@ -196,8 +196,7 @@ export async function checkAnalysisRateLimit(
  */
 export async function buildAnalysisResults(
   skinType: SkinType | null,
-  conditions: DetectedCondition[],
-  extraAdviceData?: Record<string, unknown>
+  conditions: DetectedCondition[]
 ): Promise<{
   recommendations: Array<{
     productId: string
@@ -210,16 +209,15 @@ export async function buildAnalysisResults(
     reason: string
     relevanceScore: number
   }>
-  advice: unknown
+  advice: Array<{
+    title: string
+    tip: string
+    priority: 'high' | 'medium' | 'low'
+  }>
 }> {
   const recommendations = await getProductRecommendations(skinType, conditions, 6)
   const conditionIds = conditions.map(c => c.id)
-  const baseAdvice = getPersonalizedAdvice(skinType, conditionIds)
-
-  // Merge extra advice data if provided (e.g., asymmetryNotes for multi-angle)
-  const advice = extraAdviceData
-    ? { items: baseAdvice, ...extraAdviceData }
-    : baseAdvice
+  const advice = getPersonalizedAdvice(skinType, conditionIds)
 
   return {
     recommendations: recommendations.map(r => ({
