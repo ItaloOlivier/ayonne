@@ -3,21 +3,16 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import ImageUpload from '@/components/skin-analysis/ImageUpload'
 import MultiAngleUpload, { CapturedImage } from '@/components/skin-analysis/MultiAngleUpload'
 import SignupForm from '@/components/skin-analysis/SignupForm'
 
-type Step = 'upload' | 'multi-angle' | 'signup' | 'analyzing'
-type AnalysisMode = 'single' | 'multi'
+type Step = 'capture' | 'signup' | 'analyzing'
 
 export default function SkinAnalysisPage() {
   const router = useRouter()
-  const [step, setStep] = useState<Step>('upload')
-  const [analysisMode, setAnalysisMode] = useState<AnalysisMode>('single')
+  const [step, setStep] = useState<Step>('capture')
   const [error, setError] = useState<string | null>(null)
-  const [selectedFile, setSelectedFile] = useState<File | null>(null)
   const [multiAngleImages, setMultiAngleImages] = useState<CapturedImage[]>([])
-  const [imagePreview, setImagePreview] = useState<string | null>(null)
   const [storedCustomerId, setStoredCustomerIdState] = useState<string | null>(null)
   const [isCheckingUser, setIsCheckingUser] = useState(true)
 
@@ -40,63 +35,20 @@ export default function SkinAnalysisPage() {
       })
   }, [])
 
-  const handleImageSelect = (file: File) => {
-    setSelectedFile(file)
-    setError(null)
-
-    // Create preview
-    const reader = new FileReader()
-    reader.onload = (e) => {
-      setImagePreview(e.target?.result as string)
-    }
-    reader.readAsDataURL(file)
-  }
-
-  const handleProceedToSignup = () => {
-    if (analysisMode === 'single' && !selectedFile) return
-    if (analysisMode === 'multi' && multiAngleImages.length !== 3) return
+  const handleMultiAngleComplete = (images: CapturedImage[]) => {
+    setMultiAngleImages(images)
 
     // If user already has an account, go straight to analyzing
     if (storedCustomerId) {
-      runAnalysis(storedCustomerId)
+      runAnalysis(storedCustomerId, images)
     } else {
       setStep('signup')
     }
   }
 
-  const handleMultiAngleClick = () => {
-    setAnalysisMode('multi')
-    setStep('multi-angle')
-    setError(null)
-  }
-
-  const handleMultiAngleComplete = (images: CapturedImage[]) => {
-    setMultiAngleImages(images)
-    // Set preview to front image
-    const frontImage = images.find(img => img.angle === 'front')
-    if (frontImage) {
-      setImagePreview(frontImage.preview)
-    }
-    handleProceedAfterMultiAngle()
-  }
-
-  const handleProceedAfterMultiAngle = () => {
-    if (storedCustomerId) {
-      runAnalysis(storedCustomerId)
-    } else {
-      setStep('signup')
-    }
-  }
-
-  const handleMultiAngleCancel = () => {
-    setAnalysisMode('single')
-    setMultiAngleImages([])
-    setStep('upload')
-  }
-
-  const runAnalysis = async (customerId: string) => {
-    if (analysisMode === 'single' && !selectedFile) return
-    if (analysisMode === 'multi' && multiAngleImages.length !== 3) return
+  const runAnalysis = async (customerId: string, images?: CapturedImage[]) => {
+    const imagesToUse = images || multiAngleImages
+    if (imagesToUse.length !== 3) return
 
     setStep('analyzing')
     setError(null)
@@ -105,28 +57,19 @@ export default function SkinAnalysisPage() {
       const formData = new FormData()
       formData.append('customerId', customerId)
 
-      let endpoint: string
-      if (analysisMode === 'multi') {
-        // Multi-angle analysis
-        const frontImage = multiAngleImages.find(img => img.angle === 'front')
-        const leftImage = multiAngleImages.find(img => img.angle === 'left')
-        const rightImage = multiAngleImages.find(img => img.angle === 'right')
+      const frontImage = imagesToUse.find(img => img.angle === 'front')
+      const leftImage = imagesToUse.find(img => img.angle === 'left')
+      const rightImage = imagesToUse.find(img => img.angle === 'right')
 
-        if (!frontImage || !leftImage || !rightImage) {
-          throw new Error('Missing required images for multi-angle analysis')
-        }
-
-        formData.append('frontImage', frontImage.file)
-        formData.append('leftImage', leftImage.file)
-        formData.append('rightImage', rightImage.file)
-        endpoint = '/api/skin-analysis/analyze-multi'
-      } else {
-        // Single image analysis
-        formData.append('image', selectedFile!)
-        endpoint = '/api/skin-analysis/analyze'
+      if (!frontImage || !leftImage || !rightImage) {
+        throw new Error('Missing required images for analysis')
       }
 
-      const response = await fetch(endpoint, {
+      formData.append('frontImage', frontImage.file)
+      formData.append('leftImage', leftImage.file)
+      formData.append('rightImage', rightImage.file)
+
+      const response = await fetch('/api/skin-analysis/analyze-multi', {
         method: 'POST',
         body: formData,
       })
@@ -144,7 +87,7 @@ export default function SkinAnalysisPage() {
       router.push(`/skin-analysis/results/${data.analysisId}`)
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Something went wrong. Please try again.')
-      setStep('upload')
+      setStep('capture')
     }
   }
 
@@ -157,16 +100,13 @@ export default function SkinAnalysisPage() {
   }
 
   const handleCancelSignup = () => {
-    setStep('upload')
+    setStep('capture')
   }
 
   const handleStartOver = () => {
-    setSelectedFile(null)
     setMultiAngleImages([])
-    setImagePreview(null)
     setError(null)
-    setAnalysisMode('single')
-    setStep('upload')
+    setStep('capture')
   }
 
   return (
@@ -205,15 +145,9 @@ export default function SkinAnalysisPage() {
             <p className="text-lg text-[#1C4444]/70 mb-2">
               Discover your skin&apos;s unique needs with our AI-powered analysis
             </p>
-            {step === 'upload' && (
+            {step === 'capture' && (
               <p className="text-[#1C4444]/50">
-                Take a clear, well-lit selfie and we&apos;ll analyze your skin type,
-                detect concerns, and recommend personalized products.
-              </p>
-            )}
-            {step === 'multi-angle' && (
-              <p className="text-[#1C4444]/50">
-                Capture photos from three angles for a more comprehensive and accurate analysis.
+                Capture photos from three angles for a comprehensive and accurate analysis.
               </p>
             )}
             {step === 'signup' && (
@@ -235,62 +169,19 @@ export default function SkinAnalysisPage() {
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-lg mx-auto">
 
-            {/* Step 1: Upload */}
-            {step === 'upload' && (
+            {/* Step 1: Multi-angle capture */}
+            {step === 'capture' && (
               <>
-                <ImageUpload
-                  onImageSelect={handleImageSelect}
-                  isLoading={false}
-                  onMultiAngleClick={handleMultiAngleClick}
-                />
-
                 {error && (
-                  <div className="mt-4 p-4 bg-red-50 border border-red-200 rounded-lg">
+                  <div className="mb-4 p-4 bg-red-50 border border-red-200 rounded-lg">
                     <p className="text-red-700 text-sm">{error}</p>
                   </div>
                 )}
 
-                {selectedFile && (
-                  <button
-                    onClick={handleProceedToSignup}
-                    className="w-full mt-6 btn-primary text-center"
-                  >
-                    Continue to Get Results
-                  </button>
-                )}
-
-                {/* Tips */}
-                <div className="mt-8 p-6 bg-white rounded-xl">
-                  <h3 className="font-medium text-[#1C4444] mb-4">
-                    For best results:
-                  </h3>
-                  <ul className="space-y-2 text-[#1C4444]/70 text-sm">
-                    <li className="flex items-start gap-2">
-                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Use natural, even lighting (face a window or go outside)
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Remove glasses and pull back hair
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Keep a neutral expression and look straight at the camera
-                    </li>
-                    <li className="flex items-start gap-2">
-                      <svg className="w-5 h-5 text-[#1C4444] flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                      </svg>
-                      Avoid heavy makeup for accurate skin analysis
-                    </li>
-                  </ul>
-                </div>
+                <MultiAngleUpload
+                  onImagesComplete={handleMultiAngleComplete}
+                  isLoading={false}
+                />
 
                 {/* Privacy Note */}
                 <div className="mt-6 text-center">
@@ -303,20 +194,11 @@ export default function SkinAnalysisPage() {
               </>
             )}
 
-            {/* Step 1b: Multi-angle capture */}
-            {step === 'multi-angle' && (
-              <MultiAngleUpload
-                onImagesComplete={handleMultiAngleComplete}
-                onCancel={handleMultiAngleCancel}
-                isLoading={false}
-              />
-            )}
-
             {/* Step 2: Signup */}
             {step === 'signup' && (
               <>
-                {/* Show selected image thumbnail(s) */}
-                {analysisMode === 'multi' && multiAngleImages.length === 3 ? (
+                {/* Show captured images */}
+                {multiAngleImages.length === 3 && (
                   <div className="mb-6">
                     <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
                       {multiAngleImages.map((img) => (
@@ -331,21 +213,6 @@ export default function SkinAnalysisPage() {
                       ))}
                     </div>
                     <p className="text-center text-[#1C4444]/60 text-xs mt-2">3 photos ready for analysis</p>
-                  </div>
-                ) : imagePreview && (
-                  <div className="mb-6">
-                    <div className="relative aspect-video max-w-xs mx-auto rounded-lg overflow-hidden border-2 border-[#1C4444]/20">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={imagePreview}
-                        alt="Your photo"
-                        className="w-full h-full object-cover"
-                      />
-                      <div className="absolute inset-0 bg-black/10" />
-                      <div className="absolute bottom-2 left-2 bg-white/90 text-[#1C4444] text-xs px-2 py-1 rounded">
-                        Photo ready for analysis
-                      </div>
-                    </div>
                   </div>
                 )}
 
@@ -372,7 +239,7 @@ export default function SkinAnalysisPage() {
             {/* Step 3: Analyzing */}
             {step === 'analyzing' && (
               <div className="bg-white rounded-xl p-8 text-center">
-                {analysisMode === 'multi' && multiAngleImages.length === 3 ? (
+                {multiAngleImages.length === 3 && (
                   <div className="mb-6">
                     <div className="grid grid-cols-3 gap-2 max-w-xs mx-auto">
                       {multiAngleImages.map((img) => (
@@ -393,28 +260,10 @@ export default function SkinAnalysisPage() {
                       <p className="text-[#1C4444]/60 text-sm mt-1">This may take 20-40 seconds</p>
                     </div>
                   </div>
-                ) : imagePreview && (
-                  <div className="relative aspect-square max-w-xs mx-auto rounded-lg overflow-hidden border-2 border-[#1C4444]/20 mb-6">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={imagePreview}
-                      alt="Analyzing"
-                      className="w-full h-full object-cover"
-                    />
-                    <div className="absolute inset-0 bg-white/80 flex items-center justify-center">
-                      <div className="text-center">
-                        <div className="w-12 h-12 border-4 border-[#1C4444] border-t-transparent rounded-full animate-spin mx-auto mb-4" />
-                        <p className="text-[#1C4444] font-medium">Analyzing your skin...</p>
-                        <p className="text-[#1C4444]/60 text-sm mt-1">This may take 15-30 seconds</p>
-                      </div>
-                    </div>
-                  </div>
                 )}
 
                 <p className="text-[#1C4444]/60 text-sm">
-                  {analysisMode === 'multi'
-                    ? 'Our AI is cross-referencing all three angles for a comprehensive assessment.'
-                    : 'Our AI is examining your skin type, detecting conditions, and preparing personalized recommendations.'}
+                  Our AI is cross-referencing all three angles for a comprehensive assessment.
                 </p>
 
                 <button
@@ -429,8 +278,8 @@ export default function SkinAnalysisPage() {
         </div>
       </section>
 
-      {/* How It Works - only show on upload step */}
-      {step === 'upload' && (
+      {/* How It Works - only show on capture step */}
+      {step === 'capture' && (
         <section className="py-16 md:py-20 bg-white">
           <div className="container mx-auto px-4 lg:px-8">
             <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] text-center mb-12">
@@ -441,9 +290,9 @@ export default function SkinAnalysisPage() {
                 <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-[#1C4444] text-white flex items-center justify-center text-2xl font-light">
                   1
                 </div>
-                <h3 className="font-medium text-[#1C4444] mb-2">Take Your Selfie</h3>
+                <h3 className="font-medium text-[#1C4444] mb-2">Capture 3 Angles</h3>
                 <p className="text-[#1C4444]/60 text-sm">
-                  Take a clear photo in good lighting for the most accurate analysis
+                  Take photos from front, left, and right for a complete skin assessment
                 </p>
               </div>
               <div className="text-center">
@@ -461,7 +310,7 @@ export default function SkinAnalysisPage() {
                 </div>
                 <h3 className="font-medium text-[#1C4444] mb-2">AI Analysis</h3>
                 <p className="text-[#1C4444]/60 text-sm">
-                  Our AI detects skin type and conditions
+                  Our AI examines all angles to detect skin type and conditions
                 </p>
               </div>
               <div className="text-center">
