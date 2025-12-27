@@ -141,6 +141,15 @@ src/
 - Users can log in on phone and laptop to access the same data
 - Session managed server-side via `/api/auth/me` endpoint
 
+### Skin Progress Page
+- **Dual Score Overview**: Vitality + Health cards matching analysis results design
+- **Skin Vitality Card**: Current age → Potential age with improvement indicator
+- **Skin Health Card**: Circular progress ring with category breakdown (hydration, clarity, texture, radiance)
+- **Stats Summary**: 4-column grid (Analyses, Vitality, Health Score, Health Change)
+- **Trend Chart**: Line graph with period selector (week/month/3months/all)
+- **History Cards**: Thumbnail + date + dual score circles (Vitality & Health)
+- **Progress Tracking**: Shows improvement since first analysis for both scores
+
 ### Gamification & Engagement
 - **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
 - **Achievement System**: 14+ badge types (First Steps, Week Warrior, Glow Up, Flawless, etc.)
@@ -236,6 +245,14 @@ npx prisma db push      # Push schema to database
 - **Font**: IBM Plex Sans
 - **Button Styles**: `.btn-primary`, `.btn-secondary`
 
+### Luxury UI Components
+- `.card-luxury` - Elevated white card with subtle shadow and border
+- `.shadow-luxury` - Sophisticated soft shadow
+- `.shadow-luxury-lg` - Larger luxury shadow for hover states
+- `.btn-luxury` - Premium button styling
+- `.animate-elegant-fade-in` - Refined fade-in entrance
+- `.animate-gentle-glow` - Subtle pulsing glow effect
+
 ### CSS Animations (globals.css)
 - `.animate-confetti` - Falling confetti effect
 - `.animate-bounce-in` - Scale bounce entrance
@@ -247,6 +264,17 @@ npx prisma db push      # Push schema to database
 - `.animate-slide-in` - Slide in from left
 - `.animate-pulse-ring` - Expanding ring pulse
 - `.animate-float` - Gentle floating motion
+
+### Color Palette
+- **Primary Teal**: #1C4444 - Main brand color, buttons, text
+- **Gold Accent**: #D4AF37 - Premium highlights, eyebrow text, hover states
+- **Warm Beige**: #F4EBE7 - Backgrounds
+- **Quality Colors**: Brand-aligned tones for score display
+  - Excellent (85+): #1C4444 (teal)
+  - Good (70-84): #2D5A5A (lighter teal)
+  - Fair (55-69): #8B7355 (warm bronze)
+  - Needs Attention (40-54): #A67C52 (copper)
+  - Needs Care (<40): #996B4A (terracotta)
 
 ## Deployment
 
