@@ -88,12 +88,12 @@ export default function RefundPolicyPage() {
 
               <div className="relative">
                 <div className="flex items-center gap-4 mb-6">
-                  <div className="w-16 h-16 bg-white/10 backdrop-blur-sm rounded-full flex items-center justify-center">
-                    <span className="text-3xl font-light">7</span>
+                  <div className="w-16 h-16 bg-gradient-to-br from-[#D4AF37] to-[#C9A227] rounded-full flex items-center justify-center shadow-lg">
+                    <span className="text-3xl font-light text-white">7</span>
                   </div>
                   <div>
                     <h2 className="text-2xl md:text-3xl font-light tracking-tight">
-                      Day Return Window
+                      <span className="text-[#D4AF37]">7</span> Day Return Window
                     </h2>
                     <p className="text-white/60">Full refund, no questions asked</p>
                   </div>
