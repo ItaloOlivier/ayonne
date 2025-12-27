@@ -35,6 +35,12 @@ export const FEATURES = {
    * Normalizes exposure, white balance, and contrast before AI analysis
    */
   IMAGE_PREPROCESSING: process.env.FEATURE_IMAGE_PREPROCESSING !== 'false', // Enabled by default
+
+  /**
+   * Enable smart auto-capture during photo taking
+   * Automatically captures when quality thresholds are met and face is positioned
+   */
+  SMART_AUTO_CAPTURE: process.env.FEATURE_SMART_AUTO_CAPTURE !== 'false', // Enabled by default
 }
 
 /**
@@ -47,5 +53,6 @@ export function logFeatureStatus(): void {
     TOOL_USE: FEATURES.TOOL_USE,
     EXTENDED_THINKING: FEATURES.EXTENDED_THINKING,
     IMAGE_PREPROCESSING: FEATURES.IMAGE_PREPROCESSING,
+    SMART_AUTO_CAPTURE: FEATURES.SMART_AUTO_CAPTURE,
   })
 }

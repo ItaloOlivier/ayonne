@@ -76,6 +76,7 @@ src/
 │       ├── SignupForm.tsx            # User registration form (email, name, password)
 │       ├── AnalysisProgress.tsx      # Step-by-step analysis progress indicator
 │       ├── QualityIndicator.tsx      # Real-time image quality feedback
+│       ├── LiveCameraCapture.tsx     # Smart auto-capture with quality monitoring
 │       ├── AnalysisResults.tsx
 │       ├── ProductRecommendations.tsx  # Multi-select checkout with sorting
 │       ├── SkincareAdvice.tsx
@@ -110,7 +111,10 @@ src/
 │       ├── extended-thinking.ts    # Deep reasoning for complex cases
 │       ├── unified-analyzer.ts     # Intelligent method selection
 │       ├── image-quality.ts        # Pre-analysis quality validation
-│       └── image-preprocessing.ts  # Server-side image normalization
+│       ├── image-preprocessing.ts  # Server-side image normalization
+│       └── face-detection.ts       # Browser-based face detection
+├── hooks/
+│   └── useLiveCamera.ts          # Live camera with auto-capture hook
 └── types/
     └── index.ts
 ```
@@ -179,6 +183,24 @@ The skin analysis uses advanced Anthropic Claude API features:
   - Live brightness meter
   - Quality badge (Excellent/Good/Acceptable/Poor)
   - Actionable warnings for issues
+
+### Smart Auto-Capture
+- **Live camera with quality monitoring**: `useLiveCamera` hook
+  - Continuous quality assessment during video preview
+  - Frame burst capture (3 frames at 200ms intervals)
+  - Automatic best-frame selection based on quality score
+- **Face detection**: Browser FaceDetector API with fallback
+  - Detects face position and provides guidance
+  - "Move closer", "Center your face", "Move left/right" feedback
+  - Skin-tone heuristics for browsers without FaceDetector API
+- **Auto-capture trigger**: Captures when conditions are optimal
+  - Quality score above threshold (default: 70)
+  - Face well-positioned in frame
+  - Stable for 1.5 seconds (configurable)
+  - Circular progress indicator shows countdown
+- **LiveCameraCapture component**: Drop-in smart camera
+  - Feature flag: `FEATURE_SMART_AUTO_CAPTURE`
+  - Falls back to manual capture if disabled
 
 ### Dual Scoring System
 - **Skin Age**: Estimated biological skin age based on aging indicators
