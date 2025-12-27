@@ -1,7 +1,7 @@
 'use client'
 
 import Link from 'next/link'
-import { calculateHealthScore, getScoreLabel, getScoreColor } from './SkinHealthScore'
+import { calculateSkinScores, getQualityColor, getSkinAgeColor } from '@/lib/skin-analysis/scoring'
 
 interface DetectedCondition {
   id: string
@@ -40,15 +40,16 @@ const skinTypeColors: Record<string, string> = {
 
 export default function HistoryCard({ analysis, previousScore, isLatest }: HistoryCardProps) {
   const conditions = analysis.conditions || []
-  const score = calculateHealthScore(conditions)
+  const scores = calculateSkinScores(conditions)
   const date = new Date(analysis.createdAt)
 
   const topConditions = [...conditions]
     .sort((a, b) => b.confidence - a.confidence)
     .slice(0, 2) // Show only 2 on mobile to prevent crowding
 
-  // Calculate trend
-  const trend = previousScore !== undefined ? score - previousScore : 0
+  // Calculate trend based on quality score
+  const trend = previousScore !== undefined ? scores.qualityScore - previousScore : 0
+  const skinAgeImprovement = scores.skinAge - scores.achievableSkinAge
 
   return (
     <Link href={`/skin-analysis/results/${analysis.id}`}>
@@ -90,51 +91,40 @@ export default function HistoryCard({ analysis, previousScore, isLatest }: Histo
               />
             </div>
 
-            {/* Score display - inline compact */}
+            {/* Dual Score display - inline compact */}
             <div className="flex-1 flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                {/* Circular score indicator */}
-                <div className="relative w-12 h-12 sm:w-14 sm:h-14">
-                  <svg className="w-full h-full transform -rotate-90" viewBox="0 0 100 100">
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
-                      fill="none"
-                      stroke="#e5e7eb"
-                      strokeWidth="8"
-                    />
-                    <circle
-                      cx="50"
-                      cy="50"
-                      r="42"
-                      fill="none"
-                      stroke={getScoreColor(score)}
-                      strokeWidth="8"
-                      strokeLinecap="round"
-                      strokeDasharray={2 * Math.PI * 42}
-                      strokeDashoffset={(1 - score / 100) * 2 * Math.PI * 42}
-                    />
-                  </svg>
-                  <div className="absolute inset-0 flex items-center justify-center">
-                    <span className="text-sm sm:text-base font-semibold text-[#1C4444]">{score}</span>
+              <div className="flex items-center gap-4">
+                {/* Skin Age */}
+                <div className="text-center">
+                  <div
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    style={{ backgroundColor: getSkinAgeColor(scores.skinAge, 30) }}
+                  >
+                    {scores.skinAge}
                   </div>
+                  <span className="text-[10px] text-[#1C4444]/50 mt-0.5 block">Age</span>
                 </div>
 
-                {/* Score label and trend */}
-                <div className="flex flex-col">
-                  <span
-                    className="text-sm font-medium"
-                    style={{ color: getScoreColor(score) }}
+                {/* Quality Score */}
+                <div className="text-center">
+                  <div
+                    className="w-10 h-10 sm:w-12 sm:h-12 rounded-full flex items-center justify-center text-white text-sm font-bold"
+                    style={{ backgroundColor: getQualityColor(scores.qualityScore) }}
                   >
-                    {getScoreLabel(score)}
-                  </span>
-                  {trend !== 0 && (
-                    <span className={`text-xs ${trend > 0 ? 'text-green-600' : 'text-red-500'}`}>
-                      {trend > 0 ? '↑' : '↓'} {Math.abs(trend)} pts
-                    </span>
-                  )}
+                    {scores.qualityScore}
+                  </div>
+                  <span className="text-[10px] text-[#1C4444]/50 mt-0.5 block">Quality</span>
                 </div>
+
+                {/* Improvement indicator */}
+                {skinAgeImprovement > 0 && (
+                  <div className="text-center">
+                    <div className="text-green-600 text-xs font-medium">
+                      -{skinAgeImprovement} yrs
+                    </div>
+                    <span className="text-[10px] text-green-500">potential</span>
+                  </div>
+                )}
               </div>
 
               {/* Arrow indicator */}

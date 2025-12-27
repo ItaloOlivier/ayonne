@@ -6,15 +6,17 @@ import { cn } from '@/lib/utils'
 interface ImageUploadProps {
   onImageSelect: (file: File) => void
   isLoading?: boolean
+  mode?: 'single' | 'multi'
+  onMultiAngleClick?: () => void
 }
 
 type CaptureMode = 'select' | 'camera' | 'upload'
 
-export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadProps) {
+export default function ImageUpload({ onImageSelect, isLoading, mode = 'single', onMultiAngleClick }: ImageUploadProps) {
   const [preview, setPreview] = useState<string | null>(null)
   const [dragActive, setDragActive] = useState(false)
   const [error, setError] = useState<string | null>(null)
-  const [mode, setMode] = useState<CaptureMode>('select')
+  const [captureMode, setCaptureMode] = useState<CaptureMode>('select')
   const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
   const [cameraError, setCameraError] = useState<string | null>(null)
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
@@ -92,7 +94,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
   const clearPreview = useCallback(() => {
     setPreview(null)
     setError(null)
-    setMode('select')
+    setCaptureMode('select')
     if (cameraStream) {
       cameraStream.getTracks().forEach(track => track.stop())
       setCameraStream(null)
@@ -101,7 +103,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
 
   const startCamera = useCallback(async () => {
     setCameraError(null)
-    setMode('camera')
+    setCaptureMode('camera')
 
     try {
       // Stop any existing stream
@@ -127,7 +129,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
     } catch (err) {
       console.error('Camera error:', err)
       setCameraError('Unable to access camera. Please check permissions or try uploading a photo instead.')
-      setMode('select')
+      setCaptureMode('select')
     }
   }, [facingMode, cameraStream])
 
@@ -190,7 +192,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
         // Set preview and trigger upload
         setPreview(canvas.toDataURL('image/jpeg'))
         onImageSelect(file)
-        setMode('select')
+        setCaptureMode('select')
       }
     }, 'image/jpeg', 0.9)
   }, [cameraStream, onImageSelect])
@@ -200,7 +202,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
       cameraStream.getTracks().forEach(track => track.stop())
       setCameraStream(null)
     }
-    setMode('select')
+    setCaptureMode('select')
   }, [cameraStream])
 
   // Preview state - show captured/uploaded image
@@ -240,7 +242,7 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
   }
 
   // Camera mode - show live camera feed
-  if (mode === 'camera') {
+  if (captureMode === 'camera') {
     return (
       <div className="relative">
         <div className="relative aspect-square max-w-md mx-auto rounded-xl overflow-hidden bg-black">
@@ -483,6 +485,47 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
           </div>
         </div>
       </div>
+
+      {/* Multi-angle option */}
+      {onMultiAngleClick && (
+        <div className="relative">
+          <div className="absolute inset-0 flex items-center">
+            <div className="w-full border-t border-[#1C4444]/20" />
+          </div>
+          <div className="relative flex justify-center">
+            <span className="bg-[#F4EBE7] px-3 text-[#1C4444]/50 text-xs">or for best results</span>
+          </div>
+        </div>
+      )}
+
+      {onMultiAngleClick && (
+        <button
+          onClick={onMultiAngleClick}
+          className="w-full group border-2 border-[#1C4444] bg-[#1C4444]/5 hover:bg-[#1C4444]/10 rounded-xl p-4 transition-all"
+        >
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-10 h-10 rounded-full bg-[#1C4444] text-white flex items-center justify-center">
+                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
+                </svg>
+              </div>
+              <div className="text-left">
+                <h3 className="text-sm font-medium text-[#1C4444]">
+                  Multi-Angle Analysis
+                  <span className="ml-2 text-xs bg-[#1C4444] text-white px-2 py-0.5 rounded-full">Recommended</span>
+                </h3>
+                <p className="text-[#1C4444]/60 text-xs">
+                  3 photos for more accurate results
+                </p>
+              </div>
+            </div>
+            <svg className="w-5 h-5 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+            </svg>
+          </div>
+        </button>
+      )}
 
       {error && (
         <p className="text-center text-red-600 text-sm font-medium">{error}</p>

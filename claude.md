@@ -75,6 +75,7 @@ src/
 │       ├── SkinHealthScore.tsx      # Animated circular score with trend
 │       ├── HistoryCard.tsx          # Compact history list cards
 │       ├── ProgressTimeline.tsx     # Analysis history list component
+│       ├── DualScoreDisplay.tsx     # Skin age + quality score display
 │       ├── StreakCounter.tsx        # Fire animation streak tracking
 │       ├── AchievementBadges.tsx    # Gamification badges
 │       ├── SocialProof.tsx          # Live activity indicators
@@ -91,7 +92,8 @@ src/
 │       ├── conditions.ts     # Skin condition definitions
 │       ├── recommendations.ts # Product matching logic
 │       ├── advice.ts         # Personalized skincare tips
-│       └── health-score.ts   # Score calculation utilities
+│       ├── health-score.ts   # Legacy score calculation
+│       └── scoring.ts        # Dual scoring system (skin age + quality)
 └── types/
     └── index.ts
 ```
@@ -107,6 +109,18 @@ src/
 - Claude AI analyzes for skin type and conditions
 - Detects: fine lines, wrinkles, dark spots, acne, dryness, oiliness, redness, dullness, large pores, uneven texture, dark circles, dehydration
 - Smart fallback with varied results if AI unavailable
+
+### Dual Scoring System
+- **Skin Age**: Estimated biological skin age based on aging indicators
+  - Fine lines, wrinkles, dark spots, dullness add years to skin age
+  - Shows "Current: 38 → Achievable: 33" with 5-8 year improvement potential
+  - Improvement is calculated based on reversibility of detected conditions
+- **Skin Quality**: 0-100 score for overall skin health
+  - Based on non-aging conditions (acne, oiliness, redness, pores, etc.)
+  - Category breakdowns: hydration, clarity, texture, radiance
+- Enables targeted product recommendations:
+  - Anti-aging products for skin age concerns
+  - Treatment products for skin quality concerns
 
 ### Product Recommendations
 - Matches products to detected skin conditions

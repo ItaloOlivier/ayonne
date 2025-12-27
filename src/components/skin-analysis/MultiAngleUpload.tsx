@@ -1,0 +1,622 @@
+'use client'
+
+import { useState, useCallback, useRef, useEffect } from 'react'
+import { cn } from '@/lib/utils'
+
+export interface CapturedImage {
+  file: File
+  preview: string
+  angle: 'front' | 'left' | 'right'
+}
+
+interface MultiAngleUploadProps {
+  onImagesComplete: (images: CapturedImage[]) => void
+  onCancel?: () => void
+  isLoading?: boolean
+}
+
+type CaptureStep = 'front' | 'left' | 'right' | 'review'
+
+interface AngleConfig {
+  id: CaptureStep
+  label: string
+  instruction: string
+  tips: string[]
+  silhouetteTransform: string
+  guideText: string
+}
+
+const ANGLE_CONFIGS: Record<Exclude<CaptureStep, 'review'>, AngleConfig> = {
+  front: {
+    id: 'front',
+    label: 'Front View',
+    instruction: 'Look directly at the camera',
+    tips: [
+      'Center your face in the frame',
+      'Relax your expression naturally',
+      'Ensure soft, even lighting',
+    ],
+    silhouetteTransform: '',
+    guideText: 'Center your face',
+  },
+  left: {
+    id: 'left',
+    label: 'Left Profile',
+    instruction: 'Gently turn to show your left side',
+    tips: [
+      'Turn your head 45° to the right',
+      'Keep your chin parallel to the floor',
+      'Let your natural beauty shine through',
+    ],
+    silhouetteTransform: 'rotateY(35deg)',
+    guideText: 'Show your left side',
+  },
+  right: {
+    id: 'right',
+    label: 'Right Profile',
+    instruction: 'Gently turn to show your right side',
+    tips: [
+      'Turn your head 45° to the left',
+      'Keep your chin parallel to the floor',
+      'Almost there — one more angle',
+    ],
+    silhouetteTransform: 'rotateY(-35deg)',
+    guideText: 'Show your right side',
+  },
+}
+
+const STEPS_ORDER: Exclude<CaptureStep, 'review'>[] = ['front', 'left', 'right']
+
+export default function MultiAngleUpload({
+  onImagesComplete,
+  onCancel,
+  isLoading,
+}: MultiAngleUploadProps) {
+  const [currentStep, setCurrentStep] = useState<CaptureStep>('front')
+  const [capturedImages, setCapturedImages] = useState<Map<string, CapturedImage>>(new Map())
+  const [cameraStream, setCameraStream] = useState<MediaStream | null>(null)
+  const [cameraError, setCameraError] = useState<string | null>(null)
+  const [isCameraActive, setIsCameraActive] = useState(false)
+  const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
+  const [countdown, setCountdown] = useState<number | null>(null)
+
+  const videoRef = useRef<HTMLVideoElement>(null)
+  const canvasRef = useRef<HTMLCanvasElement>(null)
+
+  // Cleanup camera stream on unmount
+  useEffect(() => {
+    return () => {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop())
+      }
+    }
+  }, [cameraStream])
+
+  const startCamera = useCallback(async () => {
+    setCameraError(null)
+    setIsCameraActive(true)
+
+    try {
+      if (cameraStream) {
+        cameraStream.getTracks().forEach(track => track.stop())
+      }
+
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: facingMode,
+          width: { ideal: 1280 },
+          height: { ideal: 1280 },
+        },
+        audio: false,
+      })
+
+      setCameraStream(stream)
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
+      }
+    } catch (err) {
+      console.error('Camera error:', err)
+      setCameraError('Unable to access camera. Please check permissions.')
+      setIsCameraActive(false)
+    }
+  }, [facingMode, cameraStream])
+
+  const stopCamera = useCallback(() => {
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop())
+      setCameraStream(null)
+    }
+    setIsCameraActive(false)
+  }, [cameraStream])
+
+  const switchCamera = useCallback(async () => {
+    const newFacingMode = facingMode === 'user' ? 'environment' : 'user'
+    setFacingMode(newFacingMode)
+
+    if (cameraStream) {
+      cameraStream.getTracks().forEach(track => track.stop())
+    }
+
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({
+        video: {
+          facingMode: newFacingMode,
+          width: { ideal: 1280 },
+          height: { ideal: 1280 },
+        },
+        audio: false,
+      })
+
+      setCameraStream(stream)
+
+      if (videoRef.current) {
+        videoRef.current.srcObject = stream
+        videoRef.current.play()
+      }
+    } catch (err) {
+      console.error('Camera switch error:', err)
+    }
+  }, [facingMode, cameraStream])
+
+  const capturePhoto = useCallback(() => {
+    if (!videoRef.current || !canvasRef.current || currentStep === 'review') return
+
+    const video = videoRef.current
+    const canvas = canvasRef.current
+    const context = canvas.getContext('2d')
+
+    if (!context) return
+
+    canvas.width = video.videoWidth
+    canvas.height = video.videoHeight
+
+    // Mirror the image for selfie camera
+    if (facingMode === 'user') {
+      context.translate(canvas.width, 0)
+      context.scale(-1, 1)
+    }
+
+    context.drawImage(video, 0, 0, canvas.width, canvas.height)
+
+    canvas.toBlob((blob) => {
+      if (blob) {
+        const file = new File([blob], `skin-analysis-${currentStep}.jpg`, { type: 'image/jpeg' })
+        const preview = canvas.toDataURL('image/jpeg')
+
+        const newImage: CapturedImage = {
+          file,
+          preview,
+          angle: currentStep as 'front' | 'left' | 'right',
+        }
+
+        setCapturedImages(prev => {
+          const newMap = new Map(prev)
+          newMap.set(currentStep, newImage)
+          return newMap
+        })
+
+        // Move to next step
+        const currentIndex = STEPS_ORDER.indexOf(currentStep as Exclude<CaptureStep, 'review'>)
+        if (currentIndex < STEPS_ORDER.length - 1) {
+          setCurrentStep(STEPS_ORDER[currentIndex + 1])
+        } else {
+          // All photos captured, go to review
+          setCurrentStep('review')
+          stopCamera()
+        }
+      }
+    }, 'image/jpeg', 0.9)
+  }, [currentStep, facingMode, stopCamera])
+
+  const captureWithCountdown = useCallback(() => {
+    setCountdown(3)
+
+    const timer = setInterval(() => {
+      setCountdown(prev => {
+        if (prev === null || prev <= 1) {
+          clearInterval(timer)
+          if (prev === 1) {
+            capturePhoto()
+          }
+          return null
+        }
+        return prev - 1
+      })
+    }, 1000)
+  }, [capturePhoto])
+
+  const retakePhoto = useCallback((angle: Exclude<CaptureStep, 'review'>) => {
+    setCapturedImages(prev => {
+      const newMap = new Map(prev)
+      newMap.delete(angle)
+      return newMap
+    })
+    setCurrentStep(angle)
+    startCamera()
+  }, [startCamera])
+
+  const handleComplete = useCallback(() => {
+    const images = Array.from(capturedImages.values())
+    if (images.length === 3) {
+      onImagesComplete(images)
+    }
+  }, [capturedImages, onImagesComplete])
+
+  const handleCancel = useCallback(() => {
+    stopCamera()
+    onCancel?.()
+  }, [stopCamera, onCancel])
+
+  const currentConfig = currentStep !== 'review' ? ANGLE_CONFIGS[currentStep] : null
+  const completedCount = capturedImages.size
+  const progress = (completedCount / 3) * 100
+
+  // Review screen
+  if (currentStep === 'review') {
+    return (
+      <div className="space-y-8 animate-elegant-fade-in">
+        {/* Success header with celebration */}
+        <div className="text-center">
+          <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] flex items-center justify-center shadow-luxury animate-bounce-in">
+            <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+            </svg>
+          </div>
+          <h3 className="text-2xl font-light text-[#1C4444] mb-2 tracking-wide">Beautifully Captured</h3>
+          <p className="text-[#1C4444]/60 text-sm">
+            Your photos are ready for our advanced AI analysis
+          </p>
+        </div>
+
+        {/* Photo grid with luxury styling */}
+        <div className="grid grid-cols-3 gap-4">
+          {STEPS_ORDER.map((angle, index) => {
+            const image = capturedImages.get(angle)
+            const config = ANGLE_CONFIGS[angle]
+            return (
+              <div
+                key={angle}
+                className="relative animate-elegant-fade-in"
+                style={{ animationDelay: `${index * 100}ms` }}
+              >
+                <div className="aspect-square rounded-xl overflow-hidden shadow-luxury border border-[#1C4444]/10 group">
+                  {image ? (
+                    <>
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={image.preview}
+                        alt={config.label}
+                        className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                      />
+                      {/* Elegant overlay on hover */}
+                      <div className="absolute inset-0 bg-gradient-to-t from-[#1C4444]/60 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      <button
+                        onClick={() => retakePhoto(angle)}
+                        disabled={isLoading}
+                        className="absolute bottom-2 right-2 bg-white/95 hover:bg-white text-[#1C4444] p-2 rounded-full shadow-luxury opacity-0 group-hover:opacity-100 transition-all duration-300 disabled:opacity-50"
+                        aria-label={`Retake ${config.label}`}
+                      >
+                        <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                        </svg>
+                      </button>
+                      {/* Gold checkmark badge */}
+                      <div className="absolute top-2 left-2 w-6 h-6 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] flex items-center justify-center shadow-sm">
+                        <svg className="w-3.5 h-3.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                        </svg>
+                      </div>
+                    </>
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-[#1C4444]/5">
+                      <span className="text-[#1C4444]/30 text-xs">Missing</span>
+                    </div>
+                  )}
+                </div>
+                <p className="text-center text-[#1C4444]/70 text-xs mt-2 font-medium tracking-wide">{config.label}</p>
+              </div>
+            )
+          })}
+        </div>
+
+        {/* Premium action buttons */}
+        <div className="space-y-3 pt-2">
+          <button
+            onClick={handleComplete}
+            disabled={isLoading || capturedImages.size < 3}
+            className="w-full btn-primary btn-luxury py-4 text-sm tracking-widest disabled:opacity-50"
+          >
+            {isLoading ? (
+              <span className="flex items-center justify-center gap-3">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+                Preparing Analysis...
+              </span>
+            ) : (
+              'Begin My Skin Analysis'
+            )}
+          </button>
+          <button
+            onClick={handleCancel}
+            disabled={isLoading}
+            className="w-full py-3 text-[#1C4444]/60 hover:text-[#1C4444] text-sm tracking-wide transition-colors disabled:opacity-50"
+          >
+            Start Over
+          </button>
+        </div>
+
+        <p className="text-center text-[#1C4444]/40 text-xs tracking-wide">
+          Our dermatologist-grade AI will analyze all three perspectives
+        </p>
+      </div>
+    )
+  }
+
+  // Camera capture screen
+  return (
+    <div className="space-y-6">
+      {/* Elegant progress stepper */}
+      <div className="space-y-4">
+        {/* Step label */}
+        <div className="text-center">
+          <p className="text-[#1C4444]/50 text-xs tracking-widest uppercase mb-1">
+            Step {STEPS_ORDER.indexOf(currentStep as Exclude<CaptureStep, 'review'>) + 1} of 3
+          </p>
+          <h3 className="text-xl font-light text-[#1C4444] tracking-wide">{currentConfig?.label}</h3>
+        </div>
+
+        {/* Premium step indicators */}
+        <div className="flex items-center justify-center gap-3">
+          {STEPS_ORDER.map((step, index) => {
+            const isCompleted = capturedImages.has(step)
+            const isCurrent = step === currentStep
+            const isPending = !isCompleted && !isCurrent
+
+            return (
+              <div key={step} className="flex items-center">
+                <div
+                  className={cn(
+                    'w-10 h-10 rounded-full flex items-center justify-center transition-all duration-300 stepper-dot',
+                    isCompleted && 'stepper-dot-complete',
+                    isCurrent && 'bg-[#1C4444] text-white stepper-dot-active',
+                    isPending && 'bg-[#1C4444]/10 text-[#1C4444]/40'
+                  )}
+                >
+                  {isCompleted ? (
+                    <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M5 13l4 4L19 7" />
+                    </svg>
+                  ) : (
+                    <span className="text-sm font-medium">{index + 1}</span>
+                  )}
+                </div>
+                {/* Connector line */}
+                {index < STEPS_ORDER.length - 1 && (
+                  <div
+                    className={cn(
+                      'w-8 h-0.5 mx-1 transition-all duration-300',
+                      capturedImages.has(step) ? 'bg-[#D4AF37]' : 'bg-[#1C4444]/10'
+                    )}
+                  />
+                )}
+              </div>
+            )
+          })}
+        </div>
+      </div>
+
+      {/* Camera error */}
+      {cameraError && (
+        <div className="p-4 bg-red-50 border border-red-200 rounded-lg">
+          <p className="text-red-700 text-sm">{cameraError}</p>
+          <button
+            onClick={startCamera}
+            className="mt-2 text-red-700 underline text-sm"
+          >
+            Try again
+          </button>
+        </div>
+      )}
+
+      {/* Start camera button or camera view */}
+      {!isCameraActive && !cameraError ? (
+        <div className="text-center space-y-6 animate-elegant-fade-in">
+          <div className="card-luxury p-8 space-y-6">
+            {/* Elegant camera icon */}
+            <div className="w-20 h-20 mx-auto rounded-full bg-gradient-to-br from-[#1C4444]/10 to-[#1C4444]/5 flex items-center justify-center animate-gentle-glow">
+              <svg className="w-10 h-10 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M6.827 6.175A2.31 2.31 0 015.186 7.23c-.38.054-.757.112-1.134.175C2.999 7.58 2.25 8.507 2.25 9.574V18a2.25 2.25 0 002.25 2.25h15A2.25 2.25 0 0021.75 18V9.574c0-1.067-.75-1.994-1.802-2.169a47.865 47.865 0 00-1.134-.175 2.31 2.31 0 01-1.64-1.055l-.822-1.316a2.192 2.192 0 00-1.736-1.039 48.774 48.774 0 00-5.232 0 2.192 2.192 0 00-1.736 1.039l-.821 1.316z" />
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M16.5 12.75a4.5 4.5 0 11-9 0 4.5 4.5 0 019 0zM18.75 10.5h.008v.008h-.008V10.5z" />
+              </svg>
+            </div>
+
+            {/* Instruction */}
+            <div>
+              <p className="text-lg text-[#1C4444] mb-2 tracking-wide">{currentConfig?.instruction}</p>
+            </div>
+
+            {/* Tips with elegant styling */}
+            <div className="bg-[#F4EBE7]/50 rounded-lg p-4">
+              <ul className="space-y-3">
+                {currentConfig?.tips.map((tip, i) => (
+                  <li
+                    key={i}
+                    className="flex items-center gap-3 text-[#1C4444]/70 text-sm animate-fade-in"
+                    style={{ animationDelay: `${i * 100}ms` }}
+                  >
+                    <div className="w-5 h-5 rounded-full bg-[#1C4444]/10 flex items-center justify-center flex-shrink-0">
+                      <svg className="w-3 h-3 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                      </svg>
+                    </div>
+                    <span>{tip}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+
+          <button
+            onClick={startCamera}
+            className="btn-primary btn-luxury w-full py-4 text-sm tracking-widest"
+          >
+            Open Camera
+          </button>
+
+          <button
+            onClick={handleCancel}
+            className="text-[#1C4444]/50 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
+          >
+            Cancel
+          </button>
+        </div>
+      ) : isCameraActive && (
+        <div className="relative">
+          {/* Camera viewfinder */}
+          <div className="relative aspect-square max-w-md mx-auto rounded-xl overflow-hidden bg-black">
+            <video
+              ref={videoRef}
+              autoPlay
+              playsInline
+              muted
+              className="w-full h-full object-cover"
+              style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
+            />
+
+            {/* Face guide overlay */}
+            <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+              <div
+                className="w-[70%] h-[80%] border-2 border-white/50 rounded-[40%] transition-transform duration-300"
+                style={{ transform: currentConfig?.silhouetteTransform || '' }}
+              />
+            </div>
+
+            {/* Corner brackets */}
+            <div className="absolute inset-0 pointer-events-none">
+              <svg viewBox="0 0 200 200" className="w-full h-full" fill="none" stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.6">
+                <path d="M15 40 L15 20 L35 20" />
+                <path d="M185 40 L185 20 L165 20" />
+                <path d="M15 160 L15 180 L35 180" />
+                <path d="M185 160 L185 180 L165 180" />
+              </svg>
+            </div>
+
+            {/* Elegant countdown overlay */}
+            {countdown !== null && (
+              <div className="absolute inset-0 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+                <div className="relative">
+                  {/* Animated ring */}
+                  <div className="absolute inset-0 w-32 h-32 -m-4 rounded-full border-4 border-white/30 animate-pulse-ring" />
+                  {/* Countdown number */}
+                  <div className="w-24 h-24 rounded-full bg-white/20 backdrop-blur-md flex items-center justify-center animate-countdown-pulse">
+                    <span className="text-white text-5xl font-light">{countdown}</span>
+                  </div>
+                </div>
+              </div>
+            )}
+
+            {/* Elegant guide text */}
+            <div className="absolute top-4 left-0 right-0 text-center">
+              <span className="inline-flex items-center gap-2 bg-white/95 backdrop-blur-sm text-[#1C4444] text-xs px-5 py-2.5 rounded-full shadow-luxury tracking-wide">
+                <div className="w-2 h-2 rounded-full bg-[#D4AF37] animate-pulse" />
+                {currentConfig?.guideText}
+              </span>
+            </div>
+
+            {/* Premium camera controls */}
+            <div className="absolute bottom-0 left-0 right-0 p-6 bg-gradient-to-t from-black/70 via-black/30 to-transparent">
+              <div className="flex items-center justify-center gap-6">
+                {/* Cancel */}
+                <button
+                  onClick={handleCancel}
+                  className="w-14 h-14 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                  aria-label="Cancel"
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M6 18L18 6M6 6l12 12" />
+                  </svg>
+                </button>
+
+                {/* Premium capture button */}
+                <button
+                  onClick={captureWithCountdown}
+                  disabled={countdown !== null}
+                  className="w-20 h-20 rounded-full bg-white hover:scale-105 flex items-center justify-center transition-all duration-300 shadow-luxury-lg disabled:opacity-50 disabled:hover:scale-100"
+                  aria-label="Take photo"
+                >
+                  <div className="w-16 h-16 rounded-full border-[3px] border-[#1C4444] flex items-center justify-center">
+                    <div className="w-12 h-12 rounded-full bg-[#1C4444]/10" />
+                  </div>
+                </button>
+
+                {/* Switch camera */}
+                <button
+                  onClick={switchCamera}
+                  className="w-14 h-14 rounded-full bg-white/15 hover:bg-white/25 text-white flex items-center justify-center transition-all duration-300 backdrop-blur-sm"
+                  aria-label="Switch camera"
+                >
+                  <svg className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </div>
+
+          {/* Hidden canvas for capturing */}
+          <canvas ref={canvasRef} className="hidden" />
+
+          {/* Elegant thumbnails of captured photos */}
+          {capturedImages.size > 0 && (
+            <div className="flex justify-center gap-3 mt-6">
+              {STEPS_ORDER.map((angle, index) => {
+                const image = capturedImages.get(angle)
+                const isCurrent = angle === currentStep
+                return (
+                  <div
+                    key={angle}
+                    className={cn(
+                      'relative w-14 h-14 rounded-xl overflow-hidden transition-all duration-300',
+                      image ? 'shadow-luxury' : '',
+                      isCurrent && !image && 'ring-2 ring-[#1C4444] ring-offset-2'
+                    )}
+                  >
+                    {image ? (
+                      <>
+                        {/* eslint-disable-next-line @next/next/no-img-element */}
+                        <img
+                          src={image.preview}
+                          alt={ANGLE_CONFIGS[angle].label}
+                          className="w-full h-full object-cover"
+                        />
+                        {/* Gold checkmark */}
+                        <div className="absolute top-0.5 right-0.5 w-4 h-4 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#C9A227] flex items-center justify-center">
+                          <svg className="w-2.5 h-2.5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      </>
+                    ) : (
+                      <div className={cn(
+                        'w-full h-full flex items-center justify-center transition-colors',
+                        isCurrent ? 'bg-[#1C4444]/10' : 'bg-[#1C4444]/5'
+                      )}>
+                        <span className={cn(
+                          'text-xs font-medium',
+                          isCurrent ? 'text-[#1C4444]' : 'text-[#1C4444]/30'
+                        )}>
+                          {index + 1}
+                        </span>
+                      </div>
+                    )}
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      )}
+    </div>
+  )
+}

@@ -1,8 +1,7 @@
 'use client'
 
-import { useState } from 'react'
 import HistoryCard from './HistoryCard'
-import { calculateHealthScore } from './SkinHealthScore'
+import { calculateSkinScores } from '@/lib/skin-analysis/scoring'
 
 interface DetectedCondition {
   id: string
@@ -51,19 +50,20 @@ export default function ProgressTimeline({
   // Calculate scores for each analysis to show trends
   const analysesWithScores = analyses.map((analysis, index) => {
     const conditions = (analysis.conditions as DetectedCondition[]) || []
-    const score = calculateHealthScore(conditions)
+    const scores = calculateSkinScores(conditions)
 
-    // Get previous score for comparison (next item in array since sorted desc)
+    // Get previous quality score for comparison (next item in array since sorted desc)
     let previousScore: number | undefined
     if (index < analyses.length - 1) {
       const prevConditions = (analyses[index + 1].conditions as DetectedCondition[]) || []
-      previousScore = calculateHealthScore(prevConditions)
+      const prevScores = calculateSkinScores(prevConditions)
+      previousScore = prevScores.qualityScore
     }
 
     return {
       ...analysis,
       conditions,
-      score,
+      scores,
       previousScore,
     }
   })

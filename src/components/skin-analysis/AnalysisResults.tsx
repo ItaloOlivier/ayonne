@@ -1,6 +1,9 @@
 'use client'
 
 import { SKIN_TYPES, SKIN_CONDITIONS, SkinType, SkinConditionType } from '@/lib/skin-analysis/conditions'
+import { calculateSkinScores, SkinScores } from '@/lib/skin-analysis/scoring'
+import DualScoreDisplay from './DualScoreDisplay'
+import { useMemo } from 'react'
 
 interface DetectedCondition {
   id: string
@@ -12,17 +15,51 @@ interface DetectedCondition {
 interface AnalysisResultsProps {
   skinType: SkinType | null
   conditions: DetectedCondition[]
+  userAge?: number
 }
 
-export default function AnalysisResults({ skinType, conditions }: AnalysisResultsProps) {
+export default function AnalysisResults({ skinType, conditions, userAge = 30 }: AnalysisResultsProps) {
   const skinTypeInfo = skinType ? SKIN_TYPES[skinType] : null
 
-  return (
-    <div className="bg-white rounded-xl p-6">
-      <h3 className="text-lg font-medium text-[#1C4444] mb-6">Your Skin Analysis</h3>
+  // Calculate dual scores
+  const scores: SkinScores = useMemo(
+    () => calculateSkinScores(conditions, userAge),
+    [conditions, userAge]
+  )
 
-      {/* Skin Type */}
-      {skinTypeInfo && (
+  const improvement = scores.skinAge - scores.achievableSkinAge
+
+  return (
+    <div className="space-y-6">
+      {/* Dual Score Display */}
+      <DualScoreDisplay scores={scores} userAge={userAge} animate={true} />
+
+      {/* Improvement Callout */}
+      {improvement > 0 && (
+        <div className="bg-gradient-to-r from-green-50 to-emerald-50 border border-green-200 rounded-xl p-4">
+          <div className="flex items-start gap-3">
+            <div className="w-10 h-10 rounded-full bg-green-500 text-white flex items-center justify-center flex-shrink-0">
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 7h8m0 0v8m0-8l-8 8-4-4-6 6" />
+              </svg>
+            </div>
+            <div>
+              <h4 className="font-medium text-green-800">
+                Your skin could look up to {improvement} years younger
+              </h4>
+              <p className="text-sm text-green-700 mt-1">
+                With a consistent anti-aging routine using the right products, you can achieve visible improvements in fine lines, texture, and radiance.
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+
+      <div className="bg-white rounded-xl p-6">
+        <h3 className="text-lg font-medium text-[#1C4444] mb-6">Detailed Analysis</h3>
+
+        {/* Skin Type */}
+        {skinTypeInfo && (
         <div className="mb-8">
           <div className="flex items-center gap-3 mb-3">
             <div className="w-10 h-10 rounded-full bg-[#1C4444] text-white flex items-center justify-center">
@@ -116,6 +153,7 @@ export default function AnalysisResults({ skinType, conditions }: AnalysisResult
             Analysis complete! See personalized recommendations below.
           </p>
         </div>
+      </div>
       </div>
     </div>
   )
