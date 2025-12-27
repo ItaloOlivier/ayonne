@@ -1,44 +1,20 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
-import sharp from 'sharp'
 import { prisma } from '@/lib/prisma'
 import { getCustomerIdFromCookie } from '@/lib/auth'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
-import { getProductRecommendations } from '@/lib/skin-analysis/recommendations'
-import { getPersonalizedAdvice } from '@/lib/skin-analysis/advice'
+import {
+  generateSessionId,
+  compressImage,
+  callAnthropicAPI,
+  parseAIJsonResponse,
+  uploadImage,
+  validateImageFile,
+  checkAnalysisRateLimit,
+  buildAnalysisResults,
+  getSmartFallbackAnalysis,
+} from '@/lib/skin-analysis/analyzer'
 
-// Rate limit: max analyses per customer per hour
-const RATE_LIMIT_ANALYSES_PER_HOUR = 5
-
-// Image compression settings
-const COMPRESSED_IMAGE_MAX_WIDTH = 800
-const COMPRESSED_IMAGE_QUALITY = 75
-
-// Generate a session ID for anonymous users
-function generateSessionId(): string {
-  return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
-}
-
-// Compress image for storage after analysis
-async function compressImage(imageBuffer: Buffer): Promise<Buffer> {
-  try {
-    const compressed = await sharp(imageBuffer)
-      .resize(COMPRESSED_IMAGE_MAX_WIDTH, null, {
-        withoutEnlargement: true, // Don't upscale small images
-        fit: 'inside',
-      })
-      .jpeg({ quality: COMPRESSED_IMAGE_QUALITY, progressive: true })
-      .toBuffer()
-
-    console.log(`Image compressed: ${imageBuffer.length} -> ${compressed.length} bytes (${Math.round((1 - compressed.length / imageBuffer.length) * 100)}% reduction)`)
-    return compressed
-  } catch (error) {
-    console.error('Image compression failed:', error)
-    return imageBuffer // Return original if compression fails
-  }
-}
-
-// Comprehensive skin analysis prompt with expert-level guidance
+// Comprehensive skin analysis prompt
 const SKIN_ANALYSIS_PROMPT = `You are a board-certified dermatologist conducting a professional skin assessment for personalized skincare recommendations. Analyze this facial photograph with clinical precision.
 
 ## ANALYSIS PROTOCOL
@@ -119,184 +95,47 @@ Respond with ONLY valid JSON (no markdown, no explanation):
 
 If no conditions are detected above threshold, return empty conditions array - this indicates healthy skin.`
 
-// Analyze skin using Claude/Anthropic API for more accurate results
+// Analyze skin using Claude/Anthropic API
 async function analyzeSkinWithAI(imageBase64: string): Promise<{
   skinType: SkinType | null
   conditions: DetectedCondition[]
 }> {
-  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
-
-  if (!ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY not configured - skin analysis requires this key')
-    throw new Error('AI analysis unavailable: ANTHROPIC_API_KEY not configured')
-  }
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1024,
-        messages: [
-          {
-            role: 'user',
-            content: [
-              {
-                type: 'image',
-                source: {
-                  type: 'base64',
-                  media_type: 'image/jpeg',
-                  data: imageBase64,
-                },
-              },
-              {
-                type: 'text',
-                text: SKIN_ANALYSIS_PROMPT,
-              },
-            ],
+  const content = await callAnthropicAPI([
+    {
+      role: 'user',
+      content: [
+        {
+          type: 'image',
+          source: {
+            type: 'base64',
+            media_type: 'image/jpeg',
+            data: imageBase64,
           },
-        ],
-      }),
-    })
+        },
+        {
+          type: 'text',
+          text: SKIN_ANALYSIS_PROMPT,
+        },
+      ],
+    },
+  ])
 
-    if (!response.ok) {
-      console.error('Anthropic API error:', await response.text())
-      return getSmartFallbackAnalysis()
-    }
-
-    const data = await response.json()
-    const content = data.content[0]?.text
-
-    if (!content) {
-      return getSmartFallbackAnalysis()
-    }
-
-    try {
-      // Clean up the response - remove markdown code blocks if present
-      let jsonContent = content.trim()
-
-      // Remove ```json and ``` markers if present
-      if (jsonContent.startsWith('```json')) {
-        jsonContent = jsonContent.slice(7)
-      } else if (jsonContent.startsWith('```')) {
-        jsonContent = jsonContent.slice(3)
-      }
-
-      if (jsonContent.endsWith('```')) {
-        jsonContent = jsonContent.slice(0, -3)
-      }
-
-      jsonContent = jsonContent.trim()
-
-      const parsed = JSON.parse(jsonContent)
-      return {
-        skinType: parsed.skinType as SkinType,
-        conditions: parsed.conditions || [],
-      }
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content, parseError)
-      return getSmartFallbackAnalysis()
-    }
-  } catch (error) {
-    console.error('Error calling Anthropic:', error)
+  if (!content) {
     return getSmartFallbackAnalysis()
   }
-}
 
-// Smart fallback that provides varied, realistic results
-function getSmartFallbackAnalysis(): {
-  skinType: SkinType | null
-  conditions: DetectedCondition[]
-} {
-  // Randomly select skin type with realistic distribution
-  const skinTypes: SkinType[] = ['combination', 'oily', 'dry', 'normal', 'sensitive']
-  const weights = [0.35, 0.25, 0.20, 0.15, 0.05] // combination is most common
+  const parsed = parseAIJsonResponse<{
+    skinType: SkinType
+    conditions: DetectedCondition[]
+  }>(content)
 
-  let random = Math.random()
-  let skinType: SkinType = 'combination'
-  for (let i = 0; i < weights.length; i++) {
-    if (random < weights[i]) {
-      skinType = skinTypes[i]
-      break
-    }
-    random -= weights[i]
+  if (!parsed) {
+    return getSmartFallbackAnalysis()
   }
 
-  // Define possible conditions with their likelihood based on skin type
-  const conditionsByType: Record<SkinType, Array<{
-    id: string
-    name: string
-    baseChance: number
-    description: string
-  }>> = {
-    oily: [
-      { id: 'large_pores', name: 'Enlarged Pores', baseChance: 0.7, description: 'Visible enlarged pores, particularly in the T-zone area.' },
-      { id: 'oiliness', name: 'Excess Oil', baseChance: 0.8, description: 'Skin appears shiny with excess sebum production.' },
-      { id: 'acne', name: 'Acne Prone', baseChance: 0.5, description: 'Some breakouts or congestion visible.' },
-      { id: 'dullness', name: 'Dull Skin', baseChance: 0.3, description: 'Skin lacks radiance and appears tired.' },
-    ],
-    dry: [
-      { id: 'dryness', name: 'Dry Patches', baseChance: 0.8, description: 'Visible dry areas with potential flaking.' },
-      { id: 'fine_lines', name: 'Fine Lines', baseChance: 0.6, description: 'Early signs of dehydration lines.' },
-      { id: 'dehydration', name: 'Dehydration', baseChance: 0.7, description: 'Skin appears tight and lacks moisture.' },
-      { id: 'dullness', name: 'Dull Skin', baseChance: 0.5, description: 'Skin lacks natural glow and radiance.' },
-    ],
-    combination: [
-      { id: 'oiliness', name: 'T-Zone Oiliness', baseChance: 0.6, description: 'Oily areas concentrated on forehead, nose, and chin.' },
-      { id: 'dryness', name: 'Dry Cheeks', baseChance: 0.4, description: 'Drier areas on cheeks and outer face.' },
-      { id: 'large_pores', name: 'Visible Pores', baseChance: 0.5, description: 'Enlarged pores visible in oily areas.' },
-      { id: 'uneven_texture', name: 'Uneven Texture', baseChance: 0.4, description: 'Some textural irregularities present.' },
-    ],
-    normal: [
-      { id: 'fine_lines', name: 'Fine Lines', baseChance: 0.3, description: 'Minimal fine lines appearing.' },
-      { id: 'dullness', name: 'Slight Dullness', baseChance: 0.2, description: 'Could benefit from extra radiance.' },
-    ],
-    sensitive: [
-      { id: 'redness', name: 'Redness', baseChance: 0.7, description: 'Visible redness or flushing in certain areas.' },
-      { id: 'dryness', name: 'Sensitivity Dryness', baseChance: 0.5, description: 'Dry areas associated with sensitivity.' },
-      { id: 'uneven_texture', name: 'Reactive Skin', baseChance: 0.4, description: 'Skin shows signs of reactivity.' },
-    ],
-  }
-
-  // Select conditions based on skin type with randomization
-  const possibleConditions = conditionsByType[skinType]
-  const selectedConditions: DetectedCondition[] = []
-
-  for (const condition of possibleConditions) {
-    if (Math.random() < condition.baseChance) {
-      // Add some variance to confidence
-      const confidence = Math.min(0.95, condition.baseChance * (0.7 + Math.random() * 0.5))
-      selectedConditions.push({
-        id: condition.id,
-        name: condition.name,
-        confidence: Math.round(confidence * 100) / 100,
-        description: condition.description,
-      })
-    }
-  }
-
-  // Ensure at least 1 condition, max 4
-  if (selectedConditions.length === 0 && possibleConditions.length > 0) {
-    const fallback = possibleConditions[0]
-    selectedConditions.push({
-      id: fallback.id,
-      name: fallback.name,
-      confidence: 0.5 + Math.random() * 0.3,
-      description: fallback.description,
-    })
-  }
-
-  // Sort by confidence and limit to 4
   return {
-    skinType,
-    conditions: selectedConditions
-      .sort((a, b) => b.confidence - a.confidence)
-      .slice(0, 4),
+    skinType: parsed.skinType,
+    conditions: parsed.conditions || [],
   }
 }
 
@@ -306,17 +145,18 @@ export async function POST(request: NextRequest) {
     const imageFile = formData.get('image') as File | null
     const formCustomerId = formData.get('customerId') as string | null
 
-    if (!imageFile) {
+    // Validate image
+    const validation = validateImageFile(imageFile)
+    if (!validation.valid) {
       return NextResponse.json(
-        { error: 'No image provided' },
-        { status: 400 }
+        { error: validation.error },
+        { status: validation.status }
       )
     }
 
     // Security: Verify customer from session cookie
     const authenticatedCustomerId = await getCustomerIdFromCookie()
 
-    // Customer must be authenticated
     if (!authenticatedCustomerId) {
       return NextResponse.json(
         { error: 'Please log in to use the skin analyzer' },
@@ -324,7 +164,6 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // If customerId provided in form, verify it matches authenticated user
     if (formCustomerId && formCustomerId !== authenticatedCustomerId) {
       return NextResponse.json(
         { error: 'Unauthorized' },
@@ -346,92 +185,47 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Rate limiting: Check how many analyses in the past hour
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
-    const recentAnalysesCount = await prisma.skinAnalysis.count({
-      where: {
-        customerId,
-        createdAt: { gte: oneHourAgo },
-      },
-    })
-
-    if (recentAnalysesCount >= RATE_LIMIT_ANALYSES_PER_HOUR) {
+    // Check rate limit
+    const rateLimitCheck = await checkAnalysisRateLimit(customerId)
+    if (!rateLimitCheck.allowed) {
       return NextResponse.json(
-        { error: `You can only perform ${RATE_LIMIT_ANALYSES_PER_HOUR} analyses per hour. Please try again later.` },
+        { error: rateLimitCheck.error },
         { status: 429 }
       )
     }
 
-    // Validate file type
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp']
-    if (!validTypes.includes(imageFile.type)) {
-      return NextResponse.json(
-        { error: 'Invalid file type. Please upload a JPEG, PNG, or WebP image.' },
-        { status: 400 }
-      )
-    }
-
-    // Validate file size (max 10MB)
-    if (imageFile.size > 10 * 1024 * 1024) {
-      return NextResponse.json(
-        { error: 'Image too large. Please upload an image under 10MB.' },
-        { status: 400 }
-      )
-    }
-
-    // Generate session ID for tracking
     const sessionId = generateSessionId()
 
     // Convert to buffer and base64
-    const arrayBuffer = await imageFile.arrayBuffer()
+    const arrayBuffer = await imageFile!.arrayBuffer()
     const imageBuffer = Buffer.from(arrayBuffer)
     const imageBase64 = imageBuffer.toString('base64')
 
-    // Create initial analysis record with placeholder image
+    // Create initial analysis record
     const analysis = await prisma.skinAnalysis.create({
       data: {
         sessionId,
         customerId,
-        originalImage: '', // Will be updated after compression
+        originalImage: '',
         conditions: [],
         status: 'PROCESSING',
       },
     })
 
-    // Run AI analysis with Anthropic (uses original quality for best results)
+    // Run AI analysis (uses original quality for best results)
     const { skinType, conditions } = await analyzeSkinWithAI(imageBase64)
 
-    // After analysis, compress the image for storage
+    // Compress and upload image
     const compressedBuffer = await compressImage(imageBuffer)
+    const storedImageUrl = await uploadImage(
+      compressedBuffer,
+      `skin-analysis/${customerId}-${sessionId}.jpg`
+    )
 
-    // Upload compressed image to Vercel Blob
-    let storedImageUrl: string
+    // Build recommendations and advice
+    const { recommendations, advice } = await buildAnalysisResults(skinType, conditions)
 
-    try {
-      const blob = await put(
-        `skin-analysis/${customerId}-${sessionId}.jpg`,
-        compressedBuffer,
-        {
-          access: 'public',
-          addRandomSuffix: true,
-          contentType: 'image/jpeg',
-        }
-      )
-      storedImageUrl = blob.url
-    } catch (blobError) {
-      console.error('Blob upload error:', blobError)
-      // Fallback to compressed base64 if blob upload fails
-      storedImageUrl = `data:image/jpeg;base64,${compressedBuffer.toString('base64')}`
-    }
-
-    // Get product recommendations
-    const recommendations = await getProductRecommendations(skinType, conditions, 6)
-
-    // Get personalized advice
-    const conditionIds = conditions.map(c => c.id)
-    const advice = getPersonalizedAdvice(skinType, conditionIds)
-
-    // Update analysis record with results and compressed image
+    // Update analysis record with results
     const updatedAnalysis = await prisma.skinAnalysis.update({
       where: { id: analysis.id },
       data: {
@@ -439,17 +233,7 @@ export async function POST(request: NextRequest) {
         skinType,
         conditions: JSON.parse(JSON.stringify(conditions)),
         agedImage: null,
-        recommendations: JSON.parse(JSON.stringify(recommendations.map(r => ({
-          productId: r.product.id,
-          productName: r.product.name,
-          productSlug: r.product.slug,
-          productShopifySlug: r.product.shopifySlug || null,
-          productImage: r.product.images[0] || null,
-          productPrice: r.product.price,
-          productSalePrice: r.product.salePrice,
-          reason: r.reason,
-          relevanceScore: r.relevanceScore,
-        })))),
+        recommendations: JSON.parse(JSON.stringify(recommendations)),
         advice: JSON.parse(JSON.stringify(advice)),
         status: 'COMPLETED',
       },

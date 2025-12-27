@@ -1,42 +1,18 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { put } from '@vercel/blob'
-import sharp from 'sharp'
 import { prisma } from '@/lib/prisma'
 import { getCustomerIdFromCookie } from '@/lib/auth'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
-import { getProductRecommendations } from '@/lib/skin-analysis/recommendations'
-import { getPersonalizedAdvice } from '@/lib/skin-analysis/advice'
-
-// Rate limit: max analyses per customer per hour
-const RATE_LIMIT_ANALYSES_PER_HOUR = 5
-
-// Image compression settings
-const COMPRESSED_IMAGE_MAX_WIDTH = 800
-const COMPRESSED_IMAGE_QUALITY = 75
-
-// Generate a session ID for anonymous users
-function generateSessionId(): string {
-  return `session_${Date.now()}_${Math.random().toString(36).substring(2, 15)}`
-}
-
-// Compress image for storage after analysis
-async function compressImage(imageBuffer: Buffer): Promise<Buffer> {
-  try {
-    const compressed = await sharp(imageBuffer)
-      .resize(COMPRESSED_IMAGE_MAX_WIDTH, null, {
-        withoutEnlargement: true,
-        fit: 'inside',
-      })
-      .jpeg({ quality: COMPRESSED_IMAGE_QUALITY, progressive: true })
-      .toBuffer()
-
-    console.log(`Image compressed: ${imageBuffer.length} -> ${compressed.length} bytes (${Math.round((1 - compressed.length / imageBuffer.length) * 100)}% reduction)`)
-    return compressed
-  } catch (error) {
-    console.error('Image compression failed:', error)
-    return imageBuffer
-  }
-}
+import {
+  generateSessionId,
+  compressImage,
+  callAnthropicAPI,
+  parseAIJsonResponse,
+  uploadImage,
+  validateImageFile,
+  checkAnalysisRateLimit,
+  buildAnalysisResults,
+  getSmartFallbackAnalysis,
+} from '@/lib/skin-analysis/analyzer'
 
 // Multi-angle skin analysis prompt with cross-referencing
 const MULTI_ANGLE_ANALYSIS_PROMPT = `You are a board-certified dermatologist conducting a comprehensive multi-angle skin assessment. You have been provided with THREE facial photographs from different angles for enhanced diagnostic accuracy.
@@ -148,211 +124,66 @@ async function analyzeSkinWithAIMultiAngle(
   asymmetryNotes?: string
   analysisQuality?: string
 }> {
-  const ANTHROPIC_API_KEY = process.env.ANTHROPIC_API_KEY
-
-  if (!ANTHROPIC_API_KEY) {
-    console.error('ANTHROPIC_API_KEY not configured - skin analysis requires this key')
-    throw new Error('AI analysis unavailable: ANTHROPIC_API_KEY not configured')
-  }
-
-  try {
-    const response = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'x-api-key': ANTHROPIC_API_KEY,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({
-        model: 'claude-sonnet-4-20250514',
-        max_tokens: 1500,
-        messages: [
+  const content = await callAnthropicAPI(
+    [
+      {
+        role: 'user',
+        content: [
+          { type: 'text', text: 'Image 1 - FRONT VIEW:' },
           {
-            role: 'user',
-            content: [
-              {
-                type: 'text',
-                text: 'Image 1 - FRONT VIEW:',
-              },
-              {
-                type: 'image',
-                source: {
-                  type: 'base64',
-                  media_type: 'image/jpeg',
-                  data: frontImageBase64,
-                },
-              },
-              {
-                type: 'text',
-                text: 'Image 2 - LEFT PROFILE:',
-              },
-              {
-                type: 'image',
-                source: {
-                  type: 'base64',
-                  media_type: 'image/jpeg',
-                  data: leftImageBase64,
-                },
-              },
-              {
-                type: 'text',
-                text: 'Image 3 - RIGHT PROFILE:',
-              },
-              {
-                type: 'image',
-                source: {
-                  type: 'base64',
-                  media_type: 'image/jpeg',
-                  data: rightImageBase64,
-                },
-              },
-              {
-                type: 'text',
-                text: MULTI_ANGLE_ANALYSIS_PROMPT,
-              },
-            ],
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/jpeg', data: frontImageBase64 },
           },
+          { type: 'text', text: 'Image 2 - LEFT PROFILE:' },
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/jpeg', data: leftImageBase64 },
+          },
+          { type: 'text', text: 'Image 3 - RIGHT PROFILE:' },
+          {
+            type: 'image',
+            source: { type: 'base64', media_type: 'image/jpeg', data: rightImageBase64 },
+          },
+          { type: 'text', text: MULTI_ANGLE_ANALYSIS_PROMPT },
         ],
-      }),
-    })
-
-    if (!response.ok) {
-      console.error('Anthropic API error:', await response.text())
-      return getSmartFallbackAnalysis()
-    }
-
-    const data = await response.json()
-    const content = data.content[0]?.text
-
-    if (!content) {
-      return getSmartFallbackAnalysis()
-    }
-
-    try {
-      // Clean up the response - remove markdown code blocks if present
-      let jsonContent = content.trim()
-
-      if (jsonContent.startsWith('```json')) {
-        jsonContent = jsonContent.slice(7)
-      } else if (jsonContent.startsWith('```')) {
-        jsonContent = jsonContent.slice(3)
-      }
-
-      if (jsonContent.endsWith('```')) {
-        jsonContent = jsonContent.slice(0, -3)
-      }
-
-      jsonContent = jsonContent.trim()
-
-      const parsed: MultiAngleAnalysisResult = JSON.parse(jsonContent)
-
-      // Map conditions to standard format
-      const conditions: DetectedCondition[] = (parsed.conditions || []).map(c => ({
-        id: c.id,
-        name: c.name,
-        confidence: c.confidence,
-        description: c.description,
-      }))
-
-      return {
-        skinType: parsed.skinType as SkinType,
-        conditions,
-        asymmetryNotes: parsed.asymmetryNotes,
-        analysisQuality: parsed.analysisQuality,
-      }
-    } catch (parseError) {
-      console.error('Failed to parse AI response:', content, parseError)
-      return getSmartFallbackAnalysis()
-    }
-  } catch (error) {
-    console.error('Error calling Anthropic:', error)
-    return getSmartFallbackAnalysis()
-  }
-}
-
-// Smart fallback for when API is unavailable
-function getSmartFallbackAnalysis(): {
-  skinType: SkinType | null
-  conditions: DetectedCondition[]
-  asymmetryNotes?: string
-  analysisQuality?: string
-} {
-  const skinTypes: SkinType[] = ['combination', 'oily', 'dry', 'normal', 'sensitive']
-  const weights = [0.35, 0.25, 0.20, 0.15, 0.05]
-
-  let random = Math.random()
-  let skinType: SkinType = 'combination'
-  for (let i = 0; i < weights.length; i++) {
-    if (random < weights[i]) {
-      skinType = skinTypes[i]
-      break
-    }
-    random -= weights[i]
-  }
-
-  const conditionsByType: Record<SkinType, Array<{
-    id: string
-    name: string
-    baseChance: number
-    description: string
-  }>> = {
-    oily: [
-      { id: 'large_pores', name: 'Enlarged Pores', baseChance: 0.8, description: 'Visible enlarged pores, particularly in the T-zone area, confirmed in both front and profile views.' },
-      { id: 'oiliness', name: 'Excess Oil', baseChance: 0.85, description: 'Skin appears shiny with excess sebum production across all angles.' },
-      { id: 'acne', name: 'Acne Prone', baseChance: 0.55, description: 'Some breakouts visible, particularly on cheeks and chin.' },
+      },
     ],
-    dry: [
-      { id: 'dryness', name: 'Dry Patches', baseChance: 0.85, description: 'Visible dry areas with potential flaking, consistent across all views.' },
-      { id: 'fine_lines', name: 'Fine Lines', baseChance: 0.65, description: 'Dehydration lines visible, confirmed by profile depth.' },
-      { id: 'dehydration', name: 'Dehydration', baseChance: 0.75, description: 'Skin appears tight and lacks moisture in all angles.' },
-    ],
-    combination: [
-      { id: 'oiliness', name: 'T-Zone Oiliness', baseChance: 0.65, description: 'Oily areas on forehead, nose, and chin visible in front view.' },
-      { id: 'dryness', name: 'Dry Cheeks', baseChance: 0.45, description: 'Drier areas on cheeks confirmed in profile views.' },
-      { id: 'large_pores', name: 'Visible Pores', baseChance: 0.55, description: 'Enlarged pores in oily zones, visible from multiple angles.' },
-    ],
-    normal: [
-      { id: 'fine_lines', name: 'Fine Lines', baseChance: 0.35, description: 'Minimal fine lines, subtle in profile views.' },
-    ],
-    sensitive: [
-      { id: 'redness', name: 'Redness', baseChance: 0.75, description: 'Visible redness consistent across all three views.' },
-      { id: 'dryness', name: 'Sensitivity Dryness', baseChance: 0.55, description: 'Dry areas associated with sensitivity, visible in profiles.' },
-    ],
-  }
+    1500
+  )
 
-  const possibleConditions = conditionsByType[skinType]
-  const selectedConditions: DetectedCondition[] = []
-
-  for (const condition of possibleConditions) {
-    if (Math.random() < condition.baseChance) {
-      // Multi-angle provides higher confidence boost
-      const confidence = Math.min(0.95, condition.baseChance * (0.8 + Math.random() * 0.3))
-      selectedConditions.push({
-        id: condition.id,
-        name: condition.name,
-        confidence: Math.round(confidence * 100) / 100,
-        description: condition.description,
-      })
+  if (!content) {
+    const fallback = getSmartFallbackAnalysis()
+    return {
+      ...fallback,
+      asymmetryNotes: 'Multi-angle analysis provided comprehensive coverage.',
+      analysisQuality: 'good',
     }
   }
 
-  if (selectedConditions.length === 0 && possibleConditions.length > 0) {
-    const fallback = possibleConditions[0]
-    selectedConditions.push({
-      id: fallback.id,
-      name: fallback.name,
-      confidence: 0.6 + Math.random() * 0.25,
-      description: fallback.description,
-    })
+  const parsed = parseAIJsonResponse<MultiAngleAnalysisResult>(content)
+
+  if (!parsed) {
+    const fallback = getSmartFallbackAnalysis()
+    return {
+      ...fallback,
+      asymmetryNotes: 'Multi-angle analysis provided comprehensive coverage.',
+      analysisQuality: 'good',
+    }
   }
+
+  // Map conditions to standard format
+  const conditions: DetectedCondition[] = (parsed.conditions || []).map(c => ({
+    id: c.id,
+    name: c.name,
+    confidence: c.confidence,
+    description: c.description,
+  }))
 
   return {
-    skinType,
-    conditions: selectedConditions
-      .sort((a, b) => b.confidence - a.confidence)
-      .slice(0, 5),
-    asymmetryNotes: 'Multi-angle analysis provided comprehensive coverage.',
-    analysisQuality: 'good',
+    skinType: parsed.skinType,
+    conditions,
+    asymmetryNotes: parsed.asymmetryNotes,
+    analysisQuality: parsed.analysisQuality,
   }
 }
 
@@ -364,12 +195,21 @@ export async function POST(request: NextRequest) {
     const rightImage = formData.get('rightImage') as File | null
     const formCustomerId = formData.get('customerId') as string | null
 
-    // Validate all three images are provided
-    if (!frontImage || !leftImage || !rightImage) {
-      return NextResponse.json(
-        { error: 'All three images (front, left, right) are required for multi-angle analysis' },
-        { status: 400 }
-      )
+    // Validate all three images
+    const images = [
+      { file: frontImage, name: 'front image' },
+      { file: leftImage, name: 'left image' },
+      { file: rightImage, name: 'right image' },
+    ]
+
+    for (const { file, name } of images) {
+      const validation = validateImageFile(file, name)
+      if (!validation.valid) {
+        return NextResponse.json(
+          { error: validation.error },
+          { status: validation.status }
+        )
+      }
     }
 
     // Security: Verify customer from session cookie
@@ -403,52 +243,22 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Rate limiting
-    const oneHourAgo = new Date(Date.now() - 60 * 60 * 1000)
-    const recentAnalysesCount = await prisma.skinAnalysis.count({
-      where: {
-        customerId,
-        createdAt: { gte: oneHourAgo },
-      },
-    })
-
-    if (recentAnalysesCount >= RATE_LIMIT_ANALYSES_PER_HOUR) {
+    // Check rate limit
+    const rateLimitCheck = await checkAnalysisRateLimit(customerId)
+    if (!rateLimitCheck.allowed) {
       return NextResponse.json(
-        { error: `You can only perform ${RATE_LIMIT_ANALYSES_PER_HOUR} analyses per hour. Please try again later.` },
+        { error: rateLimitCheck.error },
         { status: 429 }
       )
-    }
-
-    // Validate file types
-    const validTypes = ['image/jpeg', 'image/png', 'image/webp']
-    const images = [
-      { name: 'front', file: frontImage },
-      { name: 'left', file: leftImage },
-      { name: 'right', file: rightImage },
-    ]
-
-    for (const img of images) {
-      if (!validTypes.includes(img.file.type)) {
-        return NextResponse.json(
-          { error: `Invalid file type for ${img.name} image. Please upload JPEG, PNG, or WebP.` },
-          { status: 400 }
-        )
-      }
-      if (img.file.size > 10 * 1024 * 1024) {
-        return NextResponse.json(
-          { error: `${img.name} image too large. Please upload images under 10MB.` },
-          { status: 400 }
-        )
-      }
     }
 
     const sessionId = generateSessionId()
 
     // Convert all images to buffers and base64
     const [frontBuffer, leftBuffer, rightBuffer] = await Promise.all([
-      frontImage.arrayBuffer().then(buf => Buffer.from(buf)),
-      leftImage.arrayBuffer().then(buf => Buffer.from(buf)),
-      rightImage.arrayBuffer().then(buf => Buffer.from(buf)),
+      frontImage!.arrayBuffer().then(buf => Buffer.from(buf)),
+      leftImage!.arrayBuffer().then(buf => Buffer.from(buf)),
+      rightImage!.arrayBuffer().then(buf => Buffer.from(buf)),
     ])
 
     const frontBase64 = frontBuffer.toString('base64')
@@ -470,43 +280,20 @@ export async function POST(request: NextRequest) {
     const { skinType, conditions, asymmetryNotes, analysisQuality } =
       await analyzeSkinWithAIMultiAngle(frontBase64, leftBase64, rightBase64)
 
-    // Compress and upload all three images
-    const [compressedFront, compressedLeft, compressedRight] = await Promise.all([
-      compressImage(frontBuffer),
-      compressImage(leftBuffer),
-      compressImage(rightBuffer),
-    ])
+    // Compress and upload front image as the main display image
+    const compressedFront = await compressImage(frontBuffer)
+    const storedImageUrl = await uploadImage(
+      compressedFront,
+      `skin-analysis/${customerId}-${sessionId}-front.jpg`
+    )
 
-    // Upload front image as the main display image
-    let storedImageUrl: string
-
-    try {
-      const blob = await put(
-        `skin-analysis/${customerId}-${sessionId}-front.jpg`,
-        compressedFront,
-        {
-          access: 'public',
-          addRandomSuffix: true,
-          contentType: 'image/jpeg',
-        }
-      )
-      storedImageUrl = blob.url
-    } catch (blobError) {
-      console.error('Blob upload error:', blobError)
-      storedImageUrl = `data:image/jpeg;base64,${compressedFront.toString('base64')}`
-    }
-
-    // Get product recommendations
-    const recommendations = await getProductRecommendations(skinType, conditions, 6)
-
-    // Get personalized advice
-    const conditionIds = conditions.map(c => c.id)
-    const advice = getPersonalizedAdvice(skinType, conditionIds)
-
-    // Add asymmetry notes to advice if present
-    const enhancedAdvice = asymmetryNotes
-      ? { ...advice, asymmetryNotes }
-      : advice
+    // Build recommendations and advice with asymmetry notes
+    const extraAdvice = asymmetryNotes ? { asymmetryNotes } : undefined
+    const { recommendations, advice } = await buildAnalysisResults(
+      skinType,
+      conditions,
+      extraAdvice
+    )
 
     // Update analysis record with results
     const updatedAnalysis = await prisma.skinAnalysis.update({
@@ -516,18 +303,8 @@ export async function POST(request: NextRequest) {
         skinType,
         conditions: JSON.parse(JSON.stringify(conditions)),
         agedImage: null,
-        recommendations: JSON.parse(JSON.stringify(recommendations.map(r => ({
-          productId: r.product.id,
-          productName: r.product.name,
-          productSlug: r.product.slug,
-          productShopifySlug: r.product.shopifySlug || null,
-          productImage: r.product.images[0] || null,
-          productPrice: r.product.price,
-          productSalePrice: r.product.salePrice,
-          reason: r.reason,
-          relevanceScore: r.relevanceScore,
-        })))),
-        advice: JSON.parse(JSON.stringify(enhancedAdvice)),
+        recommendations: JSON.parse(JSON.stringify(recommendations)),
+        advice: JSON.parse(JSON.stringify(advice)),
         status: 'COMPLETED',
       },
     })
