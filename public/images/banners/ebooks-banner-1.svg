@@ -1,0 +1,13 @@
+<svg width="1920" height="480" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg4" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#F0E6E0;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#E4D8D0;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  <rect width="1920" height="480" fill="url(#bg4)"/>
+  <text x="960" y="200" font-family="Arial, sans-serif" font-size="48" font-weight="300" fill="#1C4444" text-anchor="middle">Knowledge Is Beauty</text>
+  <text x="960" y="270" font-family="Arial, sans-serif" font-size="24" fill="#1C4444" text-anchor="middle" opacity="0.7">Expert skincare guides and tips</text>
+  <rect x="860" y="310" width="200" height="50" fill="#1C4444" rx="2"/>
+  <text x="960" y="343" font-family="Arial, sans-serif" font-size="14" fill="white" text-anchor="middle" letter-spacing="2">BROWSE EBOOKS</text>
+</svg>

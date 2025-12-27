@@ -5,6 +5,8 @@ import { Product } from '@/types'
 import HeroSlideshow from '@/components/home/HeroSlideshow'
 import FeaturedProduct from '@/components/home/FeaturedProduct'
 import ReviewsCarousel from '@/components/home/ReviewsCarousel'
+import BannerSlideshow from '@/components/home/BannerSlideshow'
+import AIAppPromo from '@/components/home/AIAppPromo'
 
 async function getProductsByCollection(collectionSlug: string, limit: number = 4): Promise<Product[]> {
   try {
@@ -41,6 +43,27 @@ async function getFeaturedProduct(slug: string): Promise<Product | null> {
   }
 }
 
+// Section Banner Slides
+const hydrationBannerSlides = [
+  { image: '/images/banners/hydration-banner-1.svg', link: '/collections/moisturizers' },
+  { image: '/images/banners/hydration-banner-2.svg', link: '/collections/moisturizers' },
+  { image: '/images/banners/hydration-banner-3.svg', link: '/collections/moisturizers' },
+]
+
+const ebooksBannerSlides = [
+  { image: '/images/banners/ebooks-banner-1.svg', link: '/collections/ebooks' },
+  { image: '/images/banners/ebooks-banner-2.svg', link: '/collections/ebooks' },
+]
+
+const cleansersBannerSlides = [
+  { image: '/images/banners/cleansers-banner-1.svg', link: '/collections/cleansers' },
+  { image: '/images/banners/cleansers-banner-2.svg', link: '/collections/cleansers' },
+]
+
+const bundlesBannerSlides = [
+  { image: '/images/banners/bundles-banner.svg', link: '/collections/bundles' },
+]
+
 export default async function HomePage() {
   const [
     antiAgingProducts,
@@ -50,6 +73,7 @@ export default async function HomePage() {
     bundleProducts,
     featuredRoseGoldOil,
     featuredHydrationSerum,
+    featuredEbook,
     featuredSoap,
     featuredBundle,
   ] = await Promise.all([
@@ -60,16 +84,17 @@ export default async function HomePage() {
     getProductsByCollection('bundles', 4),
     getFeaturedProduct('anti-aging-rose-gold-oil'),
     getFeaturedProduct('hydration-serum'),
+    getFeaturedProduct('100-beauty-tips-ebook'),
     getFeaturedProduct('natural-soap-charcoal'),
     getFeaturedProduct('biohackers-bundle'),
   ])
 
   return (
     <>
-      {/* Hero Slideshow */}
+      {/* 1. Hero Slideshow (Main Carousel) */}
       <HeroSlideshow />
 
-      {/* Brand Introduction Text */}
+      {/* 2. Brand Introduction Text */}
       <section className="py-10 md:py-14">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto text-center">
@@ -80,7 +105,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Anti-Aging Serums Section */}
+      {/* 3. Anti-Aging Serums Collection */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-6">
@@ -104,15 +129,26 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Product - Rose Gold Oil */}
+      {/* 4. Featured Product - Rose Gold Oil */}
       {featuredRoseGoldOil && (
         <FeaturedProduct product={featuredRoseGoldOil} imagePosition="left" />
       )}
 
-      {/* Reviews Carousel */}
+      {/* 5. Reviews Carousel (Judge.me style) */}
       <ReviewsCarousel />
 
-      {/* Moisturizers Section */}
+      {/* 6. AI Skin Analysis App Promo */}
+      <AIAppPromo />
+
+      {/* 7. Hydration Banner Slideshow */}
+      <BannerSlideshow slides={hydrationBannerSlides} />
+
+      {/* 8. Featured Product - Hydration Serum */}
+      {featuredHydrationSerum && (
+        <FeaturedProduct product={featuredHydrationSerum} imagePosition="left" />
+      )}
+
+      {/* 9. Moisturizers Collection */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="text-center mb-6">
@@ -136,19 +172,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Product - Hydration Serum */}
-      {featuredHydrationSerum && (
-        <FeaturedProduct product={featuredHydrationSerum} imagePosition="right" />
+      {/* 10. eBooks Banner Slideshow */}
+      <BannerSlideshow slides={ebooksBannerSlides} />
+
+      {/* 11. Featured Product - eBook */}
+      {featuredEbook && (
+        <FeaturedProduct product={featuredEbook} imagePosition="left" />
       )}
 
-      {/* eBooks Section */}
+      {/* 12. eBooks Collection */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
-              Knowledge Is Beauty
-            </h2>
-          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {ebookProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -165,14 +199,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Cleansers Section */}
+      {/* 13. Cleansers Banner Slideshow */}
+      <BannerSlideshow slides={cleansersBannerSlides} />
+
+      {/* 14. Featured Product - Natural Soap */}
+      {featuredSoap && (
+        <FeaturedProduct product={featuredSoap} imagePosition="left" />
+      )}
+
+      {/* 15. Cleansers Collection */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
-              Squeaky Clean: Soaps & Cleansers
-            </h2>
-          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {cleanserProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -189,19 +226,17 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Product - Natural Soap */}
-      {featuredSoap && (
-        <FeaturedProduct product={featuredSoap} imagePosition="left" />
+      {/* 16. Bundles Banner */}
+      <BannerSlideshow slides={bundlesBannerSlides} autoRotate={false} />
+
+      {/* 17. Featured Product - Biohacker's Bundle */}
+      {featuredBundle && (
+        <FeaturedProduct product={featuredBundle} imagePosition="left" />
       )}
 
-      {/* Bundles Section */}
+      {/* 18. Bundles Collection */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-6">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
-              Save with Bundles
-            </h2>
-          </div>
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {bundleProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
@@ -218,15 +253,10 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* Featured Product - Biohacker's Bundle */}
-      {featuredBundle && (
-        <FeaturedProduct product={featuredBundle} imagePosition="right" />
-      )}
-
-      {/* Trust Badges */}
+      {/* 19. Trust Badges */}
       <section className="py-12 md:py-16 bg-[#1C4444]">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="grid grid-cols-3 md:grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
+          <div className="grid grid-cols-3 gap-8 max-w-3xl mx-auto text-center">
             <div className="text-white">
               <div className="w-12 h-12 mx-auto mb-3 flex items-center justify-center">
                 <svg className="w-10 h-10" fill="none" viewBox="0 0 24 24" stroke="currentColor">
