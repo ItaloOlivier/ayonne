@@ -83,8 +83,6 @@ export default function MultiAngleUpload({
   const [facingMode, setFacingMode] = useState<'user' | 'environment'>('user')
   const [countdown, setCountdown] = useState<number | null>(null)
   const [useUploadMode, setUseUploadMode] = useState(false)
-  const [showPermissionPrompt, setShowPermissionPrompt] = useState(false)
-  const [permissionState, setPermissionState] = useState<'prompt' | 'granted' | 'denied' | 'unknown'>('unknown')
 
   const videoRef = useRef<HTMLVideoElement>(null)
   const canvasRef = useRef<HTMLCanvasElement>(null)
@@ -99,9 +97,7 @@ export default function MultiAngleUpload({
     }
   }, [cameraStream])
 
-  // Start camera - this triggers the browser's permission dialog if needed
   const startCamera = useCallback(async () => {
-    setShowPermissionPrompt(false)
     setCameraError(null)
     setIsCameraActive(true)
 
@@ -120,7 +116,6 @@ export default function MultiAngleUpload({
       })
 
       setCameraStream(stream)
-      setPermissionState('granted')
 
       if (videoRef.current) {
         videoRef.current.srcObject = stream
@@ -128,9 +123,7 @@ export default function MultiAngleUpload({
       }
     } catch (err) {
       console.error('Camera error:', err)
-      setPermissionState('denied')
-      // Show the help modal with instructions when permission is denied
-      setShowPermissionPrompt(true)
+      setCameraError('Unable to access camera. Please check permissions.')
       setIsCameraActive(false)
     }
   }, [facingMode, cameraStream])
@@ -661,7 +654,7 @@ export default function MultiAngleUpload({
             </div>
           )}
         </div>
-      ) : !isCameraActive && !cameraError && !useUploadMode ? (
+      ) : !isCameraActive && !cameraError ? (
         /* Start camera button */
         <div className="text-center space-y-6 animate-elegant-fade-in">
           <div className="card-luxury p-8 space-y-6">
@@ -707,104 +700,13 @@ export default function MultiAngleUpload({
           </button>
 
           <button
-            onClick={() => setUseUploadMode(true)}
-            className="text-[#1C4444]/70 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
-          >
-            Upload Photo Instead
-          </button>
-
-          <button
             onClick={handleCancel}
             className="text-[#1C4444]/50 hover:text-[#1C4444] text-sm tracking-wide transition-colors"
           >
             Cancel
           </button>
         </div>
-      ) : null}
-
-      {/* Camera Permission Help Modal - Only shown when permission is denied */}
-      {showPermissionPrompt && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50 backdrop-blur-sm animate-fade-in">
-          <div className="bg-white rounded-2xl shadow-2xl max-w-sm mx-4 overflow-hidden animate-elegant-fade-in">
-            {/* Header */}
-            <div className="bg-gradient-to-br from-amber-500 to-amber-600 p-6 text-center">
-              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-white/20 flex items-center justify-center">
-                <svg className="w-8 h-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
-                </svg>
-              </div>
-              <h3 className="text-white text-xl font-light tracking-wide">
-                Camera Access Blocked
-              </h3>
-            </div>
-
-            {/* Content */}
-            <div className="p-6 space-y-4">
-              <p className="text-[#1C4444]/80 text-center text-sm leading-relaxed">
-                Camera access was blocked. To use the camera, enable it in your browser settings.
-              </p>
-
-              {/* Platform-specific instructions */}
-              <div className="bg-amber-50 border border-amber-200 rounded-lg p-4 space-y-3">
-                <p className="text-amber-800 text-sm font-medium text-center">
-                  How to enable camera:
-                </p>
-                <div className="text-amber-700 text-xs space-y-2">
-                  <div className="flex items-start gap-2">
-                    <span className="font-bold shrink-0">Chrome:</span>
-                    <span>Tap 🔒 in address bar → Site settings → Camera → Allow</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="font-bold shrink-0">Safari:</span>
-                    <span>Settings → Safari → Camera → Allow for this site</span>
-                  </div>
-                  <div className="flex items-start gap-2">
-                    <span className="font-bold shrink-0">Firefox:</span>
-                    <span>Tap 🔒 → Clear permissions → Reload page</span>
-                  </div>
-                </div>
-              </div>
-
-              <p className="text-[#1C4444]/60 text-xs text-center">
-                After enabling camera in settings, tap &quot;Try Again&quot;
-              </p>
-            </div>
-
-            {/* Actions */}
-            <div className="p-4 pt-0 space-y-3">
-              <button
-                onClick={startCamera}
-                className="w-full py-3.5 px-6 bg-[#1C4444] text-white rounded-lg font-medium tracking-wide hover:bg-[#1C4444]/90 transition-colors uppercase text-sm flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-                </svg>
-                Try Again
-              </button>
-              <button
-                onClick={() => {
-                  setShowPermissionPrompt(false)
-                  setUseUploadMode(true)
-                }}
-                className="w-full py-3 px-6 border-2 border-[#1C4444]/20 text-[#1C4444] rounded-lg font-medium tracking-wide hover:border-[#1C4444]/40 hover:bg-[#1C4444]/5 transition-colors uppercase text-sm flex items-center justify-center gap-2"
-              >
-                <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                </svg>
-                Upload Photo Instead
-              </button>
-              <button
-                onClick={() => setShowPermissionPrompt(false)}
-                className="w-full py-2 text-[#1C4444]/50 hover:text-[#1C4444] text-sm transition-colors"
-              >
-                Cancel
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
-
-      {isCameraActive && (
+      ) : isCameraActive && (
         <div className="relative">
           {/* Smart Auto-Capture Mode (with quality monitoring) */}
           {FEATURES.SMART_AUTO_CAPTURE ? (
