@@ -253,36 +253,117 @@ export default function ImageUpload({ onImageSelect, isLoading }: ImageUploadPro
             style={{ transform: facingMode === 'user' ? 'scaleX(-1)' : 'none' }}
           />
 
-          {/* Face outline overlay */}
+          {/* Elegant woman's face silhouette overlay */}
           <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
             <svg
-              viewBox="0 0 200 260"
-              className="w-[65%] h-[75%] opacity-60"
+              viewBox="0 0 200 280"
+              className="w-[70%] h-[80%]"
               fill="none"
-              stroke="white"
-              strokeWidth="2"
             >
-              {/* Face oval outline */}
-              <ellipse
-                cx="100"
-                cy="130"
-                rx="70"
-                ry="95"
-                strokeDasharray="8 4"
-              />
-              {/* Chin line guide */}
-              <path
-                d="M30 130 Q100 250 170 130"
-                strokeDasharray="8 4"
-                opacity="0.5"
-              />
+              {/* Soft glow effect */}
+              <defs>
+                <filter id="glow" x="-50%" y="-50%" width="200%" height="200%">
+                  <feGaussianBlur stdDeviation="2" result="coloredBlur"/>
+                  <feMerge>
+                    <feMergeNode in="coloredBlur"/>
+                    <feMergeNode in="SourceGraphic"/>
+                  </feMerge>
+                </filter>
+                <linearGradient id="faceGradient" x1="0%" y1="0%" x2="0%" y2="100%">
+                  <stop offset="0%" stopColor="rgba(255,255,255,0.8)" />
+                  <stop offset="50%" stopColor="rgba(255,255,255,0.5)" />
+                  <stop offset="100%" stopColor="rgba(255,255,255,0.3)" />
+                </linearGradient>
+              </defs>
+
+              {/* Woman's face silhouette - elegant and minimal */}
+              <g filter="url(#glow)" stroke="url(#faceGradient)" strokeWidth="2.5" strokeLinecap="round">
+                {/* Hair silhouette - flowing and feminine */}
+                <path
+                  d="M45 85
+                     C35 95, 28 120, 30 150
+                     C32 170, 35 185, 42 200"
+                  opacity="0.4"
+                />
+                <path
+                  d="M155 85
+                     C165 95, 172 120, 170 150
+                     C168 170, 165 185, 158 200"
+                  opacity="0.4"
+                />
+
+                {/* Face outline - soft oval with defined jawline */}
+                <path
+                  d="M55 95
+                     C45 110, 40 140, 42 165
+                     C44 185, 55 210, 70 228
+                     Q85 245, 100 250
+                     Q115 245, 130 228
+                     C145 210, 156 185, 158 165
+                     C160 140, 155 110, 145 95"
+                  strokeDasharray="0"
+                  opacity="0.7"
+                />
+
+                {/* Forehead curve */}
+                <path
+                  d="M55 95
+                     C60 70, 80 55, 100 52
+                     C120 55, 140 70, 145 95"
+                  opacity="0.5"
+                />
+
+                {/* Subtle eye level guide - dashed */}
+                <line
+                  x1="60" y1="120"
+                  x2="85" y2="120"
+                  strokeDasharray="3 3"
+                  opacity="0.3"
+                />
+                <line
+                  x1="115" y1="120"
+                  x2="140" y2="120"
+                  strokeDasharray="3 3"
+                  opacity="0.3"
+                />
+
+                {/* Nose guide - very subtle */}
+                <line
+                  x1="100" y1="130"
+                  x2="100" y2="165"
+                  strokeDasharray="4 4"
+                  opacity="0.2"
+                />
+
+                {/* Lips guide - gentle smile curve */}
+                <path
+                  d="M80 185 Q100 195 120 185"
+                  strokeDasharray="4 4"
+                  opacity="0.25"
+                />
+              </g>
+
+              {/* Corner brackets for framing */}
+              <g stroke="white" strokeWidth="3" strokeLinecap="round" opacity="0.6">
+                {/* Top left */}
+                <path d="M25 50 L25 35 L40 35" />
+                {/* Top right */}
+                <path d="M175 50 L175 35 L160 35" />
+                {/* Bottom left */}
+                <path d="M25 255 L25 270 L40 270" />
+                {/* Bottom right */}
+                <path d="M175 255 L175 270 L160 270" />
+              </g>
             </svg>
           </div>
 
-          {/* Position guide text */}
+          {/* Position guide text with icon */}
           <div className="absolute top-4 left-0 right-0 text-center">
-            <span className="bg-black/50 text-white text-xs px-3 py-1 rounded-full">
-              Align your face within the outline
+            <span className="inline-flex items-center gap-2 bg-black/60 backdrop-blur-sm text-white text-xs px-4 py-2 rounded-full shadow-lg">
+              <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14.828 14.828a4 4 0 01-5.656 0M9 10h.01M15 10h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+              Position your face in the frame
             </span>
           </div>
 
