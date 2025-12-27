@@ -39,8 +39,9 @@ export const FEATURES = {
   /**
    * Enable smart auto-capture during photo taking
    * Automatically captures when quality thresholds are met and face is positioned
+   * NOTE: Disabled by default for simpler manual capture flow
    */
-  SMART_AUTO_CAPTURE: process.env.FEATURE_SMART_AUTO_CAPTURE !== 'false', // Enabled by default
+  SMART_AUTO_CAPTURE: process.env.FEATURE_SMART_AUTO_CAPTURE === 'true', // Disabled by default
 }
 
 /**
