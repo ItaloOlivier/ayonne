@@ -2,7 +2,16 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'About Us',
+  title: 'About Us - Biohacking Beauty',
+  description: 'Learn about Ayonne skincare - inspired by Bryan Johnson\'s Blue Project Protocol. Our vegan, cruelty-free products combine cutting-edge science with nature\'s most powerful ingredients.',
+  alternates: {
+    canonical: 'https://ai.ayonne.skin/pages/about',
+  },
+  openGraph: {
+    title: 'About Ayonne | Biohacking Beauty',
+    description: 'Where cutting-edge science meets timeless beauty rituals. 100% vegan, cruelty-free, paraben-free skincare.',
+    url: 'https://ai.ayonne.skin/pages/about',
+  },
 }
 
 export default function AboutPage() {
