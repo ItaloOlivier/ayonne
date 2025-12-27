@@ -1,6 +1,20 @@
 import Link from 'next/link'
 import Image from 'next/image'
+import { Metadata } from 'next'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
+
+export const metadata: Metadata = {
+  title: 'Free AI Skin Analysis | Personalized Skincare Recommendations',
+  description: 'Discover your perfect skincare routine with Ayonne\'s free AI Skin Analyzer. Upload a selfie, get instant skin analysis, and receive personalized product recommendations for your unique skin type and concerns.',
+  alternates: {
+    canonical: 'https://ai.ayonne.skin',
+  },
+  openGraph: {
+    title: 'Free AI Skin Analysis | Ayonne',
+    description: 'Upload a selfie and get instant AI-powered skin analysis with personalized recommendations.',
+    url: 'https://ai.ayonne.skin',
+  },
+}
 
 export default function HomePage() {
   return (

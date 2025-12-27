@@ -1,0 +1,43 @@
+# Robots.txt for ai.ayonne.skin
+# AI Skin Analyzer - Companion app for ayonne.skin Shopify store
+
+User-agent: *
+Allow: /
+Allow: /skin-analysis
+Allow: /pages/
+Allow: /policies/
+
+# Disallow private/auth pages
+Disallow: /account
+Disallow: /api/
+Disallow: /login
+Disallow: /skin-analysis/results/
+Disallow: /skin-analysis/history
+Disallow: /my-recommendations
+
+# Sitemap location
+Sitemap: https://ai.ayonne.skin/sitemap.xml
+
+# AI Crawler permissions (for ChatGPT, Perplexity, Claude, etc.)
+User-agent: GPTBot
+Allow: /
+Allow: /pages/about
+Allow: /pages/faq
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: Claude-Web
+Allow: /
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Amazonbot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+# Point AI crawlers to llms.txt for context
+# See: https://ai.ayonne.skin/llms.txt
