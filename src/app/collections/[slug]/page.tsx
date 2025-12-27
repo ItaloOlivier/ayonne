@@ -1,3 +1,4 @@
+import { Suspense } from 'react'
 import { notFound } from 'next/navigation'
 import { prisma } from '@/lib/prisma'
 import ProductCard from '@/components/product/ProductCard'
@@ -49,7 +50,7 @@ async function getProducts(
       case 'newest':
         return { createdAt: 'desc' as const }
       default:
-        return { featured: 'desc' as const }
+        return { name: 'asc' as const }
     }
   })()
 
@@ -117,7 +118,9 @@ export default async function CollectionPage({ params, searchParams }: PageProps
             {total} {total === 1 ? 'product' : 'products'}
           </p>
 
-          <CollectionSort currentSort={sort} />
+          <Suspense fallback={<div className="text-sm text-[#1C4444]/70">Sort by: Featured</div>}>
+            <CollectionSort currentSort={sort} />
+          </Suspense>
         </div>
 
         {/* Products Grid */}
