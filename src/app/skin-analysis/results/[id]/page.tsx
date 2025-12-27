@@ -1,7 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
-import AgedFaceComparison from '@/components/skin-analysis/AgedFaceComparison'
 import AnalysisResults from '@/components/skin-analysis/AnalysisResults'
 import ProductRecommendations from '@/components/skin-analysis/ProductRecommendations'
 import SkincareAdvice from '@/components/skin-analysis/SkincareAdvice'
@@ -133,13 +133,20 @@ export default async function ResultsPage({ params }: PageProps) {
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4 lg:px-8">
           <div className="max-w-4xl mx-auto space-y-8">
-            {/* Row 1: Face Comparison + Analysis Side by Side on larger screens */}
+            {/* Row 1: Photo + Analysis Side by Side on larger screens */}
             <div className="grid lg:grid-cols-2 gap-6">
-              {/* Aged Face Comparison */}
-              <AgedFaceComparison
-                originalImage={analysis.originalImage}
-                agedImage={analysis.agedImage}
-              />
+              {/* Your Photo */}
+              <div className="bg-white rounded-xl p-6">
+                <h3 className="text-lg font-medium text-[#1C4444] mb-4">Your Photo</h3>
+                <div className="relative aspect-square max-w-md mx-auto rounded-lg overflow-hidden">
+                  <Image
+                    src={analysis.originalImage}
+                    alt="Your uploaded photo"
+                    fill
+                    className="object-cover"
+                  />
+                </div>
+              </div>
 
               {/* Skin Analysis Results */}
               <AnalysisResults
