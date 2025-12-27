@@ -83,21 +83,23 @@ export default async function HomePage() {
       {/* Anti-Aging Serums Section */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
               Biohack With Us And Age Smarter
             </h2>
-            <Link
-              href="/collections/anti-aging-serums"
-              className="inline-block px-6 py-2.5 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {antiAgingProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/collections/anti-aging-serums"
+              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>
@@ -113,21 +115,23 @@ export default async function HomePage() {
       {/* Moisturizers Section */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
               Good Hydration Is Half Way To A Win!
             </h2>
-            <Link
-              href="/collections/moisturizers"
-              className="inline-block px-6 py-2.5 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {moisturizerProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/collections/moisturizers"
+              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>
@@ -140,43 +144,47 @@ export default async function HomePage() {
       {/* eBooks Section */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
               Knowledge Is Beauty
             </h2>
-            <Link
-              href="/collections/ebooks"
-              className="inline-block px-6 py-2.5 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {ebookProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/collections/ebooks"
+              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>
 
       {/* Cleansers Section */}
-      <section className="py-9 md:py-11 bg-white">
+      <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
               Squeaky Clean: Soaps & Cleansers
             </h2>
-            <Link
-              href="/collections/cleansers"
-              className="inline-block px-6 py-2.5 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {cleanserProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/collections/cleansers"
+              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>
@@ -189,21 +197,23 @@ export default async function HomePage() {
       {/* Bundles Section */}
       <section className="py-9 md:py-11">
         <div className="container mx-auto px-4 lg:px-8">
-          <div className="text-center mb-8">
-            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-3">
+          <div className="text-center mb-6">
+            <h2 className="text-2xl md:text-3xl font-normal text-[#1C4444]">
               Save with Bundles
             </h2>
-            <Link
-              href="/collections/bundles"
-              className="inline-block px-6 py-2.5 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
-            >
-              View all
-            </Link>
           </div>
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-2 md:gap-2">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 md:gap-6">
             {bundleProducts.map((product) => (
               <ProductCard key={product.id} product={product} />
             ))}
+          </div>
+          <div className="text-center mt-8">
+            <Link
+              href="/collections/bundles"
+              className="inline-block px-8 py-3 bg-[#1C4444] text-white text-sm uppercase tracking-wider hover:bg-[#1C4444]/90 transition-colors"
+            >
+              View all
+            </Link>
           </div>
         </div>
       </section>

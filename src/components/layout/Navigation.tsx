@@ -70,12 +70,12 @@ export default function Navigation({ mobile, onClose }: NavigationProps) {
 
   return (
     <nav className="flex">
-      <ul className="flex flex-wrap items-center gap-x-6 gap-y-2">
+      <ul className="flex items-center gap-x-4 xl:gap-x-5">
         {navItems.map((item) => (
           <li key={item.name}>
             <Link
               href={item.href}
-              className="text-[#1C4444] text-sm uppercase tracking-wider font-normal hover:underline underline-offset-4 transition-all whitespace-nowrap"
+              className="text-[#1C4444] text-[13px] uppercase tracking-wide font-normal hover:underline underline-offset-4 transition-all whitespace-nowrap"
             >
               {item.name}
             </Link>
