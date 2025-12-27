@@ -114,21 +114,8 @@ export default function MultiAngleUpload({
     return 'prompt'
   }, [])
 
-  // Handle the initial camera button click - show permission prompt
-  const handleCameraButtonClick = useCallback(async () => {
-    const permission = await checkCameraPermission()
-    setPermissionState(permission)
-
-    if (permission === 'granted') {
-      // Already have permission, start camera directly
-      startCameraDirectly()
-    } else {
-      // Show permission explanation prompt
-      setShowPermissionPrompt(true)
-    }
-  }, [checkCameraPermission])
-
   // Start camera directly (after permission granted or user clicks "Allow Camera")
+  // IMPORTANT: This must be defined BEFORE handleCameraButtonClick to avoid stale closure
   const startCameraDirectly = useCallback(async () => {
     setShowPermissionPrompt(false)
     setCameraError(null)
@@ -165,6 +152,20 @@ export default function MultiAngleUpload({
 
   // Alias for compatibility with retakePhoto
   const startCamera = startCameraDirectly
+
+  // Handle the initial camera button click - show permission prompt
+  const handleCameraButtonClick = useCallback(async () => {
+    const permission = await checkCameraPermission()
+    setPermissionState(permission)
+
+    if (permission === 'granted') {
+      // Already have permission, start camera directly
+      startCameraDirectly()
+    } else {
+      // Show permission explanation prompt
+      setShowPermissionPrompt(true)
+    }
+  }, [checkCameraPermission, startCameraDirectly])
 
   const stopCamera = useCallback(() => {
     if (cameraStream) {
