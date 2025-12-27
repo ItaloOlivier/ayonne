@@ -96,6 +96,10 @@ src/
 
 ### AI Skin Analysis
 - Upload photo via camera or file
+- Camera mode with elegant woman's face silhouette overlay guide
+  - Soft glow effect with gradient
+  - Subtle eye, nose, and lip placement guides
+  - Corner brackets for professional framing
 - Claude AI analyzes for skin type and conditions
 - Detects: fine lines, wrinkles, dark spots, acne, dryness, oiliness, redness, dullness, large pores, uneven texture, dark circles, dehydration
 - Smart fallback with varied results if AI unavailable
