@@ -265,11 +265,11 @@ export async function POST(request: NextRequest) {
                 }>(fullText)
 
                 if (parsed) {
-                  // Compress and upload image
+                  // Process and upload image (PNG lossless)
                   const compressedBuffer = await compressImage(buffer)
                   const imageUrl = await uploadImage(
                     compressedBuffer,
-                    `skin-analysis/${customerId}-${sessionId}.jpg`
+                    `skin-analysis/${customerId}-${sessionId}.png`
                   )
 
                   // Build recommendations

@@ -477,6 +477,9 @@ SHOPIFY_ADMIN_API_TOKEN= # Admin API access token with write_price_rules scope
 
 # Admin API (required for admin endpoints)
 ADMIN_API_KEY=          # Secret key for admin API access
+
+# Hugging Face (optional - for AI face aging on Skin Forecast page)
+HUGGINGFACE_API_TOKEN=  # Get free token at https://huggingface.co/settings/tokens
 ```
 
 ## Shopify Discount Code Integration

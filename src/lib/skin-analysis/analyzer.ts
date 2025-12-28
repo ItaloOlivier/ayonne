@@ -16,10 +16,13 @@ import { buildCachedSystemMessage, estimateCacheSavings } from './cached-prompts
 
 // Constants
 export const RATE_LIMIT_ANALYSES_PER_HOUR = 5
-export const COMPRESSED_IMAGE_MAX_WIDTH = 800
-export const COMPRESSED_IMAGE_QUALITY = 75
+export const STORED_IMAGE_MAX_WIDTH = 1400      // High res for face aging feature
 export const VALID_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp']
 export const MAX_IMAGE_SIZE = 10 * 1024 * 1024 // 10MB
+
+// Legacy exports for backwards compatibility
+export const COMPRESSED_IMAGE_MAX_WIDTH = STORED_IMAGE_MAX_WIDTH
+export const COMPRESSED_IMAGE_QUALITY = 100
 
 /**
  * Generate a unique session ID for tracking
@@ -29,25 +32,25 @@ export function generateSessionId(): string {
 }
 
 /**
- * Compress image for storage after analysis
+ * Process image for storage - uses PNG for lossless quality
+ * Critical for skin analysis accuracy and face aging feature
  */
 export async function compressImage(imageBuffer: Buffer): Promise<Buffer> {
   try {
-    const compressed = await sharp(imageBuffer)
-      .resize(COMPRESSED_IMAGE_MAX_WIDTH, null, {
+    const processed = await sharp(imageBuffer)
+      .resize(STORED_IMAGE_MAX_WIDTH, null, {
         withoutEnlargement: true,
         fit: 'inside',
       })
-      .jpeg({ quality: COMPRESSED_IMAGE_QUALITY, progressive: true })
+      .png({ compressionLevel: 6 }) // PNG lossless - level 6 balances size/speed
       .toBuffer()
 
     console.log(
-      `Image compressed: ${imageBuffer.length} -> ${compressed.length} bytes ` +
-      `(${Math.round((1 - compressed.length / imageBuffer.length) * 100)}% reduction)`
+      `Image processed (PNG lossless): ${imageBuffer.length} -> ${processed.length} bytes`
     )
-    return compressed
+    return processed
   } catch (error) {
-    console.error('Image compression failed:', error)
+    console.error('Image processing failed:', error)
     return imageBuffer
   }
 }

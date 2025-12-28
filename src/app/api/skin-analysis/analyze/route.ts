@@ -215,11 +215,11 @@ export async function POST(request: NextRequest) {
     // Run AI analysis (uses original quality for best results)
     const { skinType, conditions } = await analyzeSkinWithAI(imageBase64)
 
-    // Compress and upload image
+    // Process and upload image (PNG lossless for best quality)
     const compressedBuffer = await compressImage(imageBuffer)
     const storedImageUrl = await uploadImage(
       compressedBuffer,
-      `skin-analysis/${customerId}-${sessionId}.jpg`
+      `skin-analysis/${customerId}-${sessionId}.png`
     )
 
     // Build recommendations and advice

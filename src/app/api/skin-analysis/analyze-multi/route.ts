@@ -370,9 +370,9 @@ export async function POST(request: NextRequest) {
     ])
 
     const [frontImageUrl, leftImageUrl, rightImageUrl] = await Promise.all([
-      uploadImage(compressedFront, `skin-analysis/${customerId}-${sessionId}-front.jpg`),
-      uploadImage(compressedLeft, `skin-analysis/${customerId}-${sessionId}-left.jpg`),
-      uploadImage(compressedRight, `skin-analysis/${customerId}-${sessionId}-right.jpg`),
+      uploadImage(compressedFront, `skin-analysis/${customerId}-${sessionId}-front.png`),
+      uploadImage(compressedLeft, `skin-analysis/${customerId}-${sessionId}-left.png`),
+      uploadImage(compressedRight, `skin-analysis/${customerId}-${sessionId}-right.png`),
     ])
 
     // Build recommendations and advice

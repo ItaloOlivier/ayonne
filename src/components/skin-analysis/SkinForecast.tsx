@@ -132,14 +132,14 @@ export default function SkinForecastView({ forecast, skinType, latestPhoto }: Sk
               currentSkinAge={forecast.currentSkinAge}
               targetSkinAge={
                 activeScenario === 'withProducts'
-                  ? forecast.withProducts.skinAge90
-                  : forecast.withoutProducts.skinAge90
+                  ? Math.max(18, forecast.currentSkinAge - 5)  // 5 years younger with products
+                  : forecast.currentSkinAge + 10               // 10 years older without products
               }
               scenario={activeScenario === 'withProducts' ? 'younger' : 'older'}
               label={
                 activeScenario === 'withProducts'
-                  ? '90 Days With Ayonne'
-                  : '90 Days Without Products'
+                  ? '5 Years Younger With Ayonne'
+                  : '10 Years Without Skincare'
               }
             />
           </div>
