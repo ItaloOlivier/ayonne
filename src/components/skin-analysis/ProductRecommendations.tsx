@@ -167,9 +167,9 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
   const { showToast } = useToast()
   const containerRef = useRef<HTMLDivElement>(null)
 
-  // Start with all products selected
+  // Start with top 3 products selected (less presumptuous than all)
   const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(
-    new Set(recommendations.map(r => r.productSlug))
+    new Set(recommendations.slice(0, 3).map(r => r.productSlug))
   )
   const [sortBy, setSortBy] = useState<SortOption>('relevance')
   const [activeDiscount, setActiveDiscount] = useState<ActiveDiscount | null>(null)
@@ -462,8 +462,8 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
           </div>
         )}
 
-        {/* Free Shipping Progress */}
-        {!noneSelected && totalPrice < 50 && !activeDiscount?.discountPercent && (
+        {/* Free Shipping Progress - hide if user already has any discount (including free shipping) */}
+        {!noneSelected && totalPrice < 50 && !activeDiscount && (
           <div className="mb-4 p-3 bg-gradient-to-r from-[#F4EBE7] to-[#F4EBE7]/50 rounded-lg border border-[#D4AF37]/20">
             <div className="flex items-center gap-2 mb-2">
               <svg className="w-4 h-4 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor">

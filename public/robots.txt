@@ -4,6 +4,7 @@
 User-agent: *
 Allow: /
 Allow: /skin-analysis
+Allow: /skin-age-test
 Allow: /pages/
 Allow: /policies/
 

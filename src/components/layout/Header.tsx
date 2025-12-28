@@ -12,6 +12,17 @@ export default function Header() {
   const [logoError, setLogoError] = useState(false)
   const [isLoggedIn, setIsLoggedIn] = useState(false)
   const [customerName, setCustomerName] = useState<string | null>(null)
+  const [isScrolled, setIsScrolled] = useState(false)
+
+  // Collapse announcement bar on scroll
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 50)
+    }
+    window.addEventListener('scroll', handleScroll, { passive: true })
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
+
   useEffect(() => {
     // Check auth status via API (uses HTTP-only cookie)
     fetch('/api/auth/me')
@@ -45,8 +56,12 @@ export default function Header() {
 
   return (
     <>
-      {/* Announcement Bar */}
-      <div className="bg-[#1C4444] text-white text-center py-2.5 px-4">
+      {/* Announcement Bar - collapses on scroll */}
+      <div
+        className={`bg-[#1C4444] text-white text-center overflow-hidden transition-all duration-300 px-4 ${
+          isScrolled ? 'max-h-0 py-0' : 'max-h-16 py-2.5'
+        }`}
+      >
         <p className="text-xs md:text-sm tracking-wide">
           Discover your personalized skincare journey with our <span className="font-medium">AI Skin Analyzer</span>
         </p>
@@ -57,19 +72,9 @@ export default function Header() {
         <div className="border-b border-[#1C4444]/10">
           <div className="container mx-auto px-4 lg:px-8">
             <div className="flex items-center justify-between py-4">
-              {/* Left - Back to Shop */}
+              {/* Left - spacer for centering logo */}
               <div className="flex-1 flex justify-start">
-                <a
-                  href={SHOPIFY_STORE_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="hidden sm:flex items-center gap-2 text-[#1C4444] text-sm hover:opacity-70 transition-opacity"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                  </svg>
-                  Shop Ayonne
-                </a>
+                {/* Shop link removed - redundant with Shop Now button */}
               </div>
 
               {/* Center - Logo */}

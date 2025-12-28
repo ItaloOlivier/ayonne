@@ -20,12 +20,13 @@ interface SpinWheelProps {
 
 // Segments with proportional weights (total = 100)
 // Weights determine the angle of each segment
+// Guaranteed minimum 10% - no disappointing 5% prizes
 const SEGMENTS: SpinSegment[] = [
-  { id: 1, label: '5%', discountPercent: 5, weight: 40, color: '#1C4444', textColor: '#FFFFFF' },
-  { id: 2, label: '10%', discountPercent: 10, weight: 30, color: '#2D5A5A', textColor: '#FFFFFF' },
-  { id: 3, label: '15%', discountPercent: 15, weight: 18, color: '#D4AF37', textColor: '#1C4444' },
-  { id: 4, label: '20%', discountPercent: 20, weight: 8, color: '#B8962F', textColor: '#FFFFFF' },
-  { id: 5, label: 'FREE', discountPercent: 0, weight: 4, color: '#8B6914', textColor: '#FFFFFF', isFreeShipping: true },
+  { id: 1, label: '10%', discountPercent: 10, weight: 45, color: '#1C4444', textColor: '#FFFFFF' },
+  { id: 2, label: '15%', discountPercent: 15, weight: 30, color: '#2D5A5A', textColor: '#FFFFFF' },
+  { id: 3, label: '20%', discountPercent: 20, weight: 15, color: '#D4AF37', textColor: '#1C4444' },
+  { id: 4, label: '25%', discountPercent: 25, weight: 7, color: '#B8962F', textColor: '#FFFFFF' },
+  { id: 5, label: 'FREE', discountPercent: 0, weight: 3, color: '#8B6914', textColor: '#FFFFFF', isFreeShipping: true },
 ]
 
 // Calculate total weight for proportional sizing
@@ -124,12 +125,12 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
 
       // Calculate rotation to land on the center of the winning segment
       const segmentCenter = winningSegment.startAngle + winningSegment.angle / 2
-      const spins = 6 // Number of full rotations for drama
+      const spins = 4 // Reduced from 6 for faster reveal
       const finalRotation = 360 * spins + (360 - segmentCenter)
 
       setRotation(finalRotation)
 
-      // Wait for animation to complete
+      // Wait for animation to complete (reduced from 5000ms to 3000ms)
       setTimeout(() => {
         setPrize({
           code: data.prize.code,
@@ -146,7 +147,7 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
             expiresAt: data.prize.expiresAt,
           })
         }
-      }, 5000)
+      }, 3000)
     } catch {
       setError('Failed to spin. Please try again.')
       setIsSpinning(false)
@@ -206,14 +207,14 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
         )}
 
         <div className="text-center mb-6">
-          <p className="text-[#D4AF37] text-xs tracking-[0.2em] uppercase mb-2">Exclusive Reward</p>
+          <p className="text-[#9A8428] text-xs tracking-[0.2em] uppercase mb-2">Member Exclusive</p>
           <h2 className="text-2xl font-light text-[#1C4444] tracking-wide">
-            {prize ? 'Congratulations' : 'Spin to Win'}
+            {prize ? 'Your Offer is Ready' : 'Reveal Your Offer'}
           </h2>
           <p className="text-[#1C4444]/60 text-sm mt-2">
             {prize
               ? 'Your exclusive discount awaits'
-              : 'Spin the wheel for a special offer'}
+              : 'Unlock your personalized savings'}
           </p>
         </div>
 
@@ -265,7 +266,7 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
                 style={{
                   transform: `rotate(${rotation}deg)`,
                   transition: isSpinning
-                    ? 'transform 5s cubic-bezier(0.17, 0.67, 0.05, 0.99)'
+                    ? 'transform 3s cubic-bezier(0.17, 0.67, 0.05, 0.99)'
                     : 'none',
                 }}
               >
@@ -439,20 +440,7 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
               </div>
             </div>
 
-            {/* Legend */}
-            <div className="flex justify-center gap-3 mb-6 flex-wrap">
-              {SEGMENTS.map((segment) => (
-                <div key={segment.id} className="flex items-center gap-1.5">
-                  <div
-                    className="w-2.5 h-2.5 rounded-full ring-1 ring-white/50"
-                    style={{ backgroundColor: segment.color }}
-                  />
-                  <span className="text-xs text-[#1C4444]/70">
-                    {segment.isFreeShipping ? 'Free Ship' : `${segment.discountPercent}%`}
-                  </span>
-                </div>
-              ))}
-            </div>
+            {/* Legend removed - hiding probabilities for better UX */}
 
             {error && (
               <div className="text-red-600 text-center mb-4 text-sm bg-red-50 py-2 px-4 rounded-lg">
@@ -479,10 +467,10 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
                     <circle className="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="4" />
                     <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z" />
                   </svg>
-                  Spinning...
+                  Revealing...
                 </span>
               ) : (
-                'Spin Now'
+                'Reveal My Offer'
               )}
             </button>
 
@@ -493,6 +481,18 @@ export default function SpinWheel({ analysisId, onComplete, onClose }: SpinWheel
         ) : (
           /* Prize Display */
           <div className="text-center">
+            {/* Accessibility: Screen reader announcement */}
+            <div
+              role="status"
+              aria-live="polite"
+              className="sr-only"
+            >
+              Congratulations! You won {prize.discountPercent > 0
+                ? `${prize.discountPercent} percent off`
+                : 'free shipping'}.
+              Your code is {prize.code}.
+            </div>
+
             {/* Prize badge */}
             <div className="relative w-32 h-32 mx-auto mb-6">
               {/* Glowing ring */}

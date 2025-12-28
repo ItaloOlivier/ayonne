@@ -70,8 +70,10 @@ button {
 }
 
 .btn-primary:hover {
-  background-color: transparent;
-  color: var(--button-bg);
+  background-color: #2D5A5A;
+  color: var(--button-text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(28, 68, 68, 0.15);
 }
 
 .btn-secondary {
@@ -94,6 +96,8 @@ button {
 .btn-secondary:hover {
   background-color: var(--button-bg);
   color: var(--button-text);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(28, 68, 68, 0.15);
 }
 
 /* Small button variant */
@@ -497,8 +501,13 @@ input:focus, textarea:focus, select:focus {
   border: 1px solid rgba(212, 175, 55, 0.4);
 }
 
-/* Gold accent color */
+/* Gold accent color - darker for better contrast on light backgrounds */
 .text-gold {
+  color: #9A8428;
+}
+
+/* Original gold for decorative use */
+.text-gold-decorative {
   color: #D4AF37;
 }
 
@@ -549,7 +558,7 @@ input:focus, textarea:focus, select:focus {
 /* Elegant card styling */
 .card-luxury {
   background: white;
-  border-radius: 1rem;
+  border-radius: 0.75rem;
   border: 1px solid rgba(28, 68, 68, 0.08);
   box-shadow:
     0 4px 6px -1px rgba(28, 68, 68, 0.04),
@@ -576,4 +585,55 @@ input:focus, textarea:focus, select:focus {
 .stepper-dot-complete {
   background: linear-gradient(135deg, #D4AF37 0%, #C9A227 100%);
   box-shadow: 0 0 0 4px rgba(212, 175, 55, 0.2);
+}
+
+/* Accessibility: Screen reader only */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Accessibility: Improved focus visibility */
+:focus-visible {
+  outline: 2px solid #1C4444;
+  outline-offset: 2px;
+}
+
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid #D4AF37;
+  outline-offset: 2px;
+}
+
+/* Accessibility: Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .animate-confetti,
+  .animate-bounce-in,
+  .animate-spin,
+  .animate-pulse,
+  .animate-float,
+  .animate-sparkle,
+  .animate-shine,
+  .animate-pulse-ring,
+  .animate-golden-shimmer,
+  .animate-gentle-glow,
+  .animate-scan-line {
+    animation: none !important;
+  }
 }
