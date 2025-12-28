@@ -1,39 +1,58 @@
 /**
- * Shopify Admin API Integration
+ * Shopify Admin GraphQL API Integration
  *
  * This module handles automatic synchronization of discount codes
- * between our growth hacking system and Shopify.
+ * between our growth hacking system and Shopify using the GraphQL API.
  *
  * Required environment variables:
- * - SHOPIFY_STORE_DOMAIN: Your Shopify store domain (e.g., 'ayonne.myshopify.com')
- * - SHOPIFY_ADMIN_API_TOKEN: Admin API access token with write_price_rules scope
+ * - SHOPIFY_STORE_DOMAIN: Your Shopify store domain (e.g., 'ecosmetics-skin.myshopify.com')
+ * - SHOPIFY_ADMIN_API_TOKEN: Admin API access token with write_discounts scope
  */
 
 const SHOPIFY_STORE_DOMAIN = process.env.SHOPIFY_STORE_DOMAIN
 const SHOPIFY_ADMIN_API_TOKEN = process.env.SHOPIFY_ADMIN_API_TOKEN
-const SHOPIFY_API_VERSION = '2024-01'
+const SHOPIFY_API_VERSION = '2025-01'
 
-interface ShopifyPriceRule {
-  id: number
-  title: string
-  value_type: 'percentage' | 'fixed_amount'
-  value: string
-  customer_selection: 'all' | 'prerequisite'
-  target_type: 'line_item' | 'shipping_line'
-  target_selection: 'all' | 'entitled'
-  allocation_method: 'across' | 'each'
-  once_per_customer: boolean
-  usage_limit: number | null
-  starts_at: string
-  ends_at: string | null
+// GraphQL Types
+interface GraphQLResponse<T> {
+  data?: T
+  errors?: Array<{
+    message: string
+    locations?: Array<{ line: number; column: number }>
+    path?: string[]
+    extensions?: { code: string }
+  }>
+  extensions?: {
+    cost: {
+      requestedQueryCost: number
+      actualQueryCost: number
+      throttleStatus: {
+        maximumAvailable: number
+        currentlyAvailable: number
+        restoreRate: number
+      }
+    }
+  }
 }
 
-interface ShopifyDiscountCode {
-  id: number
-  price_rule_id: number
-  code: string
-  usage_count: number
-  created_at: string
+interface UserError {
+  field: string[] | null
+  message: string
+  code?: string
+}
+
+interface DiscountCodeNode {
+  id: string
+  codeDiscount: {
+    title: string
+    codes: {
+      nodes: Array<{ code: string }>
+    }
+    startsAt: string
+    endsAt: string | null
+    usageLimit: number | null
+    appliesOncePerCustomer: boolean
+  }
 }
 
 interface CreateDiscountParams {
@@ -53,97 +72,49 @@ export function isShopifyConfigured(): boolean {
 }
 
 /**
- * Make a request to the Shopify Admin API
+ * Make a GraphQL request to the Shopify Admin API
  */
-async function shopifyRequest<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
+async function shopifyGraphQL<T>(
+  query: string,
+  variables?: Record<string, unknown>
+): Promise<GraphQLResponse<T>> {
   if (!isShopifyConfigured()) {
     throw new Error('Shopify Admin API is not configured. Set SHOPIFY_STORE_DOMAIN and SHOPIFY_ADMIN_API_TOKEN.')
   }
 
-  const url = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}${endpoint}`
+  const url = `https://${SHOPIFY_STORE_DOMAIN}/admin/api/${SHOPIFY_API_VERSION}/graphql.json`
 
   const response = await fetch(url, {
-    ...options,
+    method: 'POST',
     headers: {
       'Content-Type': 'application/json',
       'X-Shopify-Access-Token': SHOPIFY_ADMIN_API_TOKEN!,
-      ...options.headers,
     },
+    body: JSON.stringify({ query, variables }),
   })
 
   if (!response.ok) {
     const errorText = await response.text()
-    console.error('Shopify API error:', response.status, errorText)
-    throw new Error(`Shopify API error: ${response.status} - ${errorText}`)
+    console.error('Shopify GraphQL error:', response.status, errorText)
+    throw new Error(`Shopify GraphQL error: ${response.status} - ${errorText}`)
   }
 
-  return response.json()
-}
+  const result = await response.json()
 
-/**
- * Create a price rule in Shopify (required for discount codes)
- */
-async function createPriceRule(params: CreateDiscountParams): Promise<ShopifyPriceRule> {
-  const { discountPercent, expiresAt, usageLimit, oncePerCustomer = true, title, code } = params
-
-  const priceRule = {
-    price_rule: {
-      title: title || `Growth: ${code}`,
-      target_type: 'line_item',
-      target_selection: 'all',
-      allocation_method: 'across',
-      value_type: 'percentage',
-      value: `-${discountPercent}`, // Negative for discount
-      customer_selection: 'all',
-      once_per_customer: oncePerCustomer,
-      usage_limit: usageLimit || null,
-      starts_at: new Date().toISOString(),
-      ends_at: expiresAt ? expiresAt.toISOString() : null,
-    },
+  // Log cost information for monitoring
+  if (result.extensions?.cost) {
+    console.log(`Shopify API cost: ${result.extensions.cost.actualQueryCost}/${result.extensions.cost.throttleStatus.currentlyAvailable}`)
   }
 
-  const response = await shopifyRequest<{ price_rule: ShopifyPriceRule }>(
-    '/price_rules.json',
-    {
-      method: 'POST',
-      body: JSON.stringify(priceRule),
-    }
-  )
-
-  return response.price_rule
+  return result
 }
 
 /**
- * Create a discount code attached to a price rule
- */
-async function createDiscountCode(
-  priceRuleId: number,
-  code: string
-): Promise<ShopifyDiscountCode> {
-  const response = await shopifyRequest<{ discount_code: ShopifyDiscountCode }>(
-    `/price_rules/${priceRuleId}/discount_codes.json`,
-    {
-      method: 'POST',
-      body: JSON.stringify({
-        discount_code: { code },
-      }),
-    }
-  )
-
-  return response.discount_code
-}
-
-/**
- * Create a discount code in Shopify
- * This creates both the price rule and the discount code
+ * Create a basic discount code in Shopify using GraphQL
  */
 export async function syncDiscountToShopify(params: CreateDiscountParams): Promise<{
   success: boolean
-  priceRuleId?: number
-  discountCodeId?: number
+  discountId?: string
   error?: string
 }> {
   if (!isShopifyConfigured()) {
@@ -151,19 +122,95 @@ export async function syncDiscountToShopify(params: CreateDiscountParams): Promi
     return { success: false, error: 'Shopify not configured' }
   }
 
+  const { code, discountPercent, expiresAt, usageLimit, oncePerCustomer = true, title } = params
+
+  const mutation = `
+    mutation discountCodeBasicCreate($basicCodeDiscount: DiscountCodeBasicInput!) {
+      discountCodeBasicCreate(basicCodeDiscount: $basicCodeDiscount) {
+        codeDiscountNode {
+          id
+          codeDiscount {
+            ... on DiscountCodeBasic {
+              title
+              codes(first: 1) {
+                nodes {
+                  code
+                }
+              }
+              startsAt
+              endsAt
+            }
+          }
+        }
+        userErrors {
+          field
+          message
+          code
+        }
+      }
+    }
+  `
+
+  const variables = {
+    basicCodeDiscount: {
+      title: title || `AI Growth: ${code}`,
+      code,
+      startsAt: new Date().toISOString(),
+      endsAt: expiresAt ? expiresAt.toISOString() : null,
+      usageLimit: usageLimit || null,
+      appliesOncePerCustomer: oncePerCustomer,
+      customerSelection: {
+        all: true,
+      },
+      customerGets: {
+        value: {
+          percentage: discountPercent / 100, // GraphQL expects decimal (0.10 = 10%)
+        },
+        items: {
+          all: true,
+        },
+      },
+      combinesWith: {
+        orderDiscounts: false,
+        productDiscounts: false,
+        shippingDiscounts: true,
+      },
+    },
+  }
+
   try {
-    // Create the price rule
-    const priceRule = await createPriceRule(params)
+    const result = await shopifyGraphQL<{
+      discountCodeBasicCreate: {
+        codeDiscountNode: DiscountCodeNode | null
+        userErrors: UserError[]
+      }
+    }>(mutation, variables)
 
-    // Create the discount code attached to the price rule
-    const discountCode = await createDiscountCode(priceRule.id, params.code)
+    // Check for GraphQL errors
+    if (result.errors && result.errors.length > 0) {
+      const errorMessage = result.errors.map(e => e.message).join(', ')
+      console.error('Shopify GraphQL errors:', errorMessage)
+      return { success: false, error: errorMessage }
+    }
 
-    console.log(`✅ Synced discount to Shopify: ${params.code} (${params.discountPercent}% off)`)
+    // Check for user errors
+    const userErrors = result.data?.discountCodeBasicCreate?.userErrors || []
+    if (userErrors.length > 0) {
+      const errorMessage = userErrors.map(e => `${e.field?.join('.')}: ${e.message}`).join(', ')
+      console.error('Shopify discount creation errors:', errorMessage)
+      return { success: false, error: errorMessage }
+    }
+
+    const discountNode = result.data?.discountCodeBasicCreate?.codeDiscountNode
+    if (!discountNode) {
+      return { success: false, error: 'No discount node returned' }
+    }
+
+    console.log(`✅ Synced discount to Shopify (GraphQL): ${code} (${discountPercent}% off)`)
 
     return {
       success: true,
-      priceRuleId: priceRule.id,
-      discountCodeId: discountCode.id,
+      discountId: discountNode.id,
     }
   } catch (error) {
     console.error('Failed to sync discount to Shopify:', error)
@@ -175,27 +222,39 @@ export async function syncDiscountToShopify(params: CreateDiscountParams): Promi
 }
 
 /**
- * Delete a discount code from Shopify
+ * Delete a discount code from Shopify using GraphQL
  */
-export async function deleteDiscountFromShopify(
-  priceRuleId: number,
-  discountCodeId: number
-): Promise<boolean> {
+export async function deleteDiscountFromShopify(discountId: string): Promise<boolean> {
   if (!isShopifyConfigured()) {
     return false
   }
 
+  const mutation = `
+    mutation discountCodeDelete($id: ID!) {
+      discountCodeDelete(id: $id) {
+        deletedCodeDiscountId
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `
+
   try {
-    // Delete the discount code
-    await shopifyRequest(
-      `/price_rules/${priceRuleId}/discount_codes/${discountCodeId}.json`,
-      { method: 'DELETE' }
-    )
+    const result = await shopifyGraphQL<{
+      discountCodeDelete: {
+        deletedCodeDiscountId: string | null
+        userErrors: UserError[]
+      }
+    }>(mutation, { id: discountId })
 
-    // Delete the price rule
-    await shopifyRequest(`/price_rules/${priceRuleId}.json`, { method: 'DELETE' })
+    if (result.data?.discountCodeDelete?.userErrors?.length) {
+      console.error('Failed to delete discount:', result.data.discountCodeDelete.userErrors)
+      return false
+    }
 
-    return true
+    return !!result.data?.discountCodeDelete?.deletedCodeDiscountId
   } catch (error) {
     console.error('Failed to delete discount from Shopify:', error)
     return false
@@ -203,30 +262,89 @@ export async function deleteDiscountFromShopify(
 }
 
 /**
- * Get all discount codes from Shopify (for verification)
+ * Get all discount codes from Shopify using GraphQL
  */
-export async function getShopifyDiscountCodes(): Promise<ShopifyDiscountCode[]> {
+export async function getShopifyDiscountCodes(first: number = 50): Promise<Array<{
+  id: string
+  code: string
+  title: string
+  startsAt: string
+  endsAt: string | null
+}>> {
   if (!isShopifyConfigured()) {
     return []
   }
 
+  const query = `
+    query getDiscountCodes($first: Int!) {
+      codeDiscountNodes(first: $first) {
+        nodes {
+          id
+          codeDiscount {
+            ... on DiscountCodeBasic {
+              title
+              codes(first: 1) {
+                nodes {
+                  code
+                }
+              }
+              startsAt
+              endsAt
+            }
+            ... on DiscountCodeBxgy {
+              title
+              codes(first: 1) {
+                nodes {
+                  code
+                }
+              }
+              startsAt
+              endsAt
+            }
+            ... on DiscountCodeFreeShipping {
+              title
+              codes(first: 1) {
+                nodes {
+                  code
+                }
+              }
+              startsAt
+              endsAt
+            }
+          }
+        }
+      }
+    }
+  `
+
   try {
-    // First get all price rules
-    const priceRulesResponse = await shopifyRequest<{ price_rules: ShopifyPriceRule[] }>(
-      '/price_rules.json?limit=250'
-    )
+    const result = await shopifyGraphQL<{
+      codeDiscountNodes: {
+        nodes: Array<{
+          id: string
+          codeDiscount: {
+            title: string
+            codes: { nodes: Array<{ code: string }> }
+            startsAt: string
+            endsAt: string | null
+          }
+        }>
+      }
+    }>(query, { first })
 
-    // Then get discount codes for each price rule
-    const allCodes: ShopifyDiscountCode[] = []
-
-    for (const priceRule of priceRulesResponse.price_rules) {
-      const codesResponse = await shopifyRequest<{ discount_codes: ShopifyDiscountCode[] }>(
-        `/price_rules/${priceRule.id}/discount_codes.json`
-      )
-      allCodes.push(...codesResponse.discount_codes)
+    if (!result.data?.codeDiscountNodes?.nodes) {
+      return []
     }
 
-    return allCodes
+    return result.data.codeDiscountNodes.nodes
+      .filter(node => node.codeDiscount?.codes?.nodes?.length > 0)
+      .map(node => ({
+        id: node.id,
+        code: node.codeDiscount.codes.nodes[0].code,
+        title: node.codeDiscount.title,
+        startsAt: node.codeDiscount.startsAt,
+        endsAt: node.codeDiscount.endsAt,
+      }))
   } catch (error) {
     console.error('Failed to get Shopify discount codes:', error)
     return []
@@ -234,21 +352,32 @@ export async function getShopifyDiscountCodes(): Promise<ShopifyDiscountCode[]> 
 }
 
 /**
- * Check if a discount code exists in Shopify
+ * Check if a discount code exists in Shopify using GraphQL
  */
 export async function discountExistsInShopify(code: string): Promise<boolean> {
   if (!isShopifyConfigured()) {
     return false
   }
 
+  const query = `
+    query checkDiscountCode($query: String!) {
+      codeDiscountNodes(first: 1, query: $query) {
+        nodes {
+          id
+        }
+      }
+    }
+  `
+
   try {
-    // Shopify doesn't have a direct lookup by code, so we use the lookup endpoint
-    const response = await shopifyRequest<{ discount_code?: ShopifyDiscountCode }>(
-      `/discount_codes/lookup.json?code=${encodeURIComponent(code)}`
-    )
-    return !!response.discount_code
+    const result = await shopifyGraphQL<{
+      codeDiscountNodes: {
+        nodes: Array<{ id: string }>
+      }
+    }>(query, { query: `code:${code}` })
+
+    return (result.data?.codeDiscountNodes?.nodes?.length ?? 0) > 0
   } catch {
-    // 404 means code doesn't exist
     return false
   }
 }
@@ -274,9 +403,911 @@ export async function batchSyncDiscountsToShopify(
       results.errors.push(`${discount.code}: ${result.error}`)
     }
 
-    // Rate limit: Shopify allows 2 requests per second for basic plans
-    await new Promise(resolve => setTimeout(resolve, 500))
+    // Rate limit: Be conservative with GraphQL cost
+    await new Promise(resolve => setTimeout(resolve, 250))
   }
 
   return results
+}
+
+/**
+ * Create a free shipping discount code
+ */
+export async function createFreeShippingDiscount(params: {
+  code: string
+  title?: string
+  expiresAt: Date | null
+  minimumSubtotal?: number
+}): Promise<{ success: boolean; discountId?: string; error?: string }> {
+  if (!isShopifyConfigured()) {
+    return { success: false, error: 'Shopify not configured' }
+  }
+
+  const mutation = `
+    mutation discountCodeFreeShippingCreate($freeShippingCodeDiscount: DiscountCodeFreeShippingInput!) {
+      discountCodeFreeShippingCreate(freeShippingCodeDiscount: $freeShippingCodeDiscount) {
+        codeDiscountNode {
+          id
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `
+
+  const variables = {
+    freeShippingCodeDiscount: {
+      title: params.title || `Free Shipping: ${params.code}`,
+      code: params.code,
+      startsAt: new Date().toISOString(),
+      endsAt: params.expiresAt ? params.expiresAt.toISOString() : null,
+      appliesOncePerCustomer: true,
+      customerSelection: {
+        all: true,
+      },
+      destination: {
+        all: true,
+      },
+      ...(params.minimumSubtotal && {
+        minimumRequirement: {
+          subtotal: {
+            greaterThanOrEqualToSubtotal: params.minimumSubtotal.toString(),
+          },
+        },
+      }),
+    },
+  }
+
+  try {
+    const result = await shopifyGraphQL<{
+      discountCodeFreeShippingCreate: {
+        codeDiscountNode: { id: string } | null
+        userErrors: UserError[]
+      }
+    }>(mutation, variables)
+
+    const userErrors = result.data?.discountCodeFreeShippingCreate?.userErrors || []
+    if (userErrors.length > 0) {
+      return { success: false, error: userErrors.map(e => e.message).join(', ') }
+    }
+
+    const discountId = result.data?.discountCodeFreeShippingCreate?.codeDiscountNode?.id
+    if (!discountId) {
+      return { success: false, error: 'No discount ID returned' }
+    }
+
+    console.log(`✅ Created free shipping discount: ${params.code}`)
+    return { success: true, discountId }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}
+
+/**
+ * Get discount analytics/usage stats
+ */
+export async function getDiscountAnalytics(discountId: string): Promise<{
+  usageCount: number
+  totalSales: string
+} | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query getDiscountAnalytics($id: ID!) {
+      codeDiscountNode(id: $id) {
+        codeDiscount {
+          ... on DiscountCodeBasic {
+            asyncUsageCount
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      codeDiscountNode: {
+        codeDiscount: {
+          asyncUsageCount: number
+        }
+      }
+    }>(query, { id: discountId })
+
+    return {
+      usageCount: result.data?.codeDiscountNode?.codeDiscount?.asyncUsageCount ?? 0,
+      totalSales: '0', // Would need orders API to calculate
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Get shop information
+ */
+export async function getShopInfo(): Promise<{
+  name: string
+  email: string
+  domain: string
+  currency: string
+  plan: string
+} | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query getShop {
+      shop {
+        name
+        email
+        primaryDomain {
+          url
+        }
+        currencyCode
+        plan {
+          displayName
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      shop: {
+        name: string
+        email: string
+        primaryDomain: { url: string }
+        currencyCode: string
+        plan: { displayName: string }
+      }
+    }>(query)
+
+    return {
+      name: result.data?.shop?.name ?? '',
+      email: result.data?.shop?.email ?? '',
+      domain: result.data?.shop?.primaryDomain?.url ?? '',
+      currency: result.data?.shop?.currencyCode ?? 'USD',
+      plan: result.data?.shop?.plan?.displayName ?? '',
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Get product information by handle (slug)
+ */
+export async function getProductByHandle(handle: string): Promise<{
+  id: string
+  title: string
+  handle: string
+  status: string
+  totalInventory: number
+  priceRange: { min: string; max: string }
+  variants: Array<{ id: string; title: string; price: string; inventoryQuantity: number }>
+} | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query getProduct($handle: String!) {
+      productByHandle(handle: $handle) {
+        id
+        title
+        handle
+        status
+        totalInventory
+        priceRangeV2 {
+          minVariantPrice { amount currencyCode }
+          maxVariantPrice { amount currencyCode }
+        }
+        variants(first: 10) {
+          nodes {
+            id
+            title
+            price
+            inventoryQuantity
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      productByHandle: {
+        id: string
+        title: string
+        handle: string
+        status: string
+        totalInventory: number
+        priceRangeV2: {
+          minVariantPrice: { amount: string }
+          maxVariantPrice: { amount: string }
+        }
+        variants: {
+          nodes: Array<{
+            id: string
+            title: string
+            price: string
+            inventoryQuantity: number
+          }>
+        }
+      }
+    }>(query, { handle })
+
+    const product = result.data?.productByHandle
+    if (!product) return null
+
+    return {
+      id: product.id,
+      title: product.title,
+      handle: product.handle,
+      status: product.status,
+      totalInventory: product.totalInventory,
+      priceRange: {
+        min: product.priceRangeV2.minVariantPrice.amount,
+        max: product.priceRangeV2.maxVariantPrice.amount,
+      },
+      variants: product.variants.nodes.map(v => ({
+        id: v.id,
+        title: v.title,
+        price: v.price,
+        inventoryQuantity: v.inventoryQuantity,
+      })),
+    }
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Deactivate a discount code (instead of deleting)
+ */
+export async function deactivateDiscount(discountId: string): Promise<boolean> {
+  if (!isShopifyConfigured()) {
+    return false
+  }
+
+  const mutation = `
+    mutation discountCodeDeactivate($id: ID!) {
+      discountCodeDeactivate(id: $id) {
+        codeDiscountNode {
+          id
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      discountCodeDeactivate: {
+        codeDiscountNode: { id: string } | null
+        userErrors: UserError[]
+      }
+    }>(mutation, { id: discountId })
+
+    return !result.data?.discountCodeDeactivate?.userErrors?.length
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Get recent orders (for tracking discount usage)
+ */
+export async function getRecentOrders(first: number = 10): Promise<Array<{
+  id: string
+  name: string
+  totalPrice: string
+  discountCodes: string[]
+  createdAt: string
+}>> {
+  if (!isShopifyConfigured()) {
+    return []
+  }
+
+  const query = `
+    query getOrders($first: Int!) {
+      orders(first: $first, sortKey: CREATED_AT, reverse: true) {
+        nodes {
+          id
+          name
+          totalPriceSet {
+            shopMoney {
+              amount
+              currencyCode
+            }
+          }
+          discountCodes
+          createdAt
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      orders: {
+        nodes: Array<{
+          id: string
+          name: string
+          totalPriceSet: { shopMoney: { amount: string } }
+          discountCodes: string[]
+          createdAt: string
+        }>
+      }
+    }>(query, { first })
+
+    return (result.data?.orders?.nodes ?? []).map(o => ({
+      id: o.id,
+      name: o.name,
+      totalPrice: o.totalPriceSet.shopMoney.amount,
+      discountCodes: o.discountCodes,
+      createdAt: o.createdAt,
+    }))
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Get customers who used a specific discount code
+ */
+export async function getDiscountUsage(code: string): Promise<{
+  totalOrders: number
+  totalRevenue: string
+  customers: Array<{ email: string; orderCount: number }>
+} | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query getDiscountUsage($query: String!) {
+      orders(first: 50, query: $query) {
+        nodes {
+          customer {
+            email
+          }
+          totalPriceSet {
+            shopMoney {
+              amount
+            }
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      orders: {
+        nodes: Array<{
+          customer: { email: string } | null
+          totalPriceSet: { shopMoney: { amount: string } }
+        }>
+      }
+    }>(query, { query: `discount_code:${code}` })
+
+    const orders = result.data?.orders?.nodes ?? []
+    const totalRevenue = orders.reduce((sum, o) => sum + parseFloat(o.totalPriceSet.shopMoney.amount), 0)
+
+    // Group by customer email
+    const customerMap = new Map<string, number>()
+    for (const order of orders) {
+      const email = order.customer?.email ?? 'guest'
+      customerMap.set(email, (customerMap.get(email) ?? 0) + 1)
+    }
+
+    return {
+      totalOrders: orders.length,
+      totalRevenue: totalRevenue.toFixed(2),
+      customers: Array.from(customerMap.entries()).map(([email, orderCount]) => ({
+        email,
+        orderCount,
+      })),
+    }
+  } catch {
+    return null
+  }
+}
+
+// ============================================================================
+// PRODUCT SYNC FUNCTIONS
+// ============================================================================
+
+/**
+ * Get all products from Shopify with full details
+ */
+export async function getAllProducts(first: number = 50, cursor?: string): Promise<{
+  products: Array<{
+    id: string
+    handle: string
+    title: string
+    status: string
+    totalInventory: number
+    priceRange: { min: string; max: string }
+    images: string[]
+    defaultVariantId: string | null
+    variants: Array<{
+      id: string
+      title: string
+      price: string
+      inventoryQuantity: number
+      sku: string | null
+    }>
+  }>
+  hasNextPage: boolean
+  endCursor: string | null
+}> {
+  if (!isShopifyConfigured()) {
+    return { products: [], hasNextPage: false, endCursor: null }
+  }
+
+  const query = `
+    query getProducts($first: Int!, $after: String) {
+      products(first: $first, after: $after, sortKey: TITLE) {
+        pageInfo {
+          hasNextPage
+          endCursor
+        }
+        nodes {
+          id
+          handle
+          title
+          status
+          totalInventory
+          priceRangeV2 {
+            minVariantPrice { amount }
+            maxVariantPrice { amount }
+          }
+          images(first: 5) {
+            nodes {
+              url
+            }
+          }
+          variants(first: 10) {
+            nodes {
+              id
+              title
+              price
+              inventoryQuantity
+              sku
+            }
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      products: {
+        pageInfo: { hasNextPage: boolean; endCursor: string | null }
+        nodes: Array<{
+          id: string
+          handle: string
+          title: string
+          status: string
+          totalInventory: number
+          priceRangeV2: {
+            minVariantPrice: { amount: string }
+            maxVariantPrice: { amount: string }
+          }
+          images: { nodes: Array<{ url: string }> }
+          variants: {
+            nodes: Array<{
+              id: string
+              title: string
+              price: string
+              inventoryQuantity: number
+              sku: string | null
+            }>
+          }
+        }>
+      }
+    }>(query, { first, after: cursor })
+
+    const products = result.data?.products?.nodes ?? []
+
+    return {
+      products: products.map(p => ({
+        id: p.id,
+        handle: p.handle,
+        title: p.title,
+        status: p.status,
+        totalInventory: p.totalInventory,
+        priceRange: {
+          min: p.priceRangeV2.minVariantPrice.amount,
+          max: p.priceRangeV2.maxVariantPrice.amount,
+        },
+        images: p.images.nodes.map(i => i.url),
+        defaultVariantId: p.variants.nodes[0]?.id?.replace('gid://shopify/ProductVariant/', '') ?? null,
+        variants: p.variants.nodes.map(v => ({
+          id: v.id.replace('gid://shopify/ProductVariant/', ''),
+          title: v.title,
+          price: v.price,
+          inventoryQuantity: v.inventoryQuantity,
+          sku: v.sku,
+        })),
+      })),
+      hasNextPage: result.data?.products?.pageInfo?.hasNextPage ?? false,
+      endCursor: result.data?.products?.pageInfo?.endCursor ?? null,
+    }
+  } catch (error) {
+    console.error('Failed to get products from Shopify:', error)
+    return { products: [], hasNextPage: false, endCursor: null }
+  }
+}
+
+/**
+ * Get inventory levels for a specific product variant
+ */
+export async function getInventoryLevel(variantId: string): Promise<number | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query getVariantInventory($id: ID!) {
+      productVariant(id: $id) {
+        inventoryQuantity
+      }
+    }
+  `
+
+  try {
+    const gid = variantId.startsWith('gid://') ? variantId : `gid://shopify/ProductVariant/${variantId}`
+    const result = await shopifyGraphQL<{
+      productVariant: { inventoryQuantity: number } | null
+    }>(query, { id: gid })
+
+    return result.data?.productVariant?.inventoryQuantity ?? null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Bulk get inventory for multiple variants
+ */
+export async function getBulkInventory(variantIds: string[]): Promise<Map<string, number>> {
+  if (!isShopifyConfigured() || variantIds.length === 0) {
+    return new Map()
+  }
+
+  // Build query for multiple variants
+  const gids = variantIds.map(id =>
+    id.startsWith('gid://') ? id : `gid://shopify/ProductVariant/${id}`
+  )
+
+  const query = `
+    query getBulkInventory($ids: [ID!]!) {
+      nodes(ids: $ids) {
+        ... on ProductVariant {
+          id
+          inventoryQuantity
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      nodes: Array<{
+        id: string
+        inventoryQuantity: number
+      } | null>
+    }>(query, { ids: gids })
+
+    const inventoryMap = new Map<string, number>()
+    for (const node of result.data?.nodes ?? []) {
+      if (node) {
+        const cleanId = node.id.replace('gid://shopify/ProductVariant/', '')
+        inventoryMap.set(cleanId, node.inventoryQuantity)
+      }
+    }
+    return inventoryMap
+  } catch {
+    return new Map()
+  }
+}
+
+// ============================================================================
+// CUSTOMER SYNC FUNCTIONS
+// ============================================================================
+
+/**
+ * Create a customer in Shopify
+ */
+export async function createShopifyCustomer(params: {
+  email: string
+  firstName: string
+  lastName?: string
+  phone?: string
+  tags?: string[]
+  note?: string
+}): Promise<{ success: boolean; customerId?: string; error?: string }> {
+  if (!isShopifyConfigured()) {
+    return { success: false, error: 'Shopify not configured' }
+  }
+
+  const mutation = `
+    mutation customerCreate($input: CustomerInput!) {
+      customerCreate(input: $input) {
+        customer {
+          id
+          email
+        }
+        userErrors {
+          field
+          message
+        }
+      }
+    }
+  `
+
+  const variables = {
+    input: {
+      email: params.email,
+      firstName: params.firstName,
+      lastName: params.lastName || '',
+      phone: params.phone,
+      tags: params.tags || ['ai-skin-analyzer'],
+      note: params.note || 'Created from AI Skin Analyzer',
+      emailMarketingConsent: {
+        marketingState: 'SUBSCRIBED',
+        marketingOptInLevel: 'SINGLE_OPT_IN',
+      },
+    },
+  }
+
+  try {
+    const result = await shopifyGraphQL<{
+      customerCreate: {
+        customer: { id: string; email: string } | null
+        userErrors: UserError[]
+      }
+    }>(mutation, variables)
+
+    const userErrors = result.data?.customerCreate?.userErrors ?? []
+    if (userErrors.length > 0) {
+      // Check if customer already exists
+      if (userErrors.some(e => e.message.includes('already exists'))) {
+        // Try to find existing customer
+        const existing = await findShopifyCustomerByEmail(params.email)
+        if (existing) {
+          return { success: true, customerId: existing }
+        }
+      }
+      return { success: false, error: userErrors.map(e => e.message).join(', ') }
+    }
+
+    const customerId = result.data?.customerCreate?.customer?.id
+    if (!customerId) {
+      return { success: false, error: 'No customer ID returned' }
+    }
+
+    console.log(`✅ Created Shopify customer: ${params.email}`)
+    return { success: true, customerId }
+  } catch (error) {
+    return { success: false, error: error instanceof Error ? error.message : 'Unknown error' }
+  }
+}
+
+/**
+ * Find a Shopify customer by email
+ */
+export async function findShopifyCustomerByEmail(email: string): Promise<string | null> {
+  if (!isShopifyConfigured()) {
+    return null
+  }
+
+  const query = `
+    query findCustomer($query: String!) {
+      customers(first: 1, query: $query) {
+        nodes {
+          id
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      customers: { nodes: Array<{ id: string }> }
+    }>(query, { query: `email:${email}` })
+
+    return result.data?.customers?.nodes[0]?.id ?? null
+  } catch {
+    return null
+  }
+}
+
+/**
+ * Update Shopify customer tags (for segmentation)
+ */
+export async function updateCustomerTags(customerId: string, tags: string[]): Promise<boolean> {
+  if (!isShopifyConfigured()) {
+    return false
+  }
+
+  const mutation = `
+    mutation customerUpdate($input: CustomerInput!) {
+      customerUpdate(input: $input) {
+        customer {
+          id
+        }
+        userErrors {
+          message
+        }
+      }
+    }
+  `
+
+  try {
+    const gid = customerId.startsWith('gid://') ? customerId : `gid://shopify/Customer/${customerId}`
+    const result = await shopifyGraphQL<{
+      customerUpdate: {
+        customer: { id: string } | null
+        userErrors: UserError[]
+      }
+    }>(mutation, { input: { id: gid, tags } })
+
+    return !result.data?.customerUpdate?.userErrors?.length
+  } catch {
+    return false
+  }
+}
+
+/**
+ * Add a note to Shopify customer (for skin analysis results)
+ */
+export async function addCustomerNote(customerId: string, note: string): Promise<boolean> {
+  if (!isShopifyConfigured()) {
+    return false
+  }
+
+  const mutation = `
+    mutation customerUpdate($input: CustomerInput!) {
+      customerUpdate(input: $input) {
+        customer {
+          id
+        }
+        userErrors {
+          message
+        }
+      }
+    }
+  `
+
+  try {
+    const gid = customerId.startsWith('gid://') ? customerId : `gid://shopify/Customer/${customerId}`
+
+    // First get existing note
+    const existingResult = await shopifyGraphQL<{
+      customer: { note: string | null } | null
+    }>(`query { customer(id: "${gid}") { note } }`)
+
+    const existingNote = existingResult.data?.customer?.note || ''
+    const newNote = existingNote
+      ? `${existingNote}\n\n---\n${new Date().toISOString()}\n${note}`
+      : `${new Date().toISOString()}\n${note}`
+
+    const result = await shopifyGraphQL<{
+      customerUpdate: {
+        customer: { id: string } | null
+        userErrors: UserError[]
+      }
+    }>(mutation, { input: { id: gid, note: newNote } })
+
+    return !result.data?.customerUpdate?.userErrors?.length
+  } catch {
+    return false
+  }
+}
+
+// ============================================================================
+// COLLECTION SYNC FUNCTIONS
+// ============================================================================
+
+/**
+ * Get all collections from Shopify
+ */
+export async function getAllCollections(): Promise<Array<{
+  id: string
+  handle: string
+  title: string
+  productsCount: number
+}>> {
+  if (!isShopifyConfigured()) {
+    return []
+  }
+
+  const query = `
+    query getCollections {
+      collections(first: 50) {
+        nodes {
+          id
+          handle
+          title
+          productsCount {
+            count
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      collections: {
+        nodes: Array<{
+          id: string
+          handle: string
+          title: string
+          productsCount: { count: number }
+        }>
+      }
+    }>(query)
+
+    return (result.data?.collections?.nodes ?? []).map(c => ({
+      id: c.id,
+      handle: c.handle,
+      title: c.title,
+      productsCount: c.productsCount.count,
+    }))
+  } catch {
+    return []
+  }
+}
+
+/**
+ * Get products in a specific collection
+ */
+export async function getCollectionProducts(handle: string): Promise<Array<{
+  id: string
+  handle: string
+  title: string
+}>> {
+  if (!isShopifyConfigured()) {
+    return []
+  }
+
+  const query = `
+    query getCollectionProducts($handle: String!) {
+      collectionByHandle(handle: $handle) {
+        products(first: 100) {
+          nodes {
+            id
+            handle
+            title
+          }
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      collectionByHandle: {
+        products: { nodes: Array<{ id: string; handle: string; title: string }> }
+      } | null
+    }>(query, { handle })
+
+    return result.data?.collectionByHandle?.products?.nodes ?? []
+  } catch {
+    return []
+  }
 }

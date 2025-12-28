@@ -125,8 +125,7 @@ export async function POST(request: Request) {
           where: { id: discount.id },
           data: {
             shopifySynced: true,
-            shopifyPriceRuleId: result.priceRuleId?.toString(),
-            shopifyDiscountCodeId: result.discountCodeId?.toString(),
+            shopifyDiscountCodeId: result.discountId,
           }
         })
 
@@ -136,8 +135,7 @@ export async function POST(request: Request) {
           discount: {
             code: discount.code,
             shopifySynced: true,
-            priceRuleId: result.priceRuleId,
-            discountCodeId: result.discountCodeId,
+            discountId: result.discountId,
           }
         })
       } else {

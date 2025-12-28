@@ -589,7 +589,7 @@ export function getShopifyImageUrl(localSlug: string): string | null {
   return product?.imageUrl || null
 }
 
-// Get Shopify variant ID by local slug
+// Get Shopify variant ID by local slug (from hardcoded map)
 export function getShopifyVariantId(localSlug: string): string | null {
   const product = SHOPIFY_PRODUCT_MAP[localSlug]
   return product?.variantId || null
@@ -620,6 +620,50 @@ export function buildShopifyCartUrl(slugs: string[], discountCode?: string): str
   }
 
   return url
+}
+
+/**
+ * Build cart URL using variant IDs (supports both DB and hardcoded fallback)
+ * This is the preferred function - uses variantIds directly when available
+ */
+export function buildCartUrlFromVariants(
+  variantIds: string[],
+  discountCode?: string
+): string {
+  const items = variantIds.filter(Boolean).map(id => `${id}:1`)
+
+  if (items.length === 0) {
+    return 'https://ayonne.skin'
+  }
+
+  let url = `https://ayonne.skin/cart/${items.join(',')}`
+
+  if (discountCode) {
+    url += `?discount=${encodeURIComponent(discountCode)}`
+  }
+
+  return url
+}
+
+/**
+ * Build cart URL with database lookup + hardcoded fallback
+ * Use this when you have product slugs and may/may not have DB variantIds
+ */
+export function buildCartUrlWithFallback(
+  products: Array<{ slug: string; shopifyVariantId?: string | null }>,
+  discountCode?: string
+): string {
+  const variantIds: string[] = []
+
+  for (const product of products) {
+    // Prefer DB variant ID, fallback to hardcoded map
+    const variantId = product.shopifyVariantId || getShopifyVariantId(product.slug)
+    if (variantId) {
+      variantIds.push(variantId)
+    }
+  }
+
+  return buildCartUrlFromVariants(variantIds, discountCode)
 }
 
 // Build checkout URL with discount pre-applied

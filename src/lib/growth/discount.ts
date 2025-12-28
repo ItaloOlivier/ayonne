@@ -61,13 +61,12 @@ export async function generateDiscountCode({
       title: `Growth ${getDiscountTypeLabel(type)}: ${code}`,
     })
 
-    // Update with Shopify IDs if sync was successful
-    if (syncResult.success && syncResult.priceRuleId && syncResult.discountCodeId) {
+    // Update with Shopify ID if sync was successful
+    if (syncResult.success && syncResult.discountId) {
       await prisma.discountCode.update({
         where: { id: discountCode.id },
         data: {
-          shopifyPriceRuleId: syncResult.priceRuleId.toString(),
-          shopifyDiscountCodeId: syncResult.discountCodeId.toString(),
+          shopifyDiscountCodeId: syncResult.discountId,
           shopifySynced: true,
         },
       })

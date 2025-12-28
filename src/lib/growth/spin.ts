@@ -1,6 +1,8 @@
 // Spin to Win System
 import { prisma } from '@/lib/prisma'
-import { generateUniqueCode } from './discount'
+import { DiscountType } from '@prisma/client'
+import { generateUniqueCode, generateDiscountCode } from './discount'
+import { syncDiscountToShopify, createFreeShippingDiscount, isShopifyConfigured } from '@/lib/shopify-admin'
 
 // Spin wheel segments with weighted probabilities
 export const SPIN_SEGMENTS = [
@@ -79,7 +81,7 @@ export async function spin(customerId: string, analysisId: string) {
   const expiresAt = new Date()
   expiresAt.setHours(expiresAt.getHours() + 24)
 
-  // Create the spin reward
+  // Create the spin reward in database
   const spinReward = await prisma.spinReward.create({
     data: {
       customerId,
@@ -89,6 +91,47 @@ export async function spin(customerId: string, analysisId: string) {
       expiresAt,
     },
   })
+
+  // Sync to Shopify if configured
+  if (isShopifyConfigured()) {
+    try {
+      const isFreeShipping = 'isFreeShipping' in prize && prize.isFreeShipping
+
+      if (isFreeShipping) {
+        // Create free shipping discount in Shopify
+        await createFreeShippingDiscount({
+          code,
+          title: `Spin Wheel: Free Shipping (${code})`,
+          expiresAt,
+        })
+      } else {
+        // Create percentage discount in Shopify
+        await syncDiscountToShopify({
+          code,
+          discountPercent: prize.discountPercent,
+          expiresAt,
+          usageLimit: 1,
+          oncePerCustomer: true,
+          title: `Spin Wheel: ${prize.label} (${code})`,
+        })
+      }
+
+      // Also create in DiscountCode table for unified tracking
+      await prisma.discountCode.create({
+        data: {
+          code,
+          customerId,
+          discountPercent: prize.discountPercent,
+          type: DiscountType.SPIN,
+          expiresAt,
+          shopifySynced: true,
+        },
+      })
+    } catch (error) {
+      console.error('Failed to sync spin reward to Shopify:', error)
+      // Continue - code still works locally even if Shopify sync fails
+    }
+  }
 
   return {
     success: true,

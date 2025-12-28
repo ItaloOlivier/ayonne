@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { setSessionCookie } from '@/lib/auth'
 import { checkRateLimit, getClientIP, RATE_LIMITS, createRateLimitHeaders } from '@/lib/rate-limit'
+import { createShopifyCustomer, isShopifyConfigured } from '@/lib/shopify-admin'
 import * as bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -97,6 +98,32 @@ export async function POST(request: NextRequest) {
         phone: phone?.trim() || null,
       },
     })
+
+    // Sync customer to Shopify (async, don't block signup)
+    if (isShopifyConfigured()) {
+      createShopifyCustomer({
+        email: customer.email,
+        firstName: customer.firstName,
+        lastName: customer.lastName || undefined,
+        phone: customer.phone || undefined,
+        tags: ['ai-skin-analyzer', 'new-signup'],
+        note: 'Created from AI Skin Analyzer signup',
+      }).then(async (result) => {
+        if (result.success && result.customerId) {
+          // Update local customer with Shopify ID
+          await prisma.customer.update({
+            where: { id: customer.id },
+            data: {
+              shopifyCustomerId: result.customerId,
+              shopifySyncedAt: new Date(),
+            },
+          })
+          console.log(`✅ Synced customer ${customer.email} to Shopify`)
+        }
+      }).catch((error) => {
+        console.error('Failed to sync customer to Shopify:', error)
+      })
+    }
 
     const response = NextResponse.json({
       success: true,

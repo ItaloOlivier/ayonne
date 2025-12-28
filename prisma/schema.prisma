@@ -29,11 +29,22 @@ model Product {
   orderItems  OrderItem[]
   cartItems   CartItem[]
 
+  // Shopify Integration Fields
+  shopifyProductId  String?   // Shopify GID (gid://shopify/Product/123)
+  shopifyVariantId  String?   // Default variant ID for cart functionality
+  inventory         Int       @default(0)  // Current stock level
+  lowStockThreshold Int       @default(5)  // Show "Only X left" below this
+  lastSyncedAt      DateTime? // When product was last synced from Shopify
+
+  // Skin concern matching
+  skinConcerns      String[]  // Array of skin concerns this product addresses
+
   // Indexes for common queries
   @@index([category])
   @@index([collection])
   @@index([active, featured])
   @@index([active, category])
+  @@index([shopifyVariantId])
 }
 
 model Collection {
@@ -55,6 +66,10 @@ model Customer {
   cart          Cart?
   skinAnalyses  SkinAnalysis[]
   createdAt     DateTime       @default(now())
+
+  // Shopify Integration
+  shopifyCustomerId String?    // Shopify GID (gid://shopify/Customer/123)
+  shopifySyncedAt   DateTime?  // When customer was synced to Shopify
 
   // Growth hacking - Streaks
   currentStreak      Int       @default(0)
