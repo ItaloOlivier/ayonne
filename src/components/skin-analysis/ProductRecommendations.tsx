@@ -1,13 +1,20 @@
 'use client'
 
-import { useState, useMemo } from 'react'
+import { useState, useMemo, useEffect, useRef } from 'react'
 import { formatPrice } from '@/lib/utils'
 import { getShopifyProductUrl, SHOPIFY_STORE_URL } from '@/lib/shopify'
 import { getShopifyImageUrl, buildShopifyCartUrl } from '@/lib/shopify-products'
 import { useToast } from '@/components/ui/Toast'
 import ScarcityIndicator from './ScarcityIndicator'
+import { SpinWheel } from '@/components/growth'
 
 type SortOption = 'relevance' | 'price-low' | 'price-high'
+
+interface ActiveDiscount {
+  code: string
+  discountPercent: number
+  expiresAt: string
+}
 
 interface RecommendedProduct {
   productId: string
@@ -158,12 +165,124 @@ function ProductCard({ rec, idx, isSelected, onToggleSelect, showScarcity = fals
 
 export default function ProductRecommendations({ recommendations }: ProductRecommendationsProps) {
   const { showToast } = useToast()
+  const containerRef = useRef<HTMLDivElement>(null)
 
   // Start with all products selected
   const [selectedSlugs, setSelectedSlugs] = useState<Set<string>>(
     new Set(recommendations.map(r => r.productSlug))
   )
   const [sortBy, setSortBy] = useState<SortOption>('relevance')
+  const [activeDiscount, setActiveDiscount] = useState<ActiveDiscount | null>(null)
+
+  // Spin wheel state
+  const [showSpinWheel, setShowSpinWheel] = useState(false)
+  const [spinChecked, setSpinChecked] = useState(false)
+  const [canSpin, setCanSpin] = useState(false)
+  const [analysisId, setAnalysisId] = useState<string | null>(null)
+
+  // Check for discount code in localStorage (from spin wheel or other sources)
+  useEffect(() => {
+    const checkForDiscount = () => {
+      try {
+        const stored = localStorage.getItem('ayonne_discount')
+        if (stored) {
+          const discount = JSON.parse(stored) as ActiveDiscount
+          // Check if still valid
+          if (new Date(discount.expiresAt) > new Date()) {
+            setActiveDiscount(discount)
+          } else {
+            // Expired, remove it
+            localStorage.removeItem('ayonne_discount')
+          }
+        }
+      } catch {
+        // Invalid data, ignore
+      }
+    }
+
+    checkForDiscount()
+
+    // Also listen for storage events (if discount is won in another tab or added dynamically)
+    const handleStorage = (e: StorageEvent) => {
+      if (e.key === 'ayonne_discount') {
+        checkForDiscount()
+      }
+    }
+
+    // Custom event for same-tab updates
+    const handleCustomEvent = () => checkForDiscount()
+
+    window.addEventListener('storage', handleStorage)
+    window.addEventListener('ayonne_discount_updated', handleCustomEvent)
+
+    return () => {
+      window.removeEventListener('storage', handleStorage)
+      window.removeEventListener('ayonne_discount_updated', handleCustomEvent)
+    }
+  }, [])
+
+  // Check spin availability and trigger when products section becomes visible
+  useEffect(() => {
+    if (spinChecked || activeDiscount) return
+
+    const checkSpinAndShow = async () => {
+      try {
+        // Get analysisId from sessionStorage (set by ResultsClientWrapper)
+        const storedAnalysisId = sessionStorage.getItem('ayonne_current_analysis')
+        if (!storedAnalysisId) return
+
+        setAnalysisId(storedAnalysisId)
+
+        const response = await fetch('/api/spin/available')
+        const data = await response.json()
+
+        if (data.success && data.canSpin) {
+          setCanSpin(true)
+        }
+      } catch {
+        // Silently fail
+      } finally {
+        setSpinChecked(true)
+      }
+    }
+
+    checkSpinAndShow()
+  }, [spinChecked, activeDiscount])
+
+  // Intersection observer to show spin wheel when products become visible
+  useEffect(() => {
+    if (!canSpin || showSpinWheel || activeDiscount) return
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const entry = entries[0]
+        if (entry.isIntersecting) {
+          // Small delay so user sees products first
+          setTimeout(() => {
+            setShowSpinWheel(true)
+          }, 800)
+          observer.disconnect()
+        }
+      },
+      { threshold: 0.3 } // Trigger when 30% of products section is visible
+    )
+
+    if (containerRef.current) {
+      observer.observe(containerRef.current)
+    }
+
+    return () => observer.disconnect()
+  }, [canSpin, showSpinWheel, activeDiscount])
+
+  // Handle spin wheel completion
+  const handleSpinComplete = (prize: { code: string; discountPercent: number; expiresAt: string }) => {
+    setActiveDiscount(prize)
+    setCanSpin(false)
+    // Store in localStorage for persistence
+    localStorage.setItem('ayonne_discount', JSON.stringify(prize))
+    // Dispatch custom event for other components
+    window.dispatchEvent(new CustomEvent('ayonne_discount_updated'))
+  }
 
   // Sort recommendations
   const sortedRecommendations = useMemo(() => {
@@ -240,18 +359,29 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
   )
 
   // Build Shopify cart URL with all selected products using variant IDs
+  // Automatically includes discount code if available
   const getCartUrl = () => {
     if (selectedProducts.length === 0) return SHOPIFY_STORE_URL
     const slugs = selectedProducts.map(p => p.productSlug)
-    return buildShopifyCartUrl(slugs)
+    return buildShopifyCartUrl(slugs, activeDiscount?.code)
   }
 
   const allSelected = selectedSlugs.size === recommendations.length
   const noneSelected = selectedSlugs.size === 0
 
   return (
-    <div className="bg-white rounded-xl p-6">
-      <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
+    <>
+      {/* Spin Wheel Modal - shows when user views products */}
+      {showSpinWheel && analysisId && (
+        <SpinWheel
+          analysisId={analysisId}
+          onComplete={handleSpinComplete}
+          onClose={() => setShowSpinWheel(false)}
+        />
+      )}
+
+      <div ref={containerRef} className="bg-white rounded-xl p-6">
+        <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
         <div>
           <h3 className="text-lg font-medium text-[#1C4444]">Recommended For You</h3>
           <p className="text-[#1C4444]/60 text-sm">
@@ -297,8 +427,43 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
 
       {/* Checkout Section - Enhanced Marketing */}
       <div className="mt-6 pt-6 border-t border-[#1C4444]/10">
+        {/* Active Discount Badge */}
+        {activeDiscount && !noneSelected && (
+          <div className="mb-4 p-4 bg-gradient-to-r from-[#D4AF37]/10 via-[#F4D03F]/10 to-[#D4AF37]/10 rounded-xl border border-[#D4AF37]/30 animate-elegant-fade-in">
+            <div className="flex items-center justify-between flex-wrap gap-3">
+              <div className="flex items-center gap-3">
+                <div className="w-10 h-10 rounded-full bg-gradient-to-br from-[#D4AF37] to-[#B8962F] flex items-center justify-center shadow-md">
+                  <svg className="w-5 h-5 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v13m0-13V6a2 2 0 112 2h-2zm0 0V5.5A2.5 2.5 0 109.5 8H12zm-7 4h14M5 12a2 2 0 110-4h14a2 2 0 110 4M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7" />
+                  </svg>
+                </div>
+                <div>
+                  <p className="text-[#1C4444] font-medium text-sm">
+                    {activeDiscount.discountPercent > 0
+                      ? `${activeDiscount.discountPercent}% OFF Applied!`
+                      : 'FREE Shipping Applied!'}
+                  </p>
+                  <p className="text-[#1C4444]/60 text-xs">
+                    Code <span className="font-mono font-semibold">{activeDiscount.code}</span> will be applied at checkout
+                  </p>
+                </div>
+              </div>
+              <div className="flex items-center gap-2">
+                {activeDiscount.discountPercent > 0 && (
+                  <span className="text-lg font-medium text-[#D4AF37]">
+                    -{formatPrice(totalPrice * (activeDiscount.discountPercent / 100))}
+                  </span>
+                )}
+                <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
+                </svg>
+              </div>
+            </div>
+          </div>
+        )}
+
         {/* Free Shipping Progress */}
-        {!noneSelected && totalPrice < 50 && (
+        {!noneSelected && totalPrice < 50 && !activeDiscount?.discountPercent && (
           <div className="mb-4 p-3 bg-gradient-to-r from-[#F4EBE7] to-[#F4EBE7]/50 rounded-lg border border-[#D4AF37]/20">
             <div className="flex items-center gap-2 mb-2">
               <svg className="w-4 h-4 text-[#D4AF37]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -317,7 +482,7 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
           </div>
         )}
 
-        {!noneSelected && totalPrice >= 50 && (
+        {!noneSelected && totalPrice >= 50 && !activeDiscount && (
           <div className="mb-4 p-3 bg-gradient-to-r from-[#1C4444]/5 to-transparent rounded-lg border border-[#1C4444]/10">
             <div className="flex items-center gap-2">
               <svg className="w-4 h-4 text-[#1C4444]" fill="currentColor" viewBox="0 0 20 20">
@@ -407,20 +572,21 @@ export default function ProductRecommendations({ recommendations }: ProductRecom
         </div>
       </div>
 
-      {/* View All Products CTA */}
-      <div className="mt-6 text-center">
-        <a
-          href={SHOPIFY_STORE_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 text-[#1C4444] font-medium hover:text-[#1C4444]/70 transition-colors"
-        >
-          Browse All Products on Ayonne.skin
-          <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-          </svg>
-        </a>
+        {/* View All Products CTA */}
+        <div className="mt-6 text-center">
+          <a
+            href={SHOPIFY_STORE_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center gap-2 text-[#1C4444] font-medium hover:text-[#1C4444]/70 transition-colors"
+          >
+            Browse All Products on Ayonne.skin
+            <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+            </svg>
+          </a>
+        </div>
       </div>
-    </div>
+    </>
   )
 }

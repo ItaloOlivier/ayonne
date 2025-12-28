@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react'
 import InstallPrompt from './InstallPrompt'
 import CelebrationAnimation from './CelebrationAnimation'
 import { RecentPurchasePopup } from './SocialProof'
-import { SpinWheel, ReferralBanner } from '@/components/growth'
+import { ReferralBanner } from '@/components/growth'
 
 interface ResultsClientWrapperProps {
   improvement?: number
@@ -20,13 +20,13 @@ export default function ResultsClientWrapper({
   const [showCelebration, setShowCelebration] = useState(false)
   const [celebrationType, setCelebrationType] = useState<'confetti' | 'score_up' | 'achievement'>('confetti')
   const [celebrationMessage, setCelebrationMessage] = useState('')
-  const [showSpinWheel, setShowSpinWheel] = useState(false)
-  const [spinChecked, setSpinChecked] = useState(false)
-  const [wonDiscount, setWonDiscount] = useState<{
-    code: string
-    discountPercent: number
-    expiresAt: string
-  } | null>(null)
+
+  useEffect(() => {
+    // Store analysisId for ProductRecommendations to use for spin wheel
+    if (analysisId) {
+      sessionStorage.setItem('ayonne_current_analysis', analysisId)
+    }
+  }, [analysisId])
 
   useEffect(() => {
     // Show celebration for first-time users
@@ -49,38 +49,6 @@ export default function ResultsClientWrapper({
     }
   }, [improvement, isNewUser])
 
-  // Check if user can spin after celebration ends or on mount
-  useEffect(() => {
-    if (spinChecked || !analysisId) return
-
-    const checkSpinAvailability = async () => {
-      try {
-        const response = await fetch('/api/spin/available')
-        const data = await response.json()
-
-        if (data.success && data.canSpin) {
-          // Delay showing spin wheel to let celebration finish
-          const delay = showCelebration ? 3500 : 1000
-          setTimeout(() => {
-            setShowSpinWheel(true)
-          }, delay)
-        }
-      } catch {
-        // Silently fail
-      } finally {
-        setSpinChecked(true)
-      }
-    }
-
-    checkSpinAvailability()
-  }, [analysisId, spinChecked, showCelebration])
-
-  const handleSpinComplete = (prize: { code: string; discountPercent: number; expiresAt: string }) => {
-    setWonDiscount(prize)
-    // Store in localStorage for ProductRecommendations to pick up
-    localStorage.setItem('ayonne_discount', JSON.stringify(prize))
-  }
-
   return (
     <>
       {/* Celebration animation for improvements */}
@@ -89,15 +57,6 @@ export default function ResultsClientWrapper({
           type={celebrationType}
           message={celebrationMessage}
           onComplete={() => setShowCelebration(false)}
-        />
-      )}
-
-      {/* Spin Wheel Modal */}
-      {showSpinWheel && analysisId && !wonDiscount && (
-        <SpinWheel
-          analysisId={analysisId}
-          onComplete={handleSpinComplete}
-          onClose={() => setShowSpinWheel(false)}
         />
       )}
 

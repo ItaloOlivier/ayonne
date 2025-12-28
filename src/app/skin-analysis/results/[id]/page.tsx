@@ -7,6 +7,7 @@ import SkincareAdvice from '@/components/skin-analysis/SkincareAdvice'
 import ResultsClientWrapper from '@/components/skin-analysis/ResultsClientWrapper'
 import SkinHealthScore from '@/components/skin-analysis/SkinHealthScore'
 import SocialProof from '@/components/skin-analysis/SocialProof'
+import DataExpiryWarning from '@/components/skin-analysis/DataExpiryWarning'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
 import { calculateHealthScore } from '@/lib/skin-analysis/health-score'
 
@@ -297,6 +298,12 @@ export default async function ResultsPage({ params }: PageProps) {
                 )}
               </div>
             </div>
+
+            {/* Data Expiry Warning for Guest Users */}
+            <DataExpiryWarning
+              createdAt={analysis.createdAt.toISOString()}
+              isGuest={!analysis.customerId}
+            />
 
             {/* Row: Photo + Analysis Side by Side */}
             <div className="grid lg:grid-cols-2 gap-6">

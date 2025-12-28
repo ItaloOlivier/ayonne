@@ -291,10 +291,11 @@ Discount-driven viral growth mechanics:
   - Rewards: 10% → 20% → 25% + Free Sample → 30% + Free Product
   - Referee gets 10% off first order
 
-- **Spin-to-Win Wheel**: Appears after completing analysis
+- **Spin-to-Win Wheel**: Appears when user scrolls to product recommendations
   - Prizes: 5% (40%), 10% (30%), 15% (18%), 20% (8%), Free Shipping (4%)
   - 24-hour expiry on spin rewards
-  - One spin per analysis
+  - One spin per analysis (per user)
+  - Discount automatically applied to checkout cart URL
 
 - **Streak Rewards**: Discount codes for consistent usage
   - 3 weekly analyses: 10% off
@@ -309,6 +310,8 @@ Discount-driven viral growth mechanics:
   - One free analysis without account creation
   - Email capture after results shown (10% discount incentive)
   - Seamless conversion to full account (15% welcome bonus)
+  - **Data expiry countdown**: Guest data deleted after 2 weeks if no account created
+  - Countdown warning shows days/hours/minutes remaining with urgency styling
 
 - **Referral Banner**: Sticky prompt on results page
   - "Share with a friend, you both save!"
@@ -379,6 +382,10 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 - `POST /api/guest/start` - Create guest session for anonymous analysis
 - `PATCH /api/guest/convert` - Capture email (partial conversion, 10% discount)
 - `POST /api/guest/convert` - Full account conversion (15% welcome bonus)
+
+### Admin Maintenance
+- `GET /api/admin/cleanup` - Get stats on orphaned data to clean up
+- `POST /api/admin/cleanup` - Run cleanup (deletes guest data older than 2 weeks)
 
 ## Database Models
 
