@@ -746,13 +746,16 @@ function ConditionProjectionsView({
                     {condition.recommendedProduct.name}
                   </span>
                 </div>
-                <Link
-                  href={`https://ayonne.skin/products/${condition.recommendedProduct.slug}`}
-                  target="_blank"
-                  className="text-[#1C4444] text-sm font-medium hover:underline"
+                <button
+                  onClick={() => {
+                    const url = buildShopifyCartUrl([condition.recommendedProduct!.slug])
+                    window.open(url, '_blank')
+                  }}
+                  className="px-3 py-1.5 bg-[#1C4444] text-white text-xs rounded-lg font-medium hover:bg-[#2d5a5a] transition-colors flex items-center gap-1"
                 >
-                  ${condition.recommendedProduct.price.toFixed(2)} →
-                </Link>
+                  <span>Add to Cart</span>
+                  <span>${condition.recommendedProduct.price.toFixed(2)}</span>
+                </button>
               </div>
             )}
           </div>
