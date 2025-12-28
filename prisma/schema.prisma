@@ -253,9 +253,15 @@ model DiscountCode {
   expiresAt       DateTime
   createdAt       DateTime      @default(now())
 
+  // Shopify sync tracking
+  shopifySynced         Boolean   @default(false)
+  shopifyPriceRuleId    String?   // Shopify price rule ID
+  shopifyDiscountCodeId String?   // Shopify discount code ID
+
   @@index([customerId])
   @@index([code])
   @@index([expiresAt])
+  @@index([shopifySynced])
 }
 
 enum DiscountType {

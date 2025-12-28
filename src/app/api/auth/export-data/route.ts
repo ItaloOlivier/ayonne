@@ -12,8 +12,8 @@ export async function GET(request: NextRequest) {
     // Rate limit: 3 exports per hour
     const clientIP = getClientIP(request)
     const rateLimitResult = checkRateLimit(`export-data:${clientIP}`, {
-      maxRequests: 3,
-      windowMs: 60 * 60 * 1000, // 1 hour
+      limit: 3,
+      windowSeconds: 60 * 60, // 1 hour
     })
 
     if (!rateLimitResult.success) {
@@ -45,7 +45,6 @@ export async function GET(request: NextRequest) {
         lastName: true,
         phone: true,
         createdAt: true,
-        updatedAt: true,
         skinAnalyses: {
           select: {
             id: true,
@@ -54,9 +53,6 @@ export async function GET(request: NextRequest) {
             conditions: true,
             recommendations: true,
             advice: true,
-            skinScore: true,
-            skinAge: true,
-            achievableSkinAge: true,
             status: true,
             createdAt: true,
             // Note: Image URLs included for completeness but are temporary storage
@@ -82,7 +78,7 @@ export async function GET(request: NextRequest) {
             createdAt: true,
             items: {
               select: {
-                productName: true,
+                name: true,
                 quantity: true,
                 price: true,
               }
@@ -135,16 +131,12 @@ export async function GET(request: NextRequest) {
           lastName: customer.lastName,
           phone: customer.phone,
           accountCreated: customer.createdAt,
-          lastUpdated: customer.updatedAt,
         },
         skinAnalyses: customer.skinAnalyses.map(analysis => ({
           id: analysis.id,
           sessionId: analysis.sessionId,
           date: analysis.createdAt,
           skinType: analysis.skinType,
-          skinScore: analysis.skinScore,
-          skinAge: analysis.skinAge,
-          achievableSkinAge: analysis.achievableSkinAge,
           conditions: analysis.conditions,
           recommendations: analysis.recommendations,
           advice: analysis.advice,

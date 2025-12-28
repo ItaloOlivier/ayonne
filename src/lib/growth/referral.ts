@@ -13,18 +13,26 @@ export function generateReferralCode(): string {
   return code
 }
 
+// Referral tier type
+type ReferralTier = {
+  count: number
+  discountPercent: number
+  label: string
+  bonus?: string
+}
+
 // Referral tier configuration
-export const REFERRAL_TIERS = [
+export const REFERRAL_TIERS: ReferralTier[] = [
   { count: 1, discountPercent: 10, label: 'Bronze' },
   { count: 3, discountPercent: 20, label: 'Silver' },
   { count: 5, discountPercent: 25, label: 'Gold', bonus: 'Free Sample' },
   { count: 10, discountPercent: 30, label: 'Platinum', bonus: 'Free Product' },
-] as const
+]
 
 // Get current tier for a customer based on referral count
 export function getReferralTier(totalReferrals: number) {
-  let currentTier = null
-  let nextTier = REFERRAL_TIERS[0]
+  let currentTier: ReferralTier | null = null
+  let nextTier: ReferralTier | null = REFERRAL_TIERS[0]
 
   for (let i = REFERRAL_TIERS.length - 1; i >= 0; i--) {
     if (totalReferrals >= REFERRAL_TIERS[i].count) {

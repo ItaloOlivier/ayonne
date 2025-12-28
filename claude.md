@@ -403,6 +403,54 @@ DATABASE_URL=           # PostgreSQL connection string
 ANTHROPIC_API_KEY=      # Claude API for skin analysis
 BLOB_READ_WRITE_TOKEN=  # Vercel Blob for image storage
 SESSION_SECRET=         # Secret for signing session tokens (required in production)
+
+# Shopify Integration (optional - for auto-sync discount codes)
+SHOPIFY_STORE_DOMAIN=   # Your Shopify store domain (e.g., 'ayonne.myshopify.com')
+SHOPIFY_ADMIN_API_TOKEN= # Admin API access token with write_price_rules scope
+
+# Admin API (required for admin endpoints)
+ADMIN_API_KEY=          # Secret key for admin API access
+```
+
+## Shopify Discount Code Integration
+
+The growth hacking system generates discount codes that need to work on the Shopify checkout. There are two integration modes:
+
+### Option A: Automatic Sync (Recommended)
+When `SHOPIFY_STORE_DOMAIN` and `SHOPIFY_ADMIN_API_TOKEN` are configured:
+- Discount codes are automatically created in Shopify when generated
+- Uses Shopify Admin API to create price rules and discount codes
+- Sync status tracked in database (`shopifySynced`, `shopifyPriceRuleId`, `shopifyDiscountCodeId`)
+
+To set up:
+1. Go to Shopify Admin → Settings → Apps and sales channels → Develop apps
+2. Create a new app with Admin API access
+3. Grant `write_price_rules` and `read_price_rules` scopes
+4. Copy the Admin API access token
+5. Set `SHOPIFY_STORE_DOMAIN=ayonne.myshopify.com` (your .myshopify.com domain)
+6. Set `SHOPIFY_ADMIN_API_TOKEN=shpat_xxxxx`
+
+### Option B: Manual Export
+If Shopify API is not configured, use the admin export endpoint:
+- `GET /api/admin/discounts/export` - Download CSV of unsynced codes
+- Import CSV into Shopify Admin → Discounts → Import
+
+### Admin Endpoints
+All require `x-admin-key` header matching `ADMIN_API_KEY` env var:
+
+- `GET /api/admin/discounts` - List all discount codes with sync status
+  - Query params: `status=synced|unsynced|all`, `limit=100`
+- `POST /api/admin/discounts` - Sync codes to Shopify
+  - Body: `{ codeId: "..." }` for single code
+  - Body: `{ syncAll: true }` for all unsynced codes
+- `GET /api/admin/discounts/export` - Export as CSV
+  - Query params: `format=csv|json`, `status=unsynced|synced|active`
+
+### Cart URL with Discount
+The `buildShopifyCartUrl()` function supports discount codes:
+```typescript
+buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'], 'SPIN15OFF')
+→ https://ayonne.skin/cart/53383867597148:1,53383867564380:1?discount=SPIN15OFF
 ```
 
 ## Security & Privacy Features

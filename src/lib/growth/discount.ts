@@ -1,6 +1,7 @@
 // Discount Code System
 import { prisma } from '@/lib/prisma'
 import { DiscountType } from '@prisma/client'
+import { syncDiscountToShopify, isShopifyConfigured } from '@/lib/shopify-admin'
 
 // Generate a unique discount code
 export function generateUniqueCode(prefix: string = 'AYONNE'): string {
@@ -48,6 +49,30 @@ export async function generateDiscountCode({
       expiresAt,
     },
   })
+
+  // Auto-sync to Shopify if configured
+  if (isShopifyConfigured()) {
+    const syncResult = await syncDiscountToShopify({
+      code,
+      discountPercent,
+      expiresAt,
+      usageLimit: 1, // Single use codes
+      oncePerCustomer: true,
+      title: `Growth ${getDiscountTypeLabel(type)}: ${code}`,
+    })
+
+    // Update with Shopify IDs if sync was successful
+    if (syncResult.success && syncResult.priceRuleId && syncResult.discountCodeId) {
+      await prisma.discountCode.update({
+        where: { id: discountCode.id },
+        data: {
+          shopifyPriceRuleId: syncResult.priceRuleId.toString(),
+          shopifyDiscountCodeId: syncResult.discountCodeId.toString(),
+          shopifySynced: true,
+        },
+      })
+    }
+  }
 
   return discountCode
 }
