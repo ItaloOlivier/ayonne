@@ -294,9 +294,13 @@ AI-powered predictions based on historical analysis data with product-driven imp
   - Uses condition-specific reversibility rates (e.g., dehydration: 95%, wrinkles: 40%)
   - Shows exact day for clearable conditions (e.g., "Acne: Day 45")
 - **Face Age Filter**: Visual preview of transformation
-  - CSS filters simulate younger/older skin appearance
-  - Shows user's photo with "90 Days With Ayonne" vs "Without Products"
+  - **AI-powered age transformation** via Hugging Face Space API (requires `HUGGINGFACE_API_TOKEN`)
+  - CSS filter fallback when AI service unavailable
+  - **5 years younger** with Ayonne products (realistic improvement)
+  - **10 years older** without products (realistic degradation)
   - Hold/tap to compare with original photo
+  - "AI Generated" badge when using AI transformation
+  - API endpoint: `POST /api/face-aging`
 - **Multi-Product Checkout**: Select products needed for results
   - Checkbox selection with running total
   - "Get These Results" button adds all to Shopify cart
@@ -423,6 +427,12 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 - `GET /api/skin-analysis/history` - Get user's analysis history (auth required)
 - `GET /api/skin-analysis/trends` - Get skin health trends (auth required)
 - `GET /api/skin-analysis/verify-customer` - Verify current session
+
+### Face Aging
+- `POST /api/face-aging` - AI face age transformation (requires `HUGGINGFACE_API_TOKEN`)
+  - Body: `{ imageUrl, currentAge, targetAge }`
+  - Returns: `{ success, transformedImage }` or `{ error, fallback: true }` if unavailable
+  - Uses Hugging Face Space API (penpen-age-transformation)
 
 ### Growth Hacking
 - `POST /api/referral/generate` - Generate referral code for user
@@ -569,7 +579,7 @@ Contains optimized SEO titles and descriptions for all products. Use with the SE
 - **Owner verification**: Users can only view their own analyses
 - **HTTP-only cookies**: Session tokens not accessible via JavaScript
 - **Secure cookies**: HTTPS-only in production
-- **Image compression**: Photos compressed to 800px/75% JPEG after AI analysis for storage efficiency
+- **Image storage**: Photos stored as PNG lossless at 1400px max width for high-quality AI analysis and face aging
 
 ### GDPR/Privacy Compliance
 - **Account deletion**: DELETE `/api/auth/delete-account` removes all user data
