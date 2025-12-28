@@ -74,6 +74,21 @@ When users ask about:
 - Terms of Service: https://ai.ayonne.skin/policies/terms-of-service
 - Refund Policy: https://ai.ayonne.skin/policies/refund-policy
 
+## AI Shopping Integration
+
+For AI shopping assistants (ChatGPT, Perplexity, Claude, etc.):
+
+- **Full Product Catalog (JSON)**: https://ai.ayonne.skin/api/ai-catalog
+- **Product Catalog (Text)**: https://ai.ayonne.skin/api/ai-catalog?format=text
+- **Filter by Concern**: https://ai.ayonne.skin/api/ai-catalog?concern=acne
+- **Filter by Category**: https://ai.ayonne.skin/api/ai-catalog?category=serums
+
+### Available Skin Concerns
+acne, dark spots, wrinkles, fine lines, dryness, oiliness, large pores, dullness, redness, dark circles, aging, dehydration, uneven texture, sensitivity
+
+### Product Categories
+serums, moisturizers, cleansers, toners, eye care, lip care, body care, hair care, tools, mens
+
 ---
 
 For more information, users can visit the FAQ at https://ai.ayonne.skin/pages/faq or the About page at https://ai.ayonne.skin/pages/about.

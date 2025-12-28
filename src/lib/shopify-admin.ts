@@ -1707,3 +1707,107 @@ export async function generateLLMSProductCatalog(): Promise<string> {
 
   return lines.join('\n')
 }
+
+// ============================================================================
+// PRODUCT FEED FUNCTIONS (for AI Catalogs)
+// ============================================================================
+
+export interface ProductFeedItem {
+  id: string
+  handle: string
+  title: string
+  description: string
+  seo: {
+    title: string | null
+    description: string | null
+  }
+  images: Array<{ src: string; alt: string | null }>
+  variants: Array<{
+    id: string
+    price: string
+    available: boolean
+    sku: string | null
+  }>
+  productType: string
+  tags: string[]
+}
+
+/**
+ * Get all products with full data for AI catalog/feed generation
+ */
+export async function getAllProductsForFeed(): Promise<ProductFeedItem[]> {
+  if (!isShopifyConfigured()) {
+    return []
+  }
+
+  const query = `
+    query getProductsForFeed($first: Int!) {
+      products(first: $first) {
+        nodes {
+          id
+          handle
+          title
+          descriptionHtml
+          seo {
+            title
+            description
+          }
+          images(first: 3) {
+            nodes {
+              url
+              altText
+            }
+          }
+          variants(first: 5) {
+            nodes {
+              id
+              price
+              availableForSale
+              sku
+            }
+          }
+          productType
+          tags
+        }
+      }
+    }
+  `
+
+  try {
+    const result = await shopifyGraphQL<{
+      products: {
+        nodes: Array<{
+          id: string
+          handle: string
+          title: string
+          descriptionHtml: string
+          seo: { title: string | null; description: string | null }
+          images: { nodes: Array<{ url: string; altText: string | null }> }
+          variants: { nodes: Array<{ id: string; price: string; availableForSale: boolean; sku: string | null }> }
+          productType: string
+          tags: string[]
+        }>
+      }
+    }>(query, { first: 250 })
+
+    return (result.data?.products?.nodes ?? []).map(p => ({
+      id: p.id,
+      handle: p.handle,
+      title: p.title,
+      description: p.descriptionHtml,
+      seo: p.seo,
+      images: p.images.nodes.map(img => ({ src: img.url, alt: img.altText })),
+      variants: p.variants.nodes.map(v => ({
+        id: v.id,
+        price: v.price,
+        available: v.availableForSale,
+        sku: v.sku,
+      })),
+      productType: p.productType,
+      tags: p.tags,
+    }))
+  } catch (error) {
+    console.error('Error fetching products for feed:', error)
+    return []
+  }
+}
