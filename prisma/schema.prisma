@@ -86,6 +86,9 @@ model Customer {
   referralReceived  Referral?      @relation("Referee")
   discountCodes     DiscountCode[]
   spinRewards       SpinReward[]
+
+  // 30-Day Glow Challenge
+  glowChallenge     GlowChallenge?
 }
 
 model Cart {
@@ -331,4 +334,60 @@ model StreakMilestone {
 
   @@unique([customerId, milestone])
   @@index([customerId])
+}
+
+// ============================================
+// 30-DAY GLOW CHALLENGE
+// ============================================
+
+model GlowChallenge {
+  id              String              @id @default(cuid())
+  customerId      String              @unique
+  customer        Customer            @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  startDate       DateTime            @default(now())
+  endDate         DateTime
+  status          ChallengeStatus     @default(ACTIVE)
+  baselineAnalysisId  String?
+  baselineHealthScore Int?
+  baselineSkinAge     Int?
+  finalAnalysisId     String?
+  finalHealthScore    Int?
+  finalSkinAge        Int?
+  checkpoints         ChallengeCheckpoint[]
+  completionRewardCode  String?
+  shareRewardCode       String?
+  referralRewardClaimed Boolean       @default(false)
+  transformationShared  Boolean       @default(false)
+  transformationSharedAt DateTime?
+  createdAt       DateTime            @default(now())
+  updatedAt       DateTime            @updatedAt
+
+  @@index([status])
+  @@index([endDate])
+}
+
+model ChallengeCheckpoint {
+  id              String          @id @default(cuid())
+  challengeId     String
+  challenge       GlowChallenge   @relation(fields: [challengeId], references: [id], onDelete: Cascade)
+  day             Int
+  analysisId      String?
+  healthScore     Int?
+  skinAge         Int?
+  badgeEarned     String?
+  rewardCode      String?
+  completed       Boolean         @default(false)
+  completedAt     DateTime?
+  dueDate         DateTime
+  createdAt       DateTime        @default(now())
+
+  @@unique([challengeId, day])
+  @@index([challengeId])
+  @@index([dueDate])
+}
+
+enum ChallengeStatus {
+  ACTIVE
+  COMPLETED
+  ABANDONED
 }

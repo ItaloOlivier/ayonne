@@ -220,17 +220,28 @@ export default function HistoryPage() {
                 Back to Skin Analysis
               </Link>
 
-              {analyses.length >= 2 && (
-                <Link
-                  href="/skin-analysis/compare"
-                  className="inline-flex items-center gap-2 text-[#1C4444] hover:text-[#D4AF37] transition-all duration-300 tracking-wide text-sm font-medium"
-                >
-                  <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
-                  </svg>
-                  Compare Analyses
-                </Link>
-              )}
+              <div className="flex items-center gap-4">
+                {analyses.length >= 1 && (
+                  <Link
+                    href="/skin-forecast"
+                    className="inline-flex items-center gap-2 text-[#1C4444] hover:text-[#D4AF37] transition-all duration-300 tracking-wide text-sm font-medium"
+                  >
+                    <span className="text-base">🔮</span>
+                    Skin Forecast
+                  </Link>
+                )}
+                {analyses.length >= 2 && (
+                  <Link
+                    href="/skin-analysis/compare"
+                    className="inline-flex items-center gap-2 text-[#1C4444] hover:text-[#D4AF37] transition-all duration-300 tracking-wide text-sm font-medium"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7h12m0 0l-4-4m4 4l-4 4m0 6H4m0 0l4 4m-4-4l4-4" />
+                    </svg>
+                    Compare Analyses
+                  </Link>
+                )}
+              </div>
             </div>
 
             <p className="text-sm uppercase tracking-[0.25em] text-[#D4AF37] mb-3">
@@ -287,6 +298,31 @@ export default function HistoryPage() {
                 <DailyReminder
                   lastAnalysisDate={analyses[0]?.createdAt || null}
                 />
+
+                {/* Skin Forecast CTA */}
+                <Link
+                  href="/skin-forecast"
+                  className="block card-luxury p-6 hover:shadow-luxury-lg transition-all duration-300 group"
+                >
+                  <div className="flex items-center gap-4">
+                    <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-[#1C4444] to-[#2d6a6a] flex items-center justify-center text-2xl">
+                      🔮
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-lg font-medium text-[#1C4444] group-hover:text-[#D4AF37] transition-colors">
+                        Your Skin Forecast
+                      </h3>
+                      <p className="text-sm text-[#1C4444]/60">
+                        See your 90-day projections based on {analyses.length} {analyses.length === 1 ? 'analysis' : 'analyses'}
+                      </p>
+                    </div>
+                    <div className="text-[#1C4444]/40 group-hover:text-[#D4AF37] transition-colors">
+                      <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                      </svg>
+                    </div>
+                  </div>
+                </Link>
 
                 {/* Dual Score Overview - Matching Analysis Page Design */}
                 {latestScores && (

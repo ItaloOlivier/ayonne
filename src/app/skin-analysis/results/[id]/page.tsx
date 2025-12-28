@@ -383,6 +383,31 @@ export default async function ResultsPage({ params }: PageProps) {
               </div>
             </div>
 
+            {/* Skin Forecast CTA */}
+            <Link
+              href="/skin-forecast"
+              className="block bg-white rounded-xl p-6 hover:shadow-lg transition-all duration-300 group border border-[#1C4444]/10"
+            >
+              <div className="flex items-center gap-4">
+                <div className="w-14 h-14 rounded-2xl bg-gradient-to-br from-purple-500 to-indigo-600 flex items-center justify-center text-2xl">
+                  🔮
+                </div>
+                <div className="flex-1">
+                  <h3 className="text-lg font-medium text-[#1C4444] group-hover:text-purple-600 transition-colors">
+                    Your Skin Forecast
+                  </h3>
+                  <p className="text-sm text-[#1C4444]/60">
+                    See your 90-day projections: when acne clears, skin age improvements, and personalized warnings
+                  </p>
+                </div>
+                <div className="text-[#1C4444]/40 group-hover:text-purple-600 transition-colors">
+                  <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                  </svg>
+                </div>
+              </div>
+            </Link>
+
             {/* Achievement Teaser */}
             <div className="bg-white rounded-xl p-6">
               <div className="flex items-center gap-4 mb-4">

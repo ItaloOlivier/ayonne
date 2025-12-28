@@ -1,0 +1,19 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "076bf4d93cf4b5fba9bfad2c19a5a13e"
+name = "Ayonne Growth System"
+application_url = "https://ai.ayonne.skin"
+embedded = true
+
+[build]
+automatically_update_urls_on_dev = true
+
+[webhooks]
+api_version = "2026-01"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "read_discounts,read_price_rules,write_discounts,write_price_rules"
+
+[auth]
+redirect_urls = [ "https://ai.ayonne.skin/api/auth/shopify" ]
