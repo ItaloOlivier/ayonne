@@ -61,6 +61,7 @@ src/
 │   ├── login/                # Login page
 │   ├── forgot-password/      # Password reset request page
 │   ├── my-recommendations/   # Saved product recommendations page
+│   ├── skin-forecast/        # 90-day skin forecast page
 │   ├── skin-analysis/
 │   │   ├── page.tsx          # Upload photo page
 │   │   ├── history/          # Analysis history page
@@ -89,7 +90,9 @@ src/
 │       ├── SocialProof.tsx           # Live activity indicators
 │       ├── ScarcityIndicator.tsx     # Stock/urgency elements
 │       ├── CelebrationAnimation.tsx  # Confetti/unlock effects
-│       └── PersonalizedDashboard.tsx # User dashboard with goals
+│       ├── PersonalizedDashboard.tsx # User dashboard with goals
+│       ├── SkinForecast.tsx      # 90-day projections and predictions
+│       └── FaceAgeFilter.tsx     # Visual age simulation with CSS filters
 │   └── growth/               # Growth hacking components
 │       ├── SpinWheel.tsx         # Animated spin-to-win wheel
 │       ├── DiscountTimer.tsx     # Countdown timer for expiring discounts
@@ -125,7 +128,8 @@ src/
 │       ├── unified-analyzer.ts     # Intelligent method selection
 │       ├── image-quality.ts        # Pre-analysis quality validation
 │       ├── image-preprocessing.ts  # Server-side image normalization
-│       └── face-detection.ts       # Browser-based face detection
+│       ├── face-detection.ts       # Browser-based face detection
+│       └── forecast.ts         # 90-day skin forecast projections
 ├── hooks/
 │   └── useLiveCamera.ts          # Live camera with auto-capture hook
 └── types/
@@ -271,6 +275,42 @@ The skin analysis uses advanced Anthropic Claude API features:
 - **Score comparison**: Color-coded score circles with change indicators
 - **Category breakdown**: Bar chart comparison for hydration, clarity, texture, radiance
 
+### Skin Forecast (90-Day Projections)
+AI-powered predictions based on historical analysis data with product-driven improvements:
+
+- **Dual Scenario System**: Shows two projections:
+  - **With Ayonne Products**: Improvements only achievable with our products
+  - **Natural Progression**: What happens without skincare (skin degrades)
+- **Product-Condition Mapping**: Each condition maps to specific Ayonne products
+  - Products have effectiveness ratings (e.g., Vitamin C Serum: 80% for dark spots)
+  - Shows "Clears by day X" predictions for clearable conditions
+  - "Add to Cart" buttons on each recommended product
+- **Score Projections**: 30/60/90 day forecasts for skin age and quality score
+- **Natural Degradation Rates**: Without products, conditions worsen:
+  - Dryness, dehydration, dullness get worse fastest
+  - Fine lines, wrinkles naturally deepen
+  - Dark spots darken with sun exposure
+- **Product Improvement Rates**: With products, conditions improve:
+  - Uses condition-specific reversibility rates (e.g., dehydration: 95%, wrinkles: 40%)
+  - Shows exact day for clearable conditions (e.g., "Acne: Day 45")
+- **Face Age Filter**: Visual preview of transformation
+  - CSS filters simulate younger/older skin appearance
+  - Shows user's photo with "90 Days With Ayonne" vs "Without Products"
+  - Hold/tap to compare with original photo
+- **Multi-Product Checkout**: Select products needed for results
+  - Checkbox selection with running total
+  - "Get These Results" button adds all to Shopify cart
+- **Personalized Warnings**:
+  - Degradation warnings for "without products" scenario
+  - Seasonal alerts (winter dryness, summer oil)
+  - Consistency tracking reminders
+- **Luxury UI Design**: Amber/warm tones for natural progression (not harsh red)
+- **Confidence Levels**: Low/medium/high based on analysis count and consistency
+- **Consistency Score**: Tracks how regularly user analyzes (weekly = 100%)
+- **API Endpoint**: `GET /api/skin-analysis/forecast` (returns latestPhoto for preview)
+- **Page**: `/skin-forecast`
+- **Components**: `SkinForecast.tsx`, `FaceAgeFilter.tsx`
+
 ### Gamification & Engagement
 - **Streak Tracking**: Fire animation, milestone badges (7-day, 30-day), "at risk" warnings
 - **Achievement System**: 14+ badge types (First Steps, Week Warrior, Glow Up, Flawless, etc.)
@@ -316,6 +356,21 @@ Discount-driven viral growth mechanics:
 - **Referral Banner**: Sticky prompt on results page
   - "Share with a friend, you both save!"
   - Quick share buttons for social platforms
+
+- **30-Day Glow Challenge**: Structured skin transformation program
+  - Day 1: Baseline analysis (starting scores)
+  - Day 7: First check-in (+10% off reward, "Week Warrior" badge)
+  - Day 14: Midpoint analysis (+15% off reward, "Halfway Hero" badge)
+  - Day 21: Final push ("Glow Getter" badge)
+  - Day 30: Transformation reveal (+25% off reward, "Glow Master" badge)
+  - Share transformation: Extra 10% off
+  - Refer friend to challenge: Free product sample
+  - Before/after comparison slider on completion
+  - Progress tracking with checkpoint timeline
+  - Automatic analysis recording during challenge
+  - Challenge page: `/challenge`
+  - API endpoints: `/api/challenge/join`, `/api/challenge/status`, `/api/challenge/record`, `/api/challenge/share`, `/api/challenge/refer`
+  - Components: `ChallengeProgress`, `ChallengeJoin`, `TransformationReveal`
 
 ## Shopify Integration
 
@@ -402,6 +457,11 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 - **GuestSession**: Anonymous sessions with optional email capture
 - **SpinReward**: Spin wheel prizes with 24-hour expiry
 - **StreakMilestone**: Achieved streak rewards (3-day, 7-day, 30-day)
+
+### 30-Day Challenge Models
+- **GlowChallenge**: Customer enrollment with baseline/final scores, reward codes, transformation sharing
+- **ChallengeCheckpoint**: Day milestones (1, 7, 14, 21, 30) with scores, badges, and rewards
+- **ChallengeStatus enum**: ACTIVE, COMPLETED, ABANDONED
 
 ## Environment Variables
 

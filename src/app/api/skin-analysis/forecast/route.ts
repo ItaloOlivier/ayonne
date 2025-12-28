@@ -33,6 +33,8 @@ export async function GET() {
         createdAt: true,
         skinType: true,
         conditions: true,
+        originalImage: true,
+        frontImage: true,
       },
     })
 
@@ -60,11 +62,15 @@ export async function GET() {
     // Generate the forecast
     const forecast = generateSkinForecast(analysisHistory, currentScores)
 
+    // Get the user's latest photo (prefer frontImage over originalImage)
+    const latestPhoto = analyses[0].frontImage || analyses[0].originalImage
+
     return NextResponse.json({
       success: true,
       forecast,
       latestAnalysisDate: analyses[0].createdAt,
       skinType: analyses[0].skinType,
+      latestPhoto,
     })
   } catch (error) {
     console.error('Forecast generation error:', error)

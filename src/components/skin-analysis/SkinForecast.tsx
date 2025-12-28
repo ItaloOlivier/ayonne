@@ -4,13 +4,15 @@ import { useState } from 'react'
 import Link from 'next/link'
 import { SkinForecast, ConditionProjection, ProductForCondition } from '@/lib/skin-analysis/forecast'
 import { buildShopifyCartUrl } from '@/lib/shopify-products'
+import FaceAgeFilter from './FaceAgeFilter'
 
 interface SkinForecastProps {
   forecast: SkinForecast
   skinType: string | null
+  latestPhoto?: string | null
 }
 
-export default function SkinForecastView({ forecast, skinType }: SkinForecastProps) {
+export default function SkinForecastView({ forecast, skinType, latestPhoto }: SkinForecastProps) {
   const [activeScenario, setActiveScenario] = useState<'withProducts' | 'withoutProducts'>('withProducts')
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(
     new Set((forecast.recommendedProducts || []).map(p => p.slug))
@@ -89,28 +91,63 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
       </div>
 
       {/* Scenario Toggle */}
-      <div className="bg-[#F4EBE7] rounded-2xl p-2 flex gap-2">
+      <div className="bg-white rounded-2xl p-1.5 flex gap-1.5 border border-[#1C4444]/10">
         <button
           onClick={() => setActiveScenario('withProducts')}
           className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all ${
             activeScenario === 'withProducts'
-              ? 'bg-gradient-to-r from-[#1C4444] to-[#2d6a6a] text-white shadow-lg'
-              : 'text-[#1C4444]/70 hover:text-[#1C4444]'
+              ? 'bg-[#F4EBE7] text-[#1C4444] shadow-sm border border-[#D4AF37]/30'
+              : 'text-[#1C4444]/50 hover:text-[#1C4444] hover:bg-[#F4EBE7]/50'
           }`}
         >
-          ✨ With Ayonne Products
+          <span className="mr-1.5">✨</span> With Ayonne Products
         </button>
         <button
           onClick={() => setActiveScenario('withoutProducts')}
           className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all ${
             activeScenario === 'withoutProducts'
-              ? 'bg-white text-[#1C4444] shadow-lg border border-amber-200'
-              : 'text-[#1C4444]/70 hover:text-[#1C4444]'
+              ? 'bg-[#F4EBE7] text-[#1C4444] shadow-sm border border-amber-200/50'
+              : 'text-[#1C4444]/50 hover:text-[#1C4444] hover:bg-[#F4EBE7]/50'
           }`}
         >
           Natural Progression
         </button>
       </div>
+
+      {/* Photo Preview Section */}
+      {latestPhoto && (
+        <div className="bg-white rounded-2xl p-6">
+          <div className="flex items-center gap-2 mb-4">
+            <span className="text-xl">📸</span>
+            <h3 className="text-lg font-medium text-[#1C4444]">Your Skin Transformation Preview</h3>
+          </div>
+          <p className="text-sm text-[#1C4444]/60 mb-4">
+            {activeScenario === 'withProducts'
+              ? 'See how your skin could look with consistent Ayonne product use'
+              : 'This is what happens to skin without proper care'}
+          </p>
+          <div className="max-w-sm mx-auto">
+            <FaceAgeFilter
+              imageUrl={latestPhoto}
+              currentSkinAge={forecast.currentSkinAge}
+              targetSkinAge={
+                activeScenario === 'withProducts'
+                  ? forecast.withProducts.skinAge90
+                  : forecast.withoutProducts.skinAge90
+              }
+              scenario={activeScenario === 'withProducts' ? 'younger' : 'older'}
+              label={
+                activeScenario === 'withProducts'
+                  ? '90 Days With Ayonne'
+                  : '90 Days Without Products'
+              }
+            />
+          </div>
+          <p className="text-xs text-[#1C4444]/50 text-center mt-3">
+            Hold the image to see your current photo
+          </p>
+        </div>
+      )}
 
       {/* Main Projection Card */}
       {activeScenario === 'withProducts' ? (
@@ -323,80 +360,92 @@ function WithProductsProjection({
   qualityImprovement: number
 }) {
   return (
-    <div className="bg-gradient-to-br from-[#1C4444] to-[#2d6a6a] rounded-2xl p-6 text-white">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xl">✨</span>
-        <h3 className="text-lg font-medium">With Ayonne Products (90 Days)</h3>
+    <div className="bg-white rounded-2xl border border-[#1C4444]/10 overflow-hidden">
+      {/* Header */}
+      <div className="bg-gradient-to-r from-[#F4EBE7] to-[#EDE4DD] px-6 py-4 border-b border-[#1C4444]/10">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
+            <span className="text-base">✨</span>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-[#1C4444]">With Ayonne Products</h3>
+            <p className="text-sm text-[#1C4444]/60">Your 90-day transformation</p>
+          </div>
+        </div>
       </div>
 
-      <div className="grid gap-4">
-        {/* Skin Age Projection */}
-        <div className="bg-white/10 rounded-xl p-4">
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl">🌟</span>
+      <div className="p-6 space-y-5">
+        {/* Score Cards */}
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Skin Age Card */}
+          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-[#D4AF37]/15 flex items-center justify-center">
+                <span className="text-lg">🌟</span>
+              </div>
               <div>
-                <p className="text-white/70 text-sm">Skin Age</p>
-                <p className="text-xl font-medium">
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age</p>
+                <p className="text-xl font-medium text-[#1C4444]">
                   {forecast.currentSkinAge} → {forecast.withProducts.skinAge90}
-                  {skinAgeImprovement > 0 && (
-                    <span className="text-green-300 ml-2 text-base">
-                      (-{skinAgeImprovement} years)
-                    </span>
-                  )}
                 </p>
               </div>
             </div>
-            <div className="text-right text-sm">
-              <p className="text-white/70">Best Achievable</p>
-              <p className="font-medium">{forecast.withProducts.achievableSkinAge}</p>
+            {skinAgeImprovement > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-[#9A8428] font-medium">-{skinAgeImprovement} years</span>
+                <span className="text-[#1C4444]/40">younger looking</span>
+              </div>
+            )}
+            <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-[#D4AF37] to-[#C4A83C] rounded-full transition-all duration-1000"
+                style={{ width: `${Math.min(100, (skinAgeImprovement / Math.max(1, forecast.currentSkinAge - forecast.withProducts.achievableSkinAge)) * 100)}%` }}
+              />
             </div>
+            <p className="text-xs text-[#1C4444]/50 mt-2">Best achievable: {forecast.withProducts.achievableSkinAge}</p>
           </div>
-          <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-green-400 to-emerald-300 rounded-full transition-all duration-1000"
-              style={{ width: `${Math.min(100, (skinAgeImprovement / Math.max(1, forecast.currentSkinAge - forecast.withProducts.achievableSkinAge)) * 100)}%` }}
-            />
-          </div>
-        </div>
 
-        {/* Quality Score Projection */}
-        <div className="bg-white/10 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">💎</span>
-            <div>
-              <p className="text-white/70 text-sm">Skin Health</p>
-              <p className="text-xl font-medium">
-                {forecast.currentQualityScore} → {forecast.withProducts.qualityScore90}
-                {qualityImprovement > 0 && (
-                  <span className="text-green-300 ml-2 text-base">
-                    (+{qualityImprovement} points)
-                  </span>
-                )}
-              </p>
+          {/* Skin Health Card */}
+          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-[#1C4444]/10 flex items-center justify-center">
+                <span className="text-lg">💎</span>
+              </div>
+              <div>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Health</p>
+                <p className="text-xl font-medium text-[#1C4444]">
+                  {forecast.currentQualityScore} → {forecast.withProducts.qualityScore90}
+                </p>
+              </div>
             </div>
-          </div>
-          <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-blue-400 to-cyan-300 rounded-full transition-all duration-1000"
-              style={{ width: `${forecast.withProducts.qualityScore90}%` }}
-            />
+            {qualityImprovement > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-[#1C4444] font-medium">+{qualityImprovement} points</span>
+                <span className="text-[#1C4444]/40">improvement</span>
+              </div>
+            )}
+            <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-[#1C4444] rounded-full transition-all duration-1000"
+                style={{ width: `${forecast.withProducts.qualityScore90}%` }}
+              />
+            </div>
           </div>
         </div>
 
         {/* Conditions that will clear */}
         {forecast.conditionProjections.filter(c => c.withProducts.clearByDay !== null).length > 0 && (
-          <div className="bg-white/10 rounded-xl p-4">
-            <p className="text-white/70 text-sm mb-3">Expected to Clear</p>
-            <div className="space-y-2">
+          <div className="bg-[#F4EBE7]/30 rounded-xl p-4 border border-[#1C4444]/5">
+            <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide mb-3">Expected to Clear</p>
+            <div className="space-y-2.5">
               {forecast.conditionProjections
                 .filter(c => c.withProducts.clearByDay !== null)
                 .sort((a, b) => (a.withProducts.clearByDay || 999) - (b.withProducts.clearByDay || 999))
                 .slice(0, 3)
                 .map(condition => (
-                  <div key={condition.id} className="flex items-center justify-between">
-                    <span>{condition.name}</span>
-                    <span className="text-green-300 text-sm">
+                  <div key={condition.id} className="flex items-center justify-between py-1">
+                    <span className="text-sm font-medium text-[#1C4444]">{condition.name}</span>
+                    <span className="text-sm text-[#9A8428] font-medium">
                       Day {condition.withProducts.clearByDay}
                     </span>
                   </div>
@@ -404,38 +453,41 @@ function WithProductsProjection({
             </div>
           </div>
         )}
-      </div>
 
-      {/* Timeline */}
-      <div className="mt-6 flex justify-between text-xs text-white/60">
-        <div className="text-center">
-          <div className="w-3 h-3 bg-white/30 rounded-full mx-auto mb-1" />
-          <p>Today</p>
-          <p className="text-white font-medium">{forecast.currentQualityScore}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-white/50 rounded-full mx-auto mb-1" />
-          <p>30 Days</p>
-          <p className="text-white font-medium">{forecast.withProducts.qualityScore30}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-white/70 rounded-full mx-auto mb-1" />
-          <p>60 Days</p>
-          <p className="text-white font-medium">{forecast.withProducts.qualityScore60}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-green-400 rounded-full mx-auto mb-1" />
-          <p>90 Days</p>
-          <p className="text-white font-medium">{forecast.withProducts.qualityScore90}</p>
+        {/* Timeline */}
+        <div className="pt-4 border-t border-[#1C4444]/10">
+          <p className="text-xs text-[#1C4444]/50 uppercase tracking-wide mb-3 text-center">Projected Timeline</p>
+          <div className="flex justify-between items-end text-center">
+            <div>
+              <div className="w-3 h-3 bg-[#1C4444]/30 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">Today</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.currentQualityScore}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-gradient-to-r from-[#1C4444]/20 via-[#D4AF37]/50 to-[#D4AF37]" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-[#D4AF37]/40 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">30d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withProducts.qualityScore30}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-[#D4AF37]/60" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-[#D4AF37]/70 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">60d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withProducts.qualityScore60}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-[#D4AF37]" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-[#D4AF37] rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">90d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withProducts.qualityScore90}</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>

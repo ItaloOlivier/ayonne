@@ -10,6 +10,7 @@ interface ForecastResponse {
   forecast: SkinForecast
   latestAnalysisDate: string
   skinType: string | null
+  latestPhoto?: string | null
   error?: string
   message?: string
 }
@@ -184,7 +185,7 @@ export default function SkinForecastPage() {
       <section className="py-8 md:py-12">
         <div className="container mx-auto px-4">
           <div className="max-w-4xl mx-auto">
-            <SkinForecastView forecast={data.forecast} skinType={data.skinType} />
+            <SkinForecastView forecast={data.forecast} skinType={data.skinType} latestPhoto={data.latestPhoto} />
           </div>
         </div>
       </section>
