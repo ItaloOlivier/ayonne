@@ -13,7 +13,7 @@ interface SkinForecastProps {
 export default function SkinForecastView({ forecast, skinType }: SkinForecastProps) {
   const [activeScenario, setActiveScenario] = useState<'withProducts' | 'withoutProducts'>('withProducts')
   const [selectedProducts, setSelectedProducts] = useState<Set<string>>(
-    new Set(forecast.recommendedProducts.map(p => p.slug))
+    new Set((forecast.recommendedProducts || []).map(p => p.slug))
   )
 
   const toggleProduct = (slug: string) => {
@@ -26,12 +26,12 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
     setSelectedProducts(newSelected)
   }
 
-  const selectedTotal = forecast.recommendedProducts
+  const selectedTotal = (forecast.recommendedProducts || [])
     .filter(p => selectedProducts.has(p.slug))
     .reduce((sum, p) => sum + p.price, 0)
 
   const handleCheckout = () => {
-    const slugs = forecast.recommendedProducts
+    const slugs = (forecast.recommendedProducts || [])
       .filter(p => selectedProducts.has(p.slug))
       .map(p => p.slug)
     if (slugs.length > 0) {
@@ -41,12 +41,29 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
   }
 
   // Calculate improvements (with products)
-  const skinAgeImprovement = forecast.currentSkinAge - forecast.withProducts.skinAge90
-  const qualityImprovement = forecast.withProducts.qualityScore90 - forecast.currentQualityScore
+  const skinAgeImprovement = forecast.withProducts
+    ? forecast.currentSkinAge - forecast.withProducts.skinAge90
+    : 0
+  const qualityImprovement = forecast.withProducts
+    ? forecast.withProducts.qualityScore90 - forecast.currentQualityScore
+    : 0
 
   // Calculate degradation (without products)
-  const skinAgeDegradation = forecast.withoutProducts.skinAge90 - forecast.currentSkinAge
-  const qualityDegradation = forecast.currentQualityScore - forecast.withoutProducts.qualityScore90
+  const skinAgeDegradation = forecast.withoutProducts
+    ? forecast.withoutProducts.skinAge90 - forecast.currentSkinAge
+    : 0
+  const qualityDegradation = forecast.withoutProducts
+    ? forecast.currentQualityScore - forecast.withoutProducts.qualityScore90
+    : 0
+
+  // Early return if forecast data is incomplete
+  if (!forecast.withProducts || !forecast.withoutProducts) {
+    return (
+      <div className="bg-white rounded-2xl p-6 text-center">
+        <p className="text-[#1C4444]/60">Loading forecast data...</p>
+      </div>
+    )
+  }
 
   return (
     <div className="space-y-6">
@@ -107,11 +124,12 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
           forecast={forecast}
           skinAgeDegradation={skinAgeDegradation}
           qualityDegradation={qualityDegradation}
+          onSwitchScenario={() => setActiveScenario('withProducts')}
         />
       )}
 
       {/* Products Needed for Results */}
-      {forecast.recommendedProducts.length > 0 && (
+      {(forecast.recommendedProducts || []).length > 0 && (
         <div className="bg-white rounded-2xl p-6 border-2 border-[#D4AF37]/30">
           <div className="flex items-center justify-between mb-4">
             <div className="flex items-center gap-2">
@@ -128,13 +146,13 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
           </p>
 
           <div className="space-y-3 mb-6">
-            {forecast.recommendedProducts.map(product => (
+            {(forecast.recommendedProducts || []).map(product => (
               <ProductCard
                 key={product.slug}
                 product={product}
                 isSelected={selectedProducts.has(product.slug)}
                 onToggle={() => toggleProduct(product.slug)}
-                condition={forecast.conditionProjections.find(c => c.recommendedProduct?.slug === product.slug)}
+                condition={(forecast.conditionProjections || []).find(c => c.recommendedProduct?.slug === product.slug)}
               />
             ))}
           </div>
@@ -166,15 +184,17 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
       )}
 
       {/* Condition Details */}
-      <div className="bg-white rounded-2xl p-6">
-        <h3 className="text-lg font-medium text-[#1C4444] mb-4 flex items-center gap-2">
-          <span>📊</span> Condition Breakdown
-        </h3>
-        <ConditionProjectionsView
-          projections={forecast.conditionProjections}
-          scenario={activeScenario}
-        />
-      </div>
+      {(forecast.conditionProjections || []).length > 0 && (
+        <div className="bg-white rounded-2xl p-6">
+          <h3 className="text-lg font-medium text-[#1C4444] mb-4 flex items-center gap-2">
+            <span>📊</span> Condition Breakdown
+          </h3>
+          <ConditionProjectionsView
+            projections={forecast.conditionProjections || []}
+            scenario={activeScenario}
+          />
+        </div>
+      )}
 
       {/* Category Improvements */}
       <div className="bg-white rounded-2xl p-6">
@@ -228,13 +248,13 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
       </div>
 
       {/* Warnings */}
-      {forecast.warnings.length > 0 && (
+      {(forecast.warnings || []).length > 0 && (
         <div className="bg-white rounded-2xl p-6">
           <h3 className="text-lg font-medium text-[#1C4444] mb-4 flex items-center gap-2">
             <span>⚠️</span> Important Notes
           </h3>
           <div className="space-y-3">
-            {forecast.warnings.map((warning, i) => (
+            {(forecast.warnings || []).map((warning, i) => (
               <div
                 key={i}
                 className={`p-4 rounded-xl border ${
@@ -426,10 +446,12 @@ function WithoutProductsProjection({
   forecast,
   skinAgeDegradation,
   qualityDegradation,
+  onSwitchScenario,
 }: {
   forecast: SkinForecast
   skinAgeDegradation: number
   qualityDegradation: number
+  onSwitchScenario: () => void
 }) {
   return (
     <div className="bg-gradient-to-br from-rose-500 to-red-600 rounded-2xl p-6 text-white">
@@ -547,7 +569,7 @@ function WithoutProductsProjection({
 
       {/* CTA to see with products */}
       <button
-        onClick={() => {}} // Parent handles this via state
+        onClick={onSwitchScenario}
         className="w-full mt-6 py-3 bg-white text-rose-600 rounded-xl font-medium hover:bg-white/90 transition-colors"
       >
         See How Ayonne Products Can Help →
