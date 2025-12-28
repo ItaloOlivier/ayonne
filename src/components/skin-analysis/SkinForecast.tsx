@@ -104,11 +104,11 @@ export default function SkinForecastView({ forecast, skinType }: SkinForecastPro
           onClick={() => setActiveScenario('withoutProducts')}
           className={`flex-1 py-3 px-4 rounded-xl text-sm font-medium transition-all ${
             activeScenario === 'withoutProducts'
-              ? 'bg-gradient-to-r from-rose-500 to-red-500 text-white shadow-lg'
+              ? 'bg-white text-[#1C4444] shadow-lg border border-amber-200'
               : 'text-[#1C4444]/70 hover:text-[#1C4444]'
           }`}
         >
-          ⚠️ Without Products
+          Natural Progression
         </button>
       </div>
 
@@ -454,126 +454,154 @@ function WithoutProductsProjection({
   onSwitchScenario: () => void
 }) {
   return (
-    <div className="bg-gradient-to-br from-rose-500 to-red-600 rounded-2xl p-6 text-white">
-      <div className="flex items-center gap-2 mb-4">
-        <span className="text-xl">⚠️</span>
-        <h3 className="text-lg font-medium">Without Treatment (90 Days)</h3>
+    <div className="bg-white rounded-2xl border-2 border-[#1C4444]/10 overflow-hidden">
+      {/* Subtle warning header */}
+      <div className="bg-gradient-to-r from-amber-50 to-orange-50 px-6 py-4 border-b border-amber-100">
+        <div className="flex items-center gap-2">
+          <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+            <svg className="w-4 h-4 text-amber-600" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div>
+            <h3 className="text-lg font-medium text-[#1C4444]">Natural Progression</h3>
+            <p className="text-sm text-[#1C4444]/60">What happens without targeted skincare</p>
+          </div>
+        </div>
       </div>
 
-      <div className="bg-white/10 rounded-xl p-4 mb-4">
-        <p className="text-white/90 text-sm leading-relaxed">
-          {forecast.withoutProducts.message}
-        </p>
-      </div>
+      <div className="p-6 space-y-5">
+        {/* Info message */}
+        <div className="bg-[#F4EBE7] rounded-xl p-4">
+          <p className="text-sm text-[#1C4444]/80 leading-relaxed">
+            {forecast.withoutProducts.message}
+          </p>
+        </div>
 
-      <div className="grid gap-4">
-        {/* Skin Age Degradation */}
-        <div className="bg-white/10 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">📉</span>
-            <div>
-              <p className="text-white/70 text-sm">Skin Age</p>
-              <p className="text-xl font-medium">
-                {forecast.currentSkinAge} → {forecast.withoutProducts.skinAge90}
-                {skinAgeDegradation > 0 && (
-                  <span className="text-red-200 ml-2 text-base">
-                    (+{skinAgeDegradation} years)
-                  </span>
-                )}
-              </p>
+        {/* Metrics Grid */}
+        <div className="grid md:grid-cols-2 gap-4">
+          {/* Skin Age */}
+          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                <span className="text-lg">⏳</span>
+              </div>
+              <div>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age</p>
+                <p className="text-xl font-medium text-[#1C4444]">
+                  {forecast.currentSkinAge} → {forecast.withoutProducts.skinAge90}
+                </p>
+              </div>
+            </div>
+            {skinAgeDegradation > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-amber-600">+{skinAgeDegradation} years</span>
+                <span className="text-[#1C4444]/40">over 90 days</span>
+              </div>
+            )}
+            <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-amber-300 to-amber-400 rounded-full transition-all"
+                style={{ width: `${Math.min(100, (skinAgeDegradation / 10) * 100)}%` }}
+              />
             </div>
           </div>
-          <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-red-300 to-red-400 rounded-full"
-              style={{ width: `${Math.min(100, (skinAgeDegradation / 10) * 100)}%` }}
-            />
-          </div>
-        </div>
 
-        {/* Quality Score Degradation */}
-        <div className="bg-white/10 rounded-xl p-4">
-          <div className="flex items-center gap-3">
-            <span className="text-2xl">💔</span>
-            <div>
-              <p className="text-white/70 text-sm">Skin Health</p>
-              <p className="text-xl font-medium">
-                {forecast.currentQualityScore} → {forecast.withoutProducts.qualityScore90}
-                {qualityDegradation > 0 && (
-                  <span className="text-red-200 ml-2 text-base">
-                    (-{qualityDegradation} points)
-                  </span>
-                )}
-              </p>
+          {/* Skin Health */}
+          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+            <div className="flex items-center gap-3 mb-3">
+              <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
+                <span className="text-lg">📊</span>
+              </div>
+              <div>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Health</p>
+                <p className="text-xl font-medium text-[#1C4444]">
+                  {forecast.currentQualityScore} → {forecast.withoutProducts.qualityScore90}
+                </p>
+              </div>
+            </div>
+            {qualityDegradation > 0 && (
+              <div className="flex items-center gap-2 text-sm">
+                <span className="text-amber-600">-{qualityDegradation} points</span>
+                <span className="text-[#1C4444]/40">decline expected</span>
+              </div>
+            )}
+            <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
+              <div
+                className="h-full bg-gradient-to-r from-amber-300 to-amber-400 rounded-full transition-all"
+                style={{ width: `${forecast.withoutProducts.qualityScore90}%` }}
+              />
             </div>
           </div>
-          <div className="mt-3 h-2 bg-white/20 rounded-full overflow-hidden">
-            <div
-              className="h-full bg-gradient-to-r from-red-300 to-red-400 rounded-full"
-              style={{ width: `${forecast.withoutProducts.qualityScore90}%` }}
-            />
+        </div>
+
+        {/* Conditions list */}
+        {(forecast.conditionProjections || []).filter(c => c.withoutProducts.projected90 > c.currentConfidence).length > 0 && (
+          <div className="bg-[#F4EBE7]/30 rounded-xl p-4 border border-[#1C4444]/5">
+            <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide mb-3">Areas of Concern</p>
+            <div className="space-y-2.5">
+              {(forecast.conditionProjections || [])
+                .filter(c => c.withoutProducts.projected90 > c.currentConfidence)
+                .slice(0, 4)
+                .map(condition => (
+                  <div key={condition.id} className="flex items-center justify-between py-1">
+                    <span className="text-sm font-medium text-[#1C4444]">{condition.name}</span>
+                    <span className="text-xs text-[#1C4444]/50 max-w-[180px] text-right">
+                      {condition.withoutProducts.message}
+                    </span>
+                  </div>
+                ))}
+            </div>
+          </div>
+        )}
+
+        {/* Timeline */}
+        <div className="pt-4 border-t border-[#1C4444]/10">
+          <p className="text-xs text-[#1C4444]/50 uppercase tracking-wide mb-3 text-center">Projected Timeline</p>
+          <div className="flex justify-between items-end text-center">
+            <div>
+              <div className="w-3 h-3 bg-[#1C4444] rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">Today</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.currentQualityScore}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-gradient-to-r from-[#1C4444]/20 via-amber-300 to-amber-400" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-amber-300 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">30d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withoutProducts.qualityScore30}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-amber-400" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-amber-400 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">60d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withoutProducts.qualityScore60}</p>
+            </div>
+            <div className="flex-1 flex items-center px-2">
+              <div className="h-px w-full bg-amber-500" />
+            </div>
+            <div>
+              <div className="w-3 h-3 bg-amber-500 rounded-full mx-auto mb-1" />
+              <p className="text-xs text-[#1C4444]/50">90d</p>
+              <p className="text-sm font-medium text-[#1C4444]">{forecast.withoutProducts.qualityScore90}</p>
+            </div>
           </div>
         </div>
 
-        {/* What will get worse */}
-        <div className="bg-white/10 rounded-xl p-4">
-          <p className="text-white/70 text-sm mb-3">Conditions That Will Worsen</p>
-          <div className="space-y-2">
-            {forecast.conditionProjections
-              .filter(c => c.withoutProducts.projected90 > c.currentConfidence)
-              .slice(0, 4)
-              .map(condition => (
-                <div key={condition.id} className="flex items-center justify-between">
-                  <span className="text-sm">{condition.name}</span>
-                  <span className="text-red-200 text-xs">
-                    {condition.withoutProducts.message}
-                  </span>
-                </div>
-              ))}
-          </div>
-        </div>
+        {/* CTA to see with products */}
+        <button
+          onClick={onSwitchScenario}
+          className="w-full mt-2 py-4 bg-gradient-to-r from-[#1C4444] to-[#2d5a5a] text-white rounded-xl font-medium hover:opacity-90 transition-all flex items-center justify-center gap-2 group"
+        >
+          <span>See How Ayonne Products Can Help</span>
+          <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M14 5l7 7m0 0l-7 7m7-7H3" />
+          </svg>
+        </button>
       </div>
-
-      {/* Timeline */}
-      <div className="mt-6 flex justify-between text-xs text-white/60">
-        <div className="text-center">
-          <div className="w-3 h-3 bg-white/30 rounded-full mx-auto mb-1" />
-          <p>Today</p>
-          <p className="text-white font-medium">{forecast.currentQualityScore}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-red-300 rounded-full mx-auto mb-1" />
-          <p>30 Days</p>
-          <p className="text-white font-medium">{forecast.withoutProducts.qualityScore30}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-red-400 rounded-full mx-auto mb-1" />
-          <p>60 Days</p>
-          <p className="text-white font-medium">{forecast.withoutProducts.qualityScore60}</p>
-        </div>
-        <div className="flex-1 flex items-center px-4">
-          <div className="h-0.5 w-full bg-white/20" />
-        </div>
-        <div className="text-center">
-          <div className="w-3 h-3 bg-red-500 rounded-full mx-auto mb-1" />
-          <p>90 Days</p>
-          <p className="text-white font-medium">{forecast.withoutProducts.qualityScore90}</p>
-        </div>
-      </div>
-
-      {/* CTA to see with products */}
-      <button
-        onClick={onSwitchScenario}
-        className="w-full mt-6 py-3 bg-white text-rose-600 rounded-xl font-medium hover:bg-white/90 transition-colors"
-      >
-        See How Ayonne Products Can Help →
-      </button>
     </div>
   )
 }
