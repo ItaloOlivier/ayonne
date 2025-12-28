@@ -445,6 +445,7 @@ If Shopify API is not configured, use the admin export endpoint:
 ### Admin Endpoints
 All require `x-admin-key` header matching `ADMIN_API_KEY` env var:
 
+#### Discount Management
 - `GET /api/admin/discounts` - List all discount codes with sync status
   - Query params: `status=synced|unsynced|all`, `limit=100`
 - `POST /api/admin/discounts` - Sync codes to Shopify
@@ -453,12 +454,48 @@ All require `x-admin-key` header matching `ADMIN_API_KEY` env var:
 - `GET /api/admin/discounts/export` - Export as CSV
   - Query params: `format=csv|json`, `status=unsynced|synced|active`
 
+#### SEO Management
+- `GET /api/admin/seo` - Full SEO audit of all products
+  - Query params: `type=audit|products|pages|catalog`, `handle=product-handle`
+  - Returns: SEO scores, issues, recommendations for each product
+- `POST /api/admin/seo` - Update product SEO
+  - Body: `{ action: 'update', productId, title, description }` - Direct update
+  - Body: `{ action: 'optimize', handle }` - Auto-generate optimized SEO
+  - Body: `{ action: 'bulk-optimize' }` - Preview optimizations (no changes)
+
+#### Data Cleanup
+- `GET /api/admin/cleanup` - Get stats on orphaned data to be cleaned
+- `POST /api/admin/cleanup` - Run cleanup (deletes guest data >2 weeks old)
+
 ### Cart URL with Discount
 The `buildShopifyCartUrl()` function supports discount codes:
 ```typescript
 buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'], 'SPIN15OFF')
 → https://ayonne.skin/cart/53383867597148:1,53383867564380:1?discount=SPIN15OFF
 ```
+
+## AI Readiness & SEO
+
+### AI Discovery Files (public/)
+- `llms.txt` - Information for AI assistants about the AI skin analyzer
+- `robots.txt` - Crawler permissions including AI bots (GPTBot, Claude-Web, etc.)
+
+### SEO Functions (src/lib/shopify-admin.ts)
+- `getProductSEO(handle)` - Get product SEO metadata
+- `updateProductSEO(productId, { title, description })` - Update product SEO (requires write_products scope)
+- `getAllProductsSEO()` - Bulk get all products with SEO data
+- `analyzeSEOQuality(product)` - Analyze SEO score with issues and recommendations
+- `generateOptimizedTitle(productName, category)` - Generate SEO-optimized title
+- `generateOptimizedDescription(name, benefits, concerns)` - Generate SEO-optimized description
+- `generateLLMSProductCatalog()` - Generate llms.txt-compatible product catalog
+
+### Pre-Optimized SEO Data (src/lib/seo-data.ts)
+Contains optimized SEO titles and descriptions for all products. Use with the SEO admin API to bulk update Shopify product metadata.
+
+### Required Shopify API Scopes for SEO
+- `write_products` - Update product SEO metadata
+- `read_products` - Read product data
+- `write_content` - Update page/blog SEO (optional)
 
 ## Security & Privacy Features
 
