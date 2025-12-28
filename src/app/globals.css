@@ -612,6 +612,218 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
+/* Journey & Sales Funnel Enhancements */
+
+/* Smooth reveal animation */
+@keyframes reveal-up {
+  0% {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-reveal-up {
+  animation: reveal-up 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Stagger children animation */
+.stagger-children > * {
+  opacity: 0;
+  animation: reveal-up 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+.stagger-children > *:nth-child(1) { animation-delay: 0ms; }
+.stagger-children > *:nth-child(2) { animation-delay: 100ms; }
+.stagger-children > *:nth-child(3) { animation-delay: 200ms; }
+.stagger-children > *:nth-child(4) { animation-delay: 300ms; }
+.stagger-children > *:nth-child(5) { animation-delay: 400ms; }
+.stagger-children > *:nth-child(6) { animation-delay: 500ms; }
+
+/* Luxury gradient text */
+.text-gradient-luxury {
+  background: linear-gradient(135deg, #1C4444 0%, #D4AF37 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+/* Gold shimmer effect on buttons */
+@keyframes gold-shimmer {
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
+}
+
+.btn-gold-shimmer {
+  background: linear-gradient(
+    90deg,
+    #D4AF37 0%,
+    #E5C158 25%,
+    #D4AF37 50%,
+    #E5C158 75%,
+    #D4AF37 100%
+  );
+  background-size: 200% auto;
+  animation: gold-shimmer 3s linear infinite;
+}
+
+/* Urgency pulse for CTAs */
+@keyframes urgency-pulse {
+  0%, 100% {
+    box-shadow: 0 0 0 0 rgba(212, 175, 55, 0.4);
+  }
+  50% {
+    box-shadow: 0 0 0 10px rgba(212, 175, 55, 0);
+  }
+}
+
+.animate-urgency-pulse {
+  animation: urgency-pulse 2s ease-in-out infinite;
+}
+
+/* Smooth number counter */
+@keyframes count-up {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-count-up {
+  animation: count-up 0.4s ease-out forwards;
+}
+
+/* Checkout bar slide up */
+@keyframes slide-up-smooth {
+  from {
+    transform: translateY(100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+.animate-slide-up-smooth {
+  animation: slide-up-smooth 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Glass morphism effect */
+.glass {
+  background: rgba(255, 255, 255, 0.8);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.glass-dark {
+  background: rgba(28, 68, 68, 0.9);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+/* Reward unlock animation */
+@keyframes reward-unlock {
+  0% {
+    transform: scale(0) rotate(-180deg);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.2) rotate(10deg);
+  }
+  100% {
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+}
+
+.animate-reward-unlock {
+  animation: reward-unlock 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Progress bar fill animation */
+@keyframes progress-fill {
+  from {
+    width: 0;
+  }
+}
+
+.animate-progress-fill {
+  animation: progress-fill 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+/* Subtle hover lift for cards */
+.hover-lift {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.hover-lift:hover {
+  transform: translateY(-4px);
+  box-shadow:
+    0 10px 20px -5px rgba(28, 68, 68, 0.1),
+    0 20px 40px -10px rgba(28, 68, 68, 0.08);
+}
+
+/* Premium border gradient */
+.border-gradient {
+  position: relative;
+  background: white;
+  border-radius: 1rem;
+}
+
+.border-gradient::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border-radius: inherit;
+  background: linear-gradient(135deg, #D4AF37, #1C4444, #D4AF37);
+  z-index: -1;
+}
+
+/* Savings badge animation */
+@keyframes savings-pop {
+  0% {
+    transform: scale(0.8);
+    opacity: 0;
+  }
+  50% {
+    transform: scale(1.1);
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-savings-pop {
+  animation: savings-pop 0.4s ease-out forwards;
+}
+
+/* Trust badge subtle animation */
+@keyframes trust-fade {
+  0%, 100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
+  }
+}
+
+.animate-trust {
+  animation: trust-fade 4s ease-in-out infinite;
+}
+
 /* Accessibility: Reduced motion support */
 @media (prefers-reduced-motion: reduce) {
   *,
@@ -633,7 +845,21 @@ a:focus-visible {
   .animate-pulse-ring,
   .animate-golden-shimmer,
   .animate-gentle-glow,
-  .animate-scan-line {
+  .animate-scan-line,
+  .animate-reveal-up,
+  .animate-urgency-pulse,
+  .animate-reward-unlock,
+  .animate-savings-pop,
+  .btn-gold-shimmer {
     animation: none !important;
+  }
+
+  .stagger-children > * {
+    opacity: 1;
+    animation: none !important;
+  }
+
+  .hover-lift:hover {
+    transform: none;
   }
 }
