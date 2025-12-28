@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import Image from 'next/image'
 
 interface FaceAgeFilterProps {
@@ -14,8 +14,8 @@ interface FaceAgeFilterProps {
 /**
  * FaceAgeFilter Component
  *
- * Uses CSS filters to simulate skin aging/de-aging effects.
- * Shows visual preview of how skin could look with proper care vs neglect.
+ * Uses AI-powered age transformation via Replicate SAM model.
+ * Falls back to CSS filters if AI service is unavailable.
  */
 export default function FaceAgeFilter({
   imageUrl,
@@ -26,22 +26,24 @@ export default function FaceAgeFilter({
 }: FaceAgeFilterProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [showOriginal, setShowOriginal] = useState(false)
+  const [transformedImageUrl, setTransformedImageUrl] = useState<string | null>(null)
+  const [isTransforming, setIsTransforming] = useState(false)
+  const [useFallback, setUseFallback] = useState(false)
 
   const ageDiff = Math.abs(targetSkinAge - currentSkinAge)
 
-  // Calculate CSS filter intensity based on age difference
-  // 5 years = 0.5 intensity, 10 years = 1.0 intensity
+  // Calculate CSS filter intensity based on age difference (fallback)
   const intensity = Math.min(ageDiff / 10, 1)
 
-  // CSS filter effects for younger look (smoother, brighter, more vibrant)
+  // CSS filter effects for younger look
   const youngerFilter = `
     brightness(${1 + (0.12 * intensity)})
     contrast(${1 + (0.08 * intensity)})
     saturate(${1 + (0.20 * intensity)})
-    blur(${0.5 * intensity}px)
+    blur(${0.4 * intensity}px)
   `.replace(/\s+/g, ' ').trim()
 
-  // CSS filter effects for older look (duller, less vibrant, slight warmth)
+  // CSS filter effects for older look
   const olderFilter = `
     brightness(${1 - (0.08 * intensity)})
     contrast(${1 - (0.12 * intensity)})
@@ -51,8 +53,59 @@ export default function FaceAgeFilter({
 
   const filterString = scenario === 'younger' ? youngerFilter : olderFilter
 
-  // Should we apply CSS filter? Only when not showing original
-  const shouldApplyFilter = !showOriginal
+  // Fetch AI-transformed image
+  const fetchTransformedImage = useCallback(async () => {
+    if (transformedImageUrl || isTransforming || useFallback) return
+
+    setIsTransforming(true)
+
+    try {
+      const response = await fetch('/api/face-aging', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          imageUrl,
+          targetAge: targetSkinAge,
+        }),
+      })
+
+      const data = await response.json()
+
+      if (data.success && data.transformedImage) {
+        setTransformedImageUrl(data.transformedImage)
+      } else if (data.fallback) {
+        // Service unavailable, use CSS fallback
+        setUseFallback(true)
+      } else {
+        setUseFallback(true)
+      }
+    } catch (error) {
+      console.error('Face aging error:', error)
+      setUseFallback(true)
+    } finally {
+      setIsTransforming(false)
+    }
+  }, [imageUrl, targetSkinAge, transformedImageUrl, isTransforming, useFallback])
+
+  // Trigger AI transformation on mount
+  useEffect(() => {
+    fetchTransformedImage()
+  }, [fetchTransformedImage])
+
+  // Reset state when target age changes (scenario switch)
+  useEffect(() => {
+    setTransformedImageUrl(null)
+    setUseFallback(false)
+    setIsTransforming(false)
+  }, [targetSkinAge])
+
+  // Determine which image to show
+  const displayImageUrl = showOriginal
+    ? imageUrl
+    : (transformedImageUrl || imageUrl)
+
+  // Should we apply CSS filter? Only if showing transformed view and no AI image available
+  const shouldApplyFilter = !showOriginal && !transformedImageUrl && !isTransforming
 
   return (
     <div className="relative group">
@@ -65,13 +118,16 @@ export default function FaceAgeFilter({
         onTouchEnd={() => setShowOriginal(false)}
       >
         {/* Loading skeleton */}
-        {!isLoaded && (
+        {(!isLoaded || isTransforming) && (
           <div className="absolute inset-0 bg-[#F4EBE7] animate-pulse flex flex-col items-center justify-center z-10">
             <div className="w-12 h-12 border-3 border-[#1C4444]/20 border-t-[#1C4444] rounded-full animate-spin" />
+            {isTransforming && (
+              <p className="text-xs text-[#1C4444]/60 mt-3">Creating preview...</p>
+            )}
           </div>
         )}
 
-        {/* Image with filter effect */}
+        {/* Image with optional filter effect */}
         <div
           className="relative aspect-square transition-all duration-500"
           style={{
@@ -79,18 +135,18 @@ export default function FaceAgeFilter({
           }}
         >
           <Image
-            src={imageUrl}
+            src={displayImageUrl}
             alt={`Your skin ${scenario === 'younger' ? 'with proper skincare' : 'without skincare'}`}
             fill
-            className={`object-cover transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-cover transition-opacity duration-300 ${isLoaded && !isTransforming ? 'opacity-100' : 'opacity-0'}`}
             onLoad={() => setIsLoaded(true)}
             sizes="(max-width: 768px) 100vw, 400px"
-            unoptimized={imageUrl.startsWith('data:')}
+            unoptimized={displayImageUrl.startsWith('data:') || displayImageUrl.includes('replicate')}
           />
         </div>
 
-        {/* Glow overlay for younger effect - adds radiance */}
-        {scenario === 'younger' && !showOriginal && (
+        {/* Glow overlay for younger effect (only with CSS fallback) */}
+        {scenario === 'younger' && !showOriginal && !transformedImageUrl && (
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-500"
             style={{
@@ -99,8 +155,8 @@ export default function FaceAgeFilter({
           />
         )}
 
-        {/* Shadow overlay for older effect - adds dullness */}
-        {scenario === 'older' && !showOriginal && (
+        {/* Shadow overlay for older effect (only with CSS fallback) */}
+        {scenario === 'older' && !showOriginal && !transformedImageUrl && (
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-500"
             style={{
@@ -162,14 +218,14 @@ export default function FaceAgeFilter({
             </svg>
           )}
           <span className="font-medium">
-            {scenario === 'younger' ? `→ ${targetSkinAge}` : `→ ${targetSkinAge}`}
+            → {targetSkinAge}
           </span>
         </div>
       </div>
 
       {/* Preview disclaimer */}
       <p className="text-xs text-[#1C4444]/40 text-center mt-2">
-        Visual preview for illustration
+        {transformedImageUrl ? 'AI-generated preview' : 'Visual preview for illustration'}
       </p>
     </div>
   )

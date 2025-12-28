@@ -294,12 +294,12 @@ AI-powered predictions based on historical analysis data with product-driven imp
   - Uses condition-specific reversibility rates (e.g., dehydration: 95%, wrinkles: 40%)
   - Shows exact day for clearable conditions (e.g., "Acne: Day 45")
 - **Face Age Filter**: Visual preview of transformation
-  - **AI-powered age transformation** via Hugging Face Space API (requires `HUGGINGFACE_API_TOKEN`)
+  - **AI-powered age transformation** via Replicate SAM model (requires `REPLICATE_API_TOKEN`)
   - CSS filter fallback when AI service unavailable
   - **5 years younger** with Ayonne products (realistic improvement)
   - **10 years older** without products (realistic degradation)
   - Hold/tap to compare with original photo
-  - "AI Generated" badge when using AI transformation
+  - Cost: ~$0.003 per transformation (~15 seconds)
   - API endpoint: `POST /api/face-aging`
 - **Multi-Product Checkout**: Select products needed for results
   - Checkbox selection with running total
@@ -429,10 +429,11 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 - `GET /api/skin-analysis/verify-customer` - Verify current session
 
 ### Face Aging
-- `POST /api/face-aging` - AI face age transformation (requires `HUGGINGFACE_API_TOKEN`)
-  - Body: `{ imageUrl, currentAge, targetAge }`
-  - Returns: `{ success, transformedImage }` or `{ error, fallback: true }` if unavailable
-  - Uses Hugging Face Space API (penpen-age-transformation)
+- `POST /api/face-aging` - AI face age transformation (requires `REPLICATE_API_TOKEN`)
+  - Body: `{ imageUrl, targetAge }`
+  - Returns: `{ success, transformedImage, targetAge }` or `{ error, fallback: true }` if unavailable
+  - Uses Replicate SAM model (yuval-alaluf/sam) - realistic age transformation
+  - Target ages are rounded to nearest decade (0, 10, 20, ... 100)
 
 ### Growth Hacking
 - `POST /api/referral/generate` - Generate referral code for user
@@ -488,8 +489,8 @@ SHOPIFY_ADMIN_API_TOKEN= # Admin API access token with write_price_rules scope
 # Admin API (required for admin endpoints)
 ADMIN_API_KEY=          # Secret key for admin API access
 
-# Hugging Face (optional - for AI face aging on Skin Forecast page)
-HUGGINGFACE_API_TOKEN=  # Get free token at https://huggingface.co/settings/tokens
+# Replicate (optional - for AI face aging on Skin Forecast page)
+REPLICATE_API_TOKEN=    # Get token at https://replicate.com/account/api-tokens (~$0.003/transform)
 ```
 
 ## Shopify Discount Code Integration
