@@ -55,6 +55,22 @@ model Customer {
   cart          Cart?
   skinAnalyses  SkinAnalysis[]
   createdAt     DateTime       @default(now())
+
+  // Growth hacking - Streaks
+  currentStreak      Int       @default(0)
+  longestStreak      Int       @default(0)
+  lastAnalysisDate   DateTime?
+
+  // Growth hacking - Referrals
+  totalReferrals         Int      @default(0)
+  lifetimeDiscountEarned Decimal  @default(0) @db.Decimal(10, 2)
+
+  // Referral relationships
+  referralCode      ReferralCode?
+  referralsGiven    Referral[]     @relation("Referrer")
+  referralReceived  Referral?      @relation("Referee")
+  discountCodes     DiscountCode[]
+  spinRewards       SpinReward[]
 }
 
 model Cart {
@@ -178,4 +194,120 @@ model RevokedToken {
 
   @@index([customerId])
   @@index([expiresAt])
+}
+
+// ============================================
+// GROWTH HACKING MODELS
+// ============================================
+
+// Referral codes for users to share
+model ReferralCode {
+  id              String     @id @default(cuid())
+  code            String     @unique // 8-char unique code
+  customerId      String     @unique
+  customer        Customer   @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  discountPercent Int        @default(10) // Discount for referee
+  usageCount      Int        @default(0)
+  maxUses         Int?       // null = unlimited
+  expiresAt       DateTime?
+  createdAt       DateTime   @default(now())
+  referrals       Referral[]
+
+  @@index([code])
+}
+
+// Track referral relationships
+model Referral {
+  id             String        @id @default(cuid())
+  referrerId     String
+  referrer       Customer      @relation("Referrer", fields: [referrerId], references: [id], onDelete: Cascade)
+  refereeId      String        @unique
+  referee        Customer      @relation("Referee", fields: [refereeId], references: [id], onDelete: Cascade)
+  referralCodeId String
+  referralCode   ReferralCode  @relation(fields: [referralCodeId], references: [id], onDelete: Cascade)
+  status         ReferralStatus @default(PENDING)
+  completedAt    DateTime?     // When referee completed first analysis
+  rewardedAt     DateTime?     // When referrer received reward
+  createdAt      DateTime      @default(now())
+
+  @@index([referrerId])
+  @@index([status])
+}
+
+enum ReferralStatus {
+  PENDING    // Referee signed up but hasn't analyzed
+  COMPLETED  // Referee completed first analysis
+  REWARDED   // Referrer received discount
+}
+
+// Discount codes (generated from various sources)
+model DiscountCode {
+  id              String        @id @default(cuid())
+  code            String        @unique // Unique discount code
+  customerId      String?       // null for guest codes
+  customer        Customer?     @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  discountPercent Int
+  type            DiscountType
+  used            Boolean       @default(false)
+  usedAt          DateTime?
+  expiresAt       DateTime
+  createdAt       DateTime      @default(now())
+
+  @@index([customerId])
+  @@index([code])
+  @@index([expiresAt])
+}
+
+enum DiscountType {
+  REFERRAL     // From referring someone
+  REFERRED     // From being referred
+  STREAK       // From analysis streak
+  SPIN         // From spin wheel
+  WELCOME      // First-time user
+  CHALLENGE    // Completing a challenge
+  GUEST        // Guest conversion incentive
+}
+
+// Guest sessions for anonymous analysis
+model GuestSession {
+  id                  String    @id @default(cuid())
+  sessionToken        String    @unique
+  email               String?   // Captured after analysis
+  analysisId          String?   // Linked analysis (if completed)
+  convertedCustomerId String?   // If converted to full account
+  ipHash              String?   // Hashed IP for rate limiting
+  createdAt           DateTime  @default(now())
+  expiresAt           DateTime
+
+  @@index([sessionToken])
+  @@index([ipHash])
+}
+
+// Spin wheel rewards
+model SpinReward {
+  id              String    @id @default(cuid())
+  customerId      String
+  customer        Customer  @relation(fields: [customerId], references: [id], onDelete: Cascade)
+  analysisId      String    // Which analysis triggered this spin
+  discountPercent Int
+  discountCode    String    @unique
+  claimed         Boolean   @default(false)
+  claimedAt       DateTime?
+  expiresAt       DateTime  // 24 hours from spin
+  createdAt       DateTime  @default(now())
+
+  @@index([customerId])
+  @@index([analysisId])
+}
+
+// Streak milestones achieved
+model StreakMilestone {
+  id          String   @id @default(cuid())
+  customerId  String
+  milestone   Int      // 3, 7, 30, etc.
+  rewardCode  String?  // Discount code issued
+  achievedAt  DateTime @default(now())
+
+  @@unique([customerId, milestone])
+  @@index([customerId])
 }

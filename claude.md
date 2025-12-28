@@ -90,13 +90,26 @@ src/
 │       ├── ScarcityIndicator.tsx     # Stock/urgency elements
 │       ├── CelebrationAnimation.tsx  # Confetti/unlock effects
 │       └── PersonalizedDashboard.tsx # User dashboard with goals
+│   └── growth/               # Growth hacking components
+│       ├── SpinWheel.tsx         # Animated spin-to-win wheel
+│       ├── DiscountTimer.tsx     # Countdown timer for expiring discounts
+│       ├── ReferralDashboard.tsx # Referral stats and share buttons
+│       ├── GuestEmailCapture.tsx # Email gate with discount incentive
+│       ├── DiscountBadge.tsx     # Display available discount codes
+│       └── ReferralBanner.tsx    # Sticky share banner
 ├── lib/
 │   ├── prisma.ts             # Prisma client singleton
 │   ├── auth.ts               # Session cookie utilities (HTTP-only cookies)
 │   ├── shopify.ts            # Shopify URL helpers
-│   ├── shopify-products.ts   # Product image/variant ID mapping
+│   ├── shopify-products.ts   # Product image/variant ID mapping (with discount support)
 │   ├── utils.ts              # Utility functions
 │   ├── features.ts          # Feature flags for API capabilities
+│   ├── growth/               # Growth hacking utilities
+│   │   ├── referral.ts       # Referral code generation and tracking
+│   │   ├── discount.ts       # Discount code management
+│   │   ├── streak.ts         # Analysis streak tracking and rewards
+│   │   ├── spin.ts           # Spin-to-win wheel logic
+│   │   └── guest.ts          # Guest session management
 │   └── skin-analysis/
 │       ├── analyzer.ts       # Core analysis utilities with prompt caching
 │       ├── cached-prompts.ts # Cached system prompts for cost optimization
@@ -268,6 +281,39 @@ The skin analysis uses advanced Anthropic Claude API features:
 - **Daily Reminders**: Shown on history page if user hasn't analyzed today
 - **PWA Install Prompt**: iOS/Android app install prompt on results page
 
+### Growth Hacking System
+Discount-driven viral growth mechanics:
+
+- **Referral Program**: Tiered rewards system
+  - User gets unique 8-character referral code
+  - Share via WhatsApp, Email, SMS, or copy link
+  - Tier progression: Bronze (1) → Silver (3) → Gold (5) → Platinum (10)
+  - Rewards: 10% → 20% → 25% + Free Sample → 30% + Free Product
+  - Referee gets 10% off first order
+
+- **Spin-to-Win Wheel**: Appears after completing analysis
+  - Prizes: 5% (40%), 10% (30%), 15% (18%), 20% (8%), Free Shipping (4%)
+  - 24-hour expiry on spin rewards
+  - One spin per analysis
+
+- **Streak Rewards**: Discount codes for consistent usage
+  - 3 weekly analyses: 10% off
+  - 7-day daily streak: 15% off
+  - 4 weekly analyses (1 month): 20% off
+
+- **Discount Timer**: Urgency countdown on results page
+  - Pulses/highlights when under 1 hour remaining
+  - Copy-to-clipboard functionality
+
+- **Guest Analysis Flow**: Reduce friction to first analysis
+  - One free analysis without account creation
+  - Email capture after results shown (10% discount incentive)
+  - Seamless conversion to full account (15% welcome bonus)
+
+- **Referral Banner**: Sticky prompt on results page
+  - "Share with a friend, you both save!"
+  - Quick share buttons for social platforms
+
 ## Shopify Integration
 
 All product purchases happen on the main Shopify store. This app provides:
@@ -293,6 +339,10 @@ SHOPIFY_PRODUCT_MAP = {
 // Multi-product cart using variant IDs
 buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 → https://ayonne.skin/cart/53383867597148:1,53383867564380:1
+
+// Cart with discount code applied
+buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
+→ https://ayonne.skin/cart/53383867597148:1?discount=SPIN123ABC
 ```
 
 ## API Routes
@@ -316,13 +366,35 @@ buildShopifyCartUrl(['vitamin-c-lotion', 'retinol-serum'])
 - `GET /api/skin-analysis/trends` - Get skin health trends (auth required)
 - `GET /api/skin-analysis/verify-customer` - Verify current session
 
+### Growth Hacking
+- `POST /api/referral/generate` - Generate referral code for user
+- `GET /api/referral/generate` - Get referral stats and code
+- `GET /api/referral/validate/[code]` - Validate a referral code
+- `POST /api/referral/apply` - Apply referral code on signup
+- `GET /api/discount/my-codes` - Get user's available discount codes
+- `GET /api/discount/validate/[code]` - Validate a discount code
+- `POST /api/spin/play` - Spin the wheel (one per analysis)
+- `GET /api/spin/available` - Check if spin is available
+- `GET /api/streak/status` - Get streak status and rewards
+- `POST /api/guest/start` - Create guest session for anonymous analysis
+- `PATCH /api/guest/convert` - Capture email (partial conversion, 10% discount)
+- `POST /api/guest/convert` - Full account conversion (15% welcome bonus)
+
 ## Database Models
 
-- **Customer**: email, password, skinAnalyses
+- **Customer**: email, password, skinAnalyses, currentStreak, longestStreak, totalReferrals
 - **SkinAnalysis**: sessionId, customerId, originalImage, skinType, conditions, recommendations, advice, status
 - **Product**: name, slug, shopifySlug, description, price, images, skinConcerns, active (for matching)
   - `shopifySlug`: The actual Shopify product handle for linking (may differ from local slug)
   - `active`: Whether product exists on Shopify (filters inactive products from recommendations)
+
+### Growth Hacking Models
+- **ReferralCode**: Unique 8-char codes for users to share
+- **Referral**: Tracks referrer → referee relationships and reward status
+- **DiscountCode**: Various types (referral, streak, spin, welcome, guest, challenge)
+- **GuestSession**: Anonymous sessions with optional email capture
+- **SpinReward**: Spin wheel prizes with 24-hour expiry
+- **StreakMilestone**: Achieved streak rewards (3-day, 7-day, 30-day)
 
 ## Environment Variables
 

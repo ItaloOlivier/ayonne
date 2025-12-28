@@ -430,10 +430,11 @@ export default async function ResultsPage({ params }: PageProps) {
         </div>
       </section>
 
-      {/* Client-side features: Install prompt, celebrations, purchase popups */}
+      {/* Client-side features: Install prompt, celebrations, purchase popups, spin wheel */}
       <ResultsClientWrapper
         improvement={improvement}
         isNewUser={!customerStats}
+        analysisId={analysis.id}
       />
     </div>
   )

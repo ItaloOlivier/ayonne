@@ -597,7 +597,8 @@ export function getShopifyVariantId(localSlug: string): string | null {
 
 // Build cart URL for multiple products using variant IDs
 // Format: /cart/variant_id:quantity,variant_id:quantity
-export function buildShopifyCartUrl(slugs: string[]): string {
+// Optionally append discount code
+export function buildShopifyCartUrl(slugs: string[], discountCode?: string): string {
   const items: string[] = []
 
   for (const slug of slugs) {
@@ -611,5 +612,19 @@ export function buildShopifyCartUrl(slugs: string[]): string {
     return 'https://ayonne.skin'
   }
 
-  return `https://ayonne.skin/cart/${items.join(',')}`
+  let url = `https://ayonne.skin/cart/${items.join(',')}`
+
+  // Append discount code if provided
+  if (discountCode) {
+    url += `?discount=${encodeURIComponent(discountCode)}`
+  }
+
+  return url
+}
+
+// Build checkout URL with discount pre-applied
+export function buildShopifyCheckoutUrl(slugs: string[], discountCode?: string): string {
+  const cartUrl = buildShopifyCartUrl(slugs, discountCode)
+  // Shopify will apply the discount code when the cart is loaded
+  return cartUrl
 }

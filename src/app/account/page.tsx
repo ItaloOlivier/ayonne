@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { ReferralDashboard, DiscountBadge } from '@/components/growth'
 
 const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
 const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
@@ -267,6 +268,14 @@ export default function AccountPage() {
                   </Link>
                 </div>
               )}
+            </div>
+
+            {/* Referral Program */}
+            <ReferralDashboard />
+
+            {/* Available Discounts */}
+            <div className="flex items-center justify-center">
+              <DiscountBadge showCode size="lg" />
             </div>
 
             {/* Quick Actions */}
