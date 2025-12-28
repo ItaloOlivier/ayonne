@@ -138,8 +138,8 @@ export default function SkinForecastView({ forecast, skinType, latestPhoto }: Sk
               scenario={activeScenario === 'withProducts' ? 'younger' : 'older'}
               label={
                 activeScenario === 'withProducts'
-                  ? '5 Years Younger With Ayonne'
-                  : '10 Years Without Skincare'
+                  ? 'With Consistent Skincare'
+                  : 'Without Skincare Routine'
               }
             />
           </div>

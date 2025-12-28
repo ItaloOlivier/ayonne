@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState } from 'react'
 import Image from 'next/image'
 
 interface FaceAgeFilterProps {
@@ -14,8 +14,8 @@ interface FaceAgeFilterProps {
 /**
  * FaceAgeFilter Component
  *
- * Uses AI-powered age transformation via Hugging Face Space.
- * Falls back to CSS filters if AI service is unavailable.
+ * Uses CSS filters to simulate skin aging/de-aging effects.
+ * Shows visual preview of how skin could look with proper care vs neglect.
  */
 export default function FaceAgeFilter({
   imageUrl,
@@ -26,71 +26,33 @@ export default function FaceAgeFilter({
 }: FaceAgeFilterProps) {
   const [isLoaded, setIsLoaded] = useState(false)
   const [showOriginal, setShowOriginal] = useState(false)
-  const [transformedImageUrl, setTransformedImageUrl] = useState<string | null>(null)
-  const [isTransforming, setIsTransforming] = useState(false)
-  const [transformError, setTransformError] = useState(false)
-  const [useAI, setUseAI] = useState(true)
 
   const ageDiff = Math.abs(targetSkinAge - currentSkinAge)
 
-  // Calculate CSS filter intensity based on age difference (fallback)
+  // Calculate CSS filter intensity based on age difference
+  // 5 years = 0.5 intensity, 10 years = 1.0 intensity
   const intensity = Math.min(ageDiff / 10, 1)
 
-  // CSS filter string for fallback
-  const filterString = scenario === 'younger'
-    ? `brightness(${1 + (0.08 * intensity)}) contrast(${1 + (0.05 * intensity)}) saturate(${1 + (0.15 * intensity)}) blur(${0.3 * intensity}px)`
-    : `brightness(${1 - (0.05 * intensity)}) contrast(${1 - (0.08 * intensity)}) saturate(${1 - (0.20 * intensity)}) sepia(${0.15 * intensity})`
+  // CSS filter effects for younger look (smoother, brighter, more vibrant)
+  const youngerFilter = `
+    brightness(${1 + (0.12 * intensity)})
+    contrast(${1 + (0.08 * intensity)})
+    saturate(${1 + (0.20 * intensity)})
+    blur(${0.5 * intensity}px)
+  `.replace(/\s+/g, ' ').trim()
 
-  // Fetch AI-transformed image
-  const fetchTransformedImage = useCallback(async () => {
-    if (!useAI || transformedImageUrl || isTransforming) return
+  // CSS filter effects for older look (duller, less vibrant, slight warmth)
+  const olderFilter = `
+    brightness(${1 - (0.08 * intensity)})
+    contrast(${1 - (0.12 * intensity)})
+    saturate(${1 - (0.25 * intensity)})
+    sepia(${0.20 * intensity})
+  `.replace(/\s+/g, ' ').trim()
 
-    setIsTransforming(true)
-    setTransformError(false)
+  const filterString = scenario === 'younger' ? youngerFilter : olderFilter
 
-    try {
-      const response = await fetch('/api/face-aging', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({
-          imageUrl,
-          currentAge: currentSkinAge,
-          targetAge: targetSkinAge,
-        }),
-      })
-
-      const data = await response.json()
-
-      if (data.success && data.transformedImage) {
-        setTransformedImageUrl(data.transformedImage)
-      } else if (data.fallback) {
-        // Service unavailable, use CSS fallback
-        setTransformError(true)
-        setUseAI(false)
-      } else {
-        setTransformError(true)
-      }
-    } catch (error) {
-      console.error('Face aging error:', error)
-      setTransformError(true)
-      setUseAI(false)
-    } finally {
-      setIsTransforming(false)
-    }
-  }, [imageUrl, currentSkinAge, targetSkinAge, useAI, transformedImageUrl, isTransforming])
-
-  // Trigger AI transformation on mount
-  useEffect(() => {
-    fetchTransformedImage()
-  }, [fetchTransformedImage])
-
-  // Determine which image to show
-  const displayImageUrl = showOriginal
-    ? imageUrl
-    : (transformedImageUrl || imageUrl)
-
-  // Should we apply CSS filter? Only if showing transformed view and no AI image available
-  const shouldApplyFilter = !showOriginal && !transformedImageUrl && !isTransforming
+  // Should we apply CSS filter? Only when not showing original
+  const shouldApplyFilter = !showOriginal
 
   return (
     <div className="relative group">
@@ -103,16 +65,13 @@ export default function FaceAgeFilter({
         onTouchEnd={() => setShowOriginal(false)}
       >
         {/* Loading skeleton */}
-        {(!isLoaded || isTransforming) && (
+        {!isLoaded && (
           <div className="absolute inset-0 bg-[#F4EBE7] animate-pulse flex flex-col items-center justify-center z-10">
             <div className="w-12 h-12 border-3 border-[#1C4444]/20 border-t-[#1C4444] rounded-full animate-spin" />
-            {isTransforming && (
-              <p className="text-xs text-[#1C4444]/60 mt-3">AI transforming...</p>
-            )}
           </div>
         )}
 
-        {/* Image */}
+        {/* Image with filter effect */}
         <div
           className="relative aspect-square transition-all duration-500"
           style={{
@@ -120,31 +79,34 @@ export default function FaceAgeFilter({
           }}
         >
           <Image
-            src={displayImageUrl}
-            alt={`Your skin ${scenario === 'younger' ? 'rejuvenated' : 'aged'}`}
+            src={imageUrl}
+            alt={`Your skin ${scenario === 'younger' ? 'with proper skincare' : 'without skincare'}`}
             fill
-            className={`object-cover transition-opacity duration-300 ${isLoaded && !isTransforming ? 'opacity-100' : 'opacity-0'}`}
+            className={`object-cover transition-opacity duration-300 ${isLoaded ? 'opacity-100' : 'opacity-0'}`}
             onLoad={() => setIsLoaded(true)}
             sizes="(max-width: 768px) 100vw, 400px"
-            unoptimized={displayImageUrl.startsWith('data:')}
+            unoptimized={imageUrl.startsWith('data:')}
           />
         </div>
 
-        {/* Glow overlay for younger effect (only with CSS fallback) */}
-        {scenario === 'younger' && !showOriginal && !transformedImageUrl && (
+        {/* Glow overlay for younger effect - adds radiance */}
+        {scenario === 'younger' && !showOriginal && (
           <div
             className="absolute inset-0 pointer-events-none transition-opacity duration-500"
             style={{
-              background: `radial-gradient(circle at 50% 30%, rgba(255, 255, 255, ${0.15 * intensity}), transparent 70%)`,
+              background: `radial-gradient(circle at 50% 30%, rgba(255, 255, 255, ${0.18 * intensity}), transparent 70%)`,
             }}
           />
         )}
 
-        {/* AI badge */}
-        {transformedImageUrl && !showOriginal && (
-          <div className="absolute top-3 right-3 px-2 py-1 rounded-full text-xs bg-gradient-to-r from-purple-500 to-pink-500 text-white font-medium">
-            AI Generated
-          </div>
+        {/* Shadow overlay for older effect - adds dullness */}
+        {scenario === 'older' && !showOriginal && (
+          <div
+            className="absolute inset-0 pointer-events-none transition-opacity duration-500"
+            style={{
+              background: `radial-gradient(circle at 50% 70%, rgba(139, 90, 43, ${0.08 * intensity}), transparent 80%)`,
+            }}
+          />
         )}
 
         {/* Age badge */}
@@ -174,10 +136,10 @@ export default function FaceAgeFilter({
         )}
 
         {/* "Hold to see original" hint */}
-        <div className={`absolute ${transformedImageUrl ? 'top-10' : 'top-3'} right-3 px-2 py-1 rounded-full text-xs bg-black/50 text-white/80 backdrop-blur-sm transition-opacity duration-300 ${
+        <div className={`absolute top-3 right-3 px-2 py-1 rounded-full text-xs bg-black/50 text-white/80 backdrop-blur-sm transition-opacity duration-300 ${
           showOriginal ? 'opacity-100' : 'opacity-0 group-hover:opacity-100'
         }`}>
-          {showOriginal ? 'Original' : 'Hold to compare'}
+          {showOriginal ? 'Current' : 'Hold to compare'}
         </div>
       </div>
 
@@ -205,12 +167,10 @@ export default function FaceAgeFilter({
         </div>
       </div>
 
-      {/* Error/fallback indicator */}
-      {transformError && !transformedImageUrl && (
-        <p className="text-xs text-[#1C4444]/50 text-center mt-2">
-          Using visual preview (AI unavailable)
-        </p>
-      )}
+      {/* Preview disclaimer */}
+      <p className="text-xs text-[#1C4444]/40 text-center mt-2">
+        Visual preview for illustration
+      </p>
     </div>
   )
 }
