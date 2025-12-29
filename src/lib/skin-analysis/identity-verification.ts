@@ -176,9 +176,28 @@ Add this to your JSON response:
 
 // The prompt addition for identity verification (Step 0)
 export const IDENTITY_VERIFICATION_PROMPT = `
-### Step 0: Identity Verification (MANDATORY - DO THIS FIRST)
+### Step 0: Identity & Face Count Verification (MANDATORY - DO THIS FIRST)
 
-Before analyzing skin conditions, you MUST verify that all three images show the SAME PERSON.
+**⚠️ CRITICAL: MULTIPLE FACE DETECTION IS REQUIRED ⚠️**
+
+Before ANYTHING else, you MUST count the number of faces in EACH image. This is a SECURITY requirement.
+
+**FACE COUNTING (MANDATORY FOR EACH IMAGE):**
+1. Scan the ENTIRE image, including backgrounds, edges, and reflections
+2. Count ALL visible faces, including:
+   - Children, babies, or infants (even partially visible)
+   - People in the background
+   - Faces in mirrors, reflections, or photos on walls
+   - Partially visible faces at image edges
+3. Report the EXACT count in facesDetected for each angle
+
+**⚠️ IF ANY IMAGE HAS MORE THAN 1 FACE:**
+- Set facesDetected to the actual count (e.g., front: 2)
+- Set samePerson to FALSE
+- Add a concern with type "multiple_faces" and severity "error"
+- Set rejectReason to describe which image(s) have multiple faces
+
+**After face counting, verify all three images show the SAME PERSON:**
 
 **Verification Checks:**
 1. **Facial Structure Consistency**: Compare bone structure, face shape, and proportions
@@ -187,15 +206,11 @@ Before analyzing skin conditions, you MUST verify that all three images show the
 4. **Hair/Hairline**: Check for consistent hair color, texture, and hairline
 5. **Distinguishing Marks**: Look for moles, scars, or birthmarks that should appear consistently
 
-**Multi-Face Detection:**
-- Verify EXACTLY ONE face is present in each image
-- If multiple faces detected in ANY image, immediately reject
-
 **Red Flags (MUST REJECT):**
+- **Multiple faces in ANY image (most critical - always check carefully)**
 - Different facial bone structure between angles
 - Inconsistent distinguishing marks (moles appearing/disappearing)
 - Dramatically different skin tones (beyond lighting variance)
-- Multiple faces in any image
 - Face partially obscured in ways that prevent verification
 
 **Output for Identity Verification:**
@@ -208,9 +223,9 @@ Add this to your JSON response:
   "frontToRightMatch": 0.0-1.0,
   "leftToRightMatch": 0.0-1.0,
   "facesDetected": {
-    "front": 1,
-    "left": 1,
-    "right": 1
+    "front": <NUMBER - actual face count, check carefully for children/background people>,
+    "left": <NUMBER - actual face count>,
+    "right": <NUMBER - actual face count>
   },
   "concerns": [
     {
@@ -224,9 +239,11 @@ Add this to your JSON response:
 }
 
 **IMPORTANT:**
+- **Always report accurate face counts - do not assume 1 face per image**
+- If any image contains multiple people (even a child in the corner), this MUST be flagged
 - If \`samePerson\` is false, you MUST still provide skin analysis but flag the verification failure
 - Confidence threshold for acceptance: ${IDENTITY_CONFIDENCE_THRESHOLD} (${IDENTITY_CONFIDENCE_THRESHOLD * 100}%)
-- Be thorough but not overly strict - lighting can cause apparent differences
+- Be thorough but not overly strict on identity - lighting can cause apparent differences
 - Same person wearing different expressions is VALID (they may smile in one, neutral in another)
 `
 
@@ -340,20 +357,56 @@ export function getIdentityVerificationErrorMessage(
 
 /**
  * Check for multiple faces in the AI response
+ * Uses multiple detection methods for robustness:
+ * 1. facesDetected counts
+ * 2. concerns array with type 'multiple_faces'
+ * 3. rejectReason containing multiple face keywords
  */
 export function hasMultipleFaces(aiResponse: Record<string, unknown>): boolean {
   const verification = aiResponse.identityVerification as Record<string, unknown> | undefined
   if (!verification) return false
 
+  // Method 1: Check facesDetected counts
   const facesDetected = verification.facesDetected as Record<string, number> | undefined
-  if (!facesDetected) return false
+  if (facesDetected) {
+    const hasManyInFacesDetected = (
+      (facesDetected.front ?? 1) > 1 ||
+      (facesDetected.left ?? 1) > 1 ||
+      (facesDetected.right ?? 1) > 1
+    )
+    if (hasManyInFacesDetected) {
+      return true
+    }
+  }
 
-  // Check if any angle has more than 1 face
-  return (
-    (facesDetected.front ?? 1) > 1 ||
-    (facesDetected.left ?? 1) > 1 ||
-    (facesDetected.right ?? 1) > 1
-  )
+  // Method 2: Check concerns array for multiple_faces type
+  const concerns = verification.concerns as Array<{ type?: string; description?: string; severity?: string }> | undefined
+  if (concerns && Array.isArray(concerns)) {
+    const hasMultipleFacesConcern = concerns.some(c =>
+      c.type === 'multiple_faces' ||
+      (c.severity === 'error' && c.description?.toLowerCase().includes('multiple'))
+    )
+    if (hasMultipleFacesConcern) {
+      return true
+    }
+  }
+
+  // Method 3: Check rejectReason for multiple face keywords
+  const rejectReason = verification.rejectReason as string | undefined
+  if (rejectReason) {
+    const multipleFaceKeywords = ['multiple face', 'multiple person', 'multiple people', 'more than one', 'another person', 'other person', 'additional face', 'second person', 'two face', 'two people']
+    const hasMultipleFaceReason = multipleFaceKeywords.some(keyword =>
+      rejectReason.toLowerCase().includes(keyword)
+    )
+    if (hasMultipleFaceReason) {
+      return true
+    }
+  }
+
+  // Method 4: Check samePerson=false with low confidence could indicate multiple faces
+  // But we don't want false positives, so only check explicit indicators above
+
+  return false
 }
 
 /**
