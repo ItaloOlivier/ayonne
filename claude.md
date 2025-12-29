@@ -140,9 +140,10 @@ src/
 │       ├── tool-use-analyzer.ts    # Analysis with tool use
 │       ├── extended-thinking.ts    # Deep reasoning for complex cases
 │       ├── unified-analyzer.ts     # Intelligent method selection
-│       ├── image-quality.ts        # Pre-analysis quality validation
+│       ├── image-quality.ts        # Pre-analysis quality validation (luxury thresholds)
 │       ├── image-preprocessing.ts  # Server-side image normalization
-│       ├── face-detection.ts       # Browser-based face detection
+│       ├── face-detection.ts       # Browser-based face detection (multi-face rejection)
+│       ├── identity-verification.ts # Security: identity, makeup, filter, zone validation
 │       └── forecast.ts         # 90-day skin forecast projections
 ├── hooks/
 │   ├── useLiveCamera.ts          # Live camera with auto-capture hook
@@ -598,6 +599,45 @@ Contains optimized SEO titles and descriptions for all products. Use with the SE
 - **HTTP-only cookies**: Session tokens not accessible via JavaScript
 - **Secure cookies**: HTTPS-only in production
 - **Image storage**: Photos stored as PNG lossless at 1400px max width for high-quality AI analysis and face aging
+
+### Skin Analyzer Security (Luxury Product Standards)
+
+Multi-layer verification ensures accurate, fraud-resistant analysis:
+
+**Identity Verification** (`identity-verification.ts`)
+- Step 0 in Claude prompt verifies same person across all 3 angles
+- Compares facial structure, features, skin tone, distinguishing marks
+- Rejects if confidence < 70% with error code `IDENTITY_MISMATCH`
+
+**Multiple Face Detection**
+- Browser-side: FaceDetector API detects up to 5 faces, rejects if >1
+- AI-side: Claude validates face count per image
+- Error code: `MULTIPLE_FACES`
+
+**Makeup & Filter Detection**
+- Step 0.5 detects heavy makeup and beauty filters
+- Beauty filters (>70% confidence) block analysis completely
+- Heavy makeup logged as warning but allowed
+- Error code: `BEAUTY_FILTER`
+
+**Face Zone Validation**
+- Step 0.75 validates critical facial zones are visible
+- Front: forehead, eyes, nose, cheeks, mouth, chin
+- Profile: temple, cheek contour, jawline
+- Rejects if visibility score < 60%
+- Error code: `FACE_ZONES_INCOMPLETE`
+
+**Raised Quality Thresholds**
+- Minimum resolution: 800x800 (increased from 640)
+- Brightness range: 70-190 (tightened from 60-200)
+- Minimum contrast: 35 (increased from 30)
+- Minimum sharpness: 150 (increased from 100)
+- Overall minimum score: 55 (increased from 40)
+
+**Analysis Disclaimers**
+- Medical advice disclaimer included in all responses
+- Conservative guidance: err on younger side for age estimates
+- Never diagnose medical conditions
 
 ### GDPR/Privacy Compliance
 - **Account deletion**: DELETE `/api/auth/delete-account` removes all user data
