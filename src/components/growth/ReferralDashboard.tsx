@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 
 interface ReferralTier {
   count: number
@@ -30,8 +31,8 @@ interface ReferralStats {
 export default function ReferralDashboard() {
   const [stats, setStats] = useState<ReferralStats | null>(null)
   const [loading, setLoading] = useState(true)
-  const [copied, setCopied] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const { copied, copy } = useCopyToClipboard()
 
   useEffect(() => {
     fetchStats()
@@ -51,25 +52,6 @@ export default function ReferralDashboard() {
       setError('Failed to load referral stats')
     } finally {
       setLoading(false)
-    }
-  }
-
-  const copyLink = async () => {
-    if (!stats) return
-    try {
-      await navigator.clipboard.writeText(stats.shareUrl)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Fallback
-      const textArea = document.createElement('textarea')
-      textArea.value = stats.shareUrl
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     }
   }
 
@@ -146,7 +128,7 @@ export default function ReferralDashboard() {
             {stats.code}
           </code>
           <button
-            onClick={copyLink}
+            onClick={() => stats && copy(stats.shareUrl)}
             className={`px-4 py-3 rounded-lg font-semibold transition-all ${
               copied
                 ? 'bg-green-500 text-white'

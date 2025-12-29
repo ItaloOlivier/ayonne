@@ -1,19 +1,13 @@
 import { NextResponse } from 'next/server'
 import { cleanupOrphanedData, getOrphanedDataStats } from '@/lib/cleanup'
-
-// Simple admin key check
-function isAdminRequest(request: Request): boolean {
-  const adminKey = request.headers.get('x-admin-key')
-  const expectedKey = process.env.ADMIN_API_KEY
-  return !!expectedKey && adminKey === expectedKey
-}
+import { isAdminRequest, unauthorizedResponse } from '@/lib/admin-auth'
 
 /**
  * GET: Get statistics about orphaned data that would be cleaned up
  */
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   try {
@@ -39,7 +33,7 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   try {

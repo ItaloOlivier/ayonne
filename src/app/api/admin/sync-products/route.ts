@@ -5,20 +5,14 @@ import {
   isShopifyConfigured,
 } from '@/lib/shopify-admin'
 import { SHOPIFY_PRODUCT_MAP } from '@/lib/shopify-products'
-
-// Simple admin key check
-function isAdminRequest(request: Request): boolean {
-  const adminKey = request.headers.get('x-admin-key')
-  const expectedKey = process.env.ADMIN_API_KEY
-  return !!expectedKey && adminKey === expectedKey
-}
+import { isAdminRequest, unauthorizedResponse } from '@/lib/admin-auth'
 
 /**
  * GET: Get sync status and preview what would be synced
  */
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   if (!isShopifyConfigured()) {
@@ -117,7 +111,7 @@ export async function GET(request: Request) {
  */
 export async function POST(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   if (!isShopifyConfigured()) {

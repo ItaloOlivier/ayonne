@@ -1,18 +1,12 @@
 import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { getDiscountTypeLabel } from '@/lib/growth/discount'
-
-// Simple admin key check
-function isAdminRequest(request: Request): boolean {
-  const adminKey = request.headers.get('x-admin-key')
-  const expectedKey = process.env.ADMIN_API_KEY
-  return !!expectedKey && adminKey === expectedKey
-}
+import { isAdminRequest, unauthorizedResponse } from '@/lib/admin-auth'
 
 // GET: Export discount codes as CSV for manual Shopify import
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   try {

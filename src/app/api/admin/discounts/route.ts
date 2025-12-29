@@ -2,18 +2,12 @@ import { NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
 import { syncDiscountToShopify, isShopifyConfigured, batchSyncDiscountsToShopify } from '@/lib/shopify-admin'
 import { getDiscountTypeLabel } from '@/lib/growth/discount'
-
-// Simple admin key check (in production, use proper admin auth)
-function isAdminRequest(request: Request): boolean {
-  const adminKey = request.headers.get('x-admin-key')
-  const expectedKey = process.env.ADMIN_API_KEY
-  return !!expectedKey && adminKey === expectedKey
-}
+import { isAdminRequest, unauthorizedResponse } from '@/lib/admin-auth'
 
 // GET: List all discount codes with sync status
 export async function GET(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   try {
@@ -38,13 +32,17 @@ export async function GET(request: Request) {
       }
     })
 
-    const stats = {
-      total: await prisma.discountCode.count(),
-      synced: await prisma.discountCode.count({ where: { shopifySynced: true } }),
-      unsynced: await prisma.discountCode.count({ where: { shopifySynced: false } }),
-      used: await prisma.discountCode.count({ where: { used: true } }),
-      expired: await prisma.discountCode.count({ where: { expiresAt: { lt: new Date() } } }),
-    }
+    // Fetch all stats in parallel to avoid N+1 queries
+    const now = new Date()
+    const [total, synced, unsynced, used, expired] = await Promise.all([
+      prisma.discountCode.count(),
+      prisma.discountCode.count({ where: { shopifySynced: true } }),
+      prisma.discountCode.count({ where: { shopifySynced: false } }),
+      prisma.discountCode.count({ where: { used: true } }),
+      prisma.discountCode.count({ where: { expiresAt: { lt: now } } }),
+    ])
+
+    const stats = { total, synced, unsynced, used, expired }
 
     return NextResponse.json({
       success: true,
@@ -82,7 +80,7 @@ export async function GET(request: Request) {
 // POST: Sync unsynced discount codes to Shopify
 export async function POST(request: Request) {
   if (!isAdminRequest(request)) {
-    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    return unauthorizedResponse()
   }
 
   if (!isShopifyConfigured()) {
@@ -176,15 +174,16 @@ export async function POST(request: Request) {
 
       const results = await batchSyncDiscountsToShopify(toSync)
 
-      // Update synced status in database
-      for (const discount of unsyncedDiscounts) {
-        const wasSuccess = !results.errors.some(e => e.startsWith(discount.code))
-        if (wasSuccess) {
-          await prisma.discountCode.update({
-            where: { id: discount.id },
-            data: { shopifySynced: true }
-          })
-        }
+      // Update synced status in database using batch update (avoid N+1)
+      const successfulCodes = unsyncedDiscounts
+        .filter(d => !results.errors.some(e => e.startsWith(d.code)))
+        .map(d => d.id)
+
+      if (successfulCodes.length > 0) {
+        await prisma.discountCode.updateMany({
+          where: { id: { in: successfulCodes } },
+          data: { shopifySynced: true }
+        })
       }
 
       return NextResponse.json({

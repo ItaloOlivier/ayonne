@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
+import { useCopyToClipboard } from '@/hooks/useCopyToClipboard'
 
 interface DiscountInfo {
   code: string
@@ -23,7 +24,7 @@ export default function DiscountBadge({
 }: DiscountBadgeProps) {
   const [bestDiscount, setBestDiscount] = useState<DiscountInfo | null>(discount || null)
   const [loading, setLoading] = useState(!discount)
-  const [copied, setCopied] = useState(false)
+  const { copied, copy } = useCopyToClipboard()
 
   useEffect(() => {
     if (!discount) {
@@ -43,25 +44,6 @@ export default function DiscountBadge({
       // Silently fail - badge just won't show
     } finally {
       setLoading(false)
-    }
-  }
-
-  const copyCode = async () => {
-    if (!bestDiscount) return
-    try {
-      await navigator.clipboard.writeText(bestDiscount.code)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      // Fallback
-      const textArea = document.createElement('textarea')
-      textArea.value = bestDiscount.code
-      document.body.appendChild(textArea)
-      textArea.select()
-      document.execCommand('copy')
-      document.body.removeChild(textArea)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
     }
   }
 
@@ -85,7 +67,7 @@ export default function DiscountBadge({
           {bestDiscount.code}
         </code>
         <button
-          onClick={copyCode}
+          onClick={() => bestDiscount && copy(bestDiscount.code)}
           className="pr-3 hover:text-white/80 transition-colors"
           aria-label="Copy discount code"
         >

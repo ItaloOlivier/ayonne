@@ -1,19 +1,17 @@
 import { NextResponse } from 'next/server'
-import { getCurrentCustomer } from '@/lib/auth'
+import { requireAuth, notFoundResponse, serverErrorResponse } from '@/lib/api-helpers'
 import { getStreakStatus, getWeeklyAnalysisCount } from '@/lib/growth/streak'
 
 export async function GET() {
   try {
-    const user = await getCurrentCustomer()
-    if (!user) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
-    }
+    const { user, error } = await requireAuth()
+    if (error) return error
 
     const streakStatus = await getStreakStatus(user.id)
     const weeklyProgress = await getWeeklyAnalysisCount(user.id)
 
     if (!streakStatus) {
-      return NextResponse.json({ error: 'User not found' }, { status: 404 })
+      return notFoundResponse('User')
     }
 
     return NextResponse.json({
@@ -23,9 +21,6 @@ export async function GET() {
     })
   } catch (error) {
     console.error('Error getting streak status:', error)
-    return NextResponse.json(
-      { error: 'Failed to get streak status' },
-      { status: 500 }
-    )
+    return serverErrorResponse('Failed to get streak status')
   }
 }

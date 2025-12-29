@@ -214,6 +214,19 @@ model RevokedToken {
   @@index([expiresAt])
 }
 
+// Password reset tokens (stored in DB instead of in-memory for production)
+model PasswordResetToken {
+  id          String   @id @default(cuid())
+  tokenHash   String   @unique // SHA256 hash of the actual token
+  email       String
+  expiresAt   DateTime
+  usedAt      DateTime?
+  createdAt   DateTime @default(now())
+
+  @@index([email])
+  @@index([expiresAt])
+}
+
 // ============================================
 // GROWTH HACKING MODELS
 // ============================================
