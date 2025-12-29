@@ -51,7 +51,9 @@ src/
 │   │   ├── auth/
 │   │   │   ├── login/        # Login API endpoint (sets session cookie)
 │   │   │   ├── logout/       # Logout API endpoint (clears session cookie)
-│   │   │   └── me/           # Get current user from cookie
+│   │   │   └── me/           # Get current user from cookie (includes skinGoal)
+│   │   ├── account/
+│   │   │   └── skin-goal/    # GET/PATCH skincare goal preference
 │   │   └── skin-analysis/
 │   │       ├── analyze/      # AI skin analysis endpoint
 │   │       ├── history/      # User analysis history
@@ -92,7 +94,8 @@ src/
 │       ├── CelebrationAnimation.tsx  # Confetti/unlock effects
 │       ├── PersonalizedDashboard.tsx # User dashboard with goals
 │       ├── SkinForecast.tsx      # 90-day projections and predictions
-│       └── FaceAgeFilter.tsx     # Visual age simulation with CSS filters
+│       ├── FaceAgeFilter.tsx     # Visual age simulation with CSS filters
+│       └── SkinGoalSelector.tsx  # Skincare goal selection with badge export
 │   └── growth/               # Growth hacking components
 │       ├── SpinWheel.tsx         # Animated spin-to-win wheel
 │       ├── DiscountTimer.tsx     # Countdown timer for expiring discounts
@@ -256,6 +259,33 @@ The skin analysis uses advanced Anthropic Claude API features:
 - Enables targeted product recommendations:
   - Anti-aging products for skin age concerns
   - Treatment products for skin quality concerns
+
+### Skincare Goals (Personalized Scoring)
+Users choose their skincare ambition level, which adjusts how strictly their skin is scored:
+
+- **Age Normally** 🌿 (1.5x multiplier)
+  - Relaxed scoring for those accepting natural aging gracefully
+  - Target score: ~70 for typical conditions
+  - Tagline: "Embrace your journey"
+
+- **Age Gracefully** ✨ (2.0x multiplier) - Default
+  - Balanced scoring for moderate skincare enthusiasts
+  - Target score: ~60 for typical conditions
+  - Tagline: "Glow at every age"
+
+- **Stay Young Forever** 💎 (2.5x multiplier)
+  - Ambitious scoring for anti-aging perfectionists
+  - Target score: ~50 for typical conditions
+  - Tagline: "Defy time itself"
+
+**Implementation:**
+- Goal stored in Customer model (`skinGoal` field with `SkinGoal` enum)
+- Multipliers applied to both vitality (skin age) and quality scores
+- Category scores (hydration, clarity, texture, radiance) also affected
+- User selects goal on Account page
+- Goal badge displayed on results page
+- API: `GET/PATCH /api/account/skin-goal`
+- Component: `SkinGoalSelector.tsx` with `SkinGoalBadge` export
 
 ### Product Recommendations
 - Matches products to detected skin conditions
@@ -431,11 +461,15 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 - `POST /api/auth/login` - Login with email/password (sets HTTP-only session cookie)
 - `POST /api/auth/logout` - Logout (clears session cookie)
 - `POST /api/auth/logout-all` - Logout from all devices (revokes all session tokens)
-- `GET /api/auth/me` - Get current authenticated user from cookie
+- `GET /api/auth/me` - Get current authenticated user from cookie (includes skinGoal)
 - `POST /api/auth/forgot-password` - Request password reset email
 - `POST /api/auth/reset-password` - Reset password with token
 - `DELETE /api/auth/delete-account` - Permanently delete account and all data (GDPR)
 - `GET /api/auth/export-data` - Export all user data as JSON (GDPR data portability)
+
+### Account Settings
+- `GET /api/account/skin-goal` - Get user's skincare goal preference
+- `PATCH /api/account/skin-goal` - Update skincare goal (AGE_NORMALLY, AGE_GRACEFULLY, STAY_YOUNG_FOREVER)
 
 ### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)

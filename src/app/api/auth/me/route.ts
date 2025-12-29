@@ -22,6 +22,7 @@ export async function GET() {
         phone: customer.phone,
         createdAt: customer.createdAt,
         analysisCount: customer.analysisCount,
+        skinGoal: customer.skinGoal || 'AGE_GRACEFULLY',
       }
     })
   } catch (error) {

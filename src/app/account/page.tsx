@@ -4,6 +4,8 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { ReferralDashboard, DiscountBadge } from '@/components/growth'
+import SkinGoalSelector from '@/components/skin-analysis/SkinGoalSelector'
+import { SkinGoal, SKIN_GOAL_INFO } from '@/lib/skin-analysis/scoring'
 
 const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
 const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
@@ -16,6 +18,7 @@ interface CustomerData {
   phone: string | null
   createdAt: string
   analysisCount: number
+  skinGoal?: SkinGoal
 }
 
 interface SkinAnalysis {
@@ -31,6 +34,9 @@ export default function AccountPage() {
   const [customer, setCustomer] = useState<CustomerData | null>(null)
   const [analyses, setAnalyses] = useState<SkinAnalysis[]>([])
   const [isLoading, setIsLoading] = useState(true)
+  const [skinGoal, setSkinGoal] = useState<SkinGoal>('AGE_GRACEFULLY')
+  const [isUpdatingGoal, setIsUpdatingGoal] = useState(false)
+  const [showGoalSelector, setShowGoalSelector] = useState(false)
 
   useEffect(() => {
     // Check if user is logged in
@@ -43,8 +49,22 @@ export default function AccountPage() {
     }
 
     if (customerData) {
-      setCustomer(JSON.parse(customerData))
+      const parsed = JSON.parse(customerData)
+      setCustomer(parsed)
+      if (parsed.skinGoal) {
+        setSkinGoal(parsed.skinGoal)
+      }
     }
+
+    // Fetch current skin goal from server
+    fetch('/api/account/skin-goal')
+      .then(res => res.json())
+      .then(data => {
+        if (data.skinGoal) {
+          setSkinGoal(data.skinGoal)
+        }
+      })
+      .catch(console.error)
 
     // Fetch analysis history
     fetch(`/api/skin-analysis/history?customerId=${customerId}&limit=5`)
@@ -57,6 +77,32 @@ export default function AccountPage() {
       .catch(console.error)
       .finally(() => setIsLoading(false))
   }, [router])
+
+  const handleGoalChange = async (newGoal: SkinGoal) => {
+    setIsUpdatingGoal(true)
+    try {
+      const response = await fetch('/api/account/skin-goal', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ skinGoal: newGoal }),
+      })
+
+      if (response.ok) {
+        setSkinGoal(newGoal)
+        // Update local storage
+        if (customer) {
+          const updatedCustomer = { ...customer, skinGoal: newGoal }
+          localStorage.setItem(CUSTOMER_DATA_KEY, JSON.stringify(updatedCustomer))
+          setCustomer(updatedCustomer)
+        }
+        setShowGoalSelector(false)
+      }
+    } catch (error) {
+      console.error('Failed to update skin goal:', error)
+    } finally {
+      setIsUpdatingGoal(false)
+    }
+  }
 
   const handleLogout = () => {
     localStorage.removeItem(CUSTOMER_STORAGE_KEY)
@@ -169,6 +215,59 @@ export default function AccountPage() {
                   </p>
                 </div>
               </div>
+            </div>
+
+            {/* Skincare Goal Card */}
+            <div className="card-luxury p-8 md:p-10">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-medium text-[#1C4444] mb-2 tracking-wide">
+                    Your Skincare Goal
+                  </h2>
+                  <p className="text-[#1C4444]/50 text-sm">
+                    This affects how strictly we score your skin analysis
+                  </p>
+                </div>
+                {!showGoalSelector && (
+                  <button
+                    onClick={() => setShowGoalSelector(true)}
+                    className="text-[#D4AF37] hover:text-[#1C4444] text-sm font-medium tracking-wide transition-all duration-300"
+                  >
+                    Change
+                  </button>
+                )}
+              </div>
+
+              {showGoalSelector ? (
+                <div className="space-y-4">
+                  <SkinGoalSelector
+                    currentGoal={skinGoal}
+                    onGoalChange={handleGoalChange}
+                    isLoading={isUpdatingGoal}
+                    variant="settings"
+                  />
+                  <button
+                    onClick={() => setShowGoalSelector(false)}
+                    className="w-full py-3 text-[#1C4444]/60 hover:text-[#1C4444] text-sm transition-colors"
+                  >
+                    Cancel
+                  </button>
+                </div>
+              ) : (
+                <div className="flex items-center gap-4 p-5 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#D4AF37]/20">
+                  <div className="w-14 h-14 rounded-xl bg-[#D4AF37]/15 flex items-center justify-center text-3xl">
+                    {SKIN_GOAL_INFO[skinGoal]?.emoji || '✨'}
+                  </div>
+                  <div className="flex-1">
+                    <p className="font-medium text-[#1C4444] text-lg">
+                      {SKIN_GOAL_INFO[skinGoal]?.label || 'Age Gracefully'}
+                    </p>
+                    <p className="text-sm text-[#1C4444]/60 mt-1">
+                      {SKIN_GOAL_INFO[skinGoal]?.description || 'Balanced scoring for healthy skin'}
+                    </p>
+                  </div>
+                </div>
+              )}
             </div>
 
             {/* Stats Card */}

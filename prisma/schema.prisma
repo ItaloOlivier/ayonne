@@ -71,6 +71,9 @@ model Customer {
   shopifyCustomerId String?    // Shopify GID (gid://shopify/Customer/123)
   shopifySyncedAt   DateTime?  // When customer was synced to Shopify
 
+  // Skincare Goal (gamified scoring)
+  skinGoal          SkinGoal   @default(AGE_GRACEFULLY)
+
   // Growth hacking - Streaks
   currentStreak      Int       @default(0)
   longestStreak      Int       @default(0)
@@ -403,4 +406,11 @@ enum ChallengeStatus {
   ACTIVE
   COMPLETED
   ABANDONED
+}
+
+// Skincare goal - affects how strictly scores are calculated
+enum SkinGoal {
+  AGE_NORMALLY       // Relaxed scoring (1.5x weights)
+  AGE_GRACEFULLY     // Balanced scoring (2.0x weights) - default
+  STAY_YOUNG_FOREVER // Ambitious scoring (2.5x weights)
 }

@@ -49,6 +49,9 @@ export default function SkinForecastView({ forecast, skinType, latestPhoto }: Sk
   const qualityImprovement = forecast.withProducts
     ? forecast.withProducts.qualityScore90 - forecast.currentQualityScore
     : 0
+  const vitalityImprovement = forecast.withProducts
+    ? forecast.withProducts.vitalityScore90 - forecast.currentVitalityScore
+    : 0
 
   // Calculate degradation (without products)
   const skinAgeDegradation = forecast.withoutProducts
@@ -56,6 +59,9 @@ export default function SkinForecastView({ forecast, skinType, latestPhoto }: Sk
     : 0
   const qualityDegradation = forecast.withoutProducts
     ? forecast.currentQualityScore - forecast.withoutProducts.qualityScore90
+    : 0
+  const vitalityDegradation = forecast.withoutProducts
+    ? forecast.currentVitalityScore - forecast.withoutProducts.vitalityScore90
     : 0
 
   // Early return if forecast data is incomplete
@@ -155,12 +161,14 @@ export default function SkinForecastView({ forecast, skinType, latestPhoto }: Sk
           forecast={forecast}
           skinAgeImprovement={skinAgeImprovement}
           qualityImprovement={qualityImprovement}
+          vitalityImprovement={vitalityImprovement}
         />
       ) : (
         <WithoutProductsProjection
           forecast={forecast}
           skinAgeDegradation={skinAgeDegradation}
           qualityDegradation={qualityDegradation}
+          vitalityDegradation={vitalityDegradation}
           onSwitchScenario={() => setActiveScenario('withProducts')}
         />
       )}
@@ -354,10 +362,12 @@ function WithProductsProjection({
   forecast,
   skinAgeImprovement,
   qualityImprovement,
+  vitalityImprovement,
 }: {
   forecast: SkinForecast
   skinAgeImprovement: number
   qualityImprovement: number
+  vitalityImprovement: number
 }) {
   return (
     <div className="bg-white rounded-2xl border border-[#1C4444]/10 overflow-hidden">
@@ -375,53 +385,53 @@ function WithProductsProjection({
       </div>
 
       <div className="p-6 space-y-5">
-        {/* Score Cards */}
+        {/* Score Cards - 2x2 grid */}
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Skin Age Card */}
-          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+          {/* Skin Vitality Card (Primary) */}
+          <div className="bg-gradient-to-br from-[#D4AF37]/10 to-[#D4AF37]/5 rounded-xl p-4 border border-[#D4AF37]/20">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-[#D4AF37]/15 flex items-center justify-center">
-                <span className="text-lg">🌟</span>
+              <div className="w-10 h-10 rounded-full bg-[#D4AF37]/20 flex items-center justify-center">
+                <span className="text-lg">✨</span>
               </div>
               <div>
-                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age</p>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Vitality</p>
                 <p className="text-xl font-medium text-[#1C4444]">
-                  {forecast.currentSkinAge} → {forecast.withProducts.skinAge90}
+                  {forecast.currentVitalityScore}/100 → {forecast.withProducts.vitalityScore90}/100
                 </p>
               </div>
             </div>
-            {skinAgeImprovement > 0 && (
+            {vitalityImprovement > 0 && (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-[#9A8428] font-medium">-{skinAgeImprovement} years</span>
-                <span className="text-[#1C4444]/40">younger looking</span>
+                <span className="text-[#9A8428] font-medium">+{vitalityImprovement} points</span>
+                <span className="text-[#1C4444]/40">anti-aging improvement</span>
               </div>
             )}
             <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-[#D4AF37] to-[#C4A83C] rounded-full transition-all duration-1000"
-                style={{ width: `${Math.min(100, (skinAgeImprovement / Math.max(1, forecast.currentSkinAge - forecast.withProducts.achievableSkinAge)) * 100)}%` }}
+                style={{ width: `${forecast.withProducts.vitalityScore90}%` }}
               />
             </div>
-            <p className="text-xs text-[#1C4444]/50 mt-2">Best achievable: {forecast.withProducts.achievableSkinAge}</p>
+            <p className="text-xs text-[#1C4444]/50 mt-2">Measures aging-related concerns</p>
           </div>
 
-          {/* Skin Health Card */}
-          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+          {/* Skin Health Card (Primary) */}
+          <div className="bg-gradient-to-br from-[#1C4444]/10 to-[#1C4444]/5 rounded-xl p-4 border border-[#1C4444]/10">
             <div className="flex items-center gap-3 mb-3">
-              <div className="w-10 h-10 rounded-full bg-[#1C4444]/10 flex items-center justify-center">
+              <div className="w-10 h-10 rounded-full bg-[#1C4444]/15 flex items-center justify-center">
                 <span className="text-lg">💎</span>
               </div>
               <div>
                 <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Health</p>
                 <p className="text-xl font-medium text-[#1C4444]">
-                  {forecast.currentQualityScore} → {forecast.withProducts.qualityScore90}
+                  {forecast.currentQualityScore}/100 → {forecast.withProducts.qualityScore90}/100
                 </p>
               </div>
             </div>
             {qualityImprovement > 0 && (
               <div className="flex items-center gap-2 text-sm">
                 <span className="text-[#1C4444] font-medium">+{qualityImprovement} points</span>
-                <span className="text-[#1C4444]/40">improvement</span>
+                <span className="text-[#1C4444]/40">overall improvement</span>
               </div>
             )}
             <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
@@ -430,6 +440,30 @@ function WithProductsProjection({
                 style={{ width: `${forecast.withProducts.qualityScore90}%` }}
               />
             </div>
+            <p className="text-xs text-[#1C4444]/50 mt-2">Measures overall skin condition</p>
+          </div>
+        </div>
+
+        {/* Skin Age Indicator (Secondary) */}
+        <div className="bg-[#F4EBE7]/30 rounded-xl p-4 border border-[#1C4444]/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-[#D4AF37]/15 flex items-center justify-center">
+                <span className="text-sm">🌟</span>
+              </div>
+              <div>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age Indicator</p>
+                <p className="text-lg font-medium text-[#1C4444]">
+                  {forecast.currentSkinAge} → {forecast.withProducts.skinAge90}
+                </p>
+              </div>
+            </div>
+            {skinAgeImprovement > 0 && (
+              <div className="text-right">
+                <span className="text-[#9A8428] font-medium">-{skinAgeImprovement} years</span>
+                <p className="text-xs text-[#1C4444]/40">Best: {forecast.withProducts.achievableSkinAge}</p>
+              </div>
+            )}
           </div>
         </div>
 
@@ -498,11 +532,13 @@ function WithoutProductsProjection({
   forecast,
   skinAgeDegradation,
   qualityDegradation,
+  vitalityDegradation,
   onSwitchScenario,
 }: {
   forecast: SkinForecast
   skinAgeDegradation: number
   qualityDegradation: number
+  vitalityDegradation: number
   onSwitchScenario: () => void
 }) {
   return (
@@ -530,37 +566,37 @@ function WithoutProductsProjection({
           </p>
         </div>
 
-        {/* Metrics Grid */}
+        {/* Metrics Grid - Primary scores */}
         <div className="grid md:grid-cols-2 gap-4">
-          {/* Skin Age */}
-          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+          {/* Skin Vitality (Primary) */}
+          <div className="bg-amber-50/50 rounded-xl p-4 border border-amber-200/50">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
                 <span className="text-lg">⏳</span>
               </div>
               <div>
-                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age</p>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Vitality</p>
                 <p className="text-xl font-medium text-[#1C4444]">
-                  {forecast.currentSkinAge} → {forecast.withoutProducts.skinAge90}
+                  {forecast.currentVitalityScore}/100 → {forecast.withoutProducts.vitalityScore90}/100
                 </p>
               </div>
             </div>
-            {skinAgeDegradation > 0 && (
+            {vitalityDegradation > 0 && (
               <div className="flex items-center gap-2 text-sm">
-                <span className="text-amber-600">+{skinAgeDegradation} years</span>
-                <span className="text-[#1C4444]/40">over 90 days</span>
+                <span className="text-amber-600">-{vitalityDegradation} points</span>
+                <span className="text-[#1C4444]/40">aging acceleration</span>
               </div>
             )}
             <div className="mt-3 h-1.5 bg-[#1C4444]/10 rounded-full overflow-hidden">
               <div
                 className="h-full bg-gradient-to-r from-amber-300 to-amber-400 rounded-full transition-all"
-                style={{ width: `${Math.min(100, (skinAgeDegradation / 10) * 100)}%` }}
+                style={{ width: `${forecast.withoutProducts.vitalityScore90}%` }}
               />
             </div>
           </div>
 
-          {/* Skin Health */}
-          <div className="bg-[#F4EBE7]/50 rounded-xl p-4 border border-[#1C4444]/5">
+          {/* Skin Health (Primary) */}
+          <div className="bg-amber-50/50 rounded-xl p-4 border border-amber-200/50">
             <div className="flex items-center gap-3 mb-3">
               <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center">
                 <span className="text-lg">📊</span>
@@ -568,7 +604,7 @@ function WithoutProductsProjection({
               <div>
                 <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Health</p>
                 <p className="text-xl font-medium text-[#1C4444]">
-                  {forecast.currentQualityScore} → {forecast.withoutProducts.qualityScore90}
+                  {forecast.currentQualityScore}/100 → {forecast.withoutProducts.qualityScore90}/100
                 </p>
               </div>
             </div>
@@ -584,6 +620,29 @@ function WithoutProductsProjection({
                 style={{ width: `${forecast.withoutProducts.qualityScore90}%` }}
               />
             </div>
+          </div>
+        </div>
+
+        {/* Skin Age Indicator (Secondary) */}
+        <div className="bg-[#F4EBE7]/30 rounded-xl p-4 border border-[#1C4444]/5">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <div className="w-8 h-8 rounded-full bg-amber-100 flex items-center justify-center">
+                <span className="text-sm">🌟</span>
+              </div>
+              <div>
+                <p className="text-xs text-[#1C4444]/60 uppercase tracking-wide">Skin Age Indicator</p>
+                <p className="text-lg font-medium text-[#1C4444]">
+                  {forecast.currentSkinAge} → {forecast.withoutProducts.skinAge90}
+                </p>
+              </div>
+            </div>
+            {skinAgeDegradation > 0 && (
+              <div className="text-right">
+                <span className="text-amber-600 font-medium">+{skinAgeDegradation} years</span>
+                <p className="text-xs text-[#1C4444]/40">over 90 days</p>
+              </div>
+            )}
           </div>
         </div>
 

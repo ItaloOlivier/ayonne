@@ -8,8 +8,10 @@ import ResultsClientWrapper from '@/components/skin-analysis/ResultsClientWrappe
 import SkinHealthScore from '@/components/skin-analysis/SkinHealthScore'
 import SocialProof from '@/components/skin-analysis/SocialProof'
 import DataExpiryWarning from '@/components/skin-analysis/DataExpiryWarning'
+import { SkinGoalBadge } from '@/components/skin-analysis/SkinGoalSelector'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
 import { calculateHealthScore } from '@/lib/skin-analysis/health-score'
+import { SKIN_GOAL_INFO, SkinGoal } from '@/lib/skin-analysis/scoring'
 
 interface PageProps {
   params: Promise<{ id: string }>
@@ -20,7 +22,14 @@ async function getAnalysis(id: string) {
     const analysis = await prisma.skinAnalysis.findUnique({
       where: { id },
       include: {
-        customer: true,
+        customer: {
+          select: {
+            id: true,
+            firstName: true,
+            lastName: true,
+            skinGoal: true,
+          }
+        },
       },
     })
 
@@ -230,9 +239,17 @@ export default async function ResultsPage({ params }: PageProps) {
               <div className="relative z-10">
                 {/* Greeting for returning users */}
                 {analysis.customer && (
-                  <p className="text-[#1C4444]/60 mb-2">
-                    {analysis.customer.firstName}&apos;s Results
-                  </p>
+                  <div className="mb-4">
+                    <p className="text-[#1C4444]/60 mb-2">
+                      {analysis.customer.firstName}&apos;s Results
+                    </p>
+                    {/* Skin Goal Badge */}
+                    {analysis.customer.skinGoal && (
+                      <div className="flex justify-center">
+                        <SkinGoalBadge goal={analysis.customer.skinGoal as SkinGoal} size="sm" />
+                      </div>
+                    )}
+                  </div>
                 )}
 
                 <h1 className="text-2xl md:text-3xl font-normal text-[#1C4444] mb-6">

@@ -44,6 +44,7 @@ export interface CustomerSession {
   phone: string | null
   createdAt: Date
   analysisCount: number
+  skinGoal: 'AGE_NORMALLY' | 'AGE_GRACEFULLY' | 'STAY_YOUNG_FOREVER'
 }
 
 /**
@@ -189,6 +190,7 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
         lastName: true,
         phone: true,
         createdAt: true,
+        skinGoal: true,
         _count: {
           select: { skinAnalyses: true }
         }
@@ -207,6 +209,7 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
       phone: customer.phone,
       createdAt: customer.createdAt,
       analysisCount: customer._count.skinAnalyses,
+      skinGoal: customer.skinGoal || 'AGE_GRACEFULLY',
     }
   } catch (error) {
     console.error('Error getting current customer:', error)

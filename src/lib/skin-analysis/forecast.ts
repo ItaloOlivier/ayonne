@@ -52,7 +52,10 @@ export interface SkinForecast {
     skinAge30: number
     skinAge60: number
     skinAge90: number
-    qualityScore30: number
+    vitalityScore30: number   // 0-100 vitality score
+    vitalityScore60: number
+    vitalityScore90: number
+    qualityScore30: number    // 0-100 health score
     qualityScore60: number
     qualityScore90: number
     message: string
@@ -64,13 +67,18 @@ export interface SkinForecast {
     skinAge60: number
     skinAge90: number
     achievableSkinAge: number
+    vitalityScore30: number
+    vitalityScore60: number
+    vitalityScore90: number
     qualityScore30: number
     qualityScore60: number
     qualityScore90: number
   }
 
+  // Current scores
   currentSkinAge: number
-  currentQualityScore: number
+  currentVitalityScore: number   // 0-100 primary vitality metric
+  currentQualityScore: number    // 0-100 primary health metric
 
   categories: {
     hydration: { current: number; withoutProducts90: number; withProducts90: number }
@@ -249,6 +257,18 @@ const QUALITY_IMPACT: Record<string, number> = {
   dullness: 6,
 }
 
+// Vitality score weights (for 0-100 vitality score)
+const VITALITY_IMPACT: Record<string, number> = {
+  fine_lines: 12,
+  wrinkles: 20,
+  dark_spots: 15,
+  dullness: 10,
+  uneven_texture: 8,
+  dehydration: 8,
+  dark_circles: 10,
+  sun_damage: 12,
+}
+
 export interface AnalysisHistoryItem {
   id: string
   createdAt: Date
@@ -404,6 +424,29 @@ function calculateQualityScoreFromConditions(
   return Math.max(0, Math.round(100 - totalDeduction))
 }
 
+function calculateVitalityScoreFromConditions(
+  conditions: ConditionProjection[],
+  scenario: 'withoutProducts' | 'withProducts',
+  day: 30 | 60 | 90
+): number {
+  let totalDeduction = 0
+
+  for (const condition of conditions) {
+    const vitalityImpact = VITALITY_IMPACT[condition.id]
+    if (vitalityImpact) {
+      const confidence = scenario === 'withoutProducts'
+        ? condition.withoutProducts[`projected${day}` as keyof typeof condition.withoutProducts]
+        : condition.withProducts[`projected${day}` as keyof typeof condition.withProducts]
+
+      if (typeof confidence === 'number') {
+        totalDeduction += vitalityImpact * confidence
+      }
+    }
+  }
+
+  return Math.max(0, Math.round(100 - totalDeduction))
+}
+
 function generateWarnings(
   conditions: DetectedCondition[],
   consistencyScore: number
@@ -548,12 +591,16 @@ export function generateSkinForecast(
 
   // Calculate overall scores for both scenarios
   const currentSkinAge = currentScores.skinAge
+  const currentVitalityScore = currentScores.vitalityScore
   const currentQualityScore = currentScores.qualityScore
 
   const withoutProductsScores = {
     skinAge30: calculateSkinAgeFromConditions(conditionProjections, userAge, 'withoutProducts', 30),
     skinAge60: calculateSkinAgeFromConditions(conditionProjections, userAge, 'withoutProducts', 60),
     skinAge90: calculateSkinAgeFromConditions(conditionProjections, userAge, 'withoutProducts', 90),
+    vitalityScore30: calculateVitalityScoreFromConditions(conditionProjections, 'withoutProducts', 30),
+    vitalityScore60: calculateVitalityScoreFromConditions(conditionProjections, 'withoutProducts', 60),
+    vitalityScore90: calculateVitalityScoreFromConditions(conditionProjections, 'withoutProducts', 90),
     qualityScore30: calculateQualityScoreFromConditions(conditionProjections, 'withoutProducts', 30),
     qualityScore60: calculateQualityScoreFromConditions(conditionProjections, 'withoutProducts', 60),
     qualityScore90: calculateQualityScoreFromConditions(conditionProjections, 'withoutProducts', 90),
@@ -565,6 +612,9 @@ export function generateSkinForecast(
     skinAge60: calculateSkinAgeFromConditions(conditionProjections, userAge, 'withProducts', 60),
     skinAge90: calculateSkinAgeFromConditions(conditionProjections, userAge, 'withProducts', 90),
     achievableSkinAge: currentScores.achievableSkinAge,
+    vitalityScore30: calculateVitalityScoreFromConditions(conditionProjections, 'withProducts', 30),
+    vitalityScore60: calculateVitalityScoreFromConditions(conditionProjections, 'withProducts', 60),
+    vitalityScore90: calculateVitalityScoreFromConditions(conditionProjections, 'withProducts', 90),
     qualityScore30: calculateQualityScoreFromConditions(conditionProjections, 'withProducts', 30),
     qualityScore60: calculateQualityScoreFromConditions(conditionProjections, 'withProducts', 60),
     qualityScore90: calculateQualityScoreFromConditions(conditionProjections, 'withProducts', 90),
@@ -593,6 +643,7 @@ export function generateSkinForecast(
     withProducts: withProductsScores,
 
     currentSkinAge,
+    currentVitalityScore,
     currentQualityScore,
 
     categories,
