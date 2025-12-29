@@ -8,6 +8,7 @@
 export interface FaceDetectionResult {
   detected: boolean
   confidence: number
+  faceCount: number // Number of faces detected
   boundingBox?: {
     x: number
     y: number
@@ -22,6 +23,8 @@ export interface FaceDetectionResult {
     nose?: { x: number; y: number }
     mouth?: { x: number; y: number }
   }
+  // Security: reject if multiple faces detected
+  hasMultipleFaces: boolean
 }
 
 // Check if FaceDetector API is available
@@ -40,9 +43,10 @@ export async function initFaceDetector(): Promise<boolean> {
 
   try {
     // FaceDetector is defined in our global type declarations below
+    // Set maxDetectedFaces to 5 to detect if multiple people are in frame
     faceDetector = new window.FaceDetector({
       fastMode: true,
-      maxDetectedFaces: 1,
+      maxDetectedFaces: 5, // Detect up to 5 faces to check for multiple people
     })
     console.log('[FACE_DETECTION] FaceDetector API initialized')
     return true
@@ -64,9 +68,21 @@ export async function detectFace(
   if (faceDetector) {
     try {
       const faces = await faceDetector.detect(source)
+      const faceCount = faces.length
+      const hasMultipleFaces = faceCount > 1
 
-      if (faces.length > 0) {
-        const face = faces[0]
+      // Log security check
+      if (hasMultipleFaces) {
+        console.warn(`[FACE_DETECTION] Multiple faces detected: ${faceCount} faces in frame`)
+      }
+
+      if (faceCount > 0) {
+        // Use the largest face (assumed to be the primary subject)
+        const face = faces.reduce((largest, current) => {
+          const currentArea = current.boundingBox.width * current.boundingBox.height
+          const largestArea = largest.boundingBox.width * largest.boundingBox.height
+          return currentArea > largestArea ? current : largest
+        })
         const box = face.boundingBox
 
         // Check if face is well-positioned
@@ -75,6 +91,11 @@ export async function detectFace(
           frameWidth,
           frameHeight
         )
+
+        // Override feedback if multiple faces detected
+        const positionFeedback = hasMultipleFaces
+          ? 'Multiple faces detected - please ensure only you are in the frame'
+          : feedback
 
         // Extract landmarks if available
         const landmarks: FaceDetectionResult['landmarks'] = {}
@@ -95,15 +116,18 @@ export async function detectFace(
 
         return {
           detected: true,
-          confidence: 0.9,
+          confidence: hasMultipleFaces ? 0.5 : 0.9, // Lower confidence if multiple faces
+          faceCount,
+          hasMultipleFaces,
           boundingBox: {
             x: box.x,
             y: box.y,
             width: box.width,
             height: box.height,
           },
-          isWellPositioned,
-          positionFeedback: feedback,
+          // Not well-positioned if multiple faces
+          isWellPositioned: isWellPositioned && !hasMultipleFaces,
+          positionFeedback,
           landmarks: Object.keys(landmarks).length > 0 ? landmarks : undefined,
         }
       }
@@ -111,6 +135,8 @@ export async function detectFace(
       return {
         detected: false,
         confidence: 0,
+        faceCount: 0,
+        hasMultipleFaces: false,
         isWellPositioned: false,
         positionFeedback: 'No face detected',
       }
@@ -199,6 +225,8 @@ async function fallbackFaceDetection(
     return {
       detected: false,
       confidence: 0,
+      faceCount: 0,
+      hasMultipleFaces: false,
       isWellPositioned: false,
       positionFeedback: 'Detection unavailable',
     }
@@ -247,6 +275,8 @@ async function fallbackFaceDetection(
   return {
     detected,
     confidence,
+    faceCount: detected ? 1 : 0, // Fallback can't detect multiple faces
+    hasMultipleFaces: false, // Fallback cannot detect multiple faces - will be caught by AI
     isWellPositioned: detected && skinRatio > 0.4,
     positionFeedback: detected
       ? skinRatio < 0.4 ? 'Center your face' : null

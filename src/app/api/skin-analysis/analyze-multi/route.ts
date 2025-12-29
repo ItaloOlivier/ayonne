@@ -18,9 +18,28 @@ import {
   validateImageQuality,
   generateQualityReport,
 } from '@/lib/skin-analysis/image-preprocessing'
+import {
+  IDENTITY_VERIFICATION_PROMPT,
+  MAKEUP_FILTER_DETECTION_PROMPT,
+  FACE_ZONE_VALIDATION_PROMPT,
+  ANALYSIS_DISCLAIMER_PROMPT,
+  parseIdentityVerification,
+  isIdentityVerified,
+  getIdentityVerificationErrorMessage,
+  hasMultipleFaces,
+  parseMakeupFilterDetection,
+  hasBeautyFilter,
+  getMakeupFilterErrorMessage,
+  parseFaceZoneValidation,
+  isFaceZoneValid,
+  getFaceZoneErrorMessage,
+  IdentityVerificationResult,
+  MakeupFilterDetection,
+  FaceZoneValidation,
+} from '@/lib/skin-analysis/identity-verification'
 import { FEATURES } from '@/lib/features'
 
-// Multi-angle skin analysis prompt with cross-referencing
+// Multi-angle skin analysis prompt with cross-referencing and identity verification
 const MULTI_ANGLE_ANALYSIS_PROMPT = `You are a board-certified dermatologist conducting a comprehensive multi-angle skin assessment. You have been provided with THREE facial photographs from different angles for enhanced diagnostic accuracy.
 
 ## IMAGE IDENTIFICATION
@@ -29,6 +48,9 @@ const MULTI_ANGLE_ANALYSIS_PROMPT = `You are a board-certified dermatologist con
 - **Image 3**: RIGHT PROFILE - Shows the right side of the face (45-90 degree turn)
 
 ## MULTI-ANGLE ANALYSIS PROTOCOL
+${IDENTITY_VERIFICATION_PROMPT}
+${MAKEUP_FILTER_DETECTION_PROMPT}
+${FACE_ZONE_VALIDATION_PROMPT}
 
 ### Step 1: Individual Image Assessment
 For each image, evaluate:
@@ -88,6 +110,34 @@ Note any significant differences between left and right sides:
 Respond with ONLY valid JSON (no markdown, no explanation):
 
 {
+  "identityVerification": {
+    "samePerson": true,
+    "confidence": 0.95,
+    "frontToLeftMatch": 0.95,
+    "frontToRightMatch": 0.94,
+    "leftToRightMatch": 0.93,
+    "facesDetected": {
+      "front": 1,
+      "left": 1,
+      "right": 1
+    },
+    "concerns": [],
+    "rejectReason": null
+  },
+  "makeupFilterDetection": {
+    "hasHeavyMakeup": false,
+    "hasBeautyFilter": false,
+    "makeupLevel": "none",
+    "filterConfidence": 0.0,
+    "concerns": []
+  },
+  "faceZoneValidation": {
+    "allZonesVisible": true,
+    "visibilityScore": 0.95,
+    "missingZones": [],
+    "obscuredBy": [],
+    "canProceed": true
+  },
   "skinType": "oily" | "dry" | "combination" | "normal" | "sensitive",
   "conditions": [
     {
@@ -109,10 +159,44 @@ Respond with ONLY valid JSON (no markdown, no explanation):
 3. **Note Asymmetry**: Many skin concerns are asymmetric - this is valuable information
 4. **Quality Assessment**: Note if any view was suboptimal and affected analysis
 5. **Maximum 6 Conditions**: Focus on the most significant, well-evidenced findings
-6. **Conservative Approach**: Only report conditions with clear multi-angle support when possible`
+6. **Conservative Approach**: Only report conditions with clear multi-angle support when possible
+${ANALYSIS_DISCLAIMER_PROMPT}`
 
 // Type for multi-angle AI response
 interface MultiAngleAnalysisResult {
+  identityVerification?: {
+    samePerson: boolean
+    confidence: number
+    frontToLeftMatch?: number
+    frontToRightMatch?: number
+    leftToRightMatch?: number
+    facesDetected?: {
+      front: number
+      left: number
+      right: number
+    }
+    concerns?: Array<{
+      type: string
+      description: string
+      affectedAngles: string[]
+      severity: string
+    }>
+    rejectReason?: string | null
+  }
+  makeupFilterDetection?: {
+    hasHeavyMakeup: boolean
+    hasBeautyFilter: boolean
+    makeupLevel: 'none' | 'light' | 'moderate' | 'heavy'
+    filterConfidence: number
+    concerns: string[]
+  }
+  faceZoneValidation?: {
+    allZonesVisible: boolean
+    visibilityScore: number
+    missingZones: string[]
+    obscuredBy: string[]
+    canProceed: boolean
+  }
   skinType: SkinType
   conditions: Array<DetectedCondition & { viewsDetected?: string[] }>
   asymmetryNotes?: string
@@ -130,6 +214,9 @@ async function analyzeSkinWithAIMultiAngle(
   conditions: DetectedCondition[]
   asymmetryNotes?: string
   analysisQuality?: string
+  identityVerification?: IdentityVerificationResult
+  makeupFilterDetection?: MakeupFilterDetection
+  faceZoneValidation?: FaceZoneValidation
 }> {
   // Build user content with images and additional analysis prompt
   const userContent = [
@@ -188,6 +275,44 @@ async function analyzeSkinWithAIMultiAngle(
     }
   }
 
+  // Parse identity verification from the response
+  const identityVerification = parseIdentityVerification(parsed as unknown as Record<string, unknown>)
+
+  // Log identity verification result
+  if (identityVerification) {
+    console.log('[IDENTITY] Verification result:', {
+      samePerson: identityVerification.samePerson,
+      confidence: `${Math.round(identityVerification.confidence * 100)}%`,
+      concerns: identityVerification.concerns.length,
+    })
+  }
+
+  // Parse makeup/filter detection from the response
+  const makeupFilterDetection = parseMakeupFilterDetection(parsed as unknown as Record<string, unknown>)
+
+  // Log makeup/filter detection result
+  if (makeupFilterDetection) {
+    console.log('[MAKEUP/FILTER] Detection result:', {
+      hasHeavyMakeup: makeupFilterDetection.hasHeavyMakeup,
+      hasBeautyFilter: makeupFilterDetection.hasBeautyFilter,
+      makeupLevel: makeupFilterDetection.makeupLevel,
+      filterConfidence: `${Math.round(makeupFilterDetection.filterConfidence * 100)}%`,
+    })
+  }
+
+  // Parse face zone validation from the response
+  const faceZoneValidation = parseFaceZoneValidation(parsed as unknown as Record<string, unknown>)
+
+  // Log face zone validation result
+  if (faceZoneValidation) {
+    console.log('[FACE_ZONES] Validation result:', {
+      allZonesVisible: faceZoneValidation.allZonesVisible,
+      visibilityScore: `${Math.round(faceZoneValidation.visibilityScore * 100)}%`,
+      missingZones: faceZoneValidation.missingZones,
+      canProceed: faceZoneValidation.canProceed,
+    })
+  }
+
   // Map conditions to standard format
   const conditions: DetectedCondition[] = (parsed.conditions || []).map(c => ({
     id: c.id,
@@ -201,6 +326,9 @@ async function analyzeSkinWithAIMultiAngle(
     conditions,
     asymmetryNotes: parsed.asymmetryNotes,
     analysisQuality: parsed.analysisQuality,
+    identityVerification: identityVerification || undefined,
+    makeupFilterDetection: makeupFilterDetection || undefined,
+    faceZoneValidation: faceZoneValidation || undefined,
   }
 }
 
@@ -359,8 +487,102 @@ export async function POST(request: NextRequest) {
     })
 
     // Run multi-angle AI analysis
-    const { skinType, conditions, asymmetryNotes, analysisQuality } =
+    const { skinType, conditions, asymmetryNotes, analysisQuality, identityVerification, makeupFilterDetection, faceZoneValidation } =
       await analyzeSkinWithAIMultiAngle(frontBase64, leftBase64, rightBase64)
+
+    // Check identity verification - reject if verification fails
+    if (identityVerification) {
+      // Check for multiple faces first (most critical security issue)
+      if (hasMultipleFaces({ identityVerification } as unknown as Record<string, unknown>)) {
+        // Delete the processing record since analysis failed
+        await prisma.skinAnalysis.delete({ where: { id: analysis.id } })
+
+        console.warn('[SECURITY] Multiple faces detected - rejecting analysis')
+        return NextResponse.json(
+          {
+            error: 'Multiple faces detected',
+            details: 'Please ensure only your face is visible in each photo. Remove other people from the frame and retake.',
+            code: 'MULTIPLE_FACES',
+          },
+          { status: 400 }
+        )
+      }
+
+      // Check if identity verification passed
+      if (!isIdentityVerified(identityVerification)) {
+        // Delete the processing record since analysis failed
+        await prisma.skinAnalysis.delete({ where: { id: analysis.id } })
+
+        const errorMessage = getIdentityVerificationErrorMessage(identityVerification)
+        console.warn('[SECURITY] Identity verification failed:', {
+          confidence: identityVerification.confidence,
+          samePerson: identityVerification.samePerson,
+          concerns: identityVerification.concerns.map(c => c.type),
+        })
+
+        return NextResponse.json(
+          {
+            error: 'Identity verification failed',
+            details: errorMessage,
+            code: 'IDENTITY_MISMATCH',
+            confidence: identityVerification.confidence,
+          },
+          { status: 400 }
+        )
+      }
+    }
+
+    // Check for beauty filters (blocks analysis completely)
+    if (makeupFilterDetection && hasBeautyFilter(makeupFilterDetection)) {
+      // Delete the processing record since analysis failed
+      await prisma.skinAnalysis.delete({ where: { id: analysis.id } })
+
+      console.warn('[SECURITY] Beauty filter detected - rejecting analysis:', {
+        filterConfidence: makeupFilterDetection.filterConfidence,
+        concerns: makeupFilterDetection.concerns,
+      })
+
+      return NextResponse.json(
+        {
+          error: 'Beauty filter detected',
+          details: getMakeupFilterErrorMessage(makeupFilterDetection),
+          code: 'BEAUTY_FILTER',
+          filterConfidence: makeupFilterDetection.filterConfidence,
+        },
+        { status: 400 }
+      )
+    }
+
+    // Log warning for heavy makeup (doesn't block, but affects accuracy)
+    if (makeupFilterDetection?.hasHeavyMakeup) {
+      console.warn('[QUALITY] Heavy makeup detected - analysis accuracy may be reduced:', {
+        makeupLevel: makeupFilterDetection.makeupLevel,
+        concerns: makeupFilterDetection.concerns,
+      })
+    }
+
+    // Check face zone validation - reject if critical zones not visible
+    if (faceZoneValidation && !isFaceZoneValid(faceZoneValidation)) {
+      // Delete the processing record since analysis failed
+      await prisma.skinAnalysis.delete({ where: { id: analysis.id } })
+
+      console.warn('[SECURITY] Face zone validation failed:', {
+        visibilityScore: faceZoneValidation.visibilityScore,
+        missingZones: faceZoneValidation.missingZones,
+        obscuredBy: faceZoneValidation.obscuredBy,
+      })
+
+      return NextResponse.json(
+        {
+          error: 'Incomplete facial visibility',
+          details: getFaceZoneErrorMessage(faceZoneValidation),
+          code: 'FACE_ZONES_INCOMPLETE',
+          visibilityScore: faceZoneValidation.visibilityScore,
+          missingZones: faceZoneValidation.missingZones,
+        },
+        { status: 400 }
+      )
+    }
 
     // Compress and upload all three images in parallel
     const [compressedFront, compressedLeft, compressedRight] = await Promise.all([

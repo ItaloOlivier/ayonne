@@ -175,6 +175,10 @@ export default function LiveCameraCapture({
 
   // Get combined feedback from quality and face detection
   const getFeedback = (): string | null => {
+    // Priority 1: Multiple faces is a security blocker
+    if (faceDetection?.hasMultipleFaces) {
+      return 'Multiple faces detected - please ensure only you are in the frame'
+    }
     if (mainIssue) return mainIssue
     if (faceDetection && !faceDetection.isWellPositioned) {
       return faceDetection.positionFeedback
@@ -183,7 +187,9 @@ export default function LiveCameraCapture({
   }
 
   const feedback = getFeedback()
-  const isOptimal = qualityScore >= 70 && (!faceDetection || faceDetection.isWellPositioned)
+  // Not optimal if multiple faces detected
+  const hasMultipleFaces = faceDetection?.hasMultipleFaces ?? false
+  const isOptimal = qualityScore >= 70 && (!faceDetection || faceDetection.isWellPositioned) && !hasMultipleFaces
 
   if (error) {
     return (

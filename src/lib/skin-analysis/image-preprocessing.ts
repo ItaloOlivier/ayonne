@@ -219,6 +219,9 @@ export async function quickPreprocess(imageBuffer: Buffer): Promise<Buffer> {
 
 /**
  * Validate image meets minimum quality requirements
+ *
+ * LUXURY PRODUCT STANDARDS:
+ * Stricter validation for premium skincare recommendations.
  */
 export async function validateImageQuality(imageBuffer: Buffer): Promise<{
   valid: boolean
@@ -228,21 +231,21 @@ export async function validateImageQuality(imageBuffer: Buffer): Promise<{
   const stats = await analyzeImageStats(imageBuffer)
   const issues: string[] = []
 
-  // Check resolution
-  if (stats.width < 400 || stats.height < 400) {
-    issues.push('Resolution too low (minimum 400x400)')
+  // Check resolution - RAISED for luxury quality (minimum 600x600)
+  if (stats.width < 600 || stats.height < 600) {
+    issues.push('Resolution too low (minimum 600x600 for accurate analysis)')
   }
 
-  // Check brightness
-  if (stats.brightness < 40) {
-    issues.push('Image too dark')
-  } else if (stats.brightness > 220) {
-    issues.push('Image overexposed')
+  // Check brightness - TIGHTENED thresholds for accurate skin tone
+  if (stats.brightness < 50) {
+    issues.push('Image too dark for accurate skin analysis')
+  } else if (stats.brightness > 210) {
+    issues.push('Image overexposed - skin details washed out')
   }
 
-  // Check contrast
-  if (stats.contrast < 20) {
-    issues.push('Very low contrast')
+  // Check contrast - RAISED for feature detection
+  if (stats.contrast < 25) {
+    issues.push('Very low contrast - facial features not clearly visible')
   }
 
   return {

@@ -35,35 +35,39 @@ export interface QualityFactor {
 
 /**
  * Quality thresholds for skin analysis
+ *
+ * LUXURY PRODUCT STANDARDS:
+ * These thresholds are set higher than typical apps to ensure
+ * premium accuracy for luxury skincare recommendations.
  */
 export const QUALITY_THRESHOLDS = {
-  // Minimum acceptable values
-  MIN_WIDTH: 640,
-  MIN_HEIGHT: 640,
-  IDEAL_WIDTH: 1280,
-  IDEAL_HEIGHT: 1280,
+  // Minimum acceptable values - RAISED for luxury quality
+  MIN_WIDTH: 800,      // Increased from 640
+  MIN_HEIGHT: 800,     // Increased from 640
+  IDEAL_WIDTH: 1500,   // Increased from 1280
+  IDEAL_HEIGHT: 1500,  // Increased from 1280
 
-  // Brightness (0-255 average)
-  MIN_BRIGHTNESS: 60,
-  MAX_BRIGHTNESS: 200,
-  IDEAL_BRIGHTNESS_MIN: 100,
-  IDEAL_BRIGHTNESS_MAX: 160,
+  // Brightness (0-255 average) - TIGHTENED for accurate skin tone
+  MIN_BRIGHTNESS: 70,  // Increased from 60
+  MAX_BRIGHTNESS: 190, // Decreased from 200
+  IDEAL_BRIGHTNESS_MIN: 110, // Increased from 100
+  IDEAL_BRIGHTNESS_MAX: 150, // Decreased from 160
 
-  // Contrast (standard deviation of brightness)
-  MIN_CONTRAST: 30,
-  IDEAL_CONTRAST: 50,
+  // Contrast (standard deviation of brightness) - RAISED for feature detection
+  MIN_CONTRAST: 35,    // Increased from 30
+  IDEAL_CONTRAST: 55,  // Increased from 50
 
-  // Sharpness (Laplacian variance)
-  MIN_SHARPNESS: 100,
-  IDEAL_SHARPNESS: 500,
+  // Sharpness (Laplacian variance) - RAISED for detail detection
+  MIN_SHARPNESS: 150,  // Increased from 100
+  IDEAL_SHARPNESS: 600, // Increased from 500
 
-  // Color balance (RGB channel deviation)
-  MAX_COLOR_DEVIATION: 30,
-  IDEAL_COLOR_DEVIATION: 15,
+  // Color balance (RGB channel deviation) - TIGHTENED for accurate skin tone
+  MAX_COLOR_DEVIATION: 25,   // Decreased from 30
+  IDEAL_COLOR_DEVIATION: 12, // Decreased from 15
 
-  // Overall minimum score to proceed
-  MIN_OVERALL_SCORE: 40,
-  GOOD_OVERALL_SCORE: 70,
+  // Overall minimum score to proceed - RAISED for luxury quality
+  MIN_OVERALL_SCORE: 55, // Increased from 40
+  GOOD_OVERALL_SCORE: 75, // Increased from 70
 }
 
 /**
