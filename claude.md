@@ -103,8 +103,22 @@ src/
 ├── lib/
 │   ├── prisma.ts             # Prisma client singleton
 │   ├── auth.ts               # Session cookie utilities (HTTP-only cookies)
+│   ├── admin-auth.ts         # Admin API authentication middleware
+│   ├── api-helpers.ts        # API route utilities (requireAuth, parseJsonBody, error responses)
+│   ├── rate-limiter.ts       # IP-based rate limiting with configurable windows
+│   ├── logger.ts             # Structured logging with sensitive data redaction
 │   ├── shopify.ts            # Shopify URL helpers
 │   ├── shopify-products.ts   # Product image/variant ID mapping (with discount support)
+│   ├── shopify-admin/        # Modular Shopify Admin API (split from monolith)
+│   │   ├── client.ts         # GraphQL client and isShopifyConfigured()
+│   │   ├── discounts.ts      # Discount code CRUD operations
+│   │   ├── products.ts       # Product queries and inventory sync
+│   │   ├── customers.ts      # Customer management
+│   │   ├── seo.ts            # SEO management and analysis
+│   │   └── index.ts          # Re-exports all modules
+│   ├── validation/           # Zod validation schemas and utilities
+│   │   ├── schemas.ts        # Email, password, pagination, discount schemas
+│   │   └── index.ts          # validateBody, validateQuery, formatZodErrors
 │   ├── utils.ts              # Utility functions
 │   ├── features.ts          # Feature flags for API capabilities
 │   ├── growth/               # Growth hacking utilities
@@ -131,7 +145,10 @@ src/
 │       ├── face-detection.ts       # Browser-based face detection
 │       └── forecast.ts         # 90-day skin forecast projections
 ├── hooks/
-│   └── useLiveCamera.ts          # Live camera with auto-capture hook
+│   ├── useLiveCamera.ts          # Live camera with auto-capture hook
+│   └── useCopyToClipboard.ts     # Clipboard with fallback (used by 7+ components)
+├── test/
+│   └── setup.ts                  # Vitest test setup and mocks
 └── types/
     └── index.ts
 ```
@@ -594,9 +611,25 @@ Contains optimized SEO titles and descriptions for all products. Use with the SE
 ```bash
 npm run dev             # Start dev server
 npm run build           # Production build
+npm run test            # Run tests in watch mode
+npm run test:run        # Run tests once (CI mode)
 npx prisma studio       # Database GUI
 npx prisma db push      # Push schema to database
 ```
+
+## Testing
+
+The project uses **Vitest** with **jsdom** for testing. Test files are located alongside source files with `.test.ts` suffix.
+
+```bash
+npm run test:run        # Run all tests (54 tests across 4 files)
+```
+
+**Test coverage includes:**
+- `src/lib/rate-limiter.test.ts` - Rate limiting utility (9 tests)
+- `src/lib/api-helpers.test.ts` - API response helpers (10 tests)
+- `src/lib/validation/validation.test.ts` - Zod schema validation (28 tests)
+- `src/hooks/useCopyToClipboard.test.ts` - Clipboard hook (7 tests)
 
 ## Design System
 
