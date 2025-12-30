@@ -1,0 +1,106 @@
+{
+  "timestamp": "2025-12-30T23:12:29.621858",
+  "page_count": 20,
+  "pages": {
+    "https://ai.ayonne.skin/": {
+      "status_code": 200,
+      "title": "Free AI Skin Analysis | Personalized Skincare Recommendations",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/skin-analysis": {
+      "status_code": 200,
+      "title": "AI Skin Analyzer | Ayonne - Personalized Skincare Recommendations",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/skin-age-test": {
+      "status_code": 200,
+      "title": "Free Skin Age Test | How Old Does Your Skin Really Look? | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/pages/about": {
+      "status_code": 200,
+      "title": "Our Story - The Science of Timeless Beauty | Ayonne | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/pages/faq": {
+      "status_code": 200,
+      "title": "FAQ - Frequently Asked Questions | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/challenge": {
+      "status_code": 200,
+      "title": "AI Skin Analyzer | Ayonne - Personalized Skincare Recommendations",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/login": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ai.ayonne.skin/pages/contact": {
+      "status_code": 200,
+      "title": "Contact Us - Get in Touch | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/pages/shipping": {
+      "status_code": 200,
+      "title": "Shipping Information | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/policies/refund-policy": {
+      "status_code": 200,
+      "title": "Refund Policy | Ayonne | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/policies/privacy-policy": {
+      "status_code": 200,
+      "title": "Privacy Policy | Ayonne | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ai.ayonne.skin/policies/terms-of-service": {
+      "status_code": 200,
+      "title": "Terms of Service | Ayonne | Ayonne AI Skin Analyzer",
+      "robots": "index, follow"
+    },
+    "https://ayonne.skin/": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/collections/all": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/collections/anti-aging": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/collections/serums": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/collections/moisturizers": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/products/vitamin-c-lotion-1": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/products/collagen-and-retinol-serum-1": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    },
+    "https://ayonne.skin/products/hyaluronic-acid-serum-1": {
+      "status_code": 0,
+      "title": null,
+      "robots": null
+    }
+  }
+}

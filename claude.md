@@ -760,3 +760,185 @@ npm run test:run        # Run all tests (54 tests across 4 files)
 - **Platform**: Railway
 - **Domain**: ai.ayonne.skin
 - **Auto-deploy**: On push to main branch
+
+## SEO Multi-Agent System
+
+An autonomous SEO optimization system that runs daily via GitHub Actions to analyze and improve organic rankings and AI search visibility.
+
+### Architecture
+
+```
+GitHub Actions (Daily 06:00 UTC)
+         │
+         ▼
+   SEO Commander
+         │
+   ┌─────┴─────┐
+   ▼           ▼
+ Agents     Agents
+   │           │
+   └─────┬─────┘
+         ▼
+   Task Queue
+         │
+         ▼
+   Executor
+         │
+         ▼
+   Validators
+         │
+    ┌────┴────┐
+    ▼         ▼
+   PR      Report
+```
+
+### Agents (14 Specialized)
+
+| Agent | Purpose |
+|-------|---------|
+| Technical Auditor | Robots.txt, sitemaps, canonicals, meta tags |
+| CWV Agent | Core Web Vitals via PageSpeed Insights API |
+| Schema Agent | JSON-LD validation and generation |
+| Internal Linking | Link graph analysis, orphan page detection |
+| Keyword Mapper | Keyword mapping, cannibalization detection |
+| Competitor Intel | Content gap analysis |
+| Content Refresh | Thin content detection, freshness signals |
+| E-E-A-T Agent | Trust signals audit |
+| AI Readiness | LLM optimization (llms.txt, answer-first content) |
+| Snippet Agent | Featured snippet opportunities, PAA |
+| Cannibalization | Duplicate detection, consolidation |
+| CRO Agent | CTA analysis, trust signals |
+| Monitoring | Anomaly detection, baseline tracking |
+
+### Daily Loop (7 Phases)
+
+1. **CRAWL** - Fetch sitemaps, crawl pages (rate-limited)
+2. **ANALYZE** - Run all 14 agents in parallel
+3. **DECIDE** - Prioritize tasks by impact/risk (max 5/day)
+4. **EXECUTE** - Apply changes or generate patches
+5. **VALIDATE** - Quality gate checks (forbidden words, JSON-LD syntax)
+6. **MEASURE** - Log metrics and task execution
+7. **LEARN** - Update baselines and backlog
+
+### Project Structure
+
+```
+seo_agents/
+├── __init__.py
+├── run.py                    # CLI entrypoint
+├── orchestrator.py           # SEO Commander (coordinates agents)
+├── requirements.txt          # Python dependencies
+├── agents/
+│   ├── base.py               # BaseAgent, Task, AgentResult
+│   ├── technical_auditor.py  # Robots, sitemaps, canonicals
+│   ├── cwv_agent.py          # Core Web Vitals
+│   ├── schema_agent.py       # JSON-LD structured data
+│   ├── internal_linking.py   # Link graph analysis
+│   ├── keyword_mapper.py     # Keyword mapping
+│   ├── competitor_intel.py   # Content gaps
+│   ├── content_refresh.py    # Thin content, E-E-A-T
+│   ├── eeat_agent.py         # Trust signals
+│   ├── ai_readiness.py       # LLM optimization
+│   ├── snippet_agent.py      # Featured snippets
+│   ├── cannibalization.py    # Duplicate detection
+│   ├── cro_agent.py          # Conversion optimization
+│   └── monitoring.py         # Anomaly detection
+└── tools/
+    ├── crawler.py            # Rate-limited web crawler
+    ├── validators.py         # Quality gate validators
+    ├── pagespeed.py          # PSI API client
+    ├── sitemap.py            # Sitemap parser
+    ├── html_parser.py        # SEO data extraction
+    └── diffing.py            # Content comparison
+
+config/
+└── seo.yaml                  # Configuration (domains, thresholds, clusters)
+
+reports/
+├── summary.md                # Human-readable run summary
+├── backlog.json              # Top 20 prioritized improvements
+├── topical_map.json          # Content clusters and pillar pages
+└── patches/                  # Shopify theme patches
+
+runs/YYYY-MM-DD/              # Daily run artifacts
+├── crawl_data.json
+├── agent_reports/
+├── all_tasks.json
+├── execution_plan.json
+└── summary.json
+```
+
+### Running the SEO Agent
+
+```bash
+# Install dependencies
+pip3 install -r seo_agents/requirements.txt
+
+# Dry run (no changes)
+python3 -m seo_agents.run --config config/seo.yaml --dry-run
+
+# Live run
+python3 -m seo_agents.run --config config/seo.yaml
+```
+
+### GitHub Actions Workflow
+
+`.github/workflows/daily-seo.yml`:
+- Runs daily at 06:00 UTC
+- Manual trigger via workflow_dispatch
+- Creates PR for changes (never pushes to main directly)
+- Includes dry-run option
+- Uploads run artifacts for 30 days
+
+### Configuration (config/seo.yaml)
+
+```yaml
+domains:
+  primary: "ayonne.skin"
+  app: "ai.ayonne.skin"
+
+limits:
+  max_changes_per_day: 5
+  max_pages_crawl: 100
+
+forbidden_words:
+  - cure
+  - treat
+  - heal
+  - medical
+  - diagnose
+```
+
+### Safety Features
+
+- **Max 5 changes per day** - Prevents runaway modifications
+- **High-risk task blocking** - Requires manual review
+- **Forbidden words validation** - Catches medical claims
+- **JSON-LD syntax validation** - Ensures valid schema markup
+- **No accidental noindex** - Validates meta robots tags
+- **PR-based workflow** - All changes reviewed before merge
+
+### Topical Map (reports/topical_map.json)
+
+6 content clusters with pillar/support page architecture:
+- **Anti-Aging**: Retinol, Vitamin C, Collagen, Peptides
+- **Brightening**: Niacinamide, Dark Spots, Glow Routines
+- **Hydration**: Hyaluronic Acid, Moisture Barrier, Dry Skin
+- **Exfoliation**: Glycolic Acid, AHA vs BHA
+- **Eye Care**: Dark Circles, Eye Creams
+- **Men's Skincare**: Beard Care, Shaving, Men's Routines
+
+### SEO Backlog (reports/backlog.json)
+
+Top 20 prioritized improvements with:
+- Priority level (critical/high/medium/low)
+- Category (technical/schema/content/ai_readiness/etc.)
+- Target domain (ayonne.skin, ai.ayonne.skin, or both)
+- Implementation details
+- Estimated impact
+
+### Environment Variables
+
+```
+# Optional: PageSpeed Insights API key (increases quota from 25 to 400/day)
+PSI_API_KEY=

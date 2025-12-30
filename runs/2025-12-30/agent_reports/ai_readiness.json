@@ -1,0 +1,214 @@
+{
+  "agent_name": "AIReadinessAgent",
+  "success": true,
+  "tasks": [
+    {
+      "id": "AIReadinessAgent_1_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.549048",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_2_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/skin-analysis",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-analysis",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.553823",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_3_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/skin-age-test",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-age-test",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.562201",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_4_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/about",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/about",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.568180",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_5_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/faq",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/faq",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.572260",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_6_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/challenge",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/challenge",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.576722",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_7_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/contact",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/contact",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.580105",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_8_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/shipping",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/shipping",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.583602",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_9_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/refund-policy",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.589349",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_10_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/privacy-policy",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.595005",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "AIReadinessAgent_11_20251230231229",
+      "agent": "AIReadinessAgent",
+      "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/terms-of-service",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+      "changes": {},
+      "metadata": {
+        "optimization": "answer_first"
+      },
+      "created_at": "2025-12-30T23:12:29.600196",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "pages_analyzed": 11,
+    "ai_ready_pages": 0,
+    "ai_readiness_score": 0.0
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Analyzed 11 pages. 0 are AI-ready (0%).",
+  "execution_time": 0.05750393867492676,
+  "timestamp": "2025-12-30T23:12:29.542996"
+}

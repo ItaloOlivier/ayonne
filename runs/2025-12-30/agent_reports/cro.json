@@ -1,0 +1,16 @@
+{
+  "agent_name": "ConversionRateAgent",
+  "success": true,
+  "tasks": [],
+  "metrics": {
+    "pages_with_cta": 11,
+    "pages_missing_cta": 0,
+    "trust_signals_found": 31,
+    "cta_coverage": 1.0
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Analyzed CRO elements. 11 pages have CTAs, 0 could benefit from CTAs.",
+  "execution_time": 0.004817008972167969,
+  "timestamp": "2025-12-30T23:12:29.615252"
+}

@@ -1,0 +1,352 @@
+{
+  "version": "1.0",
+  "generated_at": "2025-12-31T00:00:00Z",
+  "brand": "Ayonne Skincare",
+  "domains": {
+    "primary": "ayonne.skin",
+    "app": "ai.ayonne.skin"
+  },
+  "clusters": {
+    "anti_aging": {
+      "pillar": {
+        "title": "Complete Anti-Aging Skincare Guide",
+        "target_url": "/pages/anti-aging-skincare-guide",
+        "target_keywords": [
+          "anti aging skincare",
+          "how to reduce wrinkles",
+          "skin aging prevention",
+          "youthful skin tips"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 3000,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "Retinol for Beginners: Complete Guide",
+          "url": "/pages/retinol-beginners-guide",
+          "keywords": ["retinol for beginners", "how to use retinol", "retinol benefits"],
+          "links_to_pillar": true,
+          "product_links": ["collagen-and-retinol-serum"]
+        },
+        {
+          "title": "Vitamin C Serum Benefits for Anti-Aging",
+          "url": "/pages/vitamin-c-anti-aging-benefits",
+          "keywords": ["vitamin c for anti aging", "vitamin c serum benefits", "best vitamin c for skin"],
+          "links_to_pillar": true,
+          "product_links": ["vitamin-c-lotion", "vitamin-c-toner"]
+        },
+        {
+          "title": "Collagen for Skin: What You Need to Know",
+          "url": "/pages/collagen-skincare-guide",
+          "keywords": ["collagen for skin", "collagen benefits", "collagen skincare"],
+          "links_to_pillar": true,
+          "product_links": ["collagen-and-retinol-serum", "embrace-collagen-moisturizer"]
+        },
+        {
+          "title": "Anti-Aging Skincare Routine by Age",
+          "url": "/pages/anti-aging-routine-by-age",
+          "keywords": ["anti aging routine 30s", "anti aging routine 40s", "when to start anti aging"],
+          "links_to_pillar": true,
+          "product_links": ["firm-serum", "vitamin-c-lotion"]
+        },
+        {
+          "title": "Peptides in Skincare Explained",
+          "url": "/pages/peptides-skincare-guide",
+          "keywords": ["peptides for skin", "peptide serum", "peptides benefits"],
+          "links_to_pillar": true,
+          "product_links": ["firm-serum"]
+        },
+        {
+          "title": "Best Antioxidants for Skin",
+          "url": "/pages/antioxidants-skincare",
+          "keywords": ["antioxidants for skin", "skin antioxidants", "antioxidant serum"],
+          "links_to_pillar": true,
+          "product_links": ["antioxidant-toner", "vitamin-c-lotion"]
+        }
+      ],
+      "product_pages": [
+        "collagen-and-retinol-serum",
+        "vitamin-c-lotion",
+        "firm-serum",
+        "anti-aging-rose-gold-oil"
+      ]
+    },
+    "brightening": {
+      "pillar": {
+        "title": "Skin Brightening Guide: Achieve Radiant Skin",
+        "target_url": "/pages/skin-brightening-guide",
+        "target_keywords": [
+          "skin brightening",
+          "how to get glowing skin",
+          "even skin tone",
+          "radiant skin tips"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 2500,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "Niacinamide Benefits: Complete Guide",
+          "url": "/pages/niacinamide-guide",
+          "keywords": ["niacinamide benefits", "what does niacinamide do", "niacinamide for skin"],
+          "links_to_pillar": true,
+          "product_links": ["niacinamide-vitamin-boost-serum"]
+        },
+        {
+          "title": "Vitamin C vs Niacinamide: Which is Right for You?",
+          "url": "/pages/vitamin-c-vs-niacinamide",
+          "keywords": ["vitamin c vs niacinamide", "can you use vitamin c and niacinamide"],
+          "links_to_pillar": true,
+          "product_links": ["vitamin-c-toner", "niacinamide-vitamin-boost-serum"]
+        },
+        {
+          "title": "How to Fade Dark Spots Naturally",
+          "url": "/pages/fade-dark-spots",
+          "keywords": ["how to fade dark spots", "dark spot treatment", "hyperpigmentation help"],
+          "links_to_pillar": true,
+          "product_links": ["glycolic-acid-serum", "vitamin-c-toner"]
+        },
+        {
+          "title": "Brightening Skincare Routine",
+          "url": "/pages/brightening-routine",
+          "keywords": ["brightening skincare routine", "glow skin routine", "radiant skin routine"],
+          "links_to_pillar": true,
+          "product_links": ["vitamin-c-cleanser", "vitamin-c-toner", "niacinamide-vitamin-boost-serum"]
+        }
+      ],
+      "product_pages": [
+        "niacinamide-vitamin-boost-serum",
+        "vitamin-c-toner",
+        "vitamin-c-cleanser",
+        "glycolic-acid-serum"
+      ]
+    },
+    "hydration": {
+      "pillar": {
+        "title": "Ultimate Skin Hydration Guide",
+        "target_url": "/pages/skin-hydration-guide",
+        "target_keywords": [
+          "skin hydration",
+          "how to hydrate skin",
+          "dry skin solutions",
+          "moisture barrier"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 2500,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "Hyaluronic Acid: The Complete Guide",
+          "url": "/pages/hyaluronic-acid-guide",
+          "keywords": ["hyaluronic acid benefits", "what is hyaluronic acid", "hyaluronic acid for skin"],
+          "links_to_pillar": true,
+          "product_links": ["hyaluronic-acid-serum", "hyaluronic-moisturizer"]
+        },
+        {
+          "title": "Understanding Your Moisture Barrier",
+          "url": "/pages/moisture-barrier-explained",
+          "keywords": ["moisture barrier", "skin barrier repair", "damaged moisture barrier"],
+          "links_to_pillar": true,
+          "product_links": ["soothing-moisturizer", "hydration-serum"]
+        },
+        {
+          "title": "Dehydrated Skin vs Dry Skin: What's the Difference?",
+          "url": "/pages/dehydrated-vs-dry-skin",
+          "keywords": ["dehydrated skin vs dry skin", "is my skin dehydrated", "dry skin symptoms"],
+          "links_to_pillar": true,
+          "product_links": ["hyaluronic-acid-serum", "embrace-collagen-moisturizer"]
+        },
+        {
+          "title": "Winter Skincare Routine for Dry Skin",
+          "url": "/pages/winter-skincare-routine",
+          "keywords": ["winter skincare routine", "skincare for cold weather", "prevent dry skin winter"],
+          "links_to_pillar": true,
+          "product_links": ["shea-body-butter", "hyaluronic-moisturizer"]
+        }
+      ],
+      "product_pages": [
+        "hyaluronic-acid-serum",
+        "hydration-serum",
+        "hyaluronic-moisturizer",
+        "embrace-collagen-moisturizer",
+        "soothing-moisturizer"
+      ]
+    },
+    "exfoliation": {
+      "pillar": {
+        "title": "Chemical Exfoliation Guide: AHAs, BHAs & More",
+        "target_url": "/pages/chemical-exfoliation-guide",
+        "target_keywords": [
+          "chemical exfoliation",
+          "glycolic acid benefits",
+          "AHA vs BHA",
+          "exfoliating acids"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 2000,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "Glycolic Acid for Beginners",
+          "url": "/pages/glycolic-acid-beginners",
+          "keywords": ["glycolic acid for beginners", "how to use glycolic acid", "glycolic acid percentage"],
+          "links_to_pillar": true,
+          "product_links": ["glycolic-acid-serum"]
+        },
+        {
+          "title": "AHA vs BHA: Which Exfoliant is Right for You?",
+          "url": "/pages/aha-vs-bha",
+          "keywords": ["aha vs bha", "which exfoliant to use", "aha bha difference"],
+          "links_to_pillar": true,
+          "product_links": ["glycolic-acid-serum", "mint-exfoliating-facial-polish"]
+        },
+        {
+          "title": "Signs of Over-Exfoliation and How to Fix It",
+          "url": "/pages/over-exfoliation-signs",
+          "keywords": ["over exfoliation", "damaged skin barrier", "exfoliation recovery"],
+          "links_to_pillar": true,
+          "product_links": ["soothing-moisturizer"]
+        }
+      ],
+      "product_pages": [
+        "glycolic-acid-serum",
+        "mint-exfoliating-facial-polish",
+        "vitamin-c-toner"
+      ]
+    },
+    "eye_care": {
+      "pillar": {
+        "title": "Complete Eye Care Skincare Guide",
+        "target_url": "/pages/eye-care-guide",
+        "target_keywords": [
+          "eye cream benefits",
+          "under eye care",
+          "dark circles remedies",
+          "eye skincare"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 2000,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "How to Reduce Dark Circles Naturally",
+          "url": "/pages/reduce-dark-circles",
+          "keywords": ["how to reduce dark circles", "dark circles causes", "under eye darkness"],
+          "links_to_pillar": true,
+          "product_links": ["active-eye-cream", "mens-under-eye-cream"]
+        },
+        {
+          "title": "Eye Cream vs Face Moisturizer: Do You Need Both?",
+          "url": "/pages/eye-cream-vs-moisturizer",
+          "keywords": ["eye cream vs moisturizer", "do i need eye cream", "eye cream benefits"],
+          "links_to_pillar": true,
+          "product_links": ["active-eye-cream"]
+        }
+      ],
+      "product_pages": [
+        "active-eye-cream",
+        "mens-under-eye-cream",
+        "pearl-eye-primer"
+      ]
+    },
+    "mens_skincare": {
+      "pillar": {
+        "title": "Men's Skincare Guide: Build Your Routine",
+        "target_url": "/pages/mens-skincare-guide",
+        "target_keywords": [
+          "mens skincare",
+          "skincare for men",
+          "mens skincare routine",
+          "beard care"
+        ],
+        "search_intent": "informational",
+        "word_count_target": 2500,
+        "schema_types": ["Article", "FAQPage", "BreadcrumbList"]
+      },
+      "support_pages": [
+        {
+          "title": "Beard Grooming 101: The Complete Guide",
+          "url": "/pages/beard-grooming-guide",
+          "keywords": ["beard grooming", "how to grow beard", "beard care tips"],
+          "links_to_pillar": true,
+          "product_links": ["beard-oil", "beard-butter", "foaming-beard-wash"]
+        },
+        {
+          "title": "Post-Shave Skincare for Men",
+          "url": "/pages/post-shave-care",
+          "keywords": ["post shave care", "shaving skincare", "razor burn prevention"],
+          "links_to_pillar": true,
+          "product_links": ["shaving-gel", "soothing-moisturizer"]
+        },
+        {
+          "title": "Anti-Aging Skincare for Men",
+          "url": "/pages/mens-anti-aging",
+          "keywords": ["mens anti aging", "anti aging for men", "mens wrinkle cream"],
+          "links_to_pillar": true,
+          "product_links": ["mens-face-moisturizer", "collagen-and-retinol-serum"]
+        }
+      ],
+      "product_pages": [
+        "mens-face-moisturizer",
+        "mens-under-eye-cream",
+        "mens-shampoo",
+        "beard-oil",
+        "shaving-gel",
+        "all-in-one-body-wash"
+      ]
+    }
+  },
+  "ai_analyzer_content": {
+    "landing_page": {
+      "title": "AI Skin Analyzer - Free Personalized Skin Analysis",
+      "url": "https://ai.ayonne.skin/skin-analysis",
+      "target_keywords": [
+        "ai skin analyzer",
+        "skin analysis online",
+        "free skin analysis",
+        "personalized skincare routine",
+        "skin type test"
+      ],
+      "schema_types": ["WebApplication", "FAQPage"],
+      "faq_questions": [
+        "What is AI skin analysis?",
+        "How does the skin analyzer work?",
+        "Is the skin analysis free?",
+        "What skin conditions can it detect?",
+        "Is my photo data private?"
+      ]
+    },
+    "support_pages": [
+      {
+        "title": "How Our AI Skin Analysis Works",
+        "url": "/pages/how-it-works",
+        "focus": "technical_explanation"
+      },
+      {
+        "title": "Understanding Your Skin Analysis Results",
+        "url": "/pages/understanding-results",
+        "focus": "user_guide"
+      },
+      {
+        "title": "Skin Conditions We Analyze",
+        "url": "/pages/skin-conditions",
+        "focus": "condition_glossary"
+      }
+    ]
+  },
+  "internal_linking_rules": {
+    "max_links_per_page": 10,
+    "required_links": {
+      "product_pages": ["related_products", "ingredient_guides", "how_to_use"],
+      "guide_pages": ["pillar", "related_products", "analyzer"],
+      "category_pages": ["products", "guide"]
+    },
+    "anchor_text_variety": true,
+    "contextual_links_only": true
+  }
+}

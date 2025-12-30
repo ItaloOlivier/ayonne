@@ -1,0 +1,248 @@
+{
+  "agent_name": "SchemaAgent",
+  "success": true,
+  "tasks": [
+    {
+      "id": "SchemaAgent_1_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add WebApplication schema to https://ai.ayonne.skin/skin-analysis",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-analysis",
+      "changes": {
+        "add_schema": "WebApplication",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"WebApplication\",\n  \"name\": \"Ayonne AI Skin Analyzer\",\n  \"url\": \"https://ai.ayonne.skin/skin-analysis\",\n  \"applicationCategory\": \"HealthApplication\",\n  \"operatingSystem\": \"Any\",\n  \"description\": \"Free AI-powered skin analysis tool that provides personalized skincare recommendations.\",\n  \"offers\": {\n    \"@type\": \"Offer\",\n    \"price\": \"0\",\n    \"priceCurrency\": \"USD\"\n  }\n}"
+      },
+      "metadata": {
+        "schema_type": "WebApplication"
+      },
+      "created_at": "2025-12-30T23:12:29.519381",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_2_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/skin-analysis",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-analysis",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Skin Analysis\",\n      \"item\": \"https://ai.ayonne.skin/skin-analysis\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519441",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_3_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/skin-age-test",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-age-test",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Skin Age Test\",\n      \"item\": \"https://ai.ayonne.skin/skin-age-test\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519501",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_4_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/pages/about",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/about",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Pages\",\n      \"item\": \"https://ai.ayonne.skin/pages\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"About\",\n      \"item\": \"https://ai.ayonne.skin/pages/about\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519561",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_5_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/pages/faq",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/faq",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Pages\",\n      \"item\": \"https://ai.ayonne.skin/pages\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Faq\",\n      \"item\": \"https://ai.ayonne.skin/pages/faq\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519618",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_6_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/challenge",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/challenge",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Challenge\",\n      \"item\": \"https://ai.ayonne.skin/challenge\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519662",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_7_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/pages/contact",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/contact",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Pages\",\n      \"item\": \"https://ai.ayonne.skin/pages\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Contact\",\n      \"item\": \"https://ai.ayonne.skin/pages/contact\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519712",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_8_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/pages/shipping",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/shipping",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Pages\",\n      \"item\": \"https://ai.ayonne.skin/pages\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Shipping\",\n      \"item\": \"https://ai.ayonne.skin/pages/shipping\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519763",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_9_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/policies/refund-policy",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Policies\",\n      \"item\": \"https://ai.ayonne.skin/policies\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Refund Policy\",\n      \"item\": \"https://ai.ayonne.skin/policies/refund-policy\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.519812",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_10_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/policies/privacy-policy",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Policies\",\n      \"item\": \"https://ai.ayonne.skin/policies\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Privacy Policy\",\n      \"item\": \"https://ai.ayonne.skin/policies/privacy-policy\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.520029",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "SchemaAgent_11_20251230231229",
+      "agent": "SchemaAgent",
+      "description": "Add BreadcrumbList schema to https://ai.ayonne.skin/policies/terms-of-service",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+      "changes": {
+        "add_schema": "BreadcrumbList",
+        "json_ld": "{\n  \"@context\": \"https://schema.org\",\n  \"@type\": \"BreadcrumbList\",\n  \"itemListElement\": [\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 1,\n      \"name\": \"Home\",\n      \"item\": \"https://ai.ayonne.skin\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 2,\n      \"name\": \"Policies\",\n      \"item\": \"https://ai.ayonne.skin/policies\"\n    },\n    {\n      \"@type\": \"ListItem\",\n      \"position\": 3,\n      \"name\": \"Terms Of Service\",\n      \"item\": \"https://ai.ayonne.skin/policies/terms-of-service\"\n    }\n  ]\n}"
+      },
+      "metadata": {
+        "schema_type": "BreadcrumbList"
+      },
+      "created_at": "2025-12-30T23:12:29.520085",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "pages_audited": 11,
+    "pages_with_schema": 11,
+    "pages_missing_schema": 0,
+    "schema_coverage": 1.0
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Audited 11 pages. 11 have schema (100% coverage). Generated 11 schema recommendations.",
+  "execution_time": 0.0010459423065185547,
+  "timestamp": "2025-12-30T23:12:29.519089"
+}

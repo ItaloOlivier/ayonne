@@ -1,0 +1,313 @@
+# Ayonne SEO Agent Configuration
+# This file controls the behavior of the autonomous SEO system
+
+domains:
+  primary: "ayonne.skin"
+  primary_protocol: "https"
+  app: "ai.ayonne.skin"
+  app_protocol: "https"
+
+sitemaps:
+  primary: "https://ayonne.skin/sitemap.xml"
+  app: "https://ai.ayonne.skin/sitemap.xml"
+
+# Core Web Vitals thresholds (milliseconds/decimal)
+thresholds:
+  cwv:
+    lcp_good: 2500
+    lcp_needs_improvement: 4000
+    cls_good: 0.1
+    cls_needs_improvement: 0.25
+    inp_good: 200
+    inp_needs_improvement: 500
+
+  content:
+    min_word_count: 300
+    max_title_length: 60
+    max_description_length: 160
+    min_description_length: 120
+    readability_target: 60  # Flesch-Kincaid
+
+  seo:
+    min_internal_links: 3
+    max_crawl_depth: 4
+    orphan_page_threshold: 0  # Flag pages with 0 internal links
+
+# Execution limits
+limits:
+  max_changes_per_day: 5
+  max_pages_crawl: 100
+  rate_limit_seconds: 1
+  psi_queries_per_day: 25  # Free tier limit
+  max_file_modifications: 5
+  require_manual_review_threshold: 5  # Changes requiring review
+
+# Priority pages to always check (relative paths)
+priority_pages:
+  app:
+    - "/"
+    - "/skin-analysis"
+    - "/skin-age-test"
+    - "/pages/about"
+    - "/pages/faq"
+    - "/challenge"
+  primary:
+    - "/"
+    - "/collections/all"
+    - "/collections/anti-aging"
+    - "/collections/serums"
+    - "/collections/moisturizers"
+    - "/products/vitamin-c-lotion-1"
+    - "/products/collagen-and-retinol-serum-1"
+    - "/products/hyaluronic-acid-serum-1"
+
+# Forbidden words (medical/misleading claims)
+# Content containing these will be flagged/blocked
+forbidden_words:
+  # Medical claims
+  - "cure"
+  - "cures"
+  - "treat"
+  - "treats"
+  - "treatment for disease"
+  - "heal"
+  - "heals"
+  - "diagnose"
+  - "diagnosis"
+  - "disease"
+  - "medical condition"
+  - "prescription"
+  - "doctor recommended"
+  - "physician"
+  - "clinically proven to cure"
+  - "FDA approved"  # Unless actually true
+
+  # Misleading marketing
+  - "miracle"
+  - "miraculous"
+  - "guaranteed results"
+  - "proven to eliminate"
+  - "instant results"
+  - "permanent solution"
+  - "100% effective"
+  - "works for everyone"
+  - "no side effects"
+  - "risk-free"
+
+# Allowed disclaimer phrases (these bypass forbidden word checks)
+allowed_disclaimers:
+  - "This is not medical advice"
+  - "Consult a dermatologist"
+  - "Individual results may vary"
+  - "For informational purposes only"
+  - "Not intended to diagnose"
+
+# Competitor domains for analysis
+competitors:
+  direct:
+    - "theordinary.com"
+    - "cerave.com"
+    - "paulaschoice.com"
+    - "skinbetter.com"
+    - "skinceuticals.com"
+  indirect:
+    - "sephora.com"
+    - "ulta.com"
+    - "dermstore.com"
+
+# Topical clusters for content strategy
+clusters:
+  anti_aging:
+    pillar_topic: "Anti-Aging Skincare Guide"
+    primary_intent: "informational"
+    keywords:
+      - "anti aging skincare"
+      - "retinol serum benefits"
+      - "collagen for skin"
+      - "vitamin c serum anti aging"
+      - "reduce wrinkles naturally"
+      - "fine lines prevention"
+      - "skin aging signs"
+    support_topics:
+      - "retinol-beginners-guide"
+      - "vitamin-c-benefits"
+      - "collagen-supplements-vs-topical"
+      - "anti-aging-routine-by-age"
+      - "peptides-skincare"
+      - "antioxidants-for-skin"
+    products:
+      - "collagen-and-retinol-serum"
+      - "vitamin-c-lotion"
+      - "firm-serum"
+      - "anti-aging-rose-gold-oil"
+
+  brightening:
+    pillar_topic: "Skin Brightening Guide"
+    primary_intent: "informational"
+    keywords:
+      - "skin brightening"
+      - "niacinamide benefits"
+      - "dark spot correction"
+      - "hyperpigmentation help"
+      - "uneven skin tone"
+      - "vitamin c brightening"
+      - "dull skin remedies"
+    support_topics:
+      - "niacinamide-guide"
+      - "vitamin-c-vs-niacinamide"
+      - "dark-spots-causes"
+      - "brightening-routine"
+      - "post-acne-marks"
+      - "sunscreen-for-hyperpigmentation"
+    products:
+      - "niacinamide-vitamin-boost-serum"
+      - "vitamin-c-toner"
+      - "vitamin-c-cleanser"
+      - "glycolic-acid-serum"
+
+  hydration:
+    pillar_topic: "Skin Hydration Guide"
+    primary_intent: "informational"
+    keywords:
+      - "hyaluronic acid benefits"
+      - "skin hydration tips"
+      - "dry skin solutions"
+      - "moisture barrier repair"
+      - "dehydrated skin vs dry"
+      - "best moisturizer for dry skin"
+    support_topics:
+      - "hyaluronic-acid-guide"
+      - "moisture-barrier-explained"
+      - "hydrating-ingredients"
+      - "winter-skincare-routine"
+      - "humectants-vs-occlusives"
+      - "ceramides-benefits"
+    products:
+      - "hyaluronic-acid-serum"
+      - "hydration-serum"
+      - "hyaluronic-moisturizer"
+      - "embrace-collagen-moisturizer"
+      - "soothing-moisturizer"
+
+  exfoliation:
+    pillar_topic: "Chemical Exfoliation Guide"
+    primary_intent: "informational"
+    keywords:
+      - "glycolic acid benefits"
+      - "chemical exfoliation guide"
+      - "AHA vs BHA"
+      - "exfoliating acids"
+      - "skin texture improvement"
+      - "glycolic acid percentage"
+    support_topics:
+      - "glycolic-acid-beginners"
+      - "aha-bha-difference"
+      - "over-exfoliation-signs"
+      - "exfoliation-frequency"
+      - "sensitive-skin-exfoliation"
+      - "body-exfoliation"
+    products:
+      - "glycolic-acid-serum"
+      - "mint-exfoliating-facial-polish"
+      - "vitamin-c-toner"
+
+  eye_care:
+    pillar_topic: "Eye Care Skincare Guide"
+    primary_intent: "informational"
+    keywords:
+      - "eye cream benefits"
+      - "dark circles remedies"
+      - "under eye bags"
+      - "crow's feet prevention"
+      - "puffy eyes solutions"
+      - "eye area skincare"
+    support_topics:
+      - "eye-cream-guide"
+      - "dark-circles-causes"
+      - "eye-massage-techniques"
+      - "caffeine-for-eyes"
+      - "retinol-eye-area"
+      - "eye-cream-vs-face-cream"
+    products:
+      - "active-eye-cream"
+      - "mens-under-eye-cream"
+      - "pearl-eye-primer"
+
+  mens_skincare:
+    pillar_topic: "Men's Skincare Guide"
+    primary_intent: "informational"
+    keywords:
+      - "mens skincare routine"
+      - "skincare for men"
+      - "beard care tips"
+      - "mens anti aging"
+      - "mens moisturizer"
+      - "post shave care"
+    support_topics:
+      - "mens-skincare-basics"
+      - "beard-grooming-guide"
+      - "shaving-skincare"
+      - "mens-anti-aging"
+      - "mens-oily-skin"
+      - "mens-sensitive-skin"
+    products:
+      - "mens-face-moisturizer"
+      - "mens-under-eye-cream"
+      - "mens-shampoo"
+      - "beard-oil"
+      - "shaving-gel"
+      - "all-in-one-body-wash"
+
+# Schema types to implement
+schema_types:
+  product_pages:
+    - "Product"
+    - "BreadcrumbList"
+    - "FAQPage"
+    - "Review"  # If reviews exist
+
+  content_pages:
+    - "Article"
+    - "BreadcrumbList"
+    - "FAQPage"
+    - "HowTo"  # For tutorials
+
+  site_wide:
+    - "Organization"
+    - "WebSite"
+    - "SearchAction"  # Site search
+
+# AI readiness configuration
+ai_readiness:
+  answer_first_sections: true
+  entity_markers: true
+  faq_blocks: true
+  how_to_blocks: true
+  product_catalog_api: "/api/ai-catalog"
+  llms_txt_path: "/public/llms.txt"
+
+# Content quality requirements
+content_quality:
+  require_disclaimer: true
+  disclaimer_text: |
+    *This content is for informational purposes only and is not intended as medical advice.
+    Individual results may vary. Consult a dermatologist for personalized skincare recommendations.*
+
+  eeat_requirements:
+    - "author_attribution"
+    - "last_updated_date"
+    - "source_citations"
+    - "expert_review"  # Optional but recommended
+
+# Output configuration
+output:
+  runs_directory: "runs"
+  reports_directory: "reports"
+  patches_directory: "reports/patches"
+  date_format: "%Y-%m-%d"
+
+# Logging
+logging:
+  level: "INFO"
+  format: "%(asctime)s - %(name)s - %(levelname)s - %(message)s"
+  file: "seo_agent.log"

@@ -1,0 +1,280 @@
+{
+  "version": "1.0",
+  "generated_at": "2025-12-31T00:00:00Z",
+  "description": "Top 20 SEO improvements for Ayonne.skin and ai.ayonne.skin",
+  "backlog": [
+    {
+      "id": 1,
+      "priority": "critical",
+      "category": "technical",
+      "title": "Add Organization and WebSite schema to homepage",
+      "description": "The homepage lacks Organization and WebSite structured data. This is essential for brand entity establishment in Google's Knowledge Graph.",
+      "target_domain": "both",
+      "estimated_impact": "high",
+      "implementation": {
+        "type": "schema",
+        "action": "Add JSON-LD to layout or homepage"
+      }
+    },
+    {
+      "id": 2,
+      "priority": "critical",
+      "category": "ai_readiness",
+      "title": "Create /api/ai-catalog endpoint for AI shopping",
+      "description": "Implement the AI catalog API referenced in llms.txt to enable AI shopping assistants (ChatGPT, Perplexity) to access product data programmatically.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "high",
+      "implementation": {
+        "type": "api",
+        "file": "src/app/api/ai-catalog/route.ts"
+      }
+    },
+    {
+      "id": 3,
+      "priority": "high",
+      "category": "content",
+      "title": "Create Anti-Aging Skincare Pillar Page",
+      "description": "Build comprehensive anti-aging guide (2500+ words) targeting key anti-aging keywords. Link to all anti-aging products and support pages.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "high",
+      "implementation": {
+        "type": "content",
+        "topic": "anti_aging"
+      }
+    },
+    {
+      "id": 4,
+      "priority": "high",
+      "category": "schema",
+      "title": "Add Product schema to all product pages",
+      "description": "Ensure every product page on Shopify has complete Product schema including name, description, price, availability, brand, and reviews.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "high",
+      "implementation": {
+        "type": "shopify_theme",
+        "template": "product.liquid"
+      }
+    },
+    {
+      "id": 5,
+      "priority": "high",
+      "category": "ai_readiness",
+      "title": "Add FAQPage schema to skin analysis page",
+      "description": "The skin analysis landing page should have FAQ schema for questions about how the AI works, privacy, and what it detects.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "schema",
+        "file": "src/app/skin-analysis/page.tsx"
+      }
+    },
+    {
+      "id": 6,
+      "priority": "high",
+      "category": "eeat",
+      "title": "Add skincare disclaimer to all product and guide pages",
+      "description": "Ensure all skincare content includes the standard disclaimer: 'This content is for informational purposes only and is not intended as medical advice.'",
+      "target_domain": "both",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "component": "DisclaimerBlock"
+      }
+    },
+    {
+      "id": 7,
+      "priority": "high",
+      "category": "technical",
+      "title": "Fix meta description length on key pages",
+      "description": "Several pages have meta descriptions that are too short (<120 chars) or too long (>160 chars). Optimize for 130-155 characters.",
+      "target_domain": "both",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "meta",
+        "action": "audit_and_fix"
+      }
+    },
+    {
+      "id": 8,
+      "priority": "medium",
+      "category": "content",
+      "title": "Create Niacinamide Benefits Guide",
+      "description": "Comprehensive guide on niacinamide benefits, how to use it, and product recommendations. Link to niacinamide serum.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "topic": "brightening"
+      }
+    },
+    {
+      "id": 9,
+      "priority": "medium",
+      "category": "internal_linking",
+      "title": "Add related products section to all product pages",
+      "description": "Cross-link related products from the same cluster. E.g., link Vitamin C Toner to Vitamin C Lotion and Vitamin C Cleanser.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "shopify_theme",
+        "section": "related-products"
+      }
+    },
+    {
+      "id": 10,
+      "priority": "medium",
+      "category": "schema",
+      "title": "Add BreadcrumbList schema site-wide",
+      "description": "Implement breadcrumb navigation with corresponding BreadcrumbList schema on all pages for improved SERP appearance.",
+      "target_domain": "both",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "schema",
+        "component": "Breadcrumbs"
+      }
+    },
+    {
+      "id": 11,
+      "priority": "medium",
+      "category": "content",
+      "title": "Create How Our AI Works explainer page",
+      "description": "Detailed page explaining the AI skin analysis technology for trust and E-E-A-T. Include privacy info and accuracy details.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "url": "/pages/how-it-works"
+      }
+    },
+    {
+      "id": 12,
+      "priority": "medium",
+      "category": "cwv",
+      "title": "Optimize LCP on homepage and skin analysis page",
+      "description": "Current LCP may be above 2.5s threshold. Optimize hero images, preload critical resources, and reduce JS blocking.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "performance",
+        "focus": "lcp"
+      }
+    },
+    {
+      "id": 13,
+      "priority": "medium",
+      "category": "ai_readiness",
+      "title": "Add answer-first sections to FAQ page",
+      "description": "Restructure FAQ page to have direct answers in the first sentence, making content more extractable for AI responses.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "file": "src/app/pages/faq/page.tsx"
+      }
+    },
+    {
+      "id": 14,
+      "priority": "medium",
+      "category": "content",
+      "title": "Create Skin Type Quiz page",
+      "description": "Interactive quiz to determine skin type, linking to appropriate products. Competitor parity feature.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "feature",
+        "url": "/skin-type-quiz"
+      }
+    },
+    {
+      "id": 15,
+      "priority": "low",
+      "category": "content",
+      "title": "Create Hyaluronic Acid Guide",
+      "description": "Educational content on hyaluronic acid benefits, types, and how to incorporate into routine.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "topic": "hydration"
+      }
+    },
+    {
+      "id": 16,
+      "priority": "low",
+      "category": "schema",
+      "title": "Add HowTo schema to routine-related pages",
+      "description": "Pages explaining skincare routines should have HowTo schema for step-by-step rich results.",
+      "target_domain": "both",
+      "estimated_impact": "low",
+      "implementation": {
+        "type": "schema",
+        "pages": ["routines", "how-to-use"]
+      }
+    },
+    {
+      "id": 17,
+      "priority": "low",
+      "category": "internal_linking",
+      "title": "Link from blog/guide content to AI analyzer",
+      "description": "Add contextual CTAs in guide content encouraging readers to try the free AI skin analyzer.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "action": "add_cta_blocks"
+      }
+    },
+    {
+      "id": 18,
+      "priority": "low",
+      "category": "content",
+      "title": "Create Men's Skincare Guide pillar page",
+      "description": "Comprehensive men's skincare guide linking to all men's products and beard care items.",
+      "target_domain": "ayonne.skin",
+      "estimated_impact": "medium",
+      "implementation": {
+        "type": "content",
+        "topic": "mens_skincare"
+      }
+    },
+    {
+      "id": 19,
+      "priority": "low",
+      "category": "eeat",
+      "title": "Add last-updated dates to guide pages",
+      "description": "Display and schema-mark lastModified date on educational content for freshness signals.",
+      "target_domain": "both",
+      "estimated_impact": "low",
+      "implementation": {
+        "type": "meta",
+        "property": "dateModified"
+      }
+    },
+    {
+      "id": 20,
+      "priority": "low",
+      "category": "ai_readiness",
+      "title": "Expand llms.txt with detailed product catalog",
+      "description": "Add more detailed product information to llms.txt including ingredients, benefits by concern, and pricing.",
+      "target_domain": "ai.ayonne.skin",
+      "estimated_impact": "low",
+      "implementation": {
+        "type": "content",
+        "file": "public/llms.txt"
+      }
+    }
+  ],
+  "prioritization_criteria": {
+    "critical": "Blocking issues or major opportunities affecting core functionality",
+    "high": "Significant impact on rankings or AI visibility, quick wins",
+    "medium": "Meaningful improvements with moderate effort",
+    "low": "Nice-to-have improvements for future iterations"
+  },
+  "implementation_notes": [
+    "Changes to ayonne.skin require Shopify theme edits or manual content updates",
+    "Changes to ai.ayonne.skin can be implemented directly in this codebase",
+    "Schema changes should be validated before deployment",
+    "Content changes must include skincare disclaimers where appropriate",
+    "Avoid medical claims in all content"
+  ]
+}

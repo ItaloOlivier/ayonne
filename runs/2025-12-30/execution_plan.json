@@ -1,0 +1,102 @@
+{
+  "tasks": [
+    {
+      "id": "TechnicalSEOAuditor_15_20251230231202",
+      "agent": "TechnicalSEOAuditor",
+      "description": "Missing title tag: https://ai.ayonne.skin/login",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/login",
+      "changes": {
+        "element": "title",
+        "action": "add"
+      },
+      "metadata": {},
+      "created_at": "2025-12-30T23:12:02.935829",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "TechnicalSEOAuditor_21_20251230231202",
+      "agent": "TechnicalSEOAuditor",
+      "description": "Missing title tag: https://ayonne.skin/",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/",
+      "changes": {
+        "element": "title",
+        "action": "add"
+      },
+      "metadata": {},
+      "created_at": "2025-12-30T23:12:02.935894",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "TechnicalSEOAuditor_24_20251230231202",
+      "agent": "TechnicalSEOAuditor",
+      "description": "Missing title tag: https://ayonne.skin/collections/all",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/all",
+      "changes": {
+        "element": "title",
+        "action": "add"
+      },
+      "metadata": {},
+      "created_at": "2025-12-30T23:12:02.935909",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "TechnicalSEOAuditor_27_20251230231202",
+      "agent": "TechnicalSEOAuditor",
+      "description": "Missing title tag: https://ayonne.skin/collections/anti-aging",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/anti-aging",
+      "changes": {
+        "element": "title",
+        "action": "add"
+      },
+      "metadata": {},
+      "created_at": "2025-12-30T23:12:02.935924",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "TechnicalSEOAuditor_30_20251230231202",
+      "agent": "TechnicalSEOAuditor",
+      "description": "Missing title tag: https://ayonne.skin/collections/serums",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "modify",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/serums",
+      "changes": {
+        "element": "title",
+        "action": "add"
+      },
+      "metadata": {},
+      "created_at": "2025-12-30T23:12:02.935940",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "blocked_tasks": [],
+  "max_tasks": 5,
+  "require_manual_review": true
+}

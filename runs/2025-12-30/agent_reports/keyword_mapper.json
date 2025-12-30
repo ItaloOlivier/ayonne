@@ -1,0 +1,338 @@
+{
+  "agent_name": "KeywordIntentMapper",
+  "success": true,
+  "tasks": [
+    {
+      "id": "KeywordIntentMapper_1_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'skincare' targets 3 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "skincare",
+        "competing_urls": [
+          "https://ai.ayonne.skin/",
+          "https://ai.ayonne.skin/skin-analysis",
+          "https://ai.ayonne.skin/challenge"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521847",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_2_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'free skin' targets 2 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "free skin",
+        "competing_urls": [
+          "https://ai.ayonne.skin/",
+          "https://ai.ayonne.skin/skin-age-test"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521854",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_3_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'personalized skincare' targets 3 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "personalized skincare",
+        "competing_urls": [
+          "https://ai.ayonne.skin/",
+          "https://ai.ayonne.skin/skin-analysis",
+          "https://ai.ayonne.skin/challenge"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521860",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_4_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'skincare recommendations' targets 3 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "skincare recommendations",
+        "competing_urls": [
+          "https://ai.ayonne.skin/",
+          "https://ai.ayonne.skin/skin-analysis",
+          "https://ai.ayonne.skin/challenge"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521866",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_5_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'recommendations ayonne' targets 3 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "recommendations ayonne",
+        "competing_urls": [
+          "https://ai.ayonne.skin/",
+          "https://ai.ayonne.skin/skin-analysis",
+          "https://ai.ayonne.skin/challenge"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521872",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_6_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'ayonne personalized' targets 2 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "ayonne personalized",
+        "competing_urls": [
+          "https://ai.ayonne.skin/skin-analysis",
+          "https://ai.ayonne.skin/challenge"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521878",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_7_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Keyword 'policy ayonne' targets 2 pages (cannibalization)",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "keyword": "policy ayonne",
+        "competing_urls": [
+          "https://ai.ayonne.skin/policies/refund-policy",
+          "https://ai.ayonne.skin/policies/privacy-policy"
+        ]
+      },
+      "created_at": "2025-12-30T23:12:29.521891",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_8_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'anti_aging' missing content for: anti aging skincare, retinol serum benefits, collagen for skin",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "anti_aging",
+        "missing_keywords": [
+          "anti aging skincare",
+          "retinol serum benefits",
+          "collagen for skin",
+          "vitamin c serum anti aging",
+          "reduce wrinkles naturally",
+          "fine lines prevention",
+          "skin aging signs"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521908",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_9_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'brightening' missing content for: skin brightening, niacinamide benefits, dark spot correction",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "brightening",
+        "missing_keywords": [
+          "skin brightening",
+          "niacinamide benefits",
+          "dark spot correction",
+          "hyperpigmentation help",
+          "uneven skin tone",
+          "vitamin c brightening",
+          "dull skin remedies"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521916",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_10_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'hydration' missing content for: hyaluronic acid benefits, skin hydration tips, dry skin solutions",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "hydration",
+        "missing_keywords": [
+          "hyaluronic acid benefits",
+          "skin hydration tips",
+          "dry skin solutions",
+          "moisture barrier repair",
+          "dehydrated skin vs dry",
+          "best moisturizer for dry skin"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521924",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_11_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'exfoliation' missing content for: glycolic acid benefits, chemical exfoliation guide, AHA vs BHA",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "exfoliation",
+        "missing_keywords": [
+          "glycolic acid benefits",
+          "chemical exfoliation guide",
+          "AHA vs BHA",
+          "exfoliating acids",
+          "skin texture improvement",
+          "glycolic acid percentage"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521931",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_12_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'eye_care' missing content for: eye cream benefits, dark circles remedies, under eye bags",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "eye_care",
+        "missing_keywords": [
+          "eye cream benefits",
+          "dark circles remedies",
+          "under eye bags",
+          "crow's feet prevention",
+          "puffy eyes solutions",
+          "eye area skincare"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521938",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "KeywordIntentMapper_13_20251230231229",
+      "agent": "KeywordIntentMapper",
+      "description": "Cluster 'mens_skincare' missing content for: mens skincare routine, skincare for men, beard care tips",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "cluster": "mens_skincare",
+        "missing_keywords": [
+          "mens skincare routine",
+          "skincare for men",
+          "beard care tips",
+          "mens anti aging",
+          "mens moisturizer",
+          "post shave care"
+        ],
+        "covered_keywords": []
+      },
+      "created_at": "2025-12-30T23:12:29.521945",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "keywords_mapped": 40,
+    "cannibalization_issues": 11,
+    "pages_analyzed": 20
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Mapped 40 keywords. Found 11 cannibalization issues.",
+  "execution_time": 0.0004799365997314453,
+  "timestamp": "2025-12-30T23:12:29.521471"
+}
