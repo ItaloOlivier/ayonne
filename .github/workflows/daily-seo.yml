@@ -1,0 +1,186 @@
+name: Daily SEO Agent
+
+on:
+  # Run daily at 06:00 UTC (1:00 AM EST, 10:00 PM PST)
+  schedule:
+    - cron: '0 6 * * *'
+
+  # Allow manual trigger
+  workflow_dispatch:
+    inputs:
+      dry_run:
+        description: 'Run without making changes'
+        required: false
+        default: 'false'
+        type: boolean
+
+# Prevent concurrent runs
+concurrency:
+  group: seo-agent-${{ github.ref }}
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  seo-analysis:
+    name: Run SEO Analysis
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+          cache-dependency-path: 'seo_agents/requirements.txt'
+
+      - name: Install dependencies
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r seo_agents/requirements.txt
+
+      - name: Run SEO Agent
+        id: seo_run
+        env:
+          # Optional: PageSpeed Insights API key for increased quota
+          PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
+          # Determine if dry run
+          DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+        run: |
+          # Create output directory
+          mkdir -p runs reports/patches
+
+          # Run the SEO agent
+          if [ "$DRY_RUN" = "true" ]; then
+            python -m seo_agents.run --config config/seo.yaml --dry-run --output-json runs/summary.json
+          else
+            python -m seo_agents.run --config config/seo.yaml --output-json runs/summary.json
+          fi
+
+          # Extract results for PR
+          echo "tasks_found=$(jq -r '.total_tasks_found // 0' runs/summary.json)" >> $GITHUB_OUTPUT
+          echo "tasks_executed=$(jq -r '.tasks_executed // 0' runs/summary.json)" >> $GITHUB_OUTPUT
+          echo "pages_crawled=$(jq -r '.pages_crawled // 0' runs/summary.json)" >> $GITHUB_OUTPUT
+          echo "success=$(jq -r '.success // false' runs/summary.json)" >> $GITHUB_OUTPUT
+
+      - name: Check for changes
+        id: check_changes
+        run: |
+          # Check if there are any changes to commit
+          git add -A
+          if git diff --staged --quiet; then
+            echo "has_changes=false" >> $GITHUB_OUTPUT
+          else
+            echo "has_changes=true" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Create branch and commit
+        if: steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        id: create_branch
+        run: |
+          # Configure git
+          git config user.name "SEO Agent Bot"
+          git config user.email "seo-agent@ayonne.skin"
+
+          # Create unique branch name
+          BRANCH_NAME="seo-updates/$(date +%Y-%m-%d)-$(echo $GITHUB_SHA | cut -c1-7)"
+          echo "branch_name=$BRANCH_NAME" >> $GITHUB_OUTPUT
+
+          # Create and switch to branch
+          git checkout -b "$BRANCH_NAME"
+
+          # Commit changes
+          git commit -m "$(cat <<'EOF'
+          SEO improvements for $(date +%Y-%m-%d)
+
+          Automated SEO analysis and improvements:
+          - Pages crawled: ${{ steps.seo_run.outputs.pages_crawled }}
+          - Tasks identified: ${{ steps.seo_run.outputs.tasks_found }}
+          - Tasks executed: ${{ steps.seo_run.outputs.tasks_executed }}
+
+          See reports/summary.md for details.
+
+          🤖 Generated with Ayonne SEO Agent
+          EOF
+          )"
+
+          # Push branch
+          git push origin "$BRANCH_NAME"
+
+      - name: Create Pull Request
+        if: steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+        uses: peter-evans/create-pull-request@v6
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          branch: ${{ steps.create_branch.outputs.branch_name }}
+          base: main
+          title: "SEO: Improvements for ${{ github.run_id }}"
+          body: |
+            ## SEO Agent Analysis Results
+
+            **Run Date**: $(date +%Y-%m-%d)
+            **Status**: ${{ steps.seo_run.outputs.success == 'true' && '✅ Success' || '⚠️ Completed with issues' }}
+
+            ### Summary
+            | Metric | Value |
+            |--------|-------|
+            | Pages Crawled | ${{ steps.seo_run.outputs.pages_crawled }} |
+            | Tasks Found | ${{ steps.seo_run.outputs.tasks_found }} |
+            | Tasks Executed | ${{ steps.seo_run.outputs.tasks_executed }} |
+
+            ### Changes
+            This PR includes automated SEO improvements identified by the SEO Agent system:
+            - Technical SEO fixes
+            - Schema markup updates
+            - Content optimization recommendations
+            - Internal linking improvements
+
+            ### Review Checklist
+            - [ ] Verify no medical claims introduced
+            - [ ] Check JSON-LD schema is valid
+            - [ ] Confirm no accidental noindex added
+            - [ ] Review patch files for Shopify changes
+
+            ### Patches for Shopify
+            Check `reports/patches/` for recommended changes to apply manually on Shopify.
+
+            ---
+            *🤖 This PR was automatically generated by the Ayonne SEO Agent*
+          labels: |
+            seo
+            automated
+          draft: false
+
+      - name: Upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: seo-run-${{ github.run_id }}
+          path: |
+            runs/
+            reports/
+          retention-days: 30
+
+      - name: Summary
+        run: |
+          echo "## SEO Agent Run Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "| Metric | Value |" >> $GITHUB_STEP_SUMMARY
+          echo "|--------|-------|" >> $GITHUB_STEP_SUMMARY
+          echo "| Pages Crawled | ${{ steps.seo_run.outputs.pages_crawled }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tasks Found | ${{ steps.seo_run.outputs.tasks_found }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Tasks Executed | ${{ steps.seo_run.outputs.tasks_executed }} |" >> $GITHUB_STEP_SUMMARY
+          echo "| Changes | ${{ steps.check_changes.outputs.has_changes }} |" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          if [ -f reports/summary.md ]; then
+            echo "### Detailed Summary" >> $GITHUB_STEP_SUMMARY
+            cat reports/summary.md >> $GITHUB_STEP_SUMMARY
+          fi
