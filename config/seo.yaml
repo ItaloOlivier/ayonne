@@ -35,12 +35,12 @@ thresholds:
 
 # Execution limits
 limits:
-  max_changes_per_day: 5
+  max_changes_per_day: 200  # Increased for bulk execution
   max_pages_crawl: 100
   rate_limit_seconds: 1
   psi_queries_per_day: 25  # Free tier limit
-  max_file_modifications: 5
-  require_manual_review_threshold: 5  # Changes requiring review
+  max_file_modifications: 200  # Increased for bulk execution
+  require_manual_review_threshold: 200  # Changes requiring review (increased for bulk execution)
 
 # Priority pages to always check (relative paths)
 priority_pages:
@@ -114,9 +114,189 @@ competitors:
     - "sephora.com"
     - "ulta.com"
     - "dermstore.com"
+  # Regional competitors in dry climate markets (Arizona, Nevada, Colorado)
+  regional:
+    arizona:
+      - "ultrasmoothskin.com"           # Ultra Smooth Skin - Scottsdale med-spa
+      - "scottsdaleskinboutique.com"    # Scottsdale Skin Boutique
+      - "phxskin.com"                   # Phoenix Skin med-spa
+      - "herbal-dynamics-beauty.com"    # Herbal Dynamics Beauty (Phoenix-based brand)
+      - "luaskincare.com"               # Lua Skincare (Arizona local)
+    colorado:
+      - "skincare5280.com"              # Skincare 5280 - Denver med-spa
+      - "mseskincare.com"               # MSE Skincare - Denver esthetician
+      - "signalskinscience.com"         # Signal Skin Science - Denver
+      - "denverskinaesthetics.com"      # Denver Skin Aesthetics
+      - "sesenskinbodywellness.com"     # Sesen Skin Body Wellness
+    nevada:
+      - "vegasskincare.com"             # Las Vegas local competitor
+      - "hendersonskincare.com"         # Henderson area competitor
+
+# Regional SEO Strategy - Dry Climate Markets
+# Focus on smaller cities/states where ranking is easier for skincare keywords
+regional_seo:
+  strategy: "Target underserved dry climate markets where skin hydration concerns are highest"
+
+  # Primary target markets (by ranking difficulty - easiest first)
+  target_markets:
+    tier_1_easy:
+      - region: "Phoenix-Mesa-Scottsdale, AZ"
+        population: 4800000
+        humidity: "low (desert)"
+        primary_concern: "severe dryness, dehydration"
+        search_opportunity: "high"
+        local_keyword_prefix: "Phoenix skincare"
+      - region: "Denver-Aurora-Lakewood, CO"
+        population: 2900000
+        humidity: "low (high altitude dry)"
+        primary_concern: "altitude dryness, winter cracking"
+        search_opportunity: "high"
+        local_keyword_prefix: "Denver skincare"
+      - region: "Las Vegas-Henderson, NV"
+        population: 2300000
+        humidity: "very low (desert)"
+        primary_concern: "extreme dehydration, sun damage"
+        search_opportunity: "high"
+        local_keyword_prefix: "Las Vegas skincare"
+
+    tier_2_medium:
+      - region: "Tucson, AZ"
+        population: 1000000
+        humidity: "low (desert)"
+        primary_concern: "desert dryness"
+        search_opportunity: "medium-high"
+        local_keyword_prefix: "Tucson skincare"
+      - region: "Albuquerque, NM"
+        population: 900000
+        humidity: "low (high desert)"
+        primary_concern: "altitude + desert dryness"
+        search_opportunity: "medium-high"
+        local_keyword_prefix: "Albuquerque skincare"
+      - region: "Colorado Springs, CO"
+        population: 700000
+        humidity: "low (high altitude)"
+        primary_concern: "altitude dryness"
+        search_opportunity: "medium"
+        local_keyword_prefix: "Colorado Springs skincare"
+
+  # Regional keyword clusters to target
+  regional_keywords:
+    desert_skincare:
+      - "skincare for dry climate"
+      - "desert skincare routine"
+      - "Arizona skincare tips"
+      - "dry climate moisturizer"
+      - "best skincare for desert weather"
+      - "Phoenix skin care routine"
+      - "Las Vegas dry skin help"
+      - "skincare Arizona heat"
+
+    high_altitude_skincare:
+      - "skincare for high altitude"
+      - "Denver skincare routine"
+      - "Colorado dry skin"
+      - "altitude skin dehydration"
+      - "mountain climate skincare"
+      - "high elevation moisturizer"
+      - "Colorado winter skincare"
+
+    climate_specific:
+      - "hyaluronic acid dry climate"
+      - "humectants for desert skin"
+      - "ceramides for dry weather"
+      - "winter dry skin Arizona"
+      - "summer skincare Phoenix"
+      - "air conditioning skin damage"
+      - "low humidity skincare"
+
+    ai_analyzer_local:
+      - "AI skin analyzer Phoenix"
+      - "skin analysis Denver"
+      - "free skin test Arizona"
+      - "online skin analyzer Colorado"
+      - "virtual skin consultation Las Vegas"
+
+  # Seasonal content calendar for regional markets
+  seasonal_calendar:
+    winter_dry_season: # Oct-Mar
+      focus: "intense hydration, barrier repair"
+      keywords:
+        - "winter skincare Arizona"
+        - "dry winter skin Denver"
+        - "cold weather skincare desert"
+      content_topics:
+        - "Why Your Skin Gets Drier in Arizona Winters"
+        - "Denver Winter Skincare Survival Guide"
+        - "Humidifier vs Moisturizer: What Works in Dry Climates"
+
+    summer_sun_season: # Apr-Sep
+      focus: "sun protection, oil control, hydration"
+      keywords:
+        - "summer skincare Phoenix"
+        - "sunscreen desert climate"
+        - "summer moisturizer dry heat"
+      content_topics:
+        - "Phoenix Summer Skincare: Beat the 115° Heat"
+        - "Why Your Skin Still Needs Moisturizer in Dry Heat"
+        - "Best Sunscreens for Desert Living"
+
+  # Local SEO signals to build
+  local_signals:
+    google_business_profile: false  # Online-only business
+    local_schema: true              # Add LocalBusiness schema variant
+    regional_landing_pages: true    # Create city-specific landing pages
+    local_testimonials: true        # Feature reviews from regional customers
 
 # Topical clusters for content strategy
 clusters:
+  # NEW: Regional/Climate-specific cluster for dry climate markets
+  dry_climate:
+    pillar_topic: "Skincare for Dry Climates: Desert & High Altitude Guide"
+    primary_intent: "informational"
+    regional_focus: true
+    target_regions:
+      - "Arizona"
+      - "Nevada"
+      - "Colorado"
+      - "New Mexico"
+    keywords:
+      - "skincare for dry climate"
+      - "desert skincare routine"
+      - "Arizona skincare"
+      - "Denver skincare"
+      - "high altitude skincare"
+      - "dry climate moisturizer"
+      - "desert skin dehydration"
+      - "low humidity skincare"
+    support_topics:
+      - "arizona-skincare-guide"
+      - "denver-colorado-skincare"
+      - "desert-climate-routine"
+      - "high-altitude-skin-tips"
+      - "winter-skincare-southwest"
+      - "summer-skincare-desert"
+      - "humectants-vs-occlusives-dry-climate"
+      - "air-conditioning-skin-damage"
+    products:
+      - "hyaluronic-acid-serum"
+      - "hydration-serum"
+      - "hyaluronic-moisturizer"
+      - "soothing-moisturizer"
+      - "embrace-collagen-moisturizer"
+    local_landing_pages:
+      - slug: "skincare-phoenix-arizona"
+        title: "Phoenix Arizona Skincare Guide | Beat Desert Dryness"
+        h1: "Expert Skincare for Phoenix's Desert Climate"
+        focus_keyword: "Phoenix skincare"
+      - slug: "skincare-denver-colorado"
+        title: "Denver Colorado Skincare Guide | High Altitude Hydration"
+        h1: "Skincare Solutions for Denver's Dry Mountain Air"
+        focus_keyword: "Denver skincare"
+      - slug: "skincare-las-vegas-nevada"
+        title: "Las Vegas Nevada Skincare Guide | Desert Skin Solutions"
+        h1: "Hydration Essentials for Las Vegas Living"
+        focus_keyword: "Las Vegas skincare"
+
   anti_aging:
     pillar_topic: "Anti-Aging Skincare Guide"
     primary_intent: "informational"

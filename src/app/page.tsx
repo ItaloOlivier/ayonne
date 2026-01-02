@@ -4,8 +4,8 @@ import { Metadata } from 'next'
 import { SHOPIFY_STORE_URL } from '@/lib/shopify'
 
 export const metadata: Metadata = {
-  title: 'Free AI Skin Analysis | Personalized Skincare Recommendations',
-  description: 'Discover your perfect skincare routine with Ayonne\'s free AI Skin Analyzer. Upload a selfie, get instant skin analysis, and receive personalized product recommendations for your unique skin type and concerns.',
+  title: 'Free AI Skin Analysis | Personalized Recommendations',
+  description: 'Discover your perfect skincare routine with Ayonne\'s free AI Skin Analyzer. Get instant analysis and personalized product recommendations.',
   alternates: {
     canonical: 'https://ai.ayonne.skin',
   },
@@ -168,6 +168,44 @@ export default function HomePage() {
               <h3 className="font-medium text-[#1C4444] mb-2 tracking-wide">Fast Shipping</h3>
               <p className="text-sm text-[#1C4444]/55">Ships from North America</p>
             </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Education & Resources Section */}
+      <section className="py-20 md:py-28 bg-white">
+        <div className="container mx-auto px-4 lg:px-8">
+          <p className="text-sm uppercase tracking-[0.25em] text-[#D4AF37] text-center mb-4">
+            Learn & Explore
+          </p>
+          <h2 className="text-3xl md:text-4xl font-light text-[#1C4444] text-center mb-5 tracking-tight">
+            Skincare Education
+          </h2>
+          <p className="text-[#1C4444]/55 text-center mb-14 max-w-2xl mx-auto leading-relaxed">
+            Understand your skin better with our comprehensive guides and resources.
+          </p>
+          <div className="grid md:grid-cols-3 gap-8 max-w-5xl mx-auto">
+            <Link href="/guides/ingredients" className="card-luxury p-8 text-center group hover:-translate-y-1 transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-5 bg-[#F4EBE7] rounded-full flex items-center justify-center text-3xl group-hover:bg-[#1C4444] transition-colors duration-300">
+                🧪
+              </div>
+              <h3 className="font-medium text-[#1C4444] mb-2 tracking-wide group-hover:text-[#D4AF37] transition-colors">Ingredient Guide</h3>
+              <p className="text-sm text-[#1C4444]/55">Learn what retinol, vitamin C, and other active ingredients do for your skin</p>
+            </Link>
+            <Link href="/guides/skin-types" className="card-luxury p-8 text-center group hover:-translate-y-1 transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-5 bg-[#F4EBE7] rounded-full flex items-center justify-center text-3xl group-hover:bg-[#1C4444] transition-colors duration-300">
+                ✨
+              </div>
+              <h3 className="font-medium text-[#1C4444] mb-2 tracking-wide group-hover:text-[#D4AF37] transition-colors">Skin Type Guide</h3>
+              <p className="text-sm text-[#1C4444]/55">Discover your skin type and find the perfect routine for your needs</p>
+            </Link>
+            <Link href="/challenge" className="card-luxury p-8 text-center group hover:-translate-y-1 transition-all duration-300">
+              <div className="w-16 h-16 mx-auto mb-5 bg-[#F4EBE7] rounded-full flex items-center justify-center text-3xl group-hover:bg-[#D4AF37] transition-colors duration-300">
+                🏆
+              </div>
+              <h3 className="font-medium text-[#1C4444] mb-2 tracking-wide group-hover:text-[#D4AF37] transition-colors">30-Day Challenge</h3>
+              <p className="text-sm text-[#1C4444]/55">Transform your skin in 30 days with daily tracking and rewards</p>
+            </Link>
           </div>
         </div>
       </section>

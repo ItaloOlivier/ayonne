@@ -2,8 +2,8 @@ import { Metadata } from 'next'
 import Link from 'next/link'
 
 export const metadata: Metadata = {
-  title: 'Free Skin Age Test | How Old Does Your Skin Really Look?',
-  description: 'Discover your true skin age with our free AI-powered skin age test. Upload a selfie and get instant results in 30 seconds. Join 50,000+ people who\'ve uncovered their skin\'s real age.',
+  title: 'Free Skin Age Test | Discover Your True Skin Age',
+  description: 'Free AI skin age test. Upload a selfie, get instant results in 30 seconds. Join 50,000+ who\'ve discovered their skin\'s real age.',
   keywords: [
     'skin age test',
     'how old does my skin look',

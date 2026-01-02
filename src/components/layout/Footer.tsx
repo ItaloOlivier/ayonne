@@ -46,6 +46,24 @@ export default function Footer() {
                   </li>
                   <li>
                     <Link
+                      href="/challenge"
+                      className="text-white/70 hover:text-white transition-all duration-300 inline-flex items-center gap-2 group"
+                    >
+                      <span className="w-1 h-1 bg-[#D4AF37] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      30-Day Challenge
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
+                      href="/guides"
+                      className="text-white/70 hover:text-white transition-all duration-300 inline-flex items-center gap-2 group"
+                    >
+                      <span className="w-1 h-1 bg-[#D4AF37] rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+                      Skincare Guides
+                    </Link>
+                  </li>
+                  <li>
+                    <Link
                       href="/pages/about"
                       className="text-white/70 hover:text-white transition-all duration-300 inline-flex items-center gap-2 group"
                     >

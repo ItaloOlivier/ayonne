@@ -3,8 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export const metadata: Metadata = {
-  title: 'Our Story - The Science of Timeless Beauty | Ayonne',
-  description: 'Discover the Ayonne story - where biohacking meets beauty. Our vegan, cruelty-free skincare combines cutting-edge science with nature\'s most powerful ingredients for radiant, youthful skin.',
+  title: 'Our Story | Biohacking Beauty | Ayonne',
+  description: 'Discover Ayonne - where biohacking meets beauty. Vegan, cruelty-free skincare combining science with nature\'s most powerful ingredients.',
   alternates: {
     canonical: 'https://ai.ayonne.skin/pages/about',
   },

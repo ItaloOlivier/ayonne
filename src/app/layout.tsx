@@ -23,10 +23,10 @@ export const viewport: Viewport = {
 export const metadata: Metadata = {
   metadataBase: new URL(BASE_URL),
   title: {
-    default: "AI Skin Analyzer | Ayonne - Personalized Skincare Recommendations",
+    default: "AI Skin Analyzer | Personalized Skincare | Ayonne",
     template: "%s | Ayonne AI Skin Analyzer",
   },
-  description: "Get personalized skincare recommendations with Ayonne's free AI Skin Analyzer. Upload a selfie, receive instant skin analysis, and discover science-backed products matched to your unique skin concerns.",
+  description: "Free AI Skin Analyzer by Ayonne. Upload a selfie, get instant skin analysis, and discover products matched to your unique skin concerns.",
   keywords: [
     "AI skin analysis",
     "skin analyzer",
