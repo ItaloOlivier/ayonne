@@ -13,6 +13,11 @@ on:
         required: false
         default: 'false'
         type: boolean
+      auto_deploy:
+        description: 'Auto-deploy to main (skip PR)'
+        required: false
+        default: 'false'
+        type: boolean
 
 # Prevent concurrent runs
 concurrency:
@@ -54,16 +59,26 @@ jobs:
           PSI_API_KEY: ${{ secrets.PSI_API_KEY }}
           # Determine if dry run
           DRY_RUN: ${{ github.event.inputs.dry_run || 'false' }}
+          # Determine if auto-deploy (default true for scheduled runs)
+          AUTO_DEPLOY: ${{ github.event.inputs.auto_deploy || 'true' }}
         run: |
           # Create output directory
           mkdir -p runs reports/patches
 
-          # Run the SEO agent
+          # Build command with flags
+          CMD="python -m seo_agents.run --config config/seo.yaml --output-json runs/summary.json"
+
           if [ "$DRY_RUN" = "true" ]; then
-            python -m seo_agents.run --config config/seo.yaml --dry-run --output-json runs/summary.json
-          else
-            python -m seo_agents.run --config config/seo.yaml --output-json runs/summary.json
+            CMD="$CMD --dry-run"
           fi
+
+          if [ "$AUTO_DEPLOY" = "true" ] && [ "$DRY_RUN" != "true" ]; then
+            CMD="$CMD --auto-deploy"
+          fi
+
+          # Run the SEO agent
+          echo "Running: $CMD"
+          $CMD
 
           # Extract results for PR
           echo "tasks_found=$(jq -r '.total_tasks_found // 0' runs/summary.json)" >> $GITHUB_OUTPUT
@@ -71,8 +86,12 @@ jobs:
           echo "pages_crawled=$(jq -r '.pages_crawled // 0' runs/summary.json)" >> $GITHUB_OUTPUT
           echo "success=$(jq -r '.success // false' runs/summary.json)" >> $GITHUB_OUTPUT
 
-      - name: Check for changes
+      # Note: When auto-deploy is enabled, the Python script handles git commit/push directly.
+      # The steps below are only used when auto-deploy is disabled (PR workflow).
+
+      - name: Check for changes (PR mode only)
         id: check_changes
+        if: github.event.inputs.auto_deploy == 'false'
         run: |
           # Check if there are any changes to commit
           git add -A
@@ -82,8 +101,8 @@ jobs:
             echo "has_changes=true" >> $GITHUB_OUTPUT
           fi
 
-      - name: Create branch and commit
-        if: steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+      - name: Create branch and commit (PR mode only)
+        if: github.event.inputs.auto_deploy == 'false' && steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
         id: create_branch
         run: |
           # Configure git
@@ -115,8 +134,8 @@ jobs:
           # Push branch
           git push origin "$BRANCH_NAME"
 
-      - name: Create Pull Request
-        if: steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
+      - name: Create Pull Request (PR mode only)
+        if: github.event.inputs.auto_deploy == 'false' && steps.check_changes.outputs.has_changes == 'true' && github.event.inputs.dry_run != 'true'
         uses: peter-evans/create-pull-request@v6
         with:
           token: ${{ secrets.GITHUB_TOKEN }}

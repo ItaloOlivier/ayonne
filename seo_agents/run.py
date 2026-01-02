@@ -62,6 +62,7 @@ def main():
 Examples:
     python -m seo_agents.run --config config/seo.yaml
     python -m seo_agents.run --config config/seo.yaml --dry-run
+    python -m seo_agents.run --config config/seo.yaml --auto-deploy
     python -m seo_agents.run --config config/seo.yaml --log-level DEBUG
         """
     )
@@ -101,6 +102,12 @@ Examples:
         help="Output summary as JSON to specified file"
     )
 
+    parser.add_argument(
+        "--auto-deploy",
+        action="store_true",
+        help="Automatically commit and push changes to GitHub after execution"
+    )
+
     args = parser.parse_args()
 
     # Setup logging
@@ -111,6 +118,7 @@ Examples:
     logger.info(f"Run Date: {datetime.utcnow().strftime('%Y-%m-%d %H:%M:%S')} UTC")
     logger.info(f"Config: {args.config}")
     logger.info(f"Dry Run: {args.dry_run}")
+    logger.info(f"Auto Deploy: {args.auto_deploy}")
     logger.info("=" * 60)
 
     # Load configuration
@@ -127,7 +135,7 @@ Examples:
     # Initialize and run commander
     try:
         commander = SEOCommander(config, logger)
-        summary = commander.run(dry_run=args.dry_run)
+        summary = commander.run(dry_run=args.dry_run, auto_deploy=args.auto_deploy)
 
         # Output results
         logger.info("=" * 60)
@@ -136,6 +144,15 @@ Examples:
         logger.info(f"Pages Crawled: {summary.get('pages_crawled', 0)}")
         logger.info(f"Tasks Found: {summary.get('total_tasks_found', 0)}")
         logger.info(f"Tasks Executed: {summary.get('tasks_executed', 0)}")
+
+        # Log deploy status if enabled
+        deploy_info = summary.get('deploy')
+        if deploy_info:
+            if deploy_info.get('pushed'):
+                logger.info(f"Deployed: Commit {deploy_info.get('commit_hash')} pushed to GitHub")
+            elif deploy_info.get('error'):
+                logger.warning(f"Deploy failed: {deploy_info.get('error')}")
+
         logger.info("=" * 60)
 
         # Save JSON output if requested
