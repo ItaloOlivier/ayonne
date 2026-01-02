@@ -1,0 +1,24 @@
+#!/bin/sh
+
+# Pre-commit hook: Run validation before commit
+echo "🔍 Running pre-commit validation..."
+
+cd "."
+
+# Run TypeScript check
+echo "📝 Checking TypeScript..."
+npx tsc --noEmit
+if [ $? -ne 0 ]; then
+  echo "❌ TypeScript errors found. Please fix them before committing."
+  exit 1
+fi
+
+# Run ESLint
+echo "🔍 Running ESLint..."
+npx eslint . --ext .ts,.tsx,.js,.jsx --quiet 2>/dev/null || npx next lint --quiet 2>/dev/null
+if [ $? -ne 0 ]; then
+  echo "❌ ESLint errors found. Please fix them before committing."
+  exit 1
+fi
+
+echo "✅ Pre-commit validation passed!"

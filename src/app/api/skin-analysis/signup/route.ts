@@ -3,6 +3,7 @@ import { prisma } from '@/lib/prisma'
 import { setSessionCookie } from '@/lib/auth'
 import { checkRateLimit, getClientIP, RATE_LIMITS, createRateLimitHeaders } from '@/lib/rate-limit'
 import { createShopifyCustomer, isShopifyConfigured } from '@/lib/shopify-admin'
+import { ImageStorageConsent } from '@prisma/client'
 import * as bcrypt from 'bcryptjs'
 
 export async function POST(request: NextRequest) {
@@ -21,7 +22,7 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    const { firstName, lastName, email, phone, password } = await request.json()
+    const { firstName, lastName, email, phone, password, imageStorageConsent } = await request.json()
 
     // Validate required fields
     if (!firstName?.trim()) {
@@ -88,6 +89,13 @@ export async function POST(request: NextRequest) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10)
 
+    // Validate image storage consent if provided
+    const validConsents: ImageStorageConsent[] = ['ALLOWED', 'DENIED', 'NOT_SET']
+    const consentValue: ImageStorageConsent =
+      imageStorageConsent && validConsents.includes(imageStorageConsent)
+        ? imageStorageConsent
+        : 'NOT_SET'
+
     // Create customer
     const customer = await prisma.customer.create({
       data: {
@@ -96,6 +104,8 @@ export async function POST(request: NextRequest) {
         firstName: firstName.trim(),
         lastName: lastName?.trim() || null,
         phone: phone?.trim() || null,
+        imageStorageConsent: consentValue,
+        consentUpdatedAt: consentValue !== 'NOT_SET' ? new Date() : null,
       },
     })
 

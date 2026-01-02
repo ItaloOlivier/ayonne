@@ -23,6 +23,7 @@ export async function GET() {
         createdAt: customer.createdAt,
         analysisCount: customer.analysisCount,
         skinGoal: customer.skinGoal || 'AGE_GRACEFULLY',
+        imageStorageConsent: customer.imageStorageConsent || 'NOT_SET',
       }
     })
   } catch (error) {

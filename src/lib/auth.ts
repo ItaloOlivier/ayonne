@@ -45,6 +45,7 @@ export interface CustomerSession {
   createdAt: Date
   analysisCount: number
   skinGoal: 'AGE_NORMALLY' | 'AGE_GRACEFULLY' | 'STAY_YOUNG_FOREVER'
+  imageStorageConsent: 'ALLOWED' | 'DENIED' | 'NOT_SET'
 }
 
 /**
@@ -191,6 +192,7 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
         phone: true,
         createdAt: true,
         skinGoal: true,
+        imageStorageConsent: true,
         _count: {
           select: { skinAnalyses: true }
         }
@@ -210,6 +212,7 @@ export async function getCurrentCustomer(): Promise<CustomerSession | null> {
       createdAt: customer.createdAt,
       analysisCount: customer._count.skinAnalyses,
       skinGoal: customer.skinGoal || 'AGE_GRACEFULLY',
+      imageStorageConsent: customer.imageStorageConsent || 'NOT_SET',
     }
   } catch (error) {
     console.error('Error getting current customer:', error)
@@ -249,4 +252,29 @@ export async function requireAuth(): Promise<{ customerId: string; customer: Cus
     throw new Error('Unauthorized')
   }
   return { customerId: customer.id, customer }
+}
+
+/**
+ * Get customer's image storage consent preference
+ * Returns 'NOT_SET' if customer not found or error
+ */
+export async function getCustomerImageConsent(customerId: string): Promise<'ALLOWED' | 'DENIED' | 'NOT_SET'> {
+  try {
+    const customer = await prisma.customer.findUnique({
+      where: { id: customerId },
+      select: { imageStorageConsent: true }
+    })
+    return customer?.imageStorageConsent || 'NOT_SET'
+  } catch {
+    return 'NOT_SET'
+  }
+}
+
+/**
+ * Check if customer allows image storage
+ * Returns true only if explicitly ALLOWED
+ */
+export async function canStoreCustomerImages(customerId: string): Promise<boolean> {
+  const consent = await getCustomerImageConsent(customerId)
+  return consent === 'ALLOWED'
 }

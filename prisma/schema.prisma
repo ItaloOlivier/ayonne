@@ -74,6 +74,10 @@ model Customer {
   // Skincare Goal (gamified scoring)
   skinGoal          SkinGoal   @default(AGE_GRACEFULLY)
 
+  // Privacy preferences
+  imageStorageConsent ImageStorageConsent @default(NOT_SET)
+  consentUpdatedAt    DateTime?           // When consent was last changed
+
   // Growth hacking - Streaks
   currentStreak      Int       @default(0)
   longestStreak      Int       @default(0)
@@ -413,4 +417,11 @@ enum SkinGoal {
   AGE_NORMALLY       // Relaxed scoring (1.5x weights)
   AGE_GRACEFULLY     // Balanced scoring (2.0x weights) - default
   STAY_YOUNG_FOREVER // Ambitious scoring (2.5x weights)
+}
+
+// Image storage consent - user choice for privacy
+enum ImageStorageConsent {
+  ALLOWED            // User consents to image storage
+  DENIED             // User does not consent - images analyzed but not stored
+  NOT_SET            // User has not made a choice yet (legacy/default)
 }
