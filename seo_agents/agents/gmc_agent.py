@@ -9,7 +9,7 @@ import logging
 from typing import Dict, List, Any, Optional
 from datetime import datetime
 
-from .base import BaseAgent, Task, AgentResult, Priority, Risk
+from .base import BaseAgent, Task, AgentResult, TaskPriority, TaskRisk
 
 logger = logging.getLogger(__name__)
 
@@ -31,10 +31,10 @@ class GoogleMerchantCenterAgent(BaseAgent):
 
     # Issue severity mapping to task priority
     SEVERITY_PRIORITY = {
-        'critical': Priority.CRITICAL,
-        'error': Priority.HIGH,
-        'warning': Priority.MEDIUM,
-        'suggestion': Priority.LOW
+        'critical': TaskPriority.CRITICAL.value,
+        'error': TaskPriority.HIGH.value,
+        'warning': TaskPriority.MEDIUM.value,
+        'suggestion': TaskPriority.LOW.value
     }
 
     # Common GMC issues and their fix categories
@@ -50,8 +50,8 @@ class GoogleMerchantCenterAgent(BaseAgent):
         'policy': ['policy', 'prohibited', 'restricted', 'adult']
     }
 
-    def __init__(self, config: Dict[str, Any]):
-        super().__init__(config)
+    def __init__(self, config: Dict[str, Any], logger: Optional[logging.Logger] = None):
+        super().__init__(config, logger)
         self.gmc_client = None
         self.shopify_fixer = None
         self._init_clients()
@@ -105,7 +105,7 @@ class GoogleMerchantCenterAgent(BaseAgent):
         logger.info("[GMCAgent] Starting Google Merchant Center analysis")
 
         tasks = []
-        metadata = {
+        metrics = {
             'agent': self.name,
             'analyzed_at': datetime.now().isoformat(),
             'gmc_configured': self.gmc_client is not None
@@ -117,8 +117,8 @@ class GoogleMerchantCenterAgent(BaseAgent):
                 agent_name=self.name,
                 success=True,
                 tasks=[],
-                metadata={
-                    **metadata,
+                metrics={
+                    **metrics,
                     'skipped': True,
                     'reason': 'Google Merchant Center not configured'
                 }
@@ -128,7 +128,7 @@ class GoogleMerchantCenterAgent(BaseAgent):
             # Get issues summary from GMC
             summary = self.gmc_client.get_issues_summary()
 
-            metadata.update({
+            metrics.update({
                 'total_products': summary['total_products'],
                 'products_with_issues': summary['products_with_issues'],
                 'disapproved_products': summary['disapproved_products'],
@@ -175,13 +175,13 @@ class GoogleMerchantCenterAgent(BaseAgent):
 
         except Exception as e:
             logger.error(f"[GMCAgent] Analysis failed: {e}")
-            metadata['error'] = str(e)
+            metrics['error'] = str(e)
 
         return AgentResult(
             agent_name=self.name,
             success=True,
             tasks=tasks,
-            metadata=metadata
+            metrics=metrics
         )
 
     def _create_category_task(
@@ -192,12 +192,12 @@ class GoogleMerchantCenterAgent(BaseAgent):
     ) -> Optional[Task]:
         """Create a task for a category of issues."""
         count = len(issues)
-        priority = self.SEVERITY_PRIORITY.get(severity, Priority.LOW)
+        priority = self.SEVERITY_PRIORITY.get(severity, TaskPriority.LOW.value)
 
         # Determine risk based on category
-        risk = Risk.LOW
+        risk = TaskRisk.LOW.value
         if category in ('policy', 'price', 'availability'):
-            risk = Risk.MEDIUM
+            risk = TaskRisk.MEDIUM.value
 
         # Build description
         sample_products = [i['title'] for i in issues[:3]]
@@ -232,15 +232,18 @@ class GoogleMerchantCenterAgent(BaseAgent):
             )
             fix_details = self.shopify_fixer.analyze_issue(sample_issue)
 
+        title = f"GMC: Fix {category.replace('_', ' ').title()} Issues ({count} products)"
+        desc = descriptions.get(category, f'Fix {category} issues')
+
         return Task(
             id=f"gmc_{category}_{count}",
             agent=self.name,
             priority=priority,
             risk=risk,
-            title=f"GMC: Fix {category.replace('_', ' ').title()} Issues ({count} products)",
-            description=descriptions.get(category, f'Fix {category} issues'),
+            description=f"{title} - {desc}",
+            action_type="modify",
             target_url='https://merchants.google.com/mc/products/diagnostics',
-            implementation={
+            metadata={
                 'type': 'gmc_fix',
                 'category': category,
                 'affected_count': count,
@@ -265,15 +268,16 @@ class GoogleMerchantCenterAgent(BaseAgent):
         return Task(
             id=f"gmc_disapproved_{count}",
             agent=self.name,
-            priority=Priority.CRITICAL,
-            risk=Risk.HIGH,
-            title=f"URGENT: {count} Products Disapproved in Google Shopping",
+            priority=TaskPriority.CRITICAL.value,
+            risk=TaskRisk.HIGH.value,
             description=(
+                f"URGENT: {count} Products Disapproved in Google Shopping - "
                 f"{count} products are disapproved and not showing in Google Shopping. "
                 "These products cannot be discovered by potential customers searching on Google."
             ),
+            action_type="modify",
             target_url='https://merchants.google.com/mc/products/diagnostics?tab=disapproved',
-            implementation={
+            metadata={
                 'type': 'gmc_disapproval',
                 'affected_count': count,
                 'products': [
@@ -293,15 +297,16 @@ class GoogleMerchantCenterAgent(BaseAgent):
             return Task(
                 id="gmc_no_products",
                 agent=self.name,
-                priority=Priority.CRITICAL,
-                risk=Risk.HIGH,
-                title="No Products in Google Merchant Center",
+                priority=TaskPriority.CRITICAL.value,
+                risk=TaskRisk.HIGH.value,
                 description=(
+                    "No Products in Google Merchant Center - "
                     "No products found in Google Merchant Center. "
                     "Ensure Google Shopping channel is properly connected to Shopify."
                 ),
+                action_type="report",
                 target_url='https://merchants.google.com/mc/products',
-                implementation={
+                metadata={
                     'type': 'gmc_setup',
                     'action_required': 'Connect Google Shopping channel in Shopify'
                 }
@@ -314,15 +319,16 @@ class GoogleMerchantCenterAgent(BaseAgent):
             return Task(
                 id=f"gmc_health_{int(health_pct)}",
                 agent=self.name,
-                priority=Priority.MEDIUM,
-                risk=Risk.LOW,
-                title=f"GMC Feed Health: {health_pct:.0f}% ({with_issues} issues)",
+                priority=TaskPriority.MEDIUM.value,
+                risk=TaskRisk.LOW.value,
                 description=(
+                    f"GMC Feed Health: {health_pct:.0f}% ({with_issues} issues) - "
                     f"Product feed health is {health_pct:.0f}%. "
                     f"{with_issues} out of {total} products have issues that may affect visibility."
                 ),
+                action_type="report",
                 target_url='https://merchants.google.com/mc/products/diagnostics',
-                implementation={
+                metadata={
                     'type': 'gmc_health',
                     'health_percentage': health_pct,
                     'total_products': total,
@@ -370,3 +376,38 @@ class GoogleMerchantCenterAgent(BaseAgent):
         except Exception as e:
             logger.error(f"[GMCAgent] Failed to get recommendations: {e}")
             return {'error': str(e)}
+
+    def get_kpis(self) -> Dict[str, Any]:
+        """
+        Return agent's KPIs.
+
+        Returns:
+            Dictionary of KPI names to values
+        """
+        kpis = {
+            'gmc_configured': self.gmc_client is not None,
+            'shopify_fixer_configured': self.shopify_fixer is not None,
+            'total_products': 0,
+            'products_with_issues': 0,
+            'disapproved_products': 0,
+            'feed_health_percentage': 100.0
+        }
+
+        if self.gmc_client:
+            try:
+                summary = self.gmc_client.get_issues_summary()
+                total = summary.get('total_products', 0)
+                with_issues = summary.get('products_with_issues', 0)
+
+                kpis.update({
+                    'total_products': total,
+                    'products_with_issues': with_issues,
+                    'disapproved_products': summary.get('disapproved_products', 0),
+                    'feed_health_percentage': ((total - with_issues) / total * 100) if total > 0 else 100.0,
+                    'issues_by_severity': summary.get('by_severity', {})
+                })
+            except Exception as e:
+                logger.error(f"[GMCAgent] Failed to get KPIs: {e}")
+                kpis['error'] = str(e)
+
+        return kpis

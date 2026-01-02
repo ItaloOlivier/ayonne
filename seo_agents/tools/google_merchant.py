@@ -56,10 +56,35 @@ class MerchantProduct:
     product_type: Optional[str] = None
     google_product_category: Optional[str] = None
     issues: List[ProductIssue] = None
+    is_priority: bool = False  # High-revenue or featured product
+    priority_reason: Optional[str] = None
 
     def __post_init__(self):
         if self.issues is None:
             self.issues = []
+
+    @property
+    def price_value(self) -> float:
+        """Extract numeric price value."""
+        try:
+            return float(self.price.replace('USD', '').replace('$', '').strip())
+        except (ValueError, AttributeError):
+            return 0.0
+
+
+# Default list of priority product handles (high-revenue items)
+PRIORITY_PRODUCT_HANDLES = [
+    'vitamin-c-lotion-1',
+    'collagen-and-retinol-serum-1',
+    'hyaluronic-acid-serum-1',
+    'niacinamide-serum',
+    'peptide-complex-serum',
+    'vitamin-c-serum-1',
+    'retinol-serum-1',
+]
+
+# Price threshold for auto-flagging as priority
+HIGH_VALUE_PRICE_THRESHOLD = 50.0
 
 
 class GoogleMerchantClient:
@@ -184,6 +209,7 @@ class GoogleMerchantClient:
         Get all products with their approval status and issues.
 
         Returns list of MerchantProduct with issues populated.
+        Priority products are automatically flagged.
         """
         products = []
         page_token = None
@@ -221,6 +247,9 @@ class GoogleMerchantClient:
                         resolution=issue.get('resolution', '')
                     ))
 
+                # Flag priority products
+                self._flag_priority_product(product)
+
                 products.append(product)
 
             page_token = response.get('nextPageToken')
@@ -228,6 +257,29 @@ class GoogleMerchantClient:
                 break
 
         return products
+
+    def _flag_priority_product(self, product: MerchantProduct) -> None:
+        """Flag product as priority if it meets criteria."""
+        link_lower = product.link.lower()
+
+        # Check if in priority product list
+        for handle in PRIORITY_PRODUCT_HANDLES:
+            if handle in link_lower:
+                product.is_priority = True
+                product.priority_reason = 'High-revenue product'
+                return
+
+        # Check price threshold
+        if product.price_value >= HIGH_VALUE_PRICE_THRESHOLD:
+            product.is_priority = True
+            product.priority_reason = f'High-value product (${product.price_value:.2f})'
+            return
+
+        # Check if featured (contains "best seller" or "featured" in title)
+        title_lower = product.title.lower()
+        if 'best seller' in title_lower or 'featured' in title_lower:
+            product.is_priority = True
+            product.priority_reason = 'Featured product'
 
     def get_product(self, product_id: str) -> Optional[MerchantProduct]:
         """Get a single product by ID."""
@@ -273,6 +325,7 @@ class GoogleMerchantClient:
         Get a summary of all product issues.
 
         Returns counts by severity and common issue types.
+        Priority products with issues are highlighted separately.
         """
         products = self.get_product_statuses()
 
@@ -280,6 +333,9 @@ class GoogleMerchantClient:
             'total_products': len(products),
             'products_with_issues': 0,
             'disapproved_products': 0,
+            'priority_products_total': 0,
+            'priority_products_with_issues': 0,
+            'priority_products_disapproved': 0,
             'by_severity': {
                 'critical': 0,
                 'error': 0,
@@ -287,15 +343,26 @@ class GoogleMerchantClient:
                 'suggestion': 0
             },
             'common_issues': {},
-            'issues': []
+            'issues': [],
+            'priority_issues': []  # Issues on high-revenue products
         }
 
         for product in products:
+            is_priority = product.is_priority
+            if is_priority:
+                summary['priority_products_total'] += 1
+
             if product.issues:
                 summary['products_with_issues'] += 1
 
-                if any(i.is_disapproved for i in product.issues):
+                if is_priority:
+                    summary['priority_products_with_issues'] += 1
+
+                is_disapproved = any(i.is_disapproved for i in product.issues)
+                if is_disapproved:
                     summary['disapproved_products'] += 1
+                    if is_priority:
+                        summary['priority_products_disapproved'] += 1
 
                 for issue in product.issues:
                     # Count by severity
@@ -313,16 +380,25 @@ class GoogleMerchantClient:
                         }
                     summary['common_issues'][issue_key]['count'] += 1
 
-                    # Add to issues list
-                    summary['issues'].append({
+                    # Build issue record
+                    issue_record = {
                         'product_id': issue.product_id,
                         'offer_id': issue.offer_id,
                         'title': issue.title,
                         'type': issue.issue_type,
                         'severity': issue.severity,
                         'description': issue.description,
-                        'resolution': issue.resolution
-                    })
+                        'resolution': issue.resolution,
+                        'is_priority': is_priority,
+                        'priority_reason': product.priority_reason
+                    }
+
+                    # Add to issues list
+                    summary['issues'].append(issue_record)
+
+                    # Also add to priority issues if applicable
+                    if is_priority:
+                        summary['priority_issues'].append(issue_record)
 
         # Sort common issues by count
         summary['common_issues'] = dict(
@@ -331,6 +407,12 @@ class GoogleMerchantClient:
                 key=lambda x: x[1]['count'],
                 reverse=True
             )[:10]  # Top 10 issues
+        )
+
+        # Sort priority issues by severity (critical first)
+        severity_order = {'critical': 0, 'error': 1, 'warning': 2, 'suggestion': 3}
+        summary['priority_issues'].sort(
+            key=lambda x: severity_order.get(x['severity'], 4)
         )
 
         return summary
@@ -578,6 +660,401 @@ class ShopifyGMCFixer:
         return report
 
 
+class GMCAutoFixer:
+    """
+    Automatically fixes low-risk GMC issues via Shopify API.
+
+    Only fixes issues that are:
+    - Low risk (won't break products or lose data)
+    - Reversible (can be undone easily)
+    - Well-defined (have clear fix actions)
+    """
+
+    # Issues that can be safely auto-fixed
+    AUTO_FIXABLE_ISSUES = {
+        'missing_brand': {
+            'risk': 'low',
+            'action': 'set_vendor',
+            'value': 'Ayonne',
+            'reversible': True
+        },
+        'missing_product_type': {
+            'risk': 'low',
+            'action': 'set_product_type',
+            'value': 'Health & Beauty > Skin Care',
+            'reversible': True
+        }
+    }
+
+    def __init__(self, shopify_fixer: ShopifyGMCFixer):
+        self.shopify_fixer = shopify_fixer
+        self.fixes_applied = []
+        self.fixes_failed = []
+
+    def can_auto_fix(self, issue: ProductIssue) -> bool:
+        """Check if an issue can be safely auto-fixed."""
+        description_lower = issue.description.lower()
+
+        # Only auto-fix brand issues for now (safest)
+        if 'brand' in description_lower or 'vendor' in description_lower:
+            return True
+
+        return False
+
+    def auto_fix_issue(self, issue: ProductIssue, dry_run: bool = False) -> Dict[str, Any]:
+        """
+        Attempt to auto-fix a GMC issue.
+
+        Returns result with success status and details.
+        """
+        result = {
+            'product_id': issue.product_id,
+            'offer_id': issue.offer_id,
+            'title': issue.title,
+            'issue': issue.description,
+            'fix_attempted': False,
+            'fix_type': None,
+            'success': False,
+            'dry_run': dry_run,
+            'error': None
+        }
+
+        description_lower = issue.description.lower()
+
+        try:
+            # Fix missing brand
+            if 'brand' in description_lower or 'vendor' in description_lower:
+                result['fix_type'] = 'set_brand_to_ayonne'
+                result['fix_attempted'] = True
+
+                if dry_run:
+                    result['success'] = True
+                    result['message'] = 'Would set vendor to "Ayonne"'
+                else:
+                    # Get Shopify product from offer_id (usually SKU or variant ID)
+                    product = self.shopify_fixer.get_product_by_sku(issue.offer_id)
+                    if product:
+                        success = self.shopify_fixer.fix_missing_brand(product['id'])
+                        result['success'] = success
+                        if success:
+                            result['message'] = 'Set vendor to "Ayonne"'
+                            self.fixes_applied.append(result)
+                        else:
+                            result['error'] = 'Shopify API call failed'
+                            self.fixes_failed.append(result)
+                    else:
+                        result['error'] = f'Product not found in Shopify for SKU: {issue.offer_id}'
+                        self.fixes_failed.append(result)
+
+        except Exception as e:
+            result['error'] = str(e)
+            self.fixes_failed.append(result)
+            logger.error(f"Auto-fix failed for {issue.product_id}: {e}")
+
+        return result
+
+    def auto_fix_all(self, issues: List[ProductIssue], dry_run: bool = False) -> Dict[str, Any]:
+        """
+        Auto-fix all eligible issues.
+
+        Returns summary of fixes applied.
+        """
+        results = {
+            'total_issues': len(issues),
+            'eligible_for_auto_fix': 0,
+            'fixes_attempted': 0,
+            'fixes_succeeded': 0,
+            'fixes_failed': 0,
+            'dry_run': dry_run,
+            'details': []
+        }
+
+        for issue in issues:
+            if self.can_auto_fix(issue):
+                results['eligible_for_auto_fix'] += 1
+                fix_result = self.auto_fix_issue(issue, dry_run)
+
+                if fix_result['fix_attempted']:
+                    results['fixes_attempted'] += 1
+                    if fix_result['success']:
+                        results['fixes_succeeded'] += 1
+                    else:
+                        results['fixes_failed'] += 1
+
+                results['details'].append(fix_result)
+
+        return results
+
+    def get_fix_summary(self) -> Dict[str, Any]:
+        """Get summary of fixes applied in this session."""
+        return {
+            'fixes_applied': len(self.fixes_applied),
+            'fixes_failed': len(self.fixes_failed),
+            'applied_details': self.fixes_applied,
+            'failed_details': self.fixes_failed
+        }
+
+
+class GMCAlertManager:
+    """
+    Manages alerts for critical GMC issues.
+
+    Supports Slack webhooks and email notifications.
+    """
+
+    def __init__(self):
+        self.slack_webhook = os.getenv('SLACK_WEBHOOK_URL')
+        self.alert_email = os.getenv('GMC_ALERT_EMAIL')
+        self.alerts_sent = []
+
+    def should_alert(self, summary: Dict[str, Any]) -> bool:
+        """Check if the GMC status warrants an alert."""
+        # Alert if any products are disapproved
+        if summary.get('disapproved_products', 0) > 0:
+            return True
+
+        # Alert if critical issues exist
+        if summary.get('by_severity', {}).get('critical', 0) > 0:
+            return True
+
+        # Alert if feed health drops below 70%
+        total = summary.get('total_products', 0)
+        with_issues = summary.get('products_with_issues', 0)
+        if total > 0:
+            health = ((total - with_issues) / total) * 100
+            if health < 70:
+                return True
+
+        return False
+
+    def format_alert_message(self, summary: Dict[str, Any]) -> Dict[str, str]:
+        """Format alert message for different channels."""
+        total = summary.get('total_products', 0)
+        disapproved = summary.get('disapproved_products', 0)
+        with_issues = summary.get('products_with_issues', 0)
+        health = ((total - with_issues) / total * 100) if total > 0 else 100
+
+        severity = summary.get('by_severity', {})
+
+        # Plain text for email
+        text = f"""🚨 GMC Alert: Ayonne Product Feed Issues
+
+Feed Health: {health:.0f}%
+Total Products: {total}
+Products with Issues: {with_issues}
+Disapproved Products: {disapproved}
+
+Issues by Severity:
+- Critical: {severity.get('critical', 0)}
+- Error: {severity.get('error', 0)}
+- Warning: {severity.get('warning', 0)}
+
+Action Required: Review Google Merchant Center dashboard
+https://merchants.google.com/mc/products/diagnostics
+
+---
+Sent by Ayonne SEO Agent
+"""
+
+        # Slack Block Kit format
+        slack_blocks = {
+            "blocks": [
+                {
+                    "type": "header",
+                    "text": {
+                        "type": "plain_text",
+                        "text": "🚨 GMC Alert: Product Feed Issues",
+                        "emoji": True
+                    }
+                },
+                {
+                    "type": "section",
+                    "fields": [
+                        {"type": "mrkdwn", "text": f"*Feed Health:* {health:.0f}%"},
+                        {"type": "mrkdwn", "text": f"*Total Products:* {total}"},
+                        {"type": "mrkdwn", "text": f"*With Issues:* {with_issues}"},
+                        {"type": "mrkdwn", "text": f"*Disapproved:* {disapproved}"}
+                    ]
+                },
+                {
+                    "type": "section",
+                    "text": {
+                        "type": "mrkdwn",
+                        "text": f"*Issues:* 🔴 {severity.get('critical', 0)} critical | 🟠 {severity.get('error', 0)} error | 🟡 {severity.get('warning', 0)} warning"
+                    }
+                },
+                {
+                    "type": "actions",
+                    "elements": [
+                        {
+                            "type": "button",
+                            "text": {"type": "plain_text", "text": "View in GMC"},
+                            "url": "https://merchants.google.com/mc/products/diagnostics",
+                            "style": "danger"
+                        }
+                    ]
+                }
+            ]
+        }
+
+        return {
+            'text': text,
+            'slack': slack_blocks
+        }
+
+    def send_slack_alert(self, message: Dict) -> bool:
+        """Send alert to Slack webhook."""
+        if not self.slack_webhook:
+            logger.warning("Slack webhook not configured")
+            return False
+
+        try:
+            response = requests.post(
+                self.slack_webhook,
+                json=message['slack'],
+                timeout=10
+            )
+            response.raise_for_status()
+            logger.info("Slack alert sent successfully")
+            self.alerts_sent.append({
+                'channel': 'slack',
+                'timestamp': datetime.now().isoformat(),
+                'success': True
+            })
+            return True
+        except Exception as e:
+            logger.error(f"Failed to send Slack alert: {e}")
+            return False
+
+    def send_alert(self, summary: Dict[str, Any]) -> Dict[str, Any]:
+        """
+        Send alerts for GMC issues.
+
+        Returns status of alert delivery.
+        """
+        if not self.should_alert(summary):
+            return {'alert_required': False}
+
+        message = self.format_alert_message(summary)
+        result = {
+            'alert_required': True,
+            'slack_sent': False,
+            'email_sent': False
+        }
+
+        # Send Slack alert
+        if self.slack_webhook:
+            result['slack_sent'] = self.send_slack_alert(message)
+
+        # Email alerts would require SMTP setup
+        # For now, log the alert
+        if self.alert_email:
+            logger.info(f"Email alert would be sent to {self.alert_email}")
+            # TODO: Implement email sending
+
+        return result
+
+
+class GMCHealthMonitor:
+    """
+    Monitors GMC feed health over time and tracks trends.
+    """
+
+    def __init__(self, history_file: str = 'runs/gmc_health_history.json'):
+        self.history_file = history_file
+        self.history = self._load_history()
+
+    def _load_history(self) -> List[Dict]:
+        """Load health history from file."""
+        try:
+            if os.path.exists(self.history_file):
+                with open(self.history_file, 'r') as f:
+                    return json.load(f)
+        except Exception as e:
+            logger.error(f"Failed to load GMC health history: {e}")
+        return []
+
+    def _save_history(self):
+        """Save health history to file."""
+        try:
+            os.makedirs(os.path.dirname(self.history_file), exist_ok=True)
+            with open(self.history_file, 'w') as f:
+                json.dump(self.history[-90:], f, indent=2)  # Keep 90 days
+        except Exception as e:
+            logger.error(f"Failed to save GMC health history: {e}")
+
+    def record_snapshot(self, summary: Dict[str, Any]) -> Dict[str, Any]:
+        """Record a health snapshot."""
+        total = summary.get('total_products', 0)
+        with_issues = summary.get('products_with_issues', 0)
+
+        snapshot = {
+            'timestamp': datetime.now().isoformat(),
+            'date': datetime.now().strftime('%Y-%m-%d'),
+            'total_products': total,
+            'products_with_issues': with_issues,
+            'disapproved_products': summary.get('disapproved_products', 0),
+            'health_percentage': ((total - with_issues) / total * 100) if total > 0 else 100,
+            'by_severity': summary.get('by_severity', {})
+        }
+
+        self.history.append(snapshot)
+        self._save_history()
+
+        return snapshot
+
+    def get_trend(self, days: int = 7) -> Dict[str, Any]:
+        """Get health trend over the specified days."""
+        if not self.history:
+            return {'error': 'No history available'}
+
+        recent = self.history[-days:]
+        if len(recent) < 2:
+            return {'error': 'Not enough data for trend analysis'}
+
+        first = recent[0]
+        last = recent[-1]
+
+        health_change = last['health_percentage'] - first['health_percentage']
+        disapproved_change = last['disapproved_products'] - first['disapproved_products']
+
+        return {
+            'period_days': len(recent),
+            'start_date': first['date'],
+            'end_date': last['date'],
+            'health_trend': 'improving' if health_change > 0 else 'declining' if health_change < 0 else 'stable',
+            'health_change': round(health_change, 1),
+            'current_health': round(last['health_percentage'], 1),
+            'disapproved_change': disapproved_change,
+            'current_disapproved': last['disapproved_products'],
+            'history': recent
+        }
+
+    def get_dashboard_data(self) -> Dict[str, Any]:
+        """Get data formatted for admin dashboard."""
+        trend = self.get_trend(7)
+
+        if 'error' in trend:
+            return trend
+
+        return {
+            'current': {
+                'health': trend['current_health'],
+                'disapproved': trend['current_disapproved'],
+                'status': 'healthy' if trend['current_health'] >= 80 else 'warning' if trend['current_health'] >= 60 else 'critical'
+            },
+            'trend': {
+                'direction': trend['health_trend'],
+                'change': trend['health_change'],
+                'period': f"{trend['period_days']} days"
+            },
+            'chart_data': [
+                {'date': h['date'], 'health': round(h['health_percentage'], 1), 'disapproved': h['disapproved_products']}
+                for h in trend['history']
+            ]
+        }
+
+
 def is_gmc_configured() -> bool:
     """Check if Google Merchant Center integration is configured."""
     return bool(
@@ -597,3 +1074,73 @@ def get_gmc_summary() -> Optional[Dict[str, Any]]:
     except Exception as e:
         logger.error(f"Failed to get GMC summary: {e}")
         return {'error': str(e)}
+
+
+def run_gmc_health_check(
+    auto_fix: bool = False,
+    send_alerts: bool = True,
+    dry_run: bool = False
+) -> Dict[str, Any]:
+    """
+    Run a complete GMC health check with optional auto-fix and alerts.
+
+    This is the main entry point for scheduled GMC monitoring.
+
+    Args:
+        auto_fix: Whether to auto-fix eligible issues
+        send_alerts: Whether to send alerts for critical issues
+        dry_run: If True, don't make actual changes
+
+    Returns:
+        Complete health check report
+    """
+    if not is_gmc_configured():
+        return {'error': 'Google Merchant Center not configured'}
+
+    result = {
+        'timestamp': datetime.now().isoformat(),
+        'dry_run': dry_run,
+        'summary': None,
+        'health_recorded': False,
+        'auto_fix': None,
+        'alerts': None,
+        'dashboard': None
+    }
+
+    try:
+        # Get GMC summary
+        client = GoogleMerchantClient()
+        summary = client.get_issues_summary()
+        result['summary'] = summary
+
+        # Record health snapshot
+        monitor = GMCHealthMonitor()
+        monitor.record_snapshot(summary)
+        result['health_recorded'] = True
+        result['dashboard'] = monitor.get_dashboard_data()
+
+        # Auto-fix if enabled
+        if auto_fix:
+            shopify_domain = os.getenv('SHOPIFY_STORE_DOMAIN')
+            shopify_token = os.getenv('SHOPIFY_ADMIN_API_TOKEN')
+
+            if shopify_domain and shopify_token:
+                shopify_fixer = ShopifyGMCFixer(shopify_domain, shopify_token)
+                auto_fixer = GMCAutoFixer(shopify_fixer)
+
+                # Get all issues and attempt auto-fix
+                issues = client.get_disapproved_products()
+                result['auto_fix'] = auto_fixer.auto_fix_all(issues, dry_run)
+            else:
+                result['auto_fix'] = {'error': 'Shopify not configured for auto-fix'}
+
+        # Send alerts if enabled
+        if send_alerts:
+            alert_manager = GMCAlertManager()
+            result['alerts'] = alert_manager.send_alert(summary)
+
+    except Exception as e:
+        logger.error(f"GMC health check failed: {e}")
+        result['error'] = str(e)
+
+    return result
