@@ -215,9 +215,9 @@ export default function SkinAnalysisPage() {
                 {/* Privacy Note */}
                 <div className="mt-6 text-center">
                   <p className="text-xs text-[#1C4444]/50">
-                    Your photos are analyzed securely.
+                    Photos are analyzed securely via encrypted connection.
                     <br />
-                    We respect your privacy.
+                    You choose whether photos are stored for progress tracking.
                   </p>
                 </div>
               </>

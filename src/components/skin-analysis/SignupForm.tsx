@@ -16,6 +16,7 @@ interface SignupFormData {
   lastName: string
   email: string
   password: string
+  imageStorageConsent: 'ALLOWED' | 'DENIED'
 }
 
 interface LoginFormData {
@@ -38,6 +39,7 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
     lastName: '',
     email: '',
     password: '',
+    imageStorageConsent: 'ALLOWED', // Default to allowed for better UX
   })
   const [loginData, setLoginData] = useState<LoginFormData>({
     email: '',
@@ -332,6 +334,46 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
             )}
           </div>
 
+          {/* Image Storage Consent */}
+          <div className="p-4 bg-[#F4EBE7]/50 rounded-lg border border-[#1C4444]/10">
+            <div className="flex items-start gap-3">
+              <div className="flex-shrink-0 mt-0.5">
+                <input
+                  type="checkbox"
+                  id="imageStorageConsent"
+                  checked={signupData.imageStorageConsent === 'ALLOWED'}
+                  onChange={(e) => {
+                    setSignupData(prev => ({
+                      ...prev,
+                      imageStorageConsent: e.target.checked ? 'ALLOWED' : 'DENIED'
+                    }))
+                  }}
+                  disabled={submitting || isLoading}
+                  className="w-4 h-4 text-[#1C4444] border-[#1C4444]/30 rounded focus:ring-[#1C4444]/20 focus:ring-2 cursor-pointer"
+                />
+              </div>
+              <div className="flex-1">
+                <label htmlFor="imageStorageConsent" className="text-sm font-medium text-[#1C4444] cursor-pointer">
+                  Store my photos for future reference
+                </label>
+                <p className="text-xs text-[#1C4444]/60 mt-1">
+                  Allow us to save your analysis photos so you can track your skin progress over time.
+                  Photos are stored securely and never shared.
+                </p>
+                {signupData.imageStorageConsent === 'DENIED' && (
+                  <p className="text-xs text-amber-600 mt-2 flex items-start gap-1.5">
+                    <svg className="w-3.5 h-3.5 flex-shrink-0 mt-0.5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
+                    <span>
+                      Without photo storage, you cannot track skin progress over time or use features like Skin Forecast.
+                    </span>
+                  </p>
+                )}
+              </div>
+            </div>
+          </div>
+
           {/* Buttons */}
           <div className="flex flex-col gap-3 pt-2">
             <button
@@ -451,7 +493,11 @@ export default function SignupForm({ onSuccess, onCancel, isLoading }: SignupFor
 
       {authMode === 'signup' && (
         <p className="mt-4 text-center text-xs text-[#1C4444]/50">
-          By creating an account, you agree to receive personalized skincare recommendations and occasional updates from Ayonne.
+          By creating an account, you agree to our{' '}
+          <a href="/policies/privacy-policy" className="underline hover:text-[#1C4444]">Privacy Policy</a>
+          {' '}and{' '}
+          <a href="/policies/terms-of-service" className="underline hover:text-[#1C4444]">Terms of Service</a>.
+          You can change your photo storage preference anytime in account settings.
         </p>
       )}
     </div>
