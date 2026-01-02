@@ -29,6 +29,7 @@ from .agents import (
     CannibalizationAgent,
     ConversionRateAgent,
     MonitoringAgent,
+    GoogleMerchantCenterAgent,
 )
 from .tools import SiteCrawler, SitemapParser, validate_json_ld, check_forbidden_words
 
@@ -113,6 +114,7 @@ class SEOCommander:
             ('cannibalization', CannibalizationAgent),
             ('cro', ConversionRateAgent),
             ('monitoring', MonitoringAgent),
+            ('gmc', GoogleMerchantCenterAgent),
         ]
 
         for name, agent_class in agent_classes:

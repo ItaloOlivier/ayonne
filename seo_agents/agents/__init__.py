@@ -18,6 +18,7 @@ from .snippet_agent import SnippetPAAAgent
 from .cannibalization import CannibalizationAgent
 from .cro_agent import ConversionRateAgent
 from .monitoring import MonitoringAgent
+from .gmc_agent import GoogleMerchantCenterAgent
 
 __all__ = [
     "BaseAgent",
@@ -36,4 +37,5 @@ __all__ = [
     "CannibalizationAgent",
     "ConversionRateAgent",
     "MonitoringAgent",
+    "GoogleMerchantCenterAgent",
 ]

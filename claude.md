@@ -596,6 +596,15 @@ All require `x-admin-key` header matching `ADMIN_API_KEY` env var:
 - `GET /api/admin/cleanup` - Get stats on orphaned data to be cleaned
 - `POST /api/admin/cleanup` - Run cleanup (deletes guest data >2 weeks old)
 
+#### Google Merchant Center
+- `GET /api/admin/gmc` - Get GMC issues summary
+  - Query params: `type=summary|issues|disapproved|fixes`
+  - Returns: Product issues, disapprovals, fix recommendations
+- `POST /api/admin/gmc` - Apply fixes to products
+  - Body: `{ action: 'fix_brand' }` - Set vendor to "Ayonne"
+  - Body: `{ action: 'fix_gtin', productId }` - Update GTIN
+  - Body: `{ action: 'sync_all' }` - Trigger full sync
+
 ### Cart URL with Discount
 The `buildShopifyCartUrl()` function supports discount codes:
 ```typescript
@@ -824,7 +833,7 @@ GitHub Actions (Daily 06:00 UTC)
    PR      Report
 ```
 
-### Agents (14 Specialized)
+### Agents (15 Specialized)
 
 | Agent | Purpose |
 |-------|---------|
@@ -841,6 +850,7 @@ GitHub Actions (Daily 06:00 UTC)
 | Cannibalization | Duplicate detection, consolidation |
 | CRO Agent | CTA analysis, trust signals |
 | Monitoring | Anomaly detection, baseline tracking |
+| GMC Agent | Google Merchant Center product feed monitoring |
 
 ### Daily Loop (7 Phases)
 
@@ -974,3 +984,7 @@ Top 20 prioritized improvements with:
 ```
 # Optional: PageSpeed Insights API key (increases quota from 25 to 400/day)
 PSI_API_KEY=
+
+# Google Merchant Center (optional - for product feed monitoring)
+GOOGLE_MERCHANT_ID=           # Your GMC Merchant ID
+GOOGLE_SERVICE_ACCOUNT_KEY=   # JSON service account credentials
