@@ -1,0 +1,12 @@
+{
+  "task_id": "TechnicalSEOAuditor_21_20260102202230",
+  "description": "Missing title tag: https://ayonne.skin/",
+  "action_type": "modify",
+  "target_url": "https://ayonne.skin/",
+  "changes": {
+    "element": "title",
+    "action": "add"
+  },
+  "metadata": {},
+  "generated_at": "2026-01-02T20:22:57.118207"
+}

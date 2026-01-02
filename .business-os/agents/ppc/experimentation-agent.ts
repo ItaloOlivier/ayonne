@@ -522,8 +522,8 @@ export class ExperimentationAgent {
 
     // Determine action
     let action: RolloutRecommendation['action']
-    let reasoning: string[] = []
-    let risks: string[] = []
+    const reasoning: string[] = []
+    const risks: string[] = []
 
     if (!sampleSizeMet) {
       action = 'extend'

@@ -1,0 +1,12 @@
+{
+  "task_id": "TechnicalSEOAuditor_23_20260102202230",
+  "description": "Missing H1 tag: https://ayonne.skin/",
+  "action_type": "modify",
+  "target_url": "https://ayonne.skin/",
+  "changes": {
+    "element": "h1",
+    "action": "add"
+  },
+  "metadata": {},
+  "generated_at": "2026-01-02T20:22:57.119913"
+}

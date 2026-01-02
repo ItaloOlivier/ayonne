@@ -1,0 +1,376 @@
+{
+  "https://ai.ayonne.skin/": {
+    "url": "https://ai.ayonne.skin/",
+    "status_code": 200,
+    "title": "Free AI Skin Analysis | Personalized Recommendations",
+    "description": "Discover your perfect skincare routine with Ayonne's free AI Skin Analyzer. Get instant analysis and personalized product recommendations.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 21,
+    "external_links": 5,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/skin-analysis": {
+    "url": "https://ai.ayonne.skin/skin-analysis",
+    "status_code": 200,
+    "title": "AI Skin Analysis | Upload Your Photo | Ayonne AI Skin Analyzer",
+    "description": "Upload a selfie for AI-powered skin analysis. Get personalized product recommendations in seconds.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/skin-analysis",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 16,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/skin-age-test": {
+    "url": "https://ai.ayonne.skin/skin-age-test",
+    "status_code": 200,
+    "title": "Free Skin Age Test | Discover Your True Skin Age | Ayonne AI Skin Analyzer",
+    "description": "Free AI skin age test. Upload a selfie, get instant results in 30 seconds. Join 50,000+ who've discovered their skin's real age.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/skin-age-test",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 19,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      "",
+      "WebApplication"
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/pages/about": {
+    "url": "https://ai.ayonne.skin/pages/about",
+    "status_code": 200,
+    "title": "Our Story | Biohacking Beauty | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Discover Ayonne - where biohacking meets beauty. Vegan, cruelty-free skincare combining science with nature's most powerful ingredients.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/pages/about",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 18,
+    "external_links": 4,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/pages/faq": {
+    "url": "https://ai.ayonne.skin/pages/faq",
+    "status_code": 200,
+    "title": "FAQ - Frequently Asked Questions | Ayonne AI Skin Analyzer",
+    "description": "Find answers to common questions about Ayonne skincare products, AI skin analysis, shipping, returns, ingredients, and more. Get help with your skincare routine.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/pages/faq",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 16,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/challenge": {
+    "url": "https://ai.ayonne.skin/challenge",
+    "status_code": 200,
+    "title": "30-Day Glow Challenge | Transform Your Skin | Ayonne AI Skin Analyzer",
+    "description": "Join the 30-Day Glow Challenge. Get daily skin analysis, earn rewards, and see your transformation. Free to join.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/challenge",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 30,
+    "external_links": 6,
+    "images": 2,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/login": {
+    "url": "https://ai.ayonne.skin/login",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ai.ayonne.skin/guides": {
+    "url": "https://ai.ayonne.skin/guides",
+    "status_code": 200,
+    "title": "Skincare Guides & Education | Learn Skincare | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Free skincare education guides. Learn about ingredients, skin types, routines, and how to build the perfect skincare regimen for your needs.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/guides",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 18,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/pages/contact": {
+    "url": "https://ai.ayonne.skin/pages/contact",
+    "status_code": 200,
+    "title": "Contact Us - Get in Touch | Ayonne AI Skin Analyzer",
+    "description": "Contact Ayonne skincare support team. We respond within 24-48 hours. Questions about products, orders, shipping, or AI skin analysis? We're here to help.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/pages/contact",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 15,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/pages/shipping": {
+    "url": "https://ai.ayonne.skin/pages/shipping",
+    "status_code": 200,
+    "title": "Shipping Information | Ayonne AI Skin Analyzer",
+    "description": "Ayonne shipping policy: Free shipping on orders over $50 in the US. International shipping available. Learn about delivery times, tracking, and shipping costs.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/pages/shipping",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 15,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/policies/refund-policy": {
+    "url": "https://ai.ayonne.skin/policies/refund-policy",
+    "status_code": 200,
+    "title": "Refund Policy | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Learn about our 7-day money-back guarantee and hassle-free refund process.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 17,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/policies/privacy-policy": {
+    "url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "status_code": 200,
+    "title": "Privacy Policy | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Learn how Ayonne protects your personal information and respects your privacy.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 17,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/policies/terms-of-service": {
+    "url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "status_code": 200,
+    "title": "Terms of Service | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Read the terms and conditions for using Ayonne products and services.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 18,
+    "external_links": 3,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/guides/ingredients": {
+    "url": "https://ai.ayonne.skin/guides/ingredients",
+    "status_code": 200,
+    "title": "Skincare Ingredient Guide | What Works & Why | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Complete skincare ingredient guide. Learn what retinol, vitamin C, hyaluronic acid, niacinamide, and other active ingredients do for your skin.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/guides/ingredients",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 16,
+    "external_links": 16,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ai.ayonne.skin/guides/skin-types": {
+    "url": "https://ai.ayonne.skin/guides/skin-types",
+    "status_code": 200,
+    "title": "Skin Type Guide | Find Your Skin Type | Ayonne | Ayonne AI Skin Analyzer",
+    "description": "Discover your skin type: oily, dry, combination, sensitive, or normal. Learn the best skincare routine and products for your specific skin type.",
+    "h1": "AYONNE",
+    "canonical": "https://ai.ayonne.skin/guides/skin-types",
+    "robots_meta": "index, follow",
+    "word_count": 3,
+    "internal_links": 45,
+    "external_links": 19,
+    "images": 1,
+    "schema_types": [
+      ""
+    ],
+    "error": null
+  },
+  "https://ayonne.skin/": {
+    "url": "https://ayonne.skin/",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/collections/all": {
+    "url": "https://ayonne.skin/collections/all",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/collections/anti-aging": {
+    "url": "https://ayonne.skin/collections/anti-aging",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/collections/serums": {
+    "url": "https://ayonne.skin/collections/serums",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/collections/moisturizers": {
+    "url": "https://ayonne.skin/collections/moisturizers",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/products/vitamin-c-lotion-1": {
+    "url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/products/collagen-and-retinol-serum-1": {
+    "url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  },
+  "https://ayonne.skin/products/hyaluronic-acid-serum-1": {
+    "url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "status_code": 0,
+    "title": null,
+    "description": null,
+    "h1": null,
+    "canonical": null,
+    "robots_meta": null,
+    "word_count": 0,
+    "internal_links": 0,
+    "external_links": 0,
+    "images": 0,
+    "schema_types": [],
+    "error": "Blocked by robots.txt"
+  }
+}

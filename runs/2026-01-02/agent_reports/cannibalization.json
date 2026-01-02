@@ -1,0 +1,453 @@
+{
+  "agent_name": "CannibalizationAgent",
+  "success": true,
+  "tasks": [
+    {
+      "id": "CannibalizationAgent_1_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580934",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_2_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/skin-analysis",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-analysis",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580940",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_3_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/skin-age-test",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-age-test",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580946",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_4_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/about",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/about",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580951",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_5_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/faq",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/faq",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580959",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_6_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/challenge",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/challenge",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580965",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_7_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ai.ayonne.skin/login",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/login",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580970",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_8_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/guides",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/guides",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580975",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_9_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/contact",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/contact",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580980",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_10_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/shipping",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/pages/shipping",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580985",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_11_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/refund-policy",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580991",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_12_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/privacy-policy",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.580996",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_13_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/terms-of-service",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581001",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_14_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/guides/ingredients",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/guides/ingredients",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581006",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_15_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (3 words): https://ai.ayonne.skin/guides/skin-types",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/guides/skin-types",
+      "changes": {},
+      "metadata": {
+        "word_count": 3,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581011",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_16_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581016",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_17_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/collections/all",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/all",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581020",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_18_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/collections/anti-aging",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/anti-aging",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581026",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_19_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/collections/serums",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/serums",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581030",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_20_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/collections/moisturizers",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/moisturizers",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581035",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_21_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/products/vitamin-c-lotion-1",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581040",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_22_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581045",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "CannibalizationAgent_23_20260102225848",
+      "agent": "CannibalizationAgent",
+      "description": "Very thin content (0 words): https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "priority": 50,
+      "risk": 50,
+      "score": 50.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "changes": {},
+      "metadata": {
+        "word_count": 0,
+        "recommendation": "expand_or_consolidate"
+      },
+      "created_at": "2026-01-02T22:58:48.581051",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "cannibalization_issues": 0,
+    "thin_pages": 23,
+    "duplicate_candidates": 0
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Found 0 cannibalization issues, 23 thin pages, 0 potential duplicates.",
+  "execution_time": 0.0004572868347167969,
+  "timestamp": "2026-01-02T22:58:48.580745"
+}

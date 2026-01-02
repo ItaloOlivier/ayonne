@@ -1,0 +1,172 @@
+{
+  "success": true,
+  "run_date": "2026-01-02",
+  "dry_run": true,
+  "auto_deploy": false,
+  "pages_crawled": 23,
+  "agents_run": 14,
+  "total_tasks_found": 183,
+  "tasks_executed": 0,
+  "tasks_blocked": 0,
+  "files_modified": [],
+  "patches_generated": 24,
+  "validation_passed": true,
+  "errors": [],
+  "warnings": [],
+  "metrics": {
+    "run_date": "2026-01-02",
+    "pages_crawled": 23,
+    "total_tasks": 183,
+    "agents": {
+      "technical": {
+        "pages_audited": 23,
+        "issues_found": 47,
+        "critical_issues": 9,
+        "medium_issues": 26,
+        "low_issues": 12
+      },
+      "cwv": {
+        "pages_tested": 14,
+        "pages_passing_cwv": 0,
+        "pass_rate": 0.0,
+        "avg_performance_score": 0,
+        "avg_lcp_ms": 0,
+        "avg_cls": 0,
+        "top_opportunities": [],
+        "queries_remaining": 11
+      },
+      "schema": {
+        "pages_audited": 14,
+        "pages_with_schema": 14,
+        "pages_missing_schema": 0,
+        "schema_coverage": 1.0
+      },
+      "internal_linking": {
+        "total_pages": 23,
+        "orphan_pages": 8,
+        "avg_crawl_depth": 0.9285714285714286,
+        "max_crawl_depth": 1,
+        "avg_internal_links": 7.521739130434782
+      },
+      "keyword_mapper": {
+        "keywords_mapped": 61,
+        "cannibalization_issues": 11,
+        "pages_analyzed": 23
+      },
+      "competitor": {
+        "competitors_tracked": 5,
+        "content_gaps_found": 5
+      },
+      "content_refresh": {
+        "pages_analyzed": 14,
+        "refresh_candidates": 14,
+        "tasks_generated": 26
+      },
+      "eeat": {
+        "trust_signals_found": 5,
+        "trust_signals_missing": 0,
+        "eeat_score": 1.0
+      },
+      "ai_readiness": {
+        "pages_analyzed": 14,
+        "ai_ready_pages": 0,
+        "ai_readiness_score": 0.0
+      },
+      "snippet": {
+        "snippet_opportunities": 17,
+        "paa_blocks_found": 14
+      },
+      "cannibalization": {
+        "cannibalization_issues": 0,
+        "thin_pages": 23,
+        "duplicate_candidates": 0
+      },
+      "cro": {
+        "pages_with_cta": 14,
+        "pages_missing_cta": 0,
+        "trust_signals_found": 37,
+        "cta_coverage": 1.0
+      },
+      "monitoring": {
+        "anomalies_detected": 1,
+        "alerts_generated": 0,
+        "error_pages": 0,
+        "pages_monitored": 23
+      },
+      "gmc": {
+        "agent": "GoogleMerchantCenterAgent",
+        "analyzed_at": "2026-01-03T00:58:48.590455",
+        "gmc_configured": false,
+        "skipped": true,
+        "reason": "Google Merchant Center not configured"
+      }
+    },
+    "kpis": {
+      "technical": {
+        "pages_audited": 23,
+        "issues_found": 47,
+        "issues_per_page": 2.0434782608695654
+      },
+      "cwv": {
+        "pages_tested": 14,
+        "pages_passing_cwv": 0,
+        "cwv_pass_rate": 0.0
+      },
+      "schema": {
+        "pages_audited": 14,
+        "schema_coverage": 1.0,
+        "pages_with_schema": 14
+      },
+      "internal_linking": {
+        "orphan_pages": 8,
+        "avg_crawl_depth": 0.9285714285714286,
+        "total_internal_links": 173
+      },
+      "keyword_mapper": {
+        "keywords_mapped": 61,
+        "cannibalization_issues": 11
+      },
+      "competitor": {
+        "content_gaps_found": 5
+      },
+      "content_refresh": {
+        "pages_analyzed": 14,
+        "refresh_candidates": 14
+      },
+      "eeat": {
+        "trust_signals_found": 5,
+        "trust_signals_missing": 0
+      },
+      "ai_readiness": {
+        "pages_analyzed": 14,
+        "ai_readiness_score": 0.0
+      },
+      "snippet": {
+        "snippet_opportunities": 17,
+        "paa_blocks_found": 14
+      },
+      "cannibalization": {
+        "cannibalization_issues": 0,
+        "thin_pages": 23,
+        "duplicate_candidates": 0
+      },
+      "cro": {
+        "cta_coverage": 1.0,
+        "trust_signals_found": 37
+      },
+      "monitoring": {
+        "anomalies_detected": 1,
+        "alerts_generated": 0
+      },
+      "gmc": {
+        "gmc_configured": false,
+        "shopify_fixer_configured": false,
+        "total_products": 0,
+        "products_with_issues": 0,
+        "disapproved_products": 0,
+        "feed_health_percentage": 100.0
+      }
+    }
+  },
+  "deploy": null
+}

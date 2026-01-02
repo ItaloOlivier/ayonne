@@ -77,6 +77,19 @@ export {
   getShopInfo,
 } from './shop'
 
+// Re-export GMC fix operations
+export {
+  getProductWithMetafields,
+  updateProductTags,
+  updateGoogleProductCategory,
+  excludeFromGoogleShopping,
+  updateProductType,
+  parseShopifyOfferId,
+  batchFixGMCIssues,
+  suggestCategory,
+  SKINCARE_CATEGORY_MAP,
+} from './gmc-fixes'
+
 // Re-export types
 export type {
   GraphQLResponse,

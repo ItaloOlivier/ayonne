@@ -1,0 +1,1993 @@
+[
+  {
+    "id": "InternalLinkingArchitect_9_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Orphan page needs internal links: https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "changes": {},
+    "metadata": {
+      "issue": "orphan_page"
+    },
+    "created_at": "2026-01-02T20:22:57.010973",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_10_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ai.ayonne.skin/login",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/login",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011020",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_11_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011029",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_12_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/all",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/all",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011037",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_13_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/anti-aging",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/anti-aging",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011044",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_14_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/serums",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/serums",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011052",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_15_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/moisturizers",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/moisturizers",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011059",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_16_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/vitamin-c-lotion-1",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011067",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_17_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011075",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_18_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "changes": {},
+    "metadata": {
+      "internal_links": 0
+    },
+    "created_at": "2026-01-02T20:22:57.011083",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_19_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Consider linking from https://ayonne.skin/products/vitamin-c-lotion-1 to https://ayonne.skin/products/collagen-and-retinol-serum-1 (anti_aging cluster)",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+    "changes": {},
+    "metadata": {
+      "suggested_link": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "cluster": "anti_aging"
+    },
+    "created_at": "2026-01-02T20:22:57.011136",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "InternalLinkingArchitect_20_20260102202257",
+    "agent": "InternalLinkingArchitect",
+    "description": "Consider linking from https://ayonne.skin/products/collagen-and-retinol-serum-1 to https://ayonne.skin/products/vitamin-c-lotion-1 (anti_aging cluster)",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "changes": {},
+    "metadata": {
+      "suggested_link": "https://ayonne.skin/products/vitamin-c-lotion-1",
+      "cluster": "anti_aging"
+    },
+    "created_at": "2026-01-02T20:22:57.011144",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_1_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'skincare' targets 3 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "skincare",
+      "competing_urls": [
+        "https://ai.ayonne.skin/",
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011732",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_2_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'free skin' targets 2 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "free skin",
+      "competing_urls": [
+        "https://ai.ayonne.skin/",
+        "https://ai.ayonne.skin/skin-age-test"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011741",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_3_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'personalized skincare' targets 3 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "personalized skincare",
+      "competing_urls": [
+        "https://ai.ayonne.skin/",
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011750",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_4_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'skincare recommendations' targets 3 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "skincare recommendations",
+      "competing_urls": [
+        "https://ai.ayonne.skin/",
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011758",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_5_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'recommendations ayonne' targets 3 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "recommendations ayonne",
+      "competing_urls": [
+        "https://ai.ayonne.skin/",
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011766",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_6_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'ayonne personalized' targets 2 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "ayonne personalized",
+      "competing_urls": [
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011774",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_7_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Keyword 'policy ayonne' targets 2 pages (cannibalization)",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "keyword": "policy ayonne",
+      "competing_urls": [
+        "https://ai.ayonne.skin/policies/refund-policy",
+        "https://ai.ayonne.skin/policies/privacy-policy"
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.011789",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_8_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'dry_climate' missing content for: skincare for dry climate, desert skincare routine, Arizona skincare",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "dry_climate",
+      "missing_keywords": [
+        "skincare for dry climate",
+        "desert skincare routine",
+        "Arizona skincare",
+        "Denver skincare",
+        "high altitude skincare",
+        "dry climate moisturizer",
+        "desert skin dehydration",
+        "low humidity skincare"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011804",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_9_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'anti_aging' missing content for: anti aging skincare, retinol serum benefits, collagen for skin",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "anti_aging",
+      "missing_keywords": [
+        "anti aging skincare",
+        "retinol serum benefits",
+        "collagen for skin",
+        "vitamin c serum anti aging",
+        "reduce wrinkles naturally",
+        "fine lines prevention",
+        "skin aging signs"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011815",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_10_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'brightening' missing content for: skin brightening, niacinamide benefits, dark spot correction",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "brightening",
+      "missing_keywords": [
+        "skin brightening",
+        "niacinamide benefits",
+        "dark spot correction",
+        "hyperpigmentation help",
+        "uneven skin tone",
+        "vitamin c brightening",
+        "dull skin remedies"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011838",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_11_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'hydration' missing content for: hyaluronic acid benefits, skin hydration tips, dry skin solutions",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "hydration",
+      "missing_keywords": [
+        "hyaluronic acid benefits",
+        "skin hydration tips",
+        "dry skin solutions",
+        "moisture barrier repair",
+        "dehydrated skin vs dry",
+        "best moisturizer for dry skin"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011848",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_12_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'exfoliation' missing content for: glycolic acid benefits, chemical exfoliation guide, AHA vs BHA",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "exfoliation",
+      "missing_keywords": [
+        "glycolic acid benefits",
+        "chemical exfoliation guide",
+        "AHA vs BHA",
+        "exfoliating acids",
+        "skin texture improvement",
+        "glycolic acid percentage"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011858",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_13_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'eye_care' missing content for: eye cream benefits, dark circles remedies, under eye bags",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "eye_care",
+      "missing_keywords": [
+        "eye cream benefits",
+        "dark circles remedies",
+        "under eye bags",
+        "crow's feet prevention",
+        "puffy eyes solutions",
+        "eye area skincare"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011868",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "KeywordIntentMapper_14_20260102202257",
+    "agent": "KeywordIntentMapper",
+    "description": "Cluster 'mens_skincare' missing content for: mens skincare routine, skincare for men, beard care tips",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "cluster": "mens_skincare",
+      "missing_keywords": [
+        "mens skincare routine",
+        "skincare for men",
+        "beard care tips",
+        "mens anti aging",
+        "mens moisturizer",
+        "post shave care"
+      ],
+      "covered_keywords": []
+    },
+    "created_at": "2026-01-02T20:22:57.011878",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_1_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Content gap: competitors have 'Educational guides for key ingredients'",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "content_type": "ingredient-guides",
+      "description": "Educational guides for key ingredients"
+    },
+    "created_at": "2026-01-02T20:22:57.012090",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_2_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Content gap: competitors have 'Content for different skin types'",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "content_type": "skin-type-guides",
+      "description": "Content for different skin types"
+    },
+    "created_at": "2026-01-02T20:22:57.012106",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_3_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Content gap: competitors have 'Interactive routine building tools'",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "content_type": "routine-builders",
+      "description": "Interactive routine building tools"
+    },
+    "created_at": "2026-01-02T20:22:57.012120",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_4_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Content gap: competitors have 'Customer transformation gallery'",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "content_type": "before-after-gallery",
+      "description": "Customer transformation gallery"
+    },
+    "created_at": "2026-01-02T20:22:57.012134",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_5_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Content gap: competitors have 'Comprehensive ingredient dictionary'",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "content_type": "ingredient-glossary",
+      "description": "Comprehensive ingredient dictionary"
+    },
+    "created_at": "2026-01-02T20:22:57.012148",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_6_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Verify feature parity: Skin type quiz",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "feature": "quiz-skin-type"
+    },
+    "created_at": "2026-01-02T20:22:57.012157",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_7_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Verify feature parity: Loyalty/rewards program page",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "feature": "rewards-program"
+    },
+    "created_at": "2026-01-02T20:22:57.012164",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CompetitorIntelligenceAgent_8_20260102202257",
+    "agent": "CompetitorIntelligenceAgent",
+    "description": "Verify feature parity: Subscribe & save option",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "feature": "subscription-option"
+    },
+    "created_at": "2026-01-02T20:22:57.012172",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_1_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.012276",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_2_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.014125",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_3_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/skin-analysis",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-analysis",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.014150",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_4_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/skin-analysis",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-analysis",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.015437",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_5_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/skin-age-test",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-age-test",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.015450",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_6_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/skin-age-test",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-age-test",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.018377",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_7_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/pages/about",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/about",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.018400",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_8_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/pages/about",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/about",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.020316",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_9_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/pages/faq",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/faq",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.020327",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_10_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/pages/faq",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/faq",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.021485",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_11_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/challenge",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/challenge",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.021496",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_12_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/challenge",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/challenge",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.022745",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_13_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/pages/contact",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/contact",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.022764",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_14_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/pages/contact",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/contact",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.023808",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_15_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/pages/shipping",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/shipping",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.023819",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_16_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/pages/shipping",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/shipping",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.024944",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_17_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/policies/refund-policy",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.024954",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_18_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/policies/refund-policy",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.026464",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_19_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/policies/privacy-policy",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.026473",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_20_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/policies/privacy-policy",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.028389",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_21_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Thin content (3 words) needs expansion: https://ai.ayonne.skin/policies/terms-of-service",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "min_required": 300
+    },
+    "created_at": "2026-01-02T20:22:57.028402",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "ContentRefreshAgent_22_20260102202257",
+    "agent": "ContentRefreshAgent",
+    "description": "Add skincare disclaimer to: https://ai.ayonne.skin/policies/terms-of-service",
+    "priority": 50,
+    "risk": 25,
+    "score": 60.0,
+    "action_type": "modify",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "changes": {
+      "add": "disclaimer"
+    },
+    "metadata": {
+      "required": "skincare_disclaimer"
+    },
+    "created_at": "2026-01-02T20:22:57.030091",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_1_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.037118",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_2_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/skin-analysis",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-analysis",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.042964",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_3_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/skin-age-test",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-age-test",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.051124",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_4_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/about",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/about",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.056957",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_5_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/faq",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/faq",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.061122",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_6_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/challenge",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/challenge",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.065617",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_7_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/contact",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/contact",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.070446",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_8_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/pages/shipping",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/shipping",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.074115",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_9_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/refund-policy",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.078262",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_10_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/privacy-policy",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.083960",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "AIReadinessAgent_11_20260102202257",
+    "agent": "AIReadinessAgent",
+    "description": "Consider answer-first content structure: https://ai.ayonne.skin/policies/terms-of-service",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "changes": {},
+    "metadata": {
+      "optimization": "answer_first"
+    },
+    "created_at": "2026-01-02T20:22:57.088876",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_1_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.090119",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_2_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/skin-analysis",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-analysis",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.090984",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_3_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/skin-age-test",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-age-test",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.092772",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_4_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/pages/about",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/about",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.094186",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_5_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/pages/faq",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/faq",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.095139",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_6_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/challenge",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/challenge",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.095998",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_7_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/pages/contact",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/contact",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.096768",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_8_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/pages/shipping",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/shipping",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.097655",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_9_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/policies/refund-policy",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.098708",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_10_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/policies/privacy-policy",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.100117",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "SnippetPAAAgent_11_20260102202257",
+    "agent": "SnippetPAAAgent",
+    "description": "Format lists with proper HTML for snippets: https://ai.ayonne.skin/policies/terms-of-service",
+    "priority": 25,
+    "risk": 10,
+    "score": 51.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "changes": {},
+    "metadata": {
+      "optimization": "list_formatting"
+    },
+    "created_at": "2026-01-02T20:22:57.101485",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_1_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Similar titles (2 pages): 'ai skin analyzer ayonne personalized skincare reco'",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "issue": "title_cannibalization",
+      "urls": [
+        "https://ai.ayonne.skin/skin-analysis",
+        "https://ai.ayonne.skin/challenge"
+      ],
+      "title": "ai skin analyzer ayonne personalized skincare recommendations"
+    },
+    "created_at": "2026-01-02T20:22:57.102064",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_2_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102080",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_3_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/skin-analysis",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-analysis",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102086",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_4_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/skin-age-test",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/skin-age-test",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102091",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_5_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/about",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/about",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102096",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_6_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/faq",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/faq",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102101",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_7_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/challenge",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/challenge",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102106",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_8_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ai.ayonne.skin/login",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/login",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102111",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_9_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/contact",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/contact",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102116",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_10_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/pages/shipping",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/pages/shipping",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102121",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_11_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/refund-policy",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/refund-policy",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102126",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_12_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/privacy-policy",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/privacy-policy",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102131",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_13_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (3 words): https://ai.ayonne.skin/policies/terms-of-service",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ai.ayonne.skin/policies/terms-of-service",
+    "changes": {},
+    "metadata": {
+      "word_count": 3,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102135",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_14_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102140",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_15_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/collections/all",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/all",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102145",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_16_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/collections/anti-aging",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/anti-aging",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102149",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_17_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/collections/serums",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/serums",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102154",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_18_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/collections/moisturizers",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/collections/moisturizers",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102159",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_19_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/products/vitamin-c-lotion-1",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102163",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_20_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102170",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "CannibalizationAgent_21_20260102202257",
+    "agent": "CannibalizationAgent",
+    "description": "Very thin content (0 words): https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "priority": 50,
+    "risk": 50,
+    "score": 50.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+    "changes": {},
+    "metadata": {
+      "word_count": 0,
+      "recommendation": "expand_or_consolidate"
+    },
+    "created_at": "2026-01-02T20:22:57.102175",
+    "executed": true,
+    "execution_result": "success"
+  },
+  {
+    "id": "MonitoringAgent_1_20260102202257",
+    "agent": "MonitoringAgent",
+    "description": "High error rate: 9 pages (45%)",
+    "priority": 75,
+    "risk": 25,
+    "score": 75.0,
+    "action_type": "report",
+    "target_file": null,
+    "target_url": null,
+    "changes": {},
+    "metadata": {
+      "error_count": 9,
+      "sample_errors": [
+        [
+          "https://ai.ayonne.skin/login",
+          0,
+          "Blocked by robots.txt"
+        ],
+        [
+          "https://ayonne.skin/",
+          0,
+          "Blocked by robots.txt"
+        ],
+        [
+          "https://ayonne.skin/collections/all",
+          0,
+          "Blocked by robots.txt"
+        ],
+        [
+          "https://ayonne.skin/collections/anti-aging",
+          0,
+          "Blocked by robots.txt"
+        ],
+        [
+          "https://ayonne.skin/collections/serums",
+          0,
+          "Blocked by robots.txt"
+        ]
+      ]
+    },
+    "created_at": "2026-01-02T20:22:57.108991",
+    "executed": true,
+    "execution_result": "success"
+  }
+]

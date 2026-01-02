@@ -1,0 +1,12 @@
+{
+  "task_id": "TechnicalSEOAuditor_31_20260102202230",
+  "description": "Missing meta description: https://ayonne.skin/collections/serums",
+  "action_type": "modify",
+  "target_url": "https://ayonne.skin/collections/serums",
+  "changes": {
+    "element": "meta_description",
+    "action": "add"
+  },
+  "metadata": {},
+  "generated_at": "2026-01-02T20:22:57.120727"
+}

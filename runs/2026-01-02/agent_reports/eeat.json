@@ -1,0 +1,15 @@
+{
+  "agent_name": "EEATAgent",
+  "success": true,
+  "tasks": [],
+  "metrics": {
+    "trust_signals_found": 5,
+    "trust_signals_missing": 0,
+    "eeat_score": 1.0
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Found 5 trust signals. Missing 0 recommended signals.",
+  "execution_time": 5.793571472167969e-05,
+  "timestamp": "2026-01-02T22:58:48.451768"
+}

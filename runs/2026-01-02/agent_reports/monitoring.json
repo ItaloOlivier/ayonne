@@ -1,0 +1,62 @@
+{
+  "agent_name": "MonitoringAgent",
+  "success": true,
+  "tasks": [
+    {
+      "id": "MonitoringAgent_1_20260102225848",
+      "agent": "MonitoringAgent",
+      "description": "High error rate: 9 pages (39%)",
+      "priority": 75,
+      "risk": 25,
+      "score": 75.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": null,
+      "changes": {},
+      "metadata": {
+        "error_count": 9,
+        "sample_errors": [
+          [
+            "https://ai.ayonne.skin/login",
+            0,
+            "Blocked by robots.txt"
+          ],
+          [
+            "https://ayonne.skin/",
+            0,
+            "Blocked by robots.txt"
+          ],
+          [
+            "https://ayonne.skin/collections/all",
+            0,
+            "Blocked by robots.txt"
+          ],
+          [
+            "https://ayonne.skin/collections/anti-aging",
+            0,
+            "Blocked by robots.txt"
+          ],
+          [
+            "https://ayonne.skin/collections/serums",
+            0,
+            "Blocked by robots.txt"
+          ]
+        ]
+      },
+      "created_at": "2026-01-02T22:58:48.589731",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "anomalies_detected": 1,
+    "alerts_generated": 0,
+    "error_pages": 0,
+    "pages_monitored": 23
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Monitored 23 pages. Detected 1 anomalies. Generated 0 alerts.",
+  "execution_time": 0.0018491744995117188,
+  "timestamp": "2026-01-02T22:58:48.588502"
+}

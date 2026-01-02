@@ -1,0 +1,17 @@
+{
+  "agent_name": "GoogleMerchantCenterAgent",
+  "success": true,
+  "tasks": [],
+  "metrics": {
+    "agent": "GoogleMerchantCenterAgent",
+    "analyzed_at": "2026-01-03T00:58:48.590455",
+    "gmc_configured": false,
+    "skipped": true,
+    "reason": "Google Merchant Center not configured"
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "",
+  "execution_time": 0.0,
+  "timestamp": "2026-01-02T22:58:48.590477"
+}

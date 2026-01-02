@@ -436,7 +436,7 @@ export class PPCOrchestrator {
     for (const approval of approvedActions) {
       try {
         if (approval.type === 'optimization') {
-          await this.agents.optimization.applyAction(approval.proposal as any)
+          await this.agents.optimization.applyAction(approval.proposal as Parameters<typeof this.agents.optimization.applyAction>[0])
           executed++
         }
         // Remove from queue

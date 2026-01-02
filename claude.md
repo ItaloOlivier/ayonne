@@ -979,12 +979,53 @@ Top 20 prioritized improvements with:
 - Implementation details
 - Estimated impact
 
+### Google Merchant Center Integration
+
+The GMC Agent monitors product feed health and can auto-fix common issues:
+
+**Features:**
+- **Health Monitoring**: Tracks feed health over time with trend analysis
+- **Auto-Fix**: Automatically fixes low-risk issues (missing brand → "Ayonne")
+- **Priority Products**: High-revenue products flagged for priority attention
+- **Slack Alerts**: Notifications for critical disapprovals
+- **Admin API**: REST endpoints for dashboard and manual fixes
+
+**Admin API Endpoints** (`/api/admin/gmc`):
+- `GET ?action=dashboard` - Health dashboard with trends
+- `GET ?action=health-check` - Run full health check
+- `GET ?action=summary` - Current status summary
+- `POST { action: 'auto_fix' }` - Run auto-fix on eligible issues
+- `POST { action: 'run_health_check' }` - Trigger health check
+
+**Priority Product Detection:**
+- Manually configured high-revenue products (in `PRIORITY_PRODUCT_HANDLES`)
+- Products priced above $50
+- Products with "best seller" or "featured" in title
+
+**CLI Usage:**
+```bash
+# Run health check
+python3 scripts/gmc_health_check.py
+
+# With auto-fix
+python3 scripts/gmc_health_check.py --auto-fix
+
+# Dry run (no changes)
+python3 scripts/gmc_health_check.py --auto-fix --dry-run
+
+# With Slack alerts
+python3 scripts/gmc_health_check.py --send-alerts
+```
+
 ### Environment Variables
 
 ```
 # Optional: PageSpeed Insights API key (increases quota from 25 to 400/day)
 PSI_API_KEY=
 
-# Google Merchant Center (optional - for product feed monitoring)
+# Google Merchant Center (required for GMC monitoring)
 GOOGLE_MERCHANT_ID=           # Your GMC Merchant ID
 GOOGLE_SERVICE_ACCOUNT_KEY=   # JSON service account credentials
+
+# Slack Alerts (optional - for GMC critical issue notifications)
+SLACK_WEBHOOK_URL=            # Incoming webhook URL for alerts

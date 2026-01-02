@@ -1,0 +1,362 @@
+{
+  "agent_name": "InternalLinkingArchitect",
+  "success": true,
+  "tasks": [
+    {
+      "id": "InternalLinkingArchitect_1_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ai.ayonne.skin/skin-age-test",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/skin-age-test",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424202",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_2_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/collections/all",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/all",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424302",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_3_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/collections/anti-aging",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/anti-aging",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424321",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_4_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/collections/serums",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/serums",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424340",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_5_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/collections/moisturizers",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/moisturizers",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424359",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_6_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/products/vitamin-c-lotion-1",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424381",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_7_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424400",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_8_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Orphan page needs internal links: https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "priority": 50,
+      "risk": 25,
+      "score": 60.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "changes": {},
+      "metadata": {
+        "issue": "orphan_page"
+      },
+      "created_at": "2026-01-02T22:58:48.424418",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_9_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ai.ayonne.skin/login",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ai.ayonne.skin/login",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424521",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_10_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424532",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_11_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/all",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/all",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424541",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_12_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/anti-aging",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/anti-aging",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424551",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_13_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/serums",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/serums",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424559",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_14_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/collections/moisturizers",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/collections/moisturizers",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424568",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_15_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/vitamin-c-lotion-1",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424577",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_16_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424586",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_17_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Page has only 0 internal links (min: 3): https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/hyaluronic-acid-serum-1",
+      "changes": {},
+      "metadata": {
+        "internal_links": 0
+      },
+      "created_at": "2026-01-02T22:58:48.424594",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_18_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Consider linking from https://ayonne.skin/products/vitamin-c-lotion-1 to https://ayonne.skin/products/collagen-and-retinol-serum-1 (anti_aging cluster)",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/vitamin-c-lotion-1",
+      "changes": {},
+      "metadata": {
+        "suggested_link": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+        "cluster": "anti_aging"
+      },
+      "created_at": "2026-01-02T22:58:48.424654",
+      "executed": false,
+      "execution_result": null
+    },
+    {
+      "id": "InternalLinkingArchitect_19_20260102225848",
+      "agent": "InternalLinkingArchitect",
+      "description": "Consider linking from https://ayonne.skin/products/collagen-and-retinol-serum-1 to https://ayonne.skin/products/vitamin-c-lotion-1 (anti_aging cluster)",
+      "priority": 25,
+      "risk": 10,
+      "score": 51.0,
+      "action_type": "report",
+      "target_file": null,
+      "target_url": "https://ayonne.skin/products/collagen-and-retinol-serum-1",
+      "changes": {},
+      "metadata": {
+        "suggested_link": "https://ayonne.skin/products/vitamin-c-lotion-1",
+        "cluster": "anti_aging"
+      },
+      "created_at": "2026-01-02T22:58:48.424664",
+      "executed": false,
+      "execution_result": null
+    }
+  ],
+  "metrics": {
+    "total_pages": 23,
+    "orphan_pages": 8,
+    "avg_crawl_depth": 0.9285714285714286,
+    "max_crawl_depth": 1,
+    "avg_internal_links": 7.521739130434782
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Analyzed 23 pages. Found 8 orphan pages. Avg depth: 0.9.",
+  "execution_time": 0.0016090869903564453,
+  "timestamp": "2026-01-02T22:58:48.423161"
+}

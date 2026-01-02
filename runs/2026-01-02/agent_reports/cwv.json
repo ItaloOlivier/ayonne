@@ -1,0 +1,20 @@
+{
+  "agent_name": "CWVAgent",
+  "success": true,
+  "tasks": [],
+  "metrics": {
+    "pages_tested": 14,
+    "pages_passing_cwv": 0,
+    "pass_rate": 0.0,
+    "avg_performance_score": 0,
+    "avg_lcp_ms": 0,
+    "avg_cls": 0,
+    "top_opportunities": [],
+    "queries_remaining": 11
+  },
+  "errors": [],
+  "warnings": [],
+  "summary": "Tested 14 pages. 0 passing CWV (0%). Avg performance: 0/100.",
+  "execution_time": 26.439323902130127,
+  "timestamp": "2026-01-02T22:58:21.981409"
+}
