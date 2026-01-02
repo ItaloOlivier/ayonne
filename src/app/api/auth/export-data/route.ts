@@ -35,7 +35,7 @@ export async function GET(request: NextRequest) {
       )
     }
 
-    // Fetch all customer data
+    // Fetch all customer data including consent preference
     const customer = await prisma.customer.findUnique({
       where: { id: customerId },
       select: {
@@ -45,6 +45,8 @@ export async function GET(request: NextRequest) {
         lastName: true,
         phone: true,
         createdAt: true,
+        imageStorageConsent: true,
+        consentUpdatedAt: true,
         skinAnalyses: {
           select: {
             id: true,
@@ -132,22 +134,31 @@ export async function GET(request: NextRequest) {
           phone: customer.phone,
           accountCreated: customer.createdAt,
         },
-        skinAnalyses: customer.skinAnalyses.map(analysis => ({
-          id: analysis.id,
-          sessionId: analysis.sessionId,
-          date: analysis.createdAt,
-          skinType: analysis.skinType,
-          conditions: analysis.conditions,
-          recommendations: analysis.recommendations,
-          advice: analysis.advice,
-          status: analysis.status,
-          // Include image URLs (note: these may expire)
-          images: {
-            front: analysis.frontImage || analysis.originalImage,
-            left: analysis.leftImage,
-            right: analysis.rightImage,
+        privacyPreferences: {
+          imageStorageConsent: customer.imageStorageConsent,
+          consentUpdatedAt: customer.consentUpdatedAt,
+        },
+        skinAnalyses: customer.skinAnalyses.map(analysis => {
+          // Only include image URLs if they were actually stored
+          const hasStoredImages = analysis.frontImage || analysis.originalImage
+          return {
+            id: analysis.id,
+            sessionId: analysis.sessionId,
+            date: analysis.createdAt,
+            skinType: analysis.skinType,
+            conditions: analysis.conditions,
+            recommendations: analysis.recommendations,
+            advice: analysis.advice,
+            status: analysis.status,
+            // Only include images if they exist (respects user consent)
+            images: hasStoredImages ? {
+              front: analysis.frontImage || analysis.originalImage || null,
+              left: analysis.leftImage || null,
+              right: analysis.rightImage || null,
+            } : null,
+            imagesStored: !!hasStoredImages,
           }
-        })),
+        }),
         orders: customer.orders.map(order => ({
           orderNumber: order.orderNumber,
           date: order.createdAt,
@@ -173,7 +184,8 @@ export async function GET(request: NextRequest) {
         } : null,
       },
       dataRetentionInfo: {
-        skinAnalysisImages: 'Images are stored for 90 days after analysis',
+        skinAnalysisImages: 'Images are stored only if you consented. Storage period: 90 days after analysis.',
+        imageStorageConsent: 'You can change your image storage preference in account settings at any time.',
         orderHistory: 'Order data retained for 7 years for legal compliance',
         accountData: 'Deleted upon account deletion request',
       },
