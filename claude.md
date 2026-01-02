@@ -53,7 +53,8 @@ src/
 │   │   │   ├── logout/       # Logout API endpoint (clears session cookie)
 │   │   │   └── me/           # Get current user from cookie (includes skinGoal)
 │   │   ├── account/
-│   │   │   └── skin-goal/    # GET/PATCH skincare goal preference
+│   │   │   ├── skin-goal/    # GET/PATCH skincare goal preference
+│   │   │   └── image-consent/ # GET/PATCH image storage consent preference
 │   │   └── skin-analysis/
 │   │       ├── analyze/      # AI skin analysis endpoint
 │   │       ├── history/      # User analysis history
@@ -470,6 +471,8 @@ buildShopifyCartUrl(['vitamin-c-lotion'], 'SPIN123ABC')
 ### Account Settings
 - `GET /api/account/skin-goal` - Get user's skincare goal preference
 - `PATCH /api/account/skin-goal` - Update skincare goal (AGE_NORMALLY, AGE_GRACEFULLY, STAY_YOUNG_FOREVER)
+- `GET /api/account/image-consent` - Get user's image storage consent preference
+- `PATCH /api/account/image-consent` - Update image consent (ALLOWED, DENIED, NOT_SET)
 
 ### Skin Analysis (all require authentication)
 - `POST /api/skin-analysis/signup` - User registration (sets session cookie)
@@ -632,7 +635,36 @@ Contains optimized SEO titles and descriptions for all products. Use with the SE
 - **Owner verification**: Users can only view their own analyses
 - **HTTP-only cookies**: Session tokens not accessible via JavaScript
 - **Secure cookies**: HTTPS-only in production
-- **Image storage**: Photos stored as PNG lossless at 1400px max width for high-quality AI analysis and face aging
+- **Image storage**: Conditional - only stored if user consents (see below)
+
+### Image Storage Consent System
+
+Users control whether their photos are stored for progress tracking:
+
+**Consent States** (`ImageStorageConsent` enum):
+- `ALLOWED` - Photos stored in Vercel Blob for progress tracking
+- `DENIED` - Photos analyzed but NOT stored (ephemeral)
+- `NOT_SET` - Legacy/default state (treated as DENIED for storage)
+
+**Implementation:**
+- Consent checkbox in `SignupForm.tsx` (defaults to ALLOWED)
+- Privacy Settings toggle in `/account` page
+- `canStoreCustomerImages(customerId)` helper in `auth.ts`
+- `analyze-multi/route.ts` checks consent before upload
+- API: `GET/PATCH /api/account/image-consent`
+
+**Impact When Storage is DENIED:**
+- Analysis proceeds normally (images sent to Claude AI temporarily)
+- No images stored in Vercel Blob or database
+- History page shows analyses without thumbnails
+- Skin Forecast face aging preview unavailable
+- Progress comparison features limited
+- Data export shows `imagesStored: false`
+
+**User Experience:**
+- Warning shown when consent is denied explaining feature limitations
+- Users can change preference anytime in account settings
+- Signup form explains what photo storage enables
 
 ### Skin Analyzer Security (Luxury Product Standards)
 
