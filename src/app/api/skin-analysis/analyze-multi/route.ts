@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { prisma } from '@/lib/prisma'
-import { getCustomerIdFromCookie } from '@/lib/auth'
+import { getCustomerIdFromCookie, canStoreCustomerImages } from '@/lib/auth'
 import { SkinType, DetectedCondition } from '@/lib/skin-analysis/conditions'
 import {
   generateSessionId,
@@ -584,27 +584,46 @@ export async function POST(request: NextRequest) {
       )
     }
 
-    // Compress and upload all three images in parallel
-    const [compressedFront, compressedLeft, compressedRight] = await Promise.all([
-      compressImage(frontBuffer),
-      compressImage(leftBuffer),
-      compressImage(rightBuffer),
-    ])
+    // Check if user consents to image storage
+    const allowImageStorage = await canStoreCustomerImages(customerId)
 
-    const [frontImageUrl, leftImageUrl, rightImageUrl] = await Promise.all([
-      uploadImage(compressedFront, `skin-analysis/${customerId}-${sessionId}-front.png`),
-      uploadImage(compressedLeft, `skin-analysis/${customerId}-${sessionId}-left.png`),
-      uploadImage(compressedRight, `skin-analysis/${customerId}-${sessionId}-right.png`),
-    ])
+    // Image URLs - only populated if user consents to storage
+    let frontImageUrl: string | null = null
+    let leftImageUrl: string | null = null
+    let rightImageUrl: string | null = null
+
+    if (allowImageStorage) {
+      // Compress and upload all three images in parallel
+      const [compressedFront, compressedLeft, compressedRight] = await Promise.all([
+        compressImage(frontBuffer),
+        compressImage(leftBuffer),
+        compressImage(rightBuffer),
+      ])
+
+      const [uploadedFront, uploadedLeft, uploadedRight] = await Promise.all([
+        uploadImage(compressedFront, `skin-analysis/${customerId}-${sessionId}-front.png`),
+        uploadImage(compressedLeft, `skin-analysis/${customerId}-${sessionId}-left.png`),
+        uploadImage(compressedRight, `skin-analysis/${customerId}-${sessionId}-right.png`),
+      ])
+
+      frontImageUrl = uploadedFront
+      leftImageUrl = uploadedLeft
+      rightImageUrl = uploadedRight
+
+      console.log(`[CONSENT] Images stored for customer ${customerId} (consent: ALLOWED)`)
+    } else {
+      console.log(`[CONSENT] Images NOT stored for customer ${customerId} (consent: DENIED or NOT_SET)`)
+    }
 
     // Build recommendations and advice
     const { recommendations, advice } = await buildAnalysisResults(skinType, conditions)
 
-    // Update analysis record with results (all 3 images stored)
+    // Update analysis record with results
+    // Images are only stored if user has consented
     const updatedAnalysis = await prisma.skinAnalysis.update({
       where: { id: analysis.id },
       data: {
-        originalImage: frontImageUrl, // Keep for backwards compatibility
+        originalImage: frontImageUrl || '', // Empty string if no consent (backwards compat)
         frontImage: frontImageUrl,
         leftImage: leftImageUrl,
         rightImage: rightImageUrl,
@@ -621,6 +640,7 @@ export async function POST(request: NextRequest) {
       success: true,
       analysisId: updatedAnalysis.id,
       analysisQuality,
+      imagesStored: allowImageStorage, // Inform frontend if images were stored
     })
   } catch (error) {
     console.error('Multi-angle analysis error:', error)
