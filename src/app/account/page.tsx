@@ -10,6 +10,8 @@ import { SkinGoal, SKIN_GOAL_INFO } from '@/lib/skin-analysis/scoring'
 const CUSTOMER_STORAGE_KEY = 'ayonne_customer_id'
 const CUSTOMER_DATA_KEY = 'ayonne_customer_data'
 
+type ImageStorageConsent = 'ALLOWED' | 'DENIED' | 'NOT_SET'
+
 interface CustomerData {
   id: string
   email: string
@@ -19,6 +21,7 @@ interface CustomerData {
   createdAt: string
   analysisCount: number
   skinGoal?: SkinGoal
+  imageStorageConsent?: ImageStorageConsent
 }
 
 interface SkinAnalysis {
@@ -37,6 +40,8 @@ export default function AccountPage() {
   const [skinGoal, setSkinGoal] = useState<SkinGoal>('AGE_GRACEFULLY')
   const [isUpdatingGoal, setIsUpdatingGoal] = useState(false)
   const [showGoalSelector, setShowGoalSelector] = useState(false)
+  const [imageConsent, setImageConsent] = useState<ImageStorageConsent>('NOT_SET')
+  const [isUpdatingConsent, setIsUpdatingConsent] = useState(false)
 
   useEffect(() => {
     // Check if user is logged in
@@ -62,6 +67,16 @@ export default function AccountPage() {
       .then(data => {
         if (data.skinGoal) {
           setSkinGoal(data.skinGoal)
+        }
+      })
+      .catch(console.error)
+
+    // Fetch current image consent from server
+    fetch('/api/account/image-consent')
+      .then(res => res.json())
+      .then(data => {
+        if (data.imageStorageConsent) {
+          setImageConsent(data.imageStorageConsent)
         }
       })
       .catch(console.error)
@@ -101,6 +116,25 @@ export default function AccountPage() {
       console.error('Failed to update skin goal:', error)
     } finally {
       setIsUpdatingGoal(false)
+    }
+  }
+
+  const handleConsentChange = async (newConsent: ImageStorageConsent) => {
+    setIsUpdatingConsent(true)
+    try {
+      const response = await fetch('/api/account/image-consent', {
+        method: 'PATCH',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ imageStorageConsent: newConsent }),
+      })
+
+      if (response.ok) {
+        setImageConsent(newConsent)
+      }
+    } catch (error) {
+      console.error('Failed to update image consent:', error)
+    } finally {
+      setIsUpdatingConsent(false)
     }
   }
 
@@ -268,6 +302,97 @@ export default function AccountPage() {
                   </div>
                 </div>
               )}
+            </div>
+
+            {/* Privacy Settings Card */}
+            <div className="card-luxury p-8 md:p-10">
+              <div className="flex items-start justify-between mb-6">
+                <div>
+                  <h2 className="text-xl font-medium text-[#1C4444] mb-2 tracking-wide">
+                    Privacy Settings
+                  </h2>
+                  <p className="text-[#1C4444]/50 text-sm">
+                    Control how your data is stored
+                  </p>
+                </div>
+                <div className="w-10 h-10 rounded-xl bg-[#1C4444]/10 flex items-center justify-center">
+                  <svg className="w-5 h-5 text-[#1C4444]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+              </div>
+
+              <div className="space-y-4">
+                {/* Image Storage Toggle */}
+                <div className="p-5 bg-gradient-to-br from-[#F4EBE7] to-[#F4EBE7]/80 rounded-xl border border-[#1C4444]/10">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-2 mb-2">
+                        <span className="font-medium text-[#1C4444]">Photo Storage</span>
+                        {imageConsent === 'ALLOWED' && (
+                          <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">Enabled</span>
+                        )}
+                        {imageConsent === 'DENIED' && (
+                          <span className="text-xs bg-amber-100 text-amber-700 px-2 py-0.5 rounded-full">Disabled</span>
+                        )}
+                        {imageConsent === 'NOT_SET' && (
+                          <span className="text-xs bg-gray-100 text-gray-600 px-2 py-0.5 rounded-full">Not Set</span>
+                        )}
+                      </div>
+                      <p className="text-sm text-[#1C4444]/60">
+                        {imageConsent === 'ALLOWED'
+                          ? 'Your analysis photos are saved to track skin progress over time.'
+                          : 'Your photos are analyzed but not stored. Progress tracking features are limited.'}
+                      </p>
+                    </div>
+                    <label className="relative inline-flex items-center cursor-pointer">
+                      <input
+                        type="checkbox"
+                        checked={imageConsent === 'ALLOWED'}
+                        onChange={(e) => handleConsentChange(e.target.checked ? 'ALLOWED' : 'DENIED')}
+                        disabled={isUpdatingConsent}
+                        className="sr-only peer"
+                      />
+                      <div className={`w-11 h-6 bg-[#1C4444]/20 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-[#1C4444]/10 rounded-full peer peer-checked:after:translate-x-full rtl:peer-checked:after:-translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:start-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all peer-checked:bg-[#1C4444] ${isUpdatingConsent ? 'opacity-50' : ''}`}></div>
+                    </label>
+                  </div>
+
+                  {imageConsent !== 'ALLOWED' && (
+                    <div className="mt-4 pt-4 border-t border-[#1C4444]/10">
+                      <p className="text-xs text-[#1C4444]/50 flex items-start gap-2">
+                        <svg className="w-4 h-4 flex-shrink-0 text-amber-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                        </svg>
+                        <span>
+                          Without photo storage enabled, you cannot: view analysis history photos, compare before/after images, or use the Skin Forecast feature with face aging preview.
+                        </span>
+                      </p>
+                    </div>
+                  )}
+                </div>
+
+                {/* Data Management Links */}
+                <div className="flex flex-wrap gap-4 pt-2">
+                  <a
+                    href="/api/auth/export-data"
+                    className="text-sm text-[#1C4444]/60 hover:text-[#1C4444] flex items-center gap-1.5 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
+                    </svg>
+                    Export My Data
+                  </a>
+                  <a
+                    href="/policies/privacy-policy"
+                    className="text-sm text-[#1C4444]/60 hover:text-[#1C4444] flex items-center gap-1.5 transition-colors"
+                  >
+                    <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+                    </svg>
+                    Privacy Policy
+                  </a>
+                </div>
+              </div>
             </div>
 
             {/* Stats Card */}
