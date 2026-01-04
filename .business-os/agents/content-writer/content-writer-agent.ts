@@ -373,24 +373,42 @@ Include the FAQ section with proper FAQ schema-ready markup if applicable.`
     brief: ArticleBrief,
     prompt: string
   ): Promise<string> {
-    // In production, this would call the Anthropic API
-    // For development, return a structured placeholder
-
     if (!this.config?.anthropicApiKey) {
       console.log('[ContentWriterAgent] No API key - generating placeholder content')
       return this.generatePlaceholderContent(brief)
     }
 
     try {
-      // This would be the actual API call:
-      // const response = await anthropic.messages.create({
-      //   model: 'claude-3-5-sonnet-20241022',
-      //   max_tokens: 4000,
-      //   messages: [{ role: 'user', content: prompt }],
-      // })
-      // return response.content[0].text
+      console.log('[ContentWriterAgent] Calling Claude API for content generation...')
 
-      // For now, return placeholder
+      const response = await fetch('https://api.anthropic.com/v1/messages', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'x-api-key': this.config.anthropicApiKey,
+          'anthropic-version': '2023-06-01',
+        },
+        body: JSON.stringify({
+          model: 'claude-sonnet-4-20250514',
+          max_tokens: 4000,
+          messages: [{ role: 'user', content: prompt }],
+        }),
+      })
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error('[ContentWriterAgent] API error:', response.status, errorText)
+        return this.generatePlaceholderContent(brief)
+      }
+
+      const data = await response.json()
+
+      if (data.content && data.content[0] && data.content[0].text) {
+        console.log('[ContentWriterAgent] Successfully generated content via Claude API')
+        return data.content[0].text
+      }
+
+      console.error('[ContentWriterAgent] Unexpected API response format')
       return this.generatePlaceholderContent(brief)
     } catch (error) {
       console.error('[ContentWriterAgent] API error:', error)
