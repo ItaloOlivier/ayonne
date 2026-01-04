@@ -156,8 +156,8 @@ export class ShopifyPublisher {
             title: article.seoMeta.title,
             description: article.seoMeta.description,
           },
-          // Don't publish immediately - set to draft for review
-          isPublished: false,
+          // Publish immediately - articles go live automatically
+          isPublished: true,
         },
       }
 
