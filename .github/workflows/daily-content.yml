@@ -63,8 +63,8 @@ jobs:
           SKIP_PUBLISH: ${{ github.event.inputs.skip_publish || 'false' }}
           SKIP_WHATSAPP: ${{ github.event.inputs.skip_whatsapp || 'false' }}
         run: |
-          # Run the daily content publisher
-          npx ts-node .business-os/orchestrator/daily-content-publisher.ts both
+          # Run the daily content publisher using tsx (better ESM support)
+          npx tsx .business-os/orchestrator/daily-content-publisher.ts both
 
           # Output results for summary
           echo "date=$(date +%Y-%m-%d)" >> $GITHUB_OUTPUT
@@ -134,7 +134,7 @@ jobs:
           WAZZUP_API_KEY: ${{ secrets.WAZZUP_API_KEY }}
           WAZZUP_CHANNEL_ID: ${{ secrets.WAZZUP_CHANNEL_ID }}
         run: |
-          npx ts-node .business-os/orchestrator/daily-content-publisher.ts report
+          npx tsx .business-os/orchestrator/daily-content-publisher.ts report
 
   notify-on-failure:
     name: Notify on Failure
