@@ -21,6 +21,7 @@ import {
   type DailySEOReportData,
   type ArticlePublishedData,
 } from '../notifications/whatsapp'
+import { seoBridge, type ContentGap } from '../data/seo-bridge'
 
 // ============================================================================
 // CONTENT HISTORY TRACKING
@@ -82,12 +83,39 @@ interface ContentCalendarEntry {
 /**
  * Get the content to publish for today based on the content calendar
  * Checks history to avoid publishing duplicate or recently published content
+ * NOW INTEGRATES WITH SEO AGENT DATA for prioritization
  */
 async function getTodaysContent(history: ContentHistory): Promise<ContentCalendarEntry> {
   const today = new Date()
   const dayOfYear = getDayOfYear(today)
   const dayOfWeek = today.getDay()
   const month = today.getMonth() + 1
+
+  // =========================================================================
+  // STEP 1: Check SEO Agent recommendations (highest priority)
+  // =========================================================================
+  const seoStats = await seoBridge.getStats()
+  console.log(`[DailyPublisher] SEO Bridge: ${seoStats.contentGaps} gaps, data fresh: ${seoStats.dataFresh}`)
+
+  if (seoStats.dataFresh && seoStats.contentGaps > 0) {
+    const seoGaps = await seoBridge.getContentRecommendations(5)
+
+    // Find SEO-recommended content not recently published
+    for (const gap of seoGaps) {
+      if (!isContentRecent(history, gap.suggestedType, gap.topic, 60)) {
+        console.log(`[DailyPublisher] Using SEO gap: ${gap.topic} (priority: ${gap.priority}, source: ${gap.source})`)
+        return {
+          type: gap.suggestedType,
+          target: gap.keyword || gap.topic,
+          priority: gap.priority + 10, // Boost SEO-recommended content
+        }
+      }
+    }
+  }
+
+  // =========================================================================
+  // STEP 2: Fall back to content calendar rotation
+  // =========================================================================
 
   // Content rotation strategy:
   // - Monday: City landing pages (Denver, Boulder, Colorado Springs, Fort Collins)
