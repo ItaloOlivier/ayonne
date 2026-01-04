@@ -152,10 +152,8 @@ export class ShopifyPublisher {
             name: 'Ayonne Skincare',
           },
           tags: this.generateTags(brief),
-          seo: {
-            title: article.seoMeta.title,
-            description: article.seoMeta.description,
-          },
+          // Note: SEO fields are set via metafields in newer Shopify API versions
+          // The title and meta description will be inherited from the article title/content
           // Publish immediately - articles go live automatically
           isPublished: true,
         },
