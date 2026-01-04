@@ -1,29 +1,30 @@
 /**
- * WhatsApp Notification Service
+ * WhatsApp Notification Service (Wazzup)
  *
- * Sends daily SEO reports and article notifications via WhatsApp.
- * Uses the WhatsApp Business API (or alternative services like Twilio, MessageBird).
+ * Sends daily SEO reports and article notifications via WhatsApp using Wazzup API.
  *
  * Recipients:
- * - Wim: +27 83 233 4572
  * - Owner: +27 79 192 2423
+ * - Wim: +27 83 233 4572
+ *
+ * Environment Variables:
+ * - WAZZUP_API_KEY: Your Wazzup API key
+ * - WAZZUP_CHANNEL_ID: Your WhatsApp channel ID
  */
 
 // ============================================================================
 // CONFIGURATION
 // ============================================================================
 
-export interface WhatsAppConfig {
-  provider: 'twilio' | 'messagebird' | 'whatsapp_business' | 'ultramsg'
+export interface WazzupConfig {
   apiKey: string
-  apiSecret?: string
-  fromNumber?: string
-  instanceId?: string // For UltraMsg
+  channelId: string
+  baseUrl?: string
 }
 
 export interface Recipient {
   name: string
-  phone: string
+  phone: string // Without + prefix, e.g., "27791922423"
   role: 'owner' | 'team' | 'stakeholder'
   notifications: NotificationType[]
 }
@@ -35,17 +36,23 @@ export type NotificationType =
   | 'performance_alert'
   | 'weekly_summary'
 
-// Default recipients for Ayonne
+export interface SendResult {
+  success: boolean
+  messageId?: string
+  error?: string
+}
+
+// Ayonne recipients
 export const AYONNE_RECIPIENTS: Recipient[] = [
   {
     name: 'Owner',
-    phone: '+27791922423',
+    phone: '27791922423',
     role: 'owner',
     notifications: ['daily_seo_report', 'article_published', 'weekly_summary', 'performance_alert'],
   },
   {
     name: 'Wim',
-    phone: '+27832334572',
+    phone: '27832334572',
     role: 'team',
     notifications: ['daily_seo_report', 'article_published', 'weekly_summary'],
   },
@@ -100,17 +107,17 @@ ${data.city ? `• Region: ${data.city}, Colorado` : ''}
 • Words: ${data.wordCount.toLocaleString()}
 • Quality: ${data.qualityScore}/100 ${qualityEmoji}
 
-_Published by Ayonne Content Writer Agent_`
+_Ayonne Content Writer Agent_`
 }
 
 export function formatDailySEOReportMessage(data: DailySEOReportData): string {
   const progressBar = (current: number, total: number): string => {
-    const percentage = Math.round((current / total) * 100)
+    const percentage = total > 0 ? Math.round((current / total) * 100) : 0
     const filled = Math.round(percentage / 10)
     return '█'.repeat(filled) + '░'.repeat(10 - filled) + ` ${percentage}%`
   }
 
-  let message = `📊 *Daily SEO Report - ${data.date}*
+  let message = `📊 *Ayonne Daily SEO Report - ${data.date}*
 
 📝 *Content Progress*
 Articles: ${data.articlesPublished}/${data.totalArticles}
@@ -156,7 +163,7 @@ _Ayonne SEO Agent Report_`
 }
 
 export function formatWeeklySummaryMessage(data: WeeklySummaryData): string {
-  let message = `📈 *Weekly SEO Summary - Week ${data.weekNumber}*
+  let message = `📈 *Ayonne Weekly Summary - Week ${data.weekNumber}*
 
 📝 *Content Output*
 ${data.articlesPublished} articles published this week`
@@ -200,11 +207,11 @@ _Ayonne Weekly Report_`
 }
 
 // ============================================================================
-// WHATSAPP SERVICE
+// WHATSAPP SERVICE (WAZZUP)
 // ============================================================================
 
 export class WhatsAppService {
-  private config: WhatsAppConfig | null = null
+  private config: WazzupConfig | null = null
   private recipients: Recipient[] = AYONNE_RECIPIENTS
   private initialized: boolean = false
 
@@ -216,48 +223,30 @@ export class WhatsAppService {
    * Try to auto-initialize from environment variables
    */
   private tryAutoInitialize(): void {
-    // Try UltraMsg (easiest to set up)
-    if (process.env.ULTRAMSG_INSTANCE_ID && process.env.ULTRAMSG_TOKEN) {
+    const apiKey = process.env.WAZZUP_API_KEY
+    const channelId = process.env.WAZZUP_CHANNEL_ID
+
+    if (apiKey && channelId) {
       this.config = {
-        provider: 'ultramsg',
-        instanceId: process.env.ULTRAMSG_INSTANCE_ID,
-        apiKey: process.env.ULTRAMSG_TOKEN,
+        apiKey,
+        channelId,
+        baseUrl: 'https://api.wazzup24.com/v3',
       }
       this.initialized = true
-      return
+      console.log('[WhatsAppService] Initialized with Wazzup')
+    } else {
+      console.log('[WhatsAppService] Wazzup not configured - set WAZZUP_API_KEY and WAZZUP_CHANNEL_ID')
     }
-
-    // Try Twilio
-    if (process.env.TWILIO_ACCOUNT_SID && process.env.TWILIO_AUTH_TOKEN && process.env.TWILIO_WHATSAPP_NUMBER) {
-      this.config = {
-        provider: 'twilio',
-        apiKey: process.env.TWILIO_ACCOUNT_SID,
-        apiSecret: process.env.TWILIO_AUTH_TOKEN,
-        fromNumber: process.env.TWILIO_WHATSAPP_NUMBER,
-      }
-      this.initialized = true
-      return
-    }
-
-    // Try MessageBird
-    if (process.env.MESSAGEBIRD_API_KEY && process.env.MESSAGEBIRD_CHANNEL_ID) {
-      this.config = {
-        provider: 'messagebird',
-        apiKey: process.env.MESSAGEBIRD_API_KEY,
-        apiSecret: process.env.MESSAGEBIRD_CHANNEL_ID,
-      }
-      this.initialized = true
-      return
-    }
-
-    console.log('[WhatsAppService] No WhatsApp credentials configured')
   }
 
   /**
    * Initialize with custom configuration
    */
-  initialize(config: WhatsAppConfig, recipients?: Recipient[]): void {
-    this.config = config
+  initialize(config: WazzupConfig, recipients?: Recipient[]): void {
+    this.config = {
+      ...config,
+      baseUrl: config.baseUrl || 'https://api.wazzup24.com/v3',
+    }
     if (recipients) {
       this.recipients = recipients
     }
@@ -282,10 +271,8 @@ export class WhatsAppService {
    * Add a recipient
    */
   addRecipient(recipient: Recipient): void {
-    // Check if already exists
     const existing = this.recipients.find((r) => r.phone === recipient.phone)
     if (existing) {
-      // Update existing
       Object.assign(existing, recipient)
     } else {
       this.recipients.push(recipient)
@@ -293,23 +280,40 @@ export class WhatsAppService {
   }
 
   /**
-   * Send a message to a specific phone number
+   * Send a message to a specific phone number via Wazzup
    */
-  async sendMessage(phone: string, message: string): Promise<{ success: boolean; error?: string }> {
+  async sendMessage(phone: string, message: string): Promise<SendResult> {
     if (!this.isReady() || !this.config) {
-      return { success: false, error: 'WhatsApp service not configured' }
+      return { success: false, error: 'Wazzup service not configured' }
     }
 
+    // Clean phone number (remove + and spaces)
+    const cleanPhone = phone.replace(/[\s+\-()]/g, '')
+
     try {
-      switch (this.config.provider) {
-        case 'ultramsg':
-          return await this.sendViaUltraMsg(phone, message)
-        case 'twilio':
-          return await this.sendViaTwilio(phone, message)
-        case 'messagebird':
-          return await this.sendViaMessageBird(phone, message)
-        default:
-          return { success: false, error: `Unknown provider: ${this.config.provider}` }
+      const response = await fetch(`${this.config.baseUrl}/message`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${this.config.apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          channelId: this.config.channelId,
+          chatId: cleanPhone,
+          chatType: 'whatsapp',
+          text: message,
+        }),
+      })
+
+      const result = await response.json()
+
+      if (response.ok && (result.messageId || result.id)) {
+        return { success: true, messageId: result.messageId || result.id }
+      }
+
+      return {
+        success: false,
+        error: result.error || result.message || `HTTP ${response.status}`,
       }
     } catch (error) {
       return {
@@ -374,117 +378,6 @@ export class WhatsAppService {
     const message = formatWeeklySummaryMessage(data)
     const result = await this.broadcast('weekly_summary', message)
     console.log(`[WhatsApp] Weekly summary: ${result.sent} sent, ${result.failed} failed`)
-  }
-
-  // ==========================================================================
-  // PROVIDER-SPECIFIC IMPLEMENTATIONS
-  // ==========================================================================
-
-  /**
-   * Send via UltraMsg (https://ultramsg.com/)
-   * Easiest to set up - just scan QR code with your WhatsApp
-   */
-  private async sendViaUltraMsg(
-    phone: string,
-    message: string
-  ): Promise<{ success: boolean; error?: string }> {
-    if (!this.config?.instanceId || !this.config?.apiKey) {
-      return { success: false, error: 'UltraMsg not configured' }
-    }
-
-    const url = `https://api.ultramsg.com/${this.config.instanceId}/messages/chat`
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-      },
-      body: new URLSearchParams({
-        token: this.config.apiKey,
-        to: phone,
-        body: message,
-      }),
-    })
-
-    const result = await response.json()
-
-    if (result.sent === 'true' || result.sent === true) {
-      return { success: true }
-    }
-
-    return { success: false, error: result.message || 'Failed to send' }
-  }
-
-  /**
-   * Send via Twilio
-   */
-  private async sendViaTwilio(
-    phone: string,
-    message: string
-  ): Promise<{ success: boolean; error?: string }> {
-    if (!this.config?.apiKey || !this.config?.apiSecret || !this.config?.fromNumber) {
-      return { success: false, error: 'Twilio not configured' }
-    }
-
-    const url = `https://api.twilio.com/2010-04-01/Accounts/${this.config.apiKey}/Messages.json`
-    const auth = Buffer.from(`${this.config.apiKey}:${this.config.apiSecret}`).toString('base64')
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded',
-        Authorization: `Basic ${auth}`,
-      },
-      body: new URLSearchParams({
-        To: `whatsapp:${phone}`,
-        From: `whatsapp:${this.config.fromNumber}`,
-        Body: message,
-      }),
-    })
-
-    const result = await response.json()
-
-    if (result.sid) {
-      return { success: true }
-    }
-
-    return { success: false, error: result.message || 'Failed to send' }
-  }
-
-  /**
-   * Send via MessageBird
-   */
-  private async sendViaMessageBird(
-    phone: string,
-    message: string
-  ): Promise<{ success: boolean; error?: string }> {
-    if (!this.config?.apiKey || !this.config?.apiSecret) {
-      return { success: false, error: 'MessageBird not configured' }
-    }
-
-    const url = 'https://conversations.messagebird.com/v1/send'
-
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        Authorization: `AccessKey ${this.config.apiKey}`,
-      },
-      body: JSON.stringify({
-        to: phone,
-        from: this.config.apiSecret, // Channel ID
-        type: 'text',
-        content: { text: message },
-      }),
-    })
-
-    const result = await response.json()
-
-    if (result.id) {
-      return { success: true }
-    }
-
-    return { success: false, error: result.errors?.[0]?.description || 'Failed to send' }
   }
 }
 
