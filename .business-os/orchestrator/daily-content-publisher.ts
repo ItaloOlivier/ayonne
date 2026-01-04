@@ -9,6 +9,8 @@
  * Runs daily via GitHub Actions or cron job.
  */
 
+import * as fs from 'fs/promises'
+import * as path from 'path'
 import { contentWriterAgent, shopifyPublisher } from '../agents/content-writer'
 import { COLORADO_CITIES, COLORADO_KEYWORDS, SEASONAL_CONTENT } from '../agents/content-writer/colorado-config'
 import type { ArticleBrief, GeneratedArticle } from '../agents/content-writer/types'
@@ -19,6 +21,53 @@ import {
   type DailySEOReportData,
   type ArticlePublishedData,
 } from '../notifications/whatsapp'
+
+// ============================================================================
+// CONTENT HISTORY TRACKING
+// ============================================================================
+
+interface PublishedContentRecord {
+  slug: string
+  title: string
+  type: 'city_landing' | 'seasonal_guide' | 'pillar_page' | 'cluster_article'
+  target: string
+  publishedAt: string
+  shopifyArticleId?: string
+  url: string
+}
+
+interface ContentHistory {
+  lastUpdated: string
+  articles: PublishedContentRecord[]
+}
+
+const CONTENT_HISTORY_PATH = path.join(process.cwd(), '.business-os', 'data', 'content-history.json')
+
+async function loadContentHistory(): Promise<ContentHistory> {
+  try {
+    const data = await fs.readFile(CONTENT_HISTORY_PATH, 'utf-8')
+    return JSON.parse(data)
+  } catch {
+    return { lastUpdated: new Date().toISOString(), articles: [] }
+  }
+}
+
+async function saveContentHistory(history: ContentHistory): Promise<void> {
+  const dir = path.dirname(CONTENT_HISTORY_PATH)
+  await fs.mkdir(dir, { recursive: true })
+  history.lastUpdated = new Date().toISOString()
+  await fs.writeFile(CONTENT_HISTORY_PATH, JSON.stringify(history, null, 2))
+}
+
+function isContentRecent(history: ContentHistory, type: string, target: string, daysThreshold: number = 90): boolean {
+  const cutoff = new Date()
+  cutoff.setDate(cutoff.getDate() - daysThreshold)
+
+  return history.articles.some((article) => {
+    const publishedDate = new Date(article.publishedAt)
+    return article.type === type && article.target === target && publishedDate > cutoff
+  })
+}
 
 // ============================================================================
 // CONTENT CALENDAR LOGIC
@@ -32,8 +81,9 @@ interface ContentCalendarEntry {
 
 /**
  * Get the content to publish for today based on the content calendar
+ * Checks history to avoid publishing duplicate or recently published content
  */
-function getTodaysContent(): ContentCalendarEntry {
+async function getTodaysContent(history: ContentHistory): Promise<ContentCalendarEntry> {
   const today = new Date()
   const dayOfYear = getDayOfYear(today)
   const dayOfWeek = today.getDay()
@@ -47,42 +97,80 @@ function getTodaysContent(): ContentCalendarEntry {
   // - Friday: City landing pages (continued)
   // - Weekend: Lower priority cluster articles
 
-  // Determine which city (rotate through 4 cities)
-  const cityIndex = Math.floor(dayOfYear / 7) % COLORADO_CITIES.length
-  const city = COLORADO_CITIES[cityIndex]
-
   // Determine season
   const season = getCurrentSeason(month)
 
-  // Determine pillar topic (rotate through 3 main topics)
+  // Determine pillar topics
   const pillarTopics = ['high_altitude', 'dry_climate', 'hydration']
-  const pillarIndex = Math.floor(dayOfYear / 14) % pillarTopics.length
-  const pillarTopic = pillarTopics[pillarIndex]
 
   // Get high-priority keywords not yet covered
-  const keywordIndex = dayOfYear % COLORADO_KEYWORDS.filter((k) => k.priority > 60).length
-  const keyword = COLORADO_KEYWORDS.filter((k) => k.priority > 60)[keywordIndex]
+  const highPriorityKeywords = COLORADO_KEYWORDS.filter((k) => k.priority > 60)
 
+  // Build a list of potential content, checking against history
+  const candidates: ContentCalendarEntry[] = []
+
+  // Add city landing pages (skip if published in last 90 days)
+  for (const city of COLORADO_CITIES) {
+    if (!isContentRecent(history, 'city_landing', city.slug, 90)) {
+      candidates.push({ type: 'city_landing', target: city.slug, priority: 90 })
+    }
+  }
+
+  // Add seasonal content (skip if published in last 60 days for current season)
+  if (!isContentRecent(history, 'seasonal_guide', season, 60)) {
+    candidates.push({ type: 'seasonal_guide', target: season, priority: 85 })
+  }
+
+  // Add pillar pages (skip if published in last 120 days)
+  for (const topic of pillarTopics) {
+    if (!isContentRecent(history, 'pillar_page', topic, 120)) {
+      candidates.push({ type: 'pillar_page', target: topic, priority: 80 })
+    }
+  }
+
+  // Add cluster articles from keywords (skip if published in last 90 days)
+  for (const keyword of highPriorityKeywords) {
+    if (!isContentRecent(history, 'cluster_article', keyword.keyword, 90)) {
+      candidates.push({ type: 'cluster_article', target: keyword.keyword, priority: keyword.priority })
+    }
+  }
+
+  // If no fresh candidates, log warning and pick oldest content type
+  if (candidates.length === 0) {
+    console.warn('[DailyPublisher] All content types have been recently published. Selecting least recent.')
+    // Fall back to day-based rotation
+    const cityIndex = Math.floor(dayOfYear / 7) % COLORADO_CITIES.length
+    return { type: 'city_landing', target: COLORADO_CITIES[cityIndex].slug, priority: 50 }
+  }
+
+  // Select based on day of week preferences, but only from available candidates
+  let preferredType: ContentCalendarEntry['type']
   switch (dayOfWeek) {
     case 1: // Monday - City landing
-      return { type: 'city_landing', target: city.slug, priority: 90 }
-
+    case 5: // Friday - City landing
+      preferredType = 'city_landing'
+      break
     case 2: // Tuesday - Seasonal
-      return { type: 'seasonal_guide', target: season, priority: 85 }
-
+      preferredType = 'seasonal_guide'
+      break
     case 3: // Wednesday - Pillar
-      return { type: 'pillar_page', target: pillarTopic, priority: 80 }
-
-    case 4: // Thursday - Cluster
-      return { type: 'cluster_article', target: keyword.keyword, priority: 75 }
-
-    case 5: // Friday - City (next city)
-      const nextCityIndex = (cityIndex + 1) % COLORADO_CITIES.length
-      return { type: 'city_landing', target: COLORADO_CITIES[nextCityIndex].slug, priority: 85 }
-
-    default: // Weekend - Lower priority cluster
-      return { type: 'cluster_article', target: keyword.keyword, priority: 60 }
+      preferredType = 'pillar_page'
+      break
+    default: // Thursday, Weekend - Cluster
+      preferredType = 'cluster_article'
   }
+
+  // Try to find preferred type first
+  const preferredCandidates = candidates.filter((c) => c.type === preferredType)
+  if (preferredCandidates.length > 0) {
+    // Sort by priority and pick highest
+    preferredCandidates.sort((a, b) => b.priority - a.priority)
+    return preferredCandidates[0]
+  }
+
+  // Fall back to highest priority available
+  candidates.sort((a, b) => b.priority - a.priority)
+  return candidates[0]
 }
 
 function getDayOfYear(date: Date): number {
@@ -129,14 +217,18 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
   console.log(`[DailyPublisher] Starting for ${result.date}`)
 
   try {
-    // Step 1: Initialize Content Writer Agent
+    // Step 1: Load content history to avoid duplicates
+    const history = await loadContentHistory()
+    console.log(`[DailyPublisher] Loaded history with ${history.articles.length} published articles`)
+
+    // Step 2: Initialize Content Writer Agent
     await contentWriterAgent.initialize()
 
-    // Step 2: Determine today's content
-    const todaysContent = getTodaysContent()
+    // Step 3: Determine today's content (checks history for freshness)
+    const todaysContent = await getTodaysContent(history)
     console.log(`[DailyPublisher] Today's content: ${todaysContent.type} - ${todaysContent.target}`)
 
-    // Step 3: Generate brief based on content type
+    // Step 4: Generate brief based on content type
     let brief: ArticleBrief
 
     switch (todaysContent.type) {
@@ -159,7 +251,7 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
 
     console.log(`[DailyPublisher] Generated brief: ${brief.title}`)
 
-    // Step 4: Generate article content
+    // Step 5: Generate article content
     const article = await contentWriterAgent.generateArticle(brief)
     console.log(`[DailyPublisher] Generated article: ${article.wordCount} words, quality: ${article.qualityScore.overall}`)
 
@@ -171,18 +263,44 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
       qualityScore: article.qualityScore.overall,
     }
 
-    // Step 5: Publish to Shopify (if quality is acceptable)
+    // Step 6: Publish to Shopify (if quality is acceptable)
+    let publishedSuccessfully = false
     if (article.qualityScore.overall >= 60) {
       if (shopifyPublisher.isReady()) {
-        const publishResult = await shopifyPublisher.publishArticle(article, brief)
+        // Check for duplicate content before publishing
+        const duplicateCheck = await shopifyPublisher.checkForDuplicate(article.slug)
 
-        if (publishResult.success) {
-          result.shopifyArticleId = publishResult.articleId
-          result.article!.url = publishResult.url || result.article!.url
-          console.log(`[DailyPublisher] Published to Shopify: ${publishResult.articleId}`)
+        if (duplicateCheck.exists) {
+          const existingTitle = duplicateCheck.existingArticle?.title || 'unknown'
+          const existingHandle = duplicateCheck.existingArticle?.handle || article.slug
+          result.errors.push(`Duplicate detected: "${existingTitle}" (${existingHandle}) - skipping publish`)
+          console.warn(`[DailyPublisher] Duplicate article found: ${existingTitle}`)
+          console.log(`[DailyPublisher] Skipping to avoid duplicate content`)
         } else {
-          result.errors.push(`Shopify publish failed: ${publishResult.error}`)
-          console.error(`[DailyPublisher] Shopify publish failed: ${publishResult.error}`)
+          const publishResult = await shopifyPublisher.publishArticle(article, brief)
+
+          if (publishResult.success) {
+            result.shopifyArticleId = publishResult.articleId
+            result.article!.url = publishResult.url || result.article!.url
+            publishedSuccessfully = true
+            console.log(`[DailyPublisher] Published to Shopify: ${publishResult.articleId}`)
+
+            // Step 7: Save to content history to prevent future duplicates
+            history.articles.push({
+              slug: article.slug,
+              title: article.title,
+              type: todaysContent.type,
+              target: todaysContent.target,
+              publishedAt: new Date().toISOString(),
+              shopifyArticleId: publishResult.articleId,
+              url: result.article!.url,
+            })
+            await saveContentHistory(history)
+            console.log(`[DailyPublisher] Saved to content history`)
+          } else {
+            result.errors.push(`Shopify publish failed: ${publishResult.error}`)
+            console.error(`[DailyPublisher] Shopify publish failed: ${publishResult.error}`)
+          }
         }
       } else {
         console.log('[DailyPublisher] Shopify publisher not configured - article saved as draft')
@@ -192,8 +310,8 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
       console.warn(`[DailyPublisher] Quality too low for auto-publish`)
     }
 
-    // Step 6: Send WhatsApp notifications
-    if (whatsappService.isReady()) {
+    // Step 8: Send WhatsApp notifications (only if published successfully)
+    if (publishedSuccessfully && whatsappService.isReady()) {
       const articleData: ArticlePublishedData = {
         title: article.title,
         url: result.article!.url,
@@ -206,6 +324,8 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
       await whatsappService.notifyArticlePublished(articleData)
       result.whatsappSent = true
       console.log('[DailyPublisher] WhatsApp notifications sent')
+    } else if (!publishedSuccessfully) {
+      console.log('[DailyPublisher] Skipping WhatsApp - article was not published')
     } else {
       console.log('[DailyPublisher] WhatsApp not configured - skipping notifications')
     }

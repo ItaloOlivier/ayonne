@@ -348,10 +348,60 @@ export class ShopifyPublisher {
   }
 
   /**
+   * Check if an article with similar slug/handle already exists
+   */
+  async checkForDuplicate(
+    slug: string
+  ): Promise<{ exists: boolean; existingArticle?: ShopifyArticleNode; error?: string }> {
+    if (!this.isReady() || !this.config) {
+      return { exists: false, error: 'Publisher not initialized' }
+    }
+
+    try {
+      // Get recent articles and check for similar slugs
+      const result = await this.listArticles(100)
+
+      if (!result.success || !result.articles) {
+        return { exists: false }
+      }
+
+      // Check for exact match or similar slugs
+      const normalizedSlug = slug.toLowerCase().replace(/[^a-z0-9]/g, '')
+
+      for (const article of result.articles) {
+        const existingSlug = (article.handle || '').toLowerCase().replace(/[^a-z0-9]/g, '')
+
+        // Exact match
+        if (existingSlug === normalizedSlug) {
+          return { exists: true, existingArticle: article }
+        }
+
+        // Check for high similarity (same base topic)
+        // e.g., "skincare-denver-colorado" vs "skincare-denver-colorado-2024"
+        if (normalizedSlug.includes(existingSlug) || existingSlug.includes(normalizedSlug)) {
+          // Only flag if the overlap is significant (>70% of characters)
+          const shorter = Math.min(normalizedSlug.length, existingSlug.length)
+          const longer = Math.max(normalizedSlug.length, existingSlug.length)
+          if (shorter / longer > 0.7) {
+            return { exists: true, existingArticle: article }
+          }
+        }
+      }
+
+      return { exists: false }
+    } catch (error) {
+      return {
+        exists: false,
+        error: error instanceof Error ? error.message : 'Unknown error',
+      }
+    }
+  }
+
+  /**
    * List all articles in the blog
    */
   async listArticles(
-    limit: number = 10
+    limit: number = 100
   ): Promise<{ success: boolean; articles?: ShopifyArticleNode[]; error?: string }> {
     if (!this.isReady() || !this.config) {
       return {
