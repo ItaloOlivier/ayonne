@@ -93,6 +93,11 @@ export interface WeeklySummaryData {
   nextWeekPlan: string[]
 }
 
+export interface CombinedDailyMessageData extends ArticlePublishedData {
+  nextArticleTopic?: string
+  totalArticlesThisWeek?: number
+}
+
 export function formatArticlePublishedMessage(data: ArticlePublishedData): string {
   const qualityEmoji = data.qualityScore >= 80 ? '🌟' : data.qualityScore >= 60 ? '✅' : '⚠️'
 
@@ -109,6 +114,45 @@ ${data.city ? `• Region: ${data.city}, Colorado` : ''}
 • Quality: ${data.qualityScore}/100 ${qualityEmoji}
 
 _Ayonne Content Writer Agent_`
+}
+
+/**
+ * Combined daily message - single notification with article + brief status
+ * More user-friendly than separate technical reports
+ */
+export function formatCombinedDailyMessage(data: CombinedDailyMessageData): string {
+  const qualityEmoji = data.qualityScore >= 80 ? '🌟' : data.qualityScore >= 60 ? '✅' : '⚠️'
+
+  let message = `✨ *Ayonne Daily Update*
+
+📝 *New Article Live!*
+${data.title}
+
+🔗 *Read it here:*
+${data.url}
+
+${qualityEmoji} Quality Score: ${data.qualityScore}/100
+📍 ${data.city ? `${data.city}, Colorado` : 'Colorado'} Focus
+📏 ${data.wordCount.toLocaleString()} words`
+
+  if (data.nextArticleTopic) {
+    message += `
+
+📅 *Coming Tomorrow:*
+${data.nextArticleTopic}`
+  }
+
+  if (data.totalArticlesThisWeek) {
+    message += `
+
+📈 *This Week:* ${data.totalArticlesThisWeek} articles published`
+  }
+
+  message += `
+
+_Review the article and share feedback!_`
+
+  return message
 }
 
 export function formatDailySEOReportMessage(data: DailySEOReportData): string {
@@ -355,7 +399,7 @@ export class WhatsAppService {
   }
 
   /**
-   * Send article published notification
+   * Send article published notification (legacy - use sendCombinedDailyUpdate instead)
    */
   async notifyArticlePublished(data: ArticlePublishedData): Promise<void> {
     const message = formatArticlePublishedMessage(data)
@@ -364,7 +408,17 @@ export class WhatsAppService {
   }
 
   /**
-   * Send daily SEO report
+   * Send combined daily update - single message with article link + brief status
+   * This replaces separate article + SEO report messages
+   */
+  async sendCombinedDailyUpdate(data: CombinedDailyMessageData): Promise<void> {
+    const message = formatCombinedDailyMessage(data)
+    const result = await this.broadcast('article_published', message)
+    console.log(`[WhatsApp] Combined daily update: ${result.sent} sent, ${result.failed} failed`)
+  }
+
+  /**
+   * Send daily SEO report (legacy - now integrated into combined message)
    */
   async sendDailySEOReport(data: DailySEOReportData): Promise<void> {
     const message = formatDailySEOReportMessage(data)

@@ -18,10 +18,13 @@ import {
   whatsappService,
   formatArticlePublishedMessage,
   formatDailySEOReportMessage,
+  formatCombinedDailyMessage,
   type DailySEOReportData,
   type ArticlePublishedData,
+  type CombinedDailyMessageData,
 } from '../notifications/whatsapp'
 import { seoBridge, type ContentGap } from '../data/seo-bridge'
+import { cleanArticleForPublishing } from '../agents/content-writer/ux-reviewer'
 
 // ============================================================================
 // CONTENT HISTORY TRACKING
@@ -280,8 +283,12 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
     console.log(`[DailyPublisher] Generated brief: ${brief.title}`)
 
     // Step 5: Generate article content
-    const article = await contentWriterAgent.generateArticle(brief)
-    console.log(`[DailyPublisher] Generated article: ${article.wordCount} words, quality: ${article.qualityScore.overall}`)
+    const rawArticle = await contentWriterAgent.generateArticle(brief)
+    console.log(`[DailyPublisher] Generated article: ${rawArticle.wordCount} words, quality: ${rawArticle.qualityScore.overall}`)
+
+    // Step 5b: UX/UI Review - clean up formatting before publishing
+    const article = cleanArticleForPublishing(rawArticle)
+    console.log(`[DailyPublisher] UX review complete - article ready for publishing`)
 
     result.article = {
       title: article.title,
@@ -338,20 +345,34 @@ export async function runDailyPublisher(): Promise<DailyPublishResult> {
       console.warn(`[DailyPublisher] Quality too low for auto-publish`)
     }
 
-    // Step 8: Send WhatsApp notifications (only if published successfully)
+    // Step 8: Send SINGLE combined WhatsApp notification (only if published successfully)
+    // This replaces the old separate article + SEO report messages
     if (publishedSuccessfully && whatsappService.isReady()) {
-      const articleData: ArticlePublishedData = {
+      // Get tomorrow's content topic for the message
+      const tomorrowsContent = await getTodaysContent(history) // Will get next priority item
+      const nextTopic = tomorrowsContent ? `${tomorrowsContent.target} ${tomorrowsContent.type.replace('_', ' ')}` : undefined
+
+      // Count articles published this week
+      const weekStart = new Date()
+      weekStart.setDate(weekStart.getDate() - weekStart.getDay())
+      const articlesThisWeek = history.articles.filter(
+        a => new Date(a.publishedAt) >= weekStart
+      ).length
+
+      const combinedData: CombinedDailyMessageData = {
         title: article.title,
         url: result.article!.url,
         targetKeyword: brief.targetKeyword,
         city: brief.regionalFocus.primaryCity,
         wordCount: article.wordCount,
         qualityScore: article.qualityScore.overall,
+        nextArticleTopic: nextTopic,
+        totalArticlesThisWeek: articlesThisWeek,
       }
 
-      await whatsappService.notifyArticlePublished(articleData)
+      await whatsappService.sendCombinedDailyUpdate(combinedData)
       result.whatsappSent = true
-      console.log('[DailyPublisher] WhatsApp notifications sent')
+      console.log('[DailyPublisher] Combined WhatsApp notification sent')
     } else if (!publishedSuccessfully) {
       console.log('[DailyPublisher] Skipping WhatsApp - article was not published')
     } else {
@@ -439,24 +460,20 @@ async function main() {
 
   switch (command) {
     case 'publish':
+    case 'both': // 'both' now just runs publish (combined message replaces separate report)
       console.log('Running daily content publisher...')
       const result = await runDailyPublisher()
       console.log('Result:', JSON.stringify(result, null, 2))
       process.exit(result.success ? 0 : 1)
 
     case 'report':
+      // Legacy: still available for manual SEO report if needed
       console.log('Sending daily SEO report...')
       await sendDailySEOReport()
       process.exit(0)
 
-    case 'both':
-      console.log('Running publisher and sending report...')
-      const publishResult = await runDailyPublisher()
-      await sendDailySEOReport()
-      process.exit(publishResult.success ? 0 : 1)
-
     default:
-      console.log('Usage: npx ts-node daily-content-publisher.ts [publish|report|both]')
+      console.log('Usage: npx ts-node daily-content-publisher.ts [publish|report]')
       process.exit(1)
   }
 }
