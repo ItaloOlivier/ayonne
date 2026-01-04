@@ -504,21 +504,35 @@ export class ShopifyPublisher {
     }
 
     const url = `https://${this.config.storeDomain}/admin/api/${this.config.apiVersion}/graphql.json`
+    console.log(`[ShopifyPublisher] Calling API: ${url}`)
 
-    const response = await fetch(url, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'X-Shopify-Access-Token': this.config.adminApiToken,
-      },
-      body: JSON.stringify({ query, variables }),
-    })
+    try {
+      const response = await fetch(url, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'X-Shopify-Access-Token': this.config.adminApiToken,
+        },
+        body: JSON.stringify({ query, variables }),
+      })
 
-    if (!response.ok) {
-      throw new Error(`Shopify API error: ${response.status} ${response.statusText}`)
+      console.log(`[ShopifyPublisher] Response status: ${response.status}`)
+
+      if (!response.ok) {
+        const errorText = await response.text()
+        console.error(`[ShopifyPublisher] API error response: ${errorText}`)
+        throw new Error(`Shopify API error: ${response.status} ${response.statusText}`)
+      }
+
+      const result = await response.json()
+      if (result.errors) {
+        console.error(`[ShopifyPublisher] GraphQL errors:`, JSON.stringify(result.errors))
+      }
+      return result
+    } catch (error) {
+      console.error(`[ShopifyPublisher] Fetch error:`, error)
+      throw error
     }
-
-    return response.json()
   }
 }
 
