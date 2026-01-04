@@ -7,6 +7,7 @@
 
 import * as fs from 'fs/promises'
 import * as path from 'path'
+import { contentPerformanceTracker, type PerformanceReport } from './content-performance'
 
 // ============================================================================
 // TYPES
@@ -350,6 +351,60 @@ export class SEOBridge {
       contentGaps: summary?.contentGaps.length || 0,
       priorityKeywords: summary?.priorityKeywords.length || 0,
       dataFresh,
+    }
+  }
+
+  /**
+   * Get content performance feedback for SEO agents
+   * This feeds back performance data to improve recommendations
+   */
+  async getPerformanceFeedback(): Promise<PerformanceReport | null> {
+    try {
+      return await contentPerformanceTracker.generateReport()
+    } catch (error) {
+      console.error('[SEOBridge] Failed to get performance feedback:', error)
+      return null
+    }
+  }
+
+  /**
+   * Update content performance from latest SEO crawl
+   */
+  async updatePerformanceFromCrawl(): Promise<number> {
+    const latestDate = await this.getLatestRunDate()
+    if (!latestDate) return 0
+
+    try {
+      const crawlPath = path.join(this.runsDir, latestDate, 'crawl_data.json')
+      const content = await fs.readFile(crawlPath, 'utf-8')
+      const crawlData = JSON.parse(content)
+
+      return await contentPerformanceTracker.updateFromSEOCrawl(crawlData)
+    } catch (error) {
+      console.error('[SEOBridge] Failed to update performance from crawl:', error)
+      return 0
+    }
+  }
+
+  /**
+   * Get underperforming content that needs attention
+   */
+  async getUnderperformingContent(limit: number = 5): Promise<{
+    slug: string
+    title: string
+    score: number
+    recommendations: string[]
+  }[]> {
+    try {
+      const underperforming = await contentPerformanceTracker.getUnderperformingContent(limit)
+      return underperforming.map((r) => ({
+        slug: r.slug,
+        title: r.title,
+        score: r.performanceScore || 0,
+        recommendations: r.updateRecommendations || [],
+      }))
+    } catch {
+      return []
     }
   }
 }

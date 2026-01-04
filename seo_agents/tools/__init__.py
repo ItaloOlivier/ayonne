@@ -15,6 +15,7 @@ from .validators import (
 )
 from .diffing import ContentDiffer
 from .pagespeed import PageSpeedChecker
+from .shared_keywords import SharedKeywordsManager, get_shared_keywords_manager
 
 __all__ = [
     "SiteCrawler",
@@ -25,5 +26,7 @@ __all__ = [
     "check_forbidden_words",
     "validate_internal_links",
     "ContentDiffer",
-    "PageSpeedChecker"
+    "PageSpeedChecker",
+    "SharedKeywordsManager",
+    "get_shared_keywords_manager"
 ]

@@ -19,6 +19,7 @@ from .cannibalization import CannibalizationAgent
 from .cro_agent import ConversionRateAgent
 from .monitoring import MonitoringAgent
 from .gmc_agent import GoogleMerchantCenterAgent
+from .backlink_agent import BacklinkAnalysisAgent
 
 __all__ = [
     "BaseAgent",
@@ -38,4 +39,5 @@ __all__ = [
     "ConversionRateAgent",
     "MonitoringAgent",
     "GoogleMerchantCenterAgent",
+    "BacklinkAnalysisAgent",
 ]

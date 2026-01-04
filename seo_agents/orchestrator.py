@@ -31,6 +31,7 @@ from .agents import (
     ConversionRateAgent,
     MonitoringAgent,
     GoogleMerchantCenterAgent,
+    BacklinkAnalysisAgent,
 )
 from .tools import SiteCrawler, SitemapParser, validate_json_ld, check_forbidden_words
 
@@ -126,6 +127,7 @@ class SEOCommander:
             ('cro', ConversionRateAgent),
             ('monitoring', MonitoringAgent),
             ('gmc', GoogleMerchantCenterAgent),
+            ('backlink', BacklinkAnalysisAgent),
         ]
 
         for name, agent_class in agent_classes:

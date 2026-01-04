@@ -1,0 +1,176 @@
+{
+  "version": "1.0.0",
+  "lastUpdated": "2026-01-04T00:00:00.000Z",
+  "keywords": {
+    "primary": [
+      {
+        "keyword": "denver skincare",
+        "priority": 95,
+        "volume": "high",
+        "difficulty": "medium",
+        "intent": "commercial",
+        "status": "active",
+        "lastTargeted": null,
+        "performance": null
+      },
+      {
+        "keyword": "colorado skincare",
+        "priority": 90,
+        "volume": "medium",
+        "difficulty": "medium",
+        "intent": "commercial",
+        "status": "active",
+        "lastTargeted": null,
+        "performance": null
+      },
+      {
+        "keyword": "high altitude skincare",
+        "priority": 88,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "informational",
+        "status": "active",
+        "lastTargeted": null,
+        "performance": null
+      },
+      {
+        "keyword": "dry climate skincare",
+        "priority": 85,
+        "volume": "medium",
+        "difficulty": "low",
+        "intent": "informational",
+        "status": "active",
+        "lastTargeted": null,
+        "performance": null
+      },
+      {
+        "keyword": "boulder skincare",
+        "priority": 82,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "commercial",
+        "status": "active",
+        "lastTargeted": null,
+        "performance": null
+      }
+    ],
+    "secondary": [
+      {
+        "keyword": "colorado springs skincare",
+        "priority": 75,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "commercial",
+        "status": "active"
+      },
+      {
+        "keyword": "fort collins skincare",
+        "priority": 72,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "commercial",
+        "status": "active"
+      },
+      {
+        "keyword": "winter skincare colorado",
+        "priority": 78,
+        "volume": "medium",
+        "difficulty": "medium",
+        "intent": "informational",
+        "status": "active"
+      },
+      {
+        "keyword": "mountain skincare",
+        "priority": 70,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "informational",
+        "status": "active"
+      },
+      {
+        "keyword": "hydrating skincare routine",
+        "priority": 80,
+        "volume": "high",
+        "difficulty": "high",
+        "intent": "informational",
+        "status": "active"
+      }
+    ],
+    "longtail": [
+      {
+        "keyword": "best moisturizer for colorado climate",
+        "priority": 65,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "commercial",
+        "status": "active"
+      },
+      {
+        "keyword": "skincare for dry mountain air",
+        "priority": 60,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "informational",
+        "status": "active"
+      },
+      {
+        "keyword": "anti aging serum denver",
+        "priority": 68,
+        "volume": "low",
+        "difficulty": "medium",
+        "intent": "commercial",
+        "status": "active"
+      },
+      {
+        "keyword": "uv protection high altitude",
+        "priority": 72,
+        "volume": "low",
+        "difficulty": "low",
+        "intent": "informational",
+        "status": "active"
+      },
+      {
+        "keyword": "colorado dermatologist recommended products",
+        "priority": 58,
+        "volume": "low",
+        "difficulty": "medium",
+        "intent": "commercial",
+        "status": "active"
+      }
+    ]
+  },
+  "topicClusters": {
+    "altitude_skincare": {
+      "pillar": "high altitude skincare",
+      "clusters": [
+        "uv protection high altitude",
+        "skincare for dry mountain air",
+        "mountain skincare",
+        "altitude effects on skin"
+      ]
+    },
+    "colorado_regional": {
+      "pillar": "colorado skincare",
+      "clusters": [
+        "denver skincare",
+        "boulder skincare",
+        "colorado springs skincare",
+        "fort collins skincare"
+      ]
+    },
+    "hydration_focus": {
+      "pillar": "hydrating skincare routine",
+      "clusters": [
+        "dry climate skincare",
+        "best moisturizer for colorado climate",
+        "winter skincare colorado",
+        "dehydrated skin solutions"
+      ]
+    }
+  },
+  "tracking": {
+    "articlesPerKeyword": {},
+    "keywordPerformance": {},
+    "lastSyncedFromSEO": null
+  }
+}
