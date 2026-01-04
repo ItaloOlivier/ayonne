@@ -159,14 +159,8 @@ jobs:
 
           MESSAGE_JSON=$(printf '%s' "$MESSAGE" | jq -Rs .)
 
-          # Send to Owner
+          # Send to Owner only (Wim removed until system is tested)
           curl -X POST "https://api.wazzup24.com/v3/message" \
             -H "Authorization: Bearer $WAZZUP_API_KEY" \
             -H "Content-Type: application/json" \
             -d "$(printf '{"channelId":"%s","chatId":"27791922423","chatType":"whatsapp","text":%s}' "$WAZZUP_CHANNEL_ID" "$MESSAGE_JSON")"
-
-          # Send to Wim
-          curl -X POST "https://api.wazzup24.com/v3/message" \
-            -H "Authorization: Bearer $WAZZUP_API_KEY" \
-            -H "Content-Type: application/json" \
-            -d "$(printf '{"channelId":"%s","chatId":"27832334572","chatType":"whatsapp","text":%s}' "$WAZZUP_CHANNEL_ID" "$MESSAGE_JSON")"

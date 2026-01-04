@@ -43,6 +43,7 @@ export interface SendResult {
 }
 
 // Ayonne recipients
+// NOTE: Wim temporarily removed until system is fully tested
 export const AYONNE_RECIPIENTS: Recipient[] = [
   {
     name: 'Owner',
@@ -50,12 +51,12 @@ export const AYONNE_RECIPIENTS: Recipient[] = [
     role: 'owner',
     notifications: ['daily_seo_report', 'article_published', 'weekly_summary', 'performance_alert'],
   },
-  {
-    name: 'Wim',
-    phone: '27832334572',
-    role: 'team',
-    notifications: ['daily_seo_report', 'article_published', 'weekly_summary'],
-  },
+  // {
+  //   name: 'Wim',
+  //   phone: '27832334572',
+  //   role: 'team',
+  //   notifications: ['daily_seo_report', 'article_published', 'weekly_summary'],
+  // },
 ]
 
 // ============================================================================
