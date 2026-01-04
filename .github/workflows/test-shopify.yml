@@ -1,0 +1,36 @@
+name: Test Shopify Connection
+
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Test Shopify API
+        env:
+          SHOPIFY_STORE_DOMAIN: ${{ secrets.SHOPIFY_STORE_DOMAIN }}
+          SHOPIFY_ADMIN_API_TOKEN: ${{ secrets.SHOPIFY_ADMIN_API_TOKEN }}
+        run: |
+          echo "Domain: $SHOPIFY_STORE_DOMAIN"
+          echo "Token starts with: ${SHOPIFY_ADMIN_API_TOKEN:0:10}..."
+
+          # Test the API
+          RESPONSE=$(curl -s -w "\n%{http_code}" -X POST \
+            "https://${SHOPIFY_STORE_DOMAIN}/admin/api/2024-01/graphql.json" \
+            -H "Content-Type: application/json" \
+            -H "X-Shopify-Access-Token: ${SHOPIFY_ADMIN_API_TOKEN}" \
+            -d '{"query": "{ shop { name } }"}')
+
+          HTTP_CODE=$(echo "$RESPONSE" | tail -1)
+          BODY=$(echo "$RESPONSE" | head -n -1)
+
+          echo "HTTP Status: $HTTP_CODE"
+          echo "Response: $BODY"
+
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "✅ Connection successful!"
+          else
+            echo "❌ Connection failed!"
+            exit 1
+          fi
